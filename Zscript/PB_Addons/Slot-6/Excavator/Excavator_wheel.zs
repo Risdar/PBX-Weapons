@@ -10,7 +10,7 @@ Class ExcavatorWheel : wheelinfocontainer
 		super.GetSpecials(spw,requester);
 		
 		PB_SpecialWheel_Mode EX_Drop = new ("PB_SpecialWheel_Mode");
-		EX_Drop.img = "graphics/weap/DropAlt.png";
+		EX_Drop.img = "graphics/Weapon Wheel/Excavator/DropAlt.png";
 		EX_Drop.Alias = "Drop Mode";
 		EX_Drop.tokentogive = "EX_Select_DropMode";
 		EX_Drop.scalex = 0.6;
@@ -18,7 +18,7 @@ Class ExcavatorWheel : wheelinfocontainer
 		spw.push(EX_Drop);
 		
 		PB_SpecialWheel_Mode EX_Drill = new ("PB_SpecialWheel_Mode");
-		EX_Drill.img = "graphics/weap/GrenadeAlt.png";
+		EX_Drill.img = "graphics/Weapon Wheel/Excavator/DrillAlt.png";
 		EX_Drill.Alias = "Drill Mode";
 		EX_Drill.tokentogive = "EX_Select_DrillMode";
 		EX_Drill.scalex = 0.6;

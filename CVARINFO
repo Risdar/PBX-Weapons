@@ -1,0 +1,11 @@
+server int pbx_chainsaw_filter = 0;
+server int pbx_pistol_filter = 0;
+server int pbx_shotgun_filter = 0;
+server int pbx_ssg_filter = 0;
+server int pbx_chaingun_filter = 0;
+server int pbx_rocketlauncher_filter = 0;
+server int pbx_plasmarifle_filter = 0;
+server int pbx_bfg_filter = 0;
+
+server int pbx_backpack_filter = 0;
+

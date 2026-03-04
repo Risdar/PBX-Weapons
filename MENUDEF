@@ -1,0 +1,33 @@
+// SLOT 3
+AddOptionMenu "AddonWeaponSpawns" after "SHOT2"
+{
+    FlagOption    "Commander Shotgun",    "pbx_shotgun_filter",    "OffOn", 0
+}
+
+// SLOT 4
+AddOptionMenu "AddonWeaponSpawns" after "CHNT1"
+{
+    FlagOption    "Battle Rifle",    "pbx_chaingun_filter",    "OffOn", 0
+}
+AddOptionMenu "AddonWeaponSpawns" after "CHNT2"
+{
+    FlagOption    "Metal Sniper",    "pbx_chaingun_filter",    "OffOn", 1
+}
+
+// SLOT 6
+AddOptionMenu "AddonWeaponSpawns" after "LAUT3"
+{
+    FlagOption    "Excavator",    "pbx_rocketlauncher_filter",    "OffOn", 0
+}
+
+// SLOT 9
+AddOptionMenu "AddonWeaponSpawns" after "BFGT4"
+{
+    FlagOption    "Demonic Exterminator",    "pbx_bfg_filter",    "OffOn", 0
+}
+
+// Backpacks
+AddOptionMenu "AddonAmmoSpawns" after "PACKT3"
+{
+    FlagOption    "CSSG Upgrades",    "pbx_backpack_filter",    "OffOn", 0
+}

@@ -192,13 +192,10 @@ Class PB_CSSG : PB_WeaponBase
 		
 		// RELOAD STATES
 		Reload:
-			//TNT1 A 0 A_takeinventory(invoker.UnloaderToken,10);
 			TNT1 A 0 PB_CheckReload(null, null, null,"Ready3","Ready3",2);
 			TNT1 A 0 A_JumpIfInventory("CSSGShellsIn", 1, 1);
 			Goto ReloadFull;
 		ReloadHalf:
-			//TNT1 A 0 A_takeinventory(invoker.UnloaderToken,10);
-			//TNT1 A 0 A_Takeinventory("Unloading",1);
 			C0HO ABC 1;
 			TNT1 A 0 A_startsound("CSSGOPEN",25);
 			C0HO D 1;
@@ -275,9 +272,6 @@ Class PB_CSSG : PB_WeaponBase
 		// OTHERS
 		WeaponSpecial:
 			TNT1 A 0 A_takeinventory("GoWeaponSpecialAbility",1);
-// 			TNT1 A 0 A_JumpIfInventory ("GrabbedBarrel", 1, "IdleBarrel");
-// 			TNT1 A 0 A_JumpIfInventory ("GrabbedFlameBarrel", 1, "IdleFlameBarrel");
-// 			TNT1 A 0 A_JumpIfInventory ("GrabbedIceBarrel", 1, "IdleIceBarrel");
 			TNT1 A 0 {
 				A_Takeinventory("GoWeaponSpecialAbility",1);
 				A_Takeinventory("Zoomed",1);
@@ -401,69 +395,6 @@ Class PB_CSSG : PB_WeaponBase
 		"$CM_BUCKLD","$CM_SLUGLD","$CM_FLCHLD","$CM_FLAKLD","$CM_DGBTLD","$CM_EXPLLD",
 		"$CM_WPLOAD","$CM_DOOMLD","$CM_DNMKULD"
 	};
-	//for easier weapon control, ig
-	//this checks if there's at least one ammu loaded, if not, goes to reload instead
-	// This is unused but I'll keep it here -beefrice
-// 	Action state PB_CheckAmmoFire(int min = 1)
-// 	{
-// 		if(countinv(invoker.ammotype2) < min)
-// 			return resolvestate("Reload");
-// 		return resolvestate(null);
-// 	}
-	
-	//this checks if theres ammo to reload, if the weapon is empty, and if its full already
-	//and jumps to the respective state, if none of the above its true, just go to normal reload
-// 	Action State PB_CheckReload(int min = 1,statelabel noammo = null,statelabel empty = null,statelabel fully = null, int alreadyfull = 1)
-// 	{
-// 		let am1 = invoker.ammotype1;
-// 		let am2 = invoker.ammotype2;
-// 		if(!am1 || !am2)
-// 			return resolvestate(null); //this dont even uses ammo
-	
-// 		int amntres = countinv(am1); //ammo in reserve
-// 		int amntin = countinv(am2); //ammo in the gun
-		
-// 		if(amntin >= alreadyfull) //if its already full
-// 			return resolvestate(fully);
-// 		if(amntres < min) //its theres actually no ammo
-// 			return resolvestate(noammo);
-// 		if(amntin < 1)
-// 			return resolvestate(empty);
-		
-// 		return resolvestate(null); //continue to normal reload
-// 	}
-	
-	//to not copypaste the A_Jumpifinventory(barrel,1,barrel) block
-	Action State PB_CheckBarrelThrow1()
-	{
-		//got nukage barrel
-		if(countinv("GrabbedBarrel")>0)
-			return resolvestate("ThrowBarrel");
-		//got flame barrel
-		if(countinv("GrabbedFlameBarrel")>0)
-			return resolvestate("ThrowFlameBarrel");
-		//got ice barrel
-		if(countinv("GrabbedIceBarrel")>0)
-			return resolvestate("ThrowIceBarrel");
-		//no barrel
-		return resolvestate(null);
-	}
-	
-	Action State PB_CheckBarrelPlace1()
-	{
-		//got nukage barrel
-		if(countinv("GrabbedBarrel")>0)
-			return resolvestate("PlaceBarrel");
-		//got flame barrel
-		if(countinv("GrabbedFlameBarrel")>0)
-			return resolvestate("PlaceFlameBarrel");
-		//got ice barrel
-		if(countinv("GrabbedIceBarrel")>0)
-			return resolvestate("PlaceIceBarrel");
-		//no barrel
-		return resolvestate(null);
-	}
-	
 	
 	//for easier sprites manipulation
 	//gets a pointer to the asked layer and sets the defined sprite 
@@ -617,39 +548,6 @@ Class PB_CSSG : PB_WeaponBase
 			case Shell_Doom: console.printf("\ctDoom Shells"); break;
 			case Shell_Damn: console.printf("\c[DanmakuYellow]Danmaku Shells"); break;
 		}
-	}
-	
-	//at first i thought i would need this functions, but wasnt the case
-	
-	//player pressed bt button
-	Action Bool P_Pressed(int bt)
-	{
-		int buttons = player.cmd.buttons;
-		if(buttons & bt)
-			return true;
-		return false;
-	}
-	
-	//player is pressing and was pressing before bt
-	Action Bool P_KeepPressing(int bt)
-	{
-		int buttons = player.cmd.buttons;
-		int oldbut = player.oldbuttons;
-		if((buttons & bt) && (oldbut & bt))
-			return true;
-			
-		return false;
-	}
-	
-	//player is pressing, but wasn't pressing bt before
-	Action Bool P_PressedOnce(int bt)
-	{
-		int buttons = player.cmd.buttons;
-		int oldbut = player.oldbuttons;
-		if((buttons & bt) && !(oldbut & bt))
-			return true;
-			
-		return false;
 	}
 	
 	

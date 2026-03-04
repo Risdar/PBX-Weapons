@@ -23,6 +23,8 @@ class PB_Excavator : PB_WeaponBase
 		Weapon.SlotPriority 0;
 	    Weapon.SelectionOrder 506;
 	    PB_WeaponBase.RespectItem "RespectExcavatorLauncher";
+        PB_WeaponBase.UsesWheel true;
+		PB_WeaponBase.WheelInfo "ExcavatorWheel";
         Inventory.AltHudIcon "5DUNA0";
 		
 //////////////////////////// AMMO ////////////////////////////////////////////////////////////////////////////////////
@@ -332,8 +334,8 @@ class PB_Excavator : PB_WeaponBase
 				A_ZoomFactor(1.0);
 			}
             TNT1 A 0 {
-				if((findinventory("EX_Select_DropMode") && MS_getmode() == 0) || 
-				(findinventory("EX_Select_DrillMode") && MS_getmode() == 1))
+				if((findinventory("EX_Select_DropMode") && getExcavatorMode() == eDropShotMode) || 
+				(findinventory("EX_Select_DrillMode") && getExcavatorMode() == eDrillChargeMode))
 				{
 					A_print("Mode already selected");
 					cleanmodetokens();
@@ -342,31 +344,26 @@ class PB_Excavator : PB_WeaponBase
 				
 				if(findinventory("EX_Select_DropMode"))
 				{
-					MS_SetMode(eDropmode);
-					A_print("Aim secondary mode");
+					setExcavatorMode(eDropShotMode);
+                    A_takeinventory("EX_Select_DropMode",1);
+					A_Print("\ciDrop Charge \c-Mode Activated");
 				}
-				
 				if(findinventory("EX_Select_DrillMode"))
 				{
-					MS_SetMode(GrenadeMode);
-					A_print("Grenade secondary mode");
+					setExcavatorMode(eDrillChargeMode);
+                    A_takeinventory("EX_Select_DrillMode",1);
+					A_Print("\cdDrill Charge \c-Mode Activated");
 				}
-				
 				return resolvestate(null);
 			}
             TNT1 A 0 A_JumpIf(getExcavatorMode() == eDropShotMode, "SwitchToDrill");
         SwitchToDrop:
-            TNT1 A 0 A_Print("\ciDrop Charge \c-Mode Activated");
-            TNT1 A 0 setExcavatorMode(1);
             7DKF LMNOP 1;
             TNT1 A 0 A_PlaySound("excavator/switch");		
             7DKF PONML 1;
             Goto ReadyDropShotMode;
 
         SwitchToDrill:
-            TNT1 A 0 A_Takeinventory("GoWeaponSpecialAbility",1);
-            TNT1 A 0 A_Print("\cdDrill Charge \c-Mode Activated");
-            TNT1 A 0 setExcavatorMode(eDrillChargeMode);
             7DKF LMNOP 1;
             TNT1 A 0 A_PlaySound("excavator/switch");		
             7DKF PONML 1 ;

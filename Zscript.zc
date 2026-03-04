@@ -27,9 +27,9 @@ Version 4.13
 // Slot 5
 
 // Slot 6
-// #Include "Zscript/PB_Addons/Slot-6/Excavator/Excavator.zs"
-// #Include "Zscript/PB_Addons/Slot-6/Excavator/Excavator_wheel.zs"
-// #Include "Zscript/PB_Addons/Slot-6/Excavator/Excavator_Helpers.zs"
+#Include "Zscript/PB_Addons/Slot-6/Excavator/Excavator.zs"
+#Include "Zscript/PB_Addons/Slot-6/Excavator/Excavator_wheel.zs"
+#Include "Zscript/PB_Addons/Slot-6/Excavator/Excavator_Helpers.zs"
 
 // Slot 7
 
@@ -45,3 +45,6 @@ Version 4.13
 #include "Zscript/PB_Addons/Slot-9/DemonicExterminator/DemonicExtProj3.zs"
 #include "Zscript/PB_Addons/Slot-9/DemonicExterminator/DemonicExtStuff.zs"
 #include "Zscript/PB_Addons/Slot-9/DemonicExterminator/DemonicExt_Wheel.zs"
+
+// Others
+#include "Zscript/Spawners/PBX_Spawners.zs"
