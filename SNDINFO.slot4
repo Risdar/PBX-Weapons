@@ -22,13 +22,13 @@ weapons/largemagdrop4		dsaounc4
 $volume weapons/largemagdrop 0.5
 
 // Metal Sniper
-MS/Fire 			"Sounds/Weapons/MetalSniper/msFire.ogg"
-MS/Button 			"Sounds/Weapons/MetalSniper/msButton.ogg"
-MS/InsertMag 		"Sounds/Weapons/MetalSniper/msMagIn.ogg"
-MS/TakeMag			"Sounds/Weapons/MetalSniper/msMagOut.ogg"
-MS/BoltDown 		"Sounds/Weapons/MetalSniper/msBoltDown.ogg"
-MS/BoltUp 			"Sounds/Weapons/MetalSniper/msBoltUp.ogg"
-MS/Grenade 			"Sounds/Weapons/MetalSniper/msGrenFire.ogg"
-MS/GrenOpen 		"Sounds/Weapons/MetalSniper/msGrenOpen.ogg"
-MS/GrenClose 		"Sounds/Weapons/MetalSniper/msGrenClose.ogg"
-MS/Up 				"Sounds/Weapons/MetalSniper/msRaise.ogg"
+MS/Fire 			"Sounds/Weapons/Slot-4/MetalSniper/msFire.ogg"
+MS/Button 			"Sounds/Weapons/Slot-4/MetalSniper/msButton.ogg"
+MS/InsertMag 		"Sounds/Weapons/Slot-4/MetalSniper/msMagIn.ogg"
+MS/TakeMag			"Sounds/Weapons/Slot-4/MetalSniper/msMagOut.ogg"
+MS/BoltDown 		"Sounds/Weapons/Slot-4/MetalSniper/msBoltDown.ogg"
+MS/BoltUp 			"Sounds/Weapons/Slot-4/MetalSniper/msBoltUp.ogg"
+MS/Grenade 			"Sounds/Weapons/Slot-4/MetalSniper/msGrenFire.ogg"
+MS/GrenOpen 		"Sounds/Weapons/Slot-4/MetalSniper/msGrenOpen.ogg"
+MS/GrenClose 		"Sounds/Weapons/Slot-4/MetalSniper/msGrenClose.ogg"
+MS/Up 				"Sounds/Weapons/Slot-4/MetalSniper/msRaise.ogg"

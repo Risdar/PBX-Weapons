@@ -88,7 +88,7 @@ Class PB_MetalSniper : PB_WeaponBase
 		
 		Fire:
 			TNT1 A 0 A_jumpifinventory("zoomed",1,"Fire_ADS");
-			TNT1 A 0 PB_JumpIfNoAmmo("Reload",2);
+			TNT1 A 0 PB_JumpIfNoAmmo("Reload",1);
 			TNT1 A 0 A_AlertMonsters();
 			TNT1 A 0 A_overlay(muzzlelayer,"MuzzleFlash");
 			TNT1 A 0 A_startsound("MS/Fire",20,CHANF_OVERLAP);
@@ -161,7 +161,7 @@ Class PB_MetalSniper : PB_WeaponBase
 			loop;
 			
 		Fire_ADS:
-			TNT1 A 0 PB_jumpIfNoAmmo("ReloadFromADS",2);
+			TNT1 A 0 PB_jumpIfNoAmmo("ReloadFromADS",1);
 		ActualFireADS:
 			MSNS B 1 bright MetalSniperFireADS();
 		FireADSContinue:
@@ -271,6 +271,7 @@ Class PB_MetalSniper : PB_WeaponBase
             TNT1 A 0 {
                 A_startsound("MS/TakeMag",23);
                 PB_SetMagUnloaded(true);
+				PB_SetMagEmpty(true);
             }
             MST1 FGH 1;
             MST1 IJKL 1;
@@ -279,8 +280,13 @@ Class PB_MetalSniper : PB_WeaponBase
             MSNR ABCD 1;
             MSNR EFG 1;
             TNT1 A 0 A_startsound("MS/InsertMag",20);
-            MSNR HIJKL 1;
-            TNT1 A 0 PB_AmmoIntoMag("MetalSniperAmmo","PB_HighCalMag",10,2);
+			MSNR HIJKL 1;
+			TNT1 A 0 {
+				if(PB_GetChamberEmpty())
+					PB_AmmoIntoMag("MetalSniperAmmo","PB_HighCalMag",9,2);
+				else
+					PB_AmmoIntoMag("MetalSniperAmmo","PB_HighCalMag",10,2);
+			}
             TNT1 A 0 PB_SetMagUnloaded(false);
             TNT1 A 0 PB_SetMagEmpty(false);
             MSNR MNOP 1;

@@ -375,7 +375,7 @@ class BDPBattleRifle : PB_WeaponBase
 			{
                 PB_SetMagUnloaded(true);
                 PB_SetMagEmpty(true);
-                // PB_SetChamberEmpty(true);
+                PB_SetChamberEmpty(true);
                 If(getBRMag() > 0)
                     {
                         A_fireprojectile("RifleClipSpawn",5,false,0,-14,0);
@@ -390,7 +390,7 @@ class BDPBattleRifle : PB_WeaponBase
 				PB_AmmoIntoMag("BR_Ammo","PB_HighCalMag",BR_AmmoFull,1);
                 PB_SetMagUnloaded(false);
                 PB_SetMagEmpty(false);
-                // PB_SetChamberEmpty(false);
+                PB_SetChamberEmpty(false);
 			}
 			BR4R QRSTUVWX 1;
             TNT1 A 0 PB_SetReloading(false);
@@ -414,7 +414,7 @@ class BDPBattleRifle : PB_WeaponBase
 						A_fireprojectile("RifleClipSpawn",5,false,0,-14,0);
 						PB_SetMagUnloaded(true);
 						PB_SetMagEmpty(true);
-						// PB_SetChamberEmpty(false);
+						PB_SetChamberEmpty(true);
 					}
 			}
             BR4R STUVWX 1;
