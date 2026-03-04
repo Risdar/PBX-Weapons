@@ -1,0 +1,10 @@
+~~~~||=========== MetalSniper (Credits) ===========||~~~~
+
+Sprites:
+	Metalman.
+
+Animations / code:
+	Jaih1r0.
+
+Sounds:
+	Ravik.

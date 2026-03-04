@@ -1,0 +1,18 @@
+// Excavator
+excavator/firedigger EXCDIGR
+excavator/firedropshot EXCDROP
+excavator/detonate EXCBEEP
+excavator/switch EXCSWCH
+excavator/digging EXCERTH
+excavator/digloop EXCDGLP
+excavator/reload EXCRLOAD
+$random excavator/explode { XEXPL_1 XEXPL_2 XEXPL_3 XEXPL_4 XEXPL_5 XEXPL_6 XEXPL_7 XEXPL_8}
+XEXPL_1 XEXPL1
+XEXPL_2 XEXPL2
+XEXPL_3 XEXPL3
+XEXPL_4 XEXPL4
+XEXPL_5 XEXPL5
+XEXPL_6 XEXPL6
+XEXPL_7 XEXPL7
+XEXPL_8 XEXPL8
+$rolloff excavator/explode 1300 1800

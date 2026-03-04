@@ -1,0 +1,17 @@
+//1aker Decals. Originally From Guncaster and Russian Overkill.
+
+Decal UnmakerSuperBeamScorch
+{
+	Pic BLUFF3
+	Translucent 1
+	Shade "00 00 00"
+}
+
+Decal UnmakerBeamScorch
+{
+	Pic BLUFF2
+	Translucent 1
+	Shade "00 00 00"
+	X-Scale 0.1
+	Y-Scale 0.1
+}

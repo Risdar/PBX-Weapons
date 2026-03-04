@@ -1,0 +1,11 @@
+// CSSG 
+[enu default]
+CM_BUCKLD = "\cgBuckshot \c- Shells selected";
+CM_SLUGLD = "\cdSlugs \c- Shells selected";
+CM_DGBTLD = "\ciDragon Breath \c- Shells selected";
+CM_FLAKLD = "\chFlak \c-Shells Loaded";
+CM_FLCHLD = "\cjFlechette \c-Shells Loaded";
+CM_EXPLLD = "\cuExplosive \c-Shells Loaded";
+CM_WPLOAD = "\c[WPBronze]White Phosphorus\c- Shells Loaded";
+CM_DOOMLD = "\ctTriple Doom\c- Shells Loaded";
+CM_DNMKULD = "\c[DanmakuYellow]Danmaku \c-Shells Loaded";

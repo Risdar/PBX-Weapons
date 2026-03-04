@@ -1,0 +1,26 @@
+// Demon Ext
+//Demonic Exterminator Sounds//
+$random unmaker/fire      { unmaker/fire1 unmaker/fire2 unmaker/fire3 }
+unmaker/fire1 UNMKFIR1
+unmaker/fire2 UNMKFIR2
+unmaker/fire3 UNMKFIR3
+unmaker/hum       UNMKHUM
+unmaker/up        UNMKUP
+unmaker/pick      UNMKUB
+unmaker/switch	  UNFMSW
+unmaker/laser UNMKFIRE
+unmaker/thunder UMKRLT
+//unmaker/stormfire DMEXTSH
+unmaker/stormfire1 DMEXTSH
+RBLAST RBLAST
+RCHARGE RCHARGE
+DSREAFI1 DSREAFI1
+DSREAFI2 DSREAFI2
+DSREAFI3 DSREAFI3
+DSREAFI4 DSREAFI4
+weapons/shock dsshock
+UNMAKSEL UNMAKSEL
+weapons/ghomis					dsghomis
+weapons/ghohit					dsghohit
+weapons/solmis					dssolmis
+weapons/solexp					dssolexp

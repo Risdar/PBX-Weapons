@@ -1,0 +1,15 @@
+/*=============================================================================
+//
+//	Brutal Doom Platinum - Battle Rifle
+//
+//  Credits
+//  EmeraldCoast (Original Author)
+//	Tesefy (Sprites)
+//  BeefRice (Code)
+//
+//  Special Thanks
+//  Nemesis_Vampy
+//  Popguy12
+//  Jaih1ro
+//
+==============================================================================*/

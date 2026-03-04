@@ -1,0 +1,34 @@
+// Battle Rifle
+BR45FIRE BR45FIRE
+BR45FIR2 BR45FIR2
+BR45PING BR45PING
+BR45OPEN BR45OPEN
+BR45LOAD BR45LOAD
+BR45PICK BR45PICK
+BR45SWCH BR45SWCH
+
+$random BR45BOUNCE { BR45BON1 BR45BON2 BR45BON3 }
+BR45BON1 BR45BON1
+BR45BON2 BR45BON2
+BR45BON3 BR45BON3
+BR45BON4 BR45BON4
+
+$random weapons/largemagdrop  { weapons/largemagdrop1 weapons/largemagdrop2 weapons/largemagdrop3 weapons/largemagdrop4 }
+weapons/largemagdrop1		dsaounc1
+weapons/largemagdrop2		dsaounc2
+weapons/largemagdrop3		dsaounc3
+weapons/largemagdrop4		dsaounc4
+
+$volume weapons/largemagdrop 0.5
+
+// Metal Sniper
+MS/Fire 			"Sounds/Weapons/MetalSniper/msFire.ogg"
+MS/Button 			"Sounds/Weapons/MetalSniper/msButton.ogg"
+MS/InsertMag 		"Sounds/Weapons/MetalSniper/msMagIn.ogg"
+MS/TakeMag			"Sounds/Weapons/MetalSniper/msMagOut.ogg"
+MS/BoltDown 		"Sounds/Weapons/MetalSniper/msBoltDown.ogg"
+MS/BoltUp 			"Sounds/Weapons/MetalSniper/msBoltUp.ogg"
+MS/Grenade 			"Sounds/Weapons/MetalSniper/msGrenFire.ogg"
+MS/GrenOpen 		"Sounds/Weapons/MetalSniper/msGrenOpen.ogg"
+MS/GrenClose 		"Sounds/Weapons/MetalSniper/msGrenClose.ogg"
+MS/Up 				"Sounds/Weapons/MetalSniper/msRaise.ogg"

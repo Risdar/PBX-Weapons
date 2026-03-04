@@ -1,0 +1,20 @@
+-----------------------------
+Sprites : Midway, Amuscaria, Zrrion The Insect
+----------------------------------------
+Snappyaddy : Sounds
+Everything Else : Kinnerokhn
+Fixed Code : 517qwerty
+----------------------------------------
+Updated By 517qwerty For New PB 0.2.0 update: December 23 2024
+
+////////////////////////////////////////////////////////////////////////////////
+//original credits
+////////////////////////////////////////////////////////////////////////////////
+sprites : midway, amuscaria, Zrrion the Insect
+
+snappyaddy : sounds
+everything else : Kinnerokhn
+fixing code : ikdfa
+
+////////////////////////////////////////////////////////////////////////////////
+this code rewrite/sprite edit/animation: Jaih1r0
