@@ -146,7 +146,7 @@ class BDPBattleRifle : PB_WeaponBase
 				PB_LowAmmoSoundWarning("default");
 				pb_takeammo(invoker.ammotype2,1,0);
 				PB_SpawnCasing("PB_EmptyBrass",22,2,28,Frandom(-2, -1),Frandom(5,8),Frandom(3,4));
-				A_StartSound("BR45FIRE", CHAN_WEAPON, CHANF_OVERLAP, 1.0, pitch: 1.2);
+				A_StartSound("BR45FIRE", CHAN_WEAPON, 0, 1.0, pitch: 1.2);
 				invoker.burstcount++;
 				PB_IncrementHeat(4);
 
@@ -215,13 +215,11 @@ class BDPBattleRifle : PB_WeaponBase
 
         // READY STATES
         Ready:
+        Ready3:
 		WeaponReady:
-            TNT1 A 0 {
-                invoker.burstcount = 0;
-                PB_HandleCrosshair(42);
-            }
 			TNT1 A 0 A_jumpif(countinv("zoomed") > 0,"WeaponReadyADS");
 			BR45 B 1 {
+				PB_HandleCrosshair(42);
 				PB_CoolDownBarrel();
 				return A_DoPBWeaponAction(WRF_ALLOWRELOAD);
 			}

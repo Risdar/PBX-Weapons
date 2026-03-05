@@ -18,6 +18,7 @@ AddOptionMenu "AddonWeaponSpawns" after "CHNT2"
 AddOptionMenu "AddonWeaponSpawns" after "LAUT3"
 {
     FlagOption    "Excavator",    "pbx_rocketlauncher_filter",    "OffOn", 0
+    FlagOption    "Cyberdemon drop their Weapon",    "special_drop_filter",    "OffOn", 0
 }
 
 // SLOT 9

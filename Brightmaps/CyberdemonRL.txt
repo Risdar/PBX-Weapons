@@ -1,0 +1,17 @@
+//CyberdemonRL
+brightmap sprite CYBFA0 { map "Brightmaps/Weapons/Slot-6/CyberdemonRL/CYBFA0.png" }
+brightmap sprite CYBFB0 { map "Brightmaps/Weapons/Slot-6/CyberdemonRL/CYBFB0.png" }
+brightmap sprite CYBFC0 { map "Brightmaps/Weapons/Slot-6/CyberdemonRL/CYBFC0.png" }
+brightmap sprite CYBFD0 { map "Brightmaps/Weapons/Slot-6/CyberdemonRL/CYBFD0.png" }
+brightmap sprite CYBFE0 { map "Brightmaps/Weapons/Slot-6/CyberdemonRL/CYBFE0.png" }
+brightmap sprite CYBFF0 { map "Brightmaps/Weapons/Slot-6/CyberdemonRL/CYBFF0.png" }
+brightmap sprite CYBFG0 { map "Brightmaps/Weapons/Slot-6/CyberdemonRL/CYBFG0.png" }
+brightmap sprite CYBFH0 { map "Brightmaps/Weapons/Slot-6/CyberdemonRL/CYBFH0.png" }
+brightmap sprite CYBFI0 { map "Brightmaps/Weapons/Slot-6/CyberdemonRL/CYBFI0.png" }
+brightmap sprite CYBFJ0 { map "Brightmaps/Weapons/Slot-6/CyberdemonRL/CYBFJ0.png" }
+brightmap sprite CYBFK0 { map "Brightmaps/Weapons/Slot-6/CyberdemonRL/CYBFK0.png" }
+brightmap sprite CYBFL0 { map "Brightmaps/Weapons/Slot-6/CyberdemonRL/CYBFL0.png" }
+brightmap sprite CYBFM0 { map "Brightmaps/Weapons/Slot-6/CyberdemonRL/CYBFM0.png" }
+brightmap sprite CYBFN0 { map "Brightmaps/Weapons/Slot-6/CyberdemonRL/CYBFN0.png" }
+brightmap sprite CYBFO0 { map "Brightmaps/Weapons/Slot-6/CyberdemonRL/CYBFO0.png" }
+brightmap sprite CYBFP0 { map "Brightmaps/Weapons/Slot-6/CyberdemonRL/CYBFP0.png" }

@@ -8,18 +8,17 @@ Version 4.13
 
 // Slot 3
 // CSSG
-#Include "Zscript/PB_Addons/Slot-3/CSSG/CSSG.zs"
-#Include "Zscript/PB_Addons/Slot-3/CSSG/Casings.zs"
-#Include "Zscript/PB_Addons/Slot-3/CSSG/CSSGEvent.zs"
-#Include "Zscript/PB_Addons/Slot-3/CSSG/CSSG_Upgrades.zs"
-#Include "Zscript/PB_Addons/Slot-3/CSSG/CSSG_Wheel.zs"
+#include "Zscript/PB_Addons/Slot-3/CSSG/CSSG.zs"
+#include "Zscript/PB_Addons/Slot-3/CSSG/Casings.zs"
+#include "Zscript/PB_Addons/Slot-3/CSSG/CSSGEvent.zs"
+#include "Zscript/PB_Addons/Slot-3/CSSG/CSSG_Upgrades.zs"
+#include "Zscript/PB_Addons/Slot-3/CSSG/CSSG_Wheel.zs"
 
 // Slot 4
 // Battle Rifle
-#Include "Zscript/PB_Addons/Slot-4/BattleRifle/BattleRifle.zs"
-#Include "Zscript/PB_Addons/Slot-4/BattleRifle/BattleRifle_helpers.zs"
+#include "Zscript/PB_Addons/Slot-4/BattleRifle/BattleRifle.zs"
+#include "Zscript/PB_Addons/Slot-4/BattleRifle/BattleRifle_helpers.zs"
 // #Include "Zscript/PB_Addons/Slot-4/BattleRifle/math.zs"
-
 // Metal Sniper
 #include "Zscript/PB_Addons/Slot-4/MetalSniper/MetalSniper.zs"
 #include "Zscript/PB_Addons/Slot-4/MetalSniper/MetalSniper_Wheel.zs"
@@ -27,9 +26,13 @@ Version 4.13
 // Slot 5
 
 // Slot 6
-#Include "Zscript/PB_Addons/Slot-6/Excavator/Excavator.zs"
-#Include "Zscript/PB_Addons/Slot-6/Excavator/Excavator_wheel.zs"
-#Include "Zscript/PB_Addons/Slot-6/Excavator/Excavator_Helpers.zs"
+// Excavator
+#include "Zscript/PB_Addons/Slot-6/Excavator/Excavator.zs"
+#include "Zscript/PB_Addons/Slot-6/Excavator/Excavator_wheel.zs"
+#include "Zscript/PB_Addons/Slot-6/Excavator/Excavator_Helpers.zs"
+// Cyberdemon RL
+#include "Zscript/PB_Addons/Slot-6/CyberdemonRL/CyberdemonRL.zs"
+#include "Zscript/PB_Addons/Slot-6/CyberdemonRL/CyberRL_helpers.zs"
 
 // Slot 7
 

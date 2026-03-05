@@ -206,11 +206,13 @@ class PB_Excavator : PB_WeaponBase
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
 		Ready3:
         ReadyDrillChargaMode:
+			TNT1 A 0 PB_HandleCrosshair(78);
             TNT1 A 0 A_Jumpif(getExcavatorMode() == eDropShotMode, "ReadyDropShotMode");
 			5DKF A 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD);
 			Loop;
             
 		ReadyDropShotMode:
+			TNT1 A 0 PB_HandleCrosshair(79);
             TNT1 A 0 A_Jumpif(getExcavatorMode() == eDrillChargeMode, "ReadyDrillChargaMode");
 		    5DKF B 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD);
 			Loop;

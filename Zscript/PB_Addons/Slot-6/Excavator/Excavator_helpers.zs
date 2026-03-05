@@ -181,7 +181,7 @@ Class ExcavatorDrillBomb : Actor{
 	}
 	States{
 	Spawn:
-		TNT1 A 1 NODELAY A_StartSound("excavator/digloop", 5, CHANF_OVERLAP,1.0,ATTN_NONE);
+		TNT1 A 1 NODELAY A_StartSound("excavator/digloop", 5, CHANF_LOOPING,1.0,0.5);
 	Travel:
 		TNT1 A 3 ;
 		TNT1 A 0 {
@@ -223,7 +223,9 @@ Class ExcavatorDrill : PB_ProjectileAlt{
 		Radius 6;
 		Height 6;
 		Gravity 1.25;
-		Damage 50;
+		PB_Projectile.BaseDamage 250;
+		PB_Projectile.RipperCount 0;
+		PB_Projectile.PenetrationCount 0;
 		DamageType "ExplosiveImpact";
 		Decal "Scorch";
 	}
@@ -232,9 +234,10 @@ Class ExcavatorDrill : PB_ProjectileAlt{
 		TNT1 A 0 NODELAY A_CheckFloor("Dig");
 		5DKP A 2 BRIGHT A_SpawnItem("RocketSmokeTrail52");
 		TNT1 A 0 A_SpawnItem("RocketFlare",-2,0);
-		TNT1 A 0 A_CheckFloor("Dig");
-		5DKP A 2 BRIGHT A_SpawnItem("RocketSmokeTrail52");
-		TNT1 A 0 A_CheckFloor("Dig");
+		TNT1 A 0 ThrustThingZ(0, 20, 1, 1);
+		// TNT1 A 0 A_CheckFloor("Dig");
+		// 5DKP A 2 BRIGHT A_SpawnItem("RocketSmokeTrail52");
+		// TNT1 A 0 A_CheckFloor("Dig");
 		Loop;
 	Dig:
 	Bounce.Floor:
@@ -288,7 +291,9 @@ Class ExcavatorDropShot : PB_ProjectileAlt{
 		Speed 35;
 		Radius 6;
 		Height 6;
-		Damage 50;
+		PB_Projectile.BaseDamage 50;
+		PB_Projectile.RipperCount 0;
+		PB_Projectile.PenetrationCount 0;
 		Scale 1.15;
 		DamageType "ExplosiveImpact";
 		Decal "Scorch";
@@ -299,7 +304,7 @@ Class ExcavatorDropShot : PB_ProjectileAlt{
 	}
 	States{
 	Spawn:
-		TNT1 A 0 A_StartSound("excavator/digloop", 5, CHANF_OVERLAP,1.0,ATTN_NONE);
+		TNT1 A 1 NODELAY A_StartSound("excavator/digloop", 5, CHANF_LOOPING,1.0,0.5);
 		//TNT1 A 0 Thing_ChangeTid(0,1744);
 	Travel:
 		5DKP A 2 BRIGHT A_SpawnItem("RocketSmokeTrail52");

@@ -9,3 +9,4 @@ server int pbx_bfg_filter = 0;
 
 server int pbx_backpack_filter = 0;
 
+server int special_drop_filter = 0;
