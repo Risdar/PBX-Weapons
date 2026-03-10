@@ -5,21 +5,22 @@ Class PB_CSSGWeaponWheel : wheelinfocontainer
 {
 	override int GetSPCount(actor requester)
 	{
-		int sp = 4;	//total amount of specials available for this weapon
+		// int sp = 4;	//total amount of specials available for this weapon
 		
-		//basically, add one if the requester has the respective item
-		if(requester.FindInventory("DragonBreathUpgrade"))
-			sp++;
-		if(requester.FindInventory("ExplosiveUpgrade"))
-			sp++;
-		if(requester.FindInventory("WhitePhosphorusUpgrade"))
-			sp++;
-		if(requester.FindInventory("TripleDoomUpgrade"))
-			sp++;
-		if(requester.FindInventory("DanmakuUpgrade")) 
-			sp++;
+		// //basically, add one if the requester has the respective item
+		// if(requester.FindInventory("DragonBreathUpgrade"))
+		// 	sp++;
+		// if(requester.FindInventory("ExplosiveUpgrade"))
+		// 	sp++;
+		// if(requester.FindInventory("WhitePhosphorusUpgrade"))
+		// 	sp++;
+		// if(requester.FindInventory("TripleDoomUpgrade"))
+		// 	sp++;
+		// if(requester.FindInventory("DanmakuUpgrade")) 
+		// 	sp++;
 		
-		return sp;
+		// return sp;
+		return 9;
 	}
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
@@ -74,6 +75,16 @@ Class PB_CSSGWeaponWheel : wheelinfocontainer
 			CSSG_DragonBreath.scaley = iconscale.y;
 			
 			spw.Push(CSSG_DragonBreath);
+		} else 
+		{
+			PB_SpecialWheel_Mode CSSG_DragonBreath_No = new ("PB_SpecialWheel_Mode");
+			CSSG_DragonBreath_No.img = "graphics/pywheel/SG_NO.png";
+			CSSG_DragonBreath_No.Alias = "$PBX_AmmoNotAvailable";
+			CSSG_DragonBreath_No.tokentogive = "SelectCSG_No";
+			CSSG_DragonBreath_No.scalex = iconscale.x;
+			CSSG_DragonBreath_No.scaley = iconscale.y;
+			
+			spw.Push(CSSG_DragonBreath_No);
 		}
 
 		if(requester.FindInventory("ExplosiveUpgrade")) 
@@ -85,7 +96,18 @@ Class PB_CSSGWeaponWheel : wheelinfocontainer
 			CSSG_Explosive.scalex = iconscale.x;
 			CSSG_Explosive.scaley = iconscale.y;
 			spw.Push(CSSG_Explosive);
+		} else 
+		{
+			PB_SpecialWheel_Mode CSSG_Explosive_No = new ("PB_SpecialWheel_Mode");
+			CSSG_Explosive_No.img = "graphics/pywheel/SG_NO.png";
+			CSSG_Explosive_No.Alias = "$PBX_AmmoNotAvailable";
+			CSSG_Explosive_No.tokentogive = "SelectCSG_No";
+			CSSG_Explosive_No.scalex = iconscale.x;
+			CSSG_Explosive_No.scaley = iconscale.y;
+			
+			spw.Push(CSSG_Explosive_No);
 		}
+		
 		
 		if(requester.FindInventory("WhitePhosphorusUpgrade")) 
 		{
@@ -96,6 +118,16 @@ Class PB_CSSGWeaponWheel : wheelinfocontainer
 			CSSG_WPhosphorus.scalex = iconscale.x;
 			CSSG_WPhosphorus.scaley = iconscale.y;
 			spw.Push(CSSG_WPhosphorus);
+		} else 
+		{
+			PB_SpecialWheel_Mode CSSG_WPhosphorus_No = new ("PB_SpecialWheel_Mode");
+			CSSG_WPhosphorus_No.img = "graphics/pywheel/SG_NO.png";
+			CSSG_WPhosphorus_No.Alias = "$PBX_AmmoNotAvailable";
+			CSSG_WPhosphorus_No.tokentogive = "SelectCSG_No";
+			CSSG_WPhosphorus_No.scalex = iconscale.x;
+			CSSG_WPhosphorus_No.scaley = iconscale.y;
+			
+			spw.Push(CSSG_WPhosphorus_No);
 		}
 		
 		if(requester.FindInventory("TripleDoomUpgrade")) 
@@ -107,6 +139,16 @@ Class PB_CSSGWeaponWheel : wheelinfocontainer
 			CSSG_Doom.scalex = iconscale.x;
 			CSSG_Doom.scaley = iconscale.y;
 			spw.Push(CSSG_Doom);
+		} else 
+		{
+			PB_SpecialWheel_Mode CSSG_Doom_No = new ("PB_SpecialWheel_Mode");
+			CSSG_Doom_No.img = "graphics/pywheel/SG_NO.png";
+			CSSG_Doom_No.Alias = "$PBX_AmmoNotAvailable";
+			CSSG_Doom_No.tokentogive = "SelectCSG_No";
+			CSSG_Doom_No.scalex = iconscale.x;
+			CSSG_Doom_No.scaley = iconscale.y;
+			
+			spw.Push(CSSG_Doom_No);
 		}
 		
 		if(requester.FindInventory("DanmakuUpgrade")) 
@@ -118,6 +160,16 @@ Class PB_CSSGWeaponWheel : wheelinfocontainer
 			CSSG_Danmaku.scalex = iconscale.x;
 			CSSG_Danmaku.scaley = iconscale.y;
 			spw.Push(CSSG_Danmaku);
+		} else 
+		{
+			PB_SpecialWheel_Mode CSSG_Danmaku_No = new ("PB_SpecialWheel_Mode");
+			CSSG_Danmaku_No.img = "graphics/pywheel/SG_NO.png";
+			CSSG_Danmaku_No.Alias = "$PBX_AmmoNotAvailable";
+			CSSG_Danmaku_No.tokentogive = "SelectCSG_No";
+			CSSG_Danmaku_No.scalex = iconscale.x;
+			CSSG_Danmaku_No.scaley = iconscale.y;
+			
+			spw.Push(CSSG_Danmaku_No);
 		}
 		
 	}

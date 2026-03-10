@@ -121,6 +121,13 @@ Class DanmakuShellsUpgrade : inventory
 //
 //	wheel tokens
 //
+Class SelectCSG_No : Inventory
+{
+	default
+	{
+		inventory.maxamount 1;
+	}
+}
 
 Class SelectCSG_Buckshot : Inventory
 {

@@ -427,7 +427,7 @@ class BDPBattleRifle : PB_WeaponBase
 				A_Takeinventory("Zoomed",1);
 				A_takeinventory("GoWeaponSpecialAbility",1);
 			}
-            TNT1 A 0 A_print("No Special Available");
+            TNT1 A 0 A_print("$PBX_NoSpecial");
 			goto WeaponReady;
 		
         // FLASH STATES

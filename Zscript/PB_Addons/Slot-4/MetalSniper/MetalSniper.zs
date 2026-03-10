@@ -134,7 +134,7 @@ Class PB_MetalSniper : PB_WeaponBase
 			TNT1 A 0;
 			MSNS A 1 {
 				A_SetRoll(0);
-				PB_HandleCrosshair(5);
+				PB_HandleCrosshair(-1);
 				PB_CoolDownBarrel(-5,0,7,0,1);
 				PB_CoolDownBarrel(5,0,7,0,-1);
 				A_SetInventory("PB_LockScreenTilt",0);
@@ -359,7 +359,7 @@ Class PB_MetalSniper : PB_WeaponBase
 				if((findinventory("MS_Select_AimMode") && MS_getmode() == 0) || 
 				(findinventory("MS_Select_GrenMode") && MS_getmode() == 1))
 				{
-					A_print("Mode already selected");
+					A_print("$PBX_AlreadySelected");
 					cleanmodetokens();
 					return resolvestate("ready3");
 				}
@@ -367,13 +367,13 @@ Class PB_MetalSniper : PB_WeaponBase
 				if(findinventory("MS_Select_AimMode"))
 				{
 					MS_SetMode();
-					A_print("Aim secondary mode");
+					A_print("$PBX_MetalSniper_AimMode");
 				}
 				
 				if(findinventory("MS_Select_GrenMode"))
 				{
 					MS_SetMode(GrenadeMode);
-					A_print("Grenade secondary mode");
+					A_print("$PBX_MetalSniper_GrenMode");
 				}
 				
 				return resolvestate(null);

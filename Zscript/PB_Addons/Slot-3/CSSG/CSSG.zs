@@ -115,6 +115,7 @@ Class PB_CSSG : PB_WeaponBase
 			
 		Ready:
 		Ready3:
+			TNT1 A 0 CM_HandleCrosshair();
 			C0ID A 2 A_DoPBWeaponAction();
 			loop;
 		
@@ -392,8 +393,8 @@ Class PB_CSSG : PB_WeaponBase
 	};
 	
 	static const string CSSG_ConfirmShell[] = {
-		"$CM_BUCKLD","$CM_SLUGLD","$CM_FLCHLD","$CM_FLAKLD","$CM_DGBTLD","$CM_EXPLLD",
-		"$CM_WPLOAD","$CM_DOOMLD","$CM_DNMKULD"
+		"$PBX_CM_BUCKLD","$PBX_CM_SLUGLD","$PBX_CM_FLCHLD","$PBX_CM_FLAKLD","$PBX_CM_DGBTLD","$PBX_CM_EXPLLD",
+		"$PBX_CM_WPLOAD","$PBX_CM_DOOMLD","$PBX_CM_DNMKULD"
 	};
 	
 	//for easier sprites manipulation
@@ -520,15 +521,15 @@ Class PB_CSSG : PB_WeaponBase
 		int wich = invoker.shellsmode + 1;
 		switch(wich)
 		{
-			case Shell_Buck: A_Print("$CM_BUCKLD"); break;
-			case Shell_Slug: A_Print("$CM_SLUGLD"); break;
-			case Shell_Flech: A_Print("$CM_FLCHLD"); break;
-			case Shell_Flak: A_Print("$CM_FLAKLD"); break;
-			case Shell_Drgn: A_Print("$CM_DGBTLD"); break;
-			case Shell_EXPL: A_Print("$CM_EXPLLD"); break;
-			case Shell_WPSP: A_Print("$CM_WPLOAD"); break;
-			case Shell_Doom: A_Print("$CM_DOOMLD"); break;
-			case Shell_Damn: A_Print("$CM_DNMKULD"); break;
+			case Shell_Buck: A_Print("$PBX_CM_BUCKLD"); break;
+			case Shell_Slug: A_Print("$PBX_CM_SLUGLD"); break;
+			case Shell_Flech: A_Print("$PBX_CM_FLCHLD"); break;
+			case Shell_Flak: A_Print("$PBX_CM_FLAKLD"); break;
+			case Shell_Drgn: A_Print("$PBX_CM_DGBTLD"); break;
+			case Shell_EXPL: A_Print("$PBX_CM_EXPLLD"); break;
+			case Shell_WPSP: A_Print("$PBX_CM_WPLOAD"); break;
+			case Shell_Doom: A_Print("$PBX_CM_DOOMLD"); break;
+			case Shell_Damn: A_Print("$PBX_CM_DNMKULD"); break;
 		}
 	}
 	
@@ -663,6 +664,42 @@ Class PB_CSSG : PB_WeaponBase
 			A_FireProjectile("ShotgunWad",random(-2,2),0,-3,-4,FPF_NOAUTOAIM,random(-2,2));	
 	}
 	
+	Action Void CM_HandleCrosshair()
+	{
+		int mode = invoker.shellsmode + 1;
+		switch(mode)
+		{
+			case Shell_Buck: 
+				PB_HandleCrosshair(69);
+				break;
+			case Shell_Slug:
+				PB_HandleCrosshair(69);
+				break;
+			case Shell_Flech: 
+				PB_HandleCrosshair(70);
+				break;
+			case Shell_Flak: 
+				PB_HandleCrosshair(72);
+				break;
+			case Shell_Drgn: 
+				PB_HandleCrosshair(69);
+				break; 
+			case Shell_EXPL:
+				PB_HandleCrosshair(73);
+				break; 
+			case Shell_WPSP: 
+				PB_HandleCrosshair(74);
+				break;
+			case Shell_Doom:
+				PB_HandleCrosshair(11);
+				break;
+			case Shell_Damn:	
+				PB_HandleCrosshair(45);
+				break;
+		}
+		
+	}
+
 	Action Void FireHalfCSSGRight()
 	{
 		
@@ -832,6 +869,13 @@ Class PB_CSSG : PB_WeaponBase
 		int mode = invoker.shellsmode + 1;
 		int actmode = invoker.shellsmode;
 		
+		if(countinv("SelectCSG_No") > 0)
+		{
+			A_TakeInventory("SelectCSG_No",1);
+			A_Print("$PBX_AmmoNotAvailable");
+			return resolvestate("CancelWheel");
+		}
+
 		if(countinv(PB_CSSG.CSSG_ShellsToken1[actmode]) > 0)
 		{
 			A_Print("Ammo type already selected: "..PB_CSSG.CSSG_ShellsType[actmode]);
@@ -918,7 +962,7 @@ class ExplosiveProjectile : PB_Projectile
 		Scale 0.1;
 		Decal "Scorch";
 		SeeSound "weapons/RLL";
-		Obituary "$OB_MPROCKET";
+		Obituary "$PBX_OB_MPROCKET";
 		+nogravity;
 		damage 12;
 		damagetype "ExplosiveImpact";

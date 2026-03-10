@@ -32,14 +32,14 @@ extend class PB_DemonExt{
 		(findinventory("UMDE_Select_IncinerationMode") && invoker.ExterminatorMode == IncinerationMode) || 
 		(findinventory("UMDE_Select_LightningMode") && invoker.ExterminatorMode == LightningMode)
 		){
-			A_print("Mode already selected");
+			A_print("$PBX_AlreadySelected");
 			cleanmodetokens();
 		}
 		
 		if(findinventory("UMDE_Select_LaserMode"))
 		{
 			DEUM_SetMode(LaserMode);
-			A_print("Laser Mode");
+			A_print("$PBX_DemonExt_Laser");
 			A_StartSound("unmaker/switch",CHAN_WEAPON);
 			cleanmodetokens();
 			A_Overlay(11,"WeaponSpecialLayer");
@@ -48,7 +48,7 @@ extend class PB_DemonExt{
 		if(findinventory("UMDE_Select_IncinerationMode"))
 		{
 			DEUM_SetMode(IncinerationMode);
-			A_print("Dark Incineration Mode");
+			A_print("$PBX_DemonExt_Incin");
 			A_StartSound("unmaker/switch",CHAN_WEAPON);
 			cleanmodetokens();
 			A_Overlay(11,"WeaponSpecialLayer");
@@ -57,7 +57,7 @@ extend class PB_DemonExt{
 		if(findinventory("UMDE_Select_LightningMode"))
 		{
 			DEUM_SetMode(LightningMode);
-			A_print("Soul Lightning Mode");
+			A_print("$PBX_DemonExt_Lightning");
 			A_StartSound("unmaker/switch",CHAN_WEAPON);
 			cleanmodetokens();
 			A_Overlay(11,"WeaponSpecialLayer");

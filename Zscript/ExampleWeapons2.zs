@@ -59,48 +59,8 @@ class PB_Excavator : PB_WeaponBase
 	}
 	
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
-    int excavatorMode;
-    enum excMode
-    {
-        eDrillChargeMode = 0,
-        eDropShotMode = 1
-    }
 
 //////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
-
-    action int getExcavatorMode()
-	{
-		return invoker.excavatorMode;
-	}
-	
-	action void setExcavatorMode(int mode = eDrillChargeMode)
-	{
-		invoker.excavatorMode = mode;
-	}
-
-    action void cleanmodetokens()
-	{
-		A_Takeinventory("EX_Select_DrillMode",1);
-		A_takeinventory("EX_Select_DropMode",1);
-	}
-	
-    action void fireExcavator()
-	{
-		string msl = "DrillChargeMode";
-        string sound = "excavator/firedropshot";
-					
-		switch(getExcavatorMode())
-		{
-			case eDrillChargeMode:   
-                A_StartSound("excavator/firedigger", 18);
-                PB_FireBullets("ExcavatorDrill", 1, 0, 0, 0, 3);
-                break;
-			case eDropShotMode: 	    
-                A_StartSound("excavator/firedropshot", 0);
-                PB_FireBullets("ExcavatorDropShot", 1, 0, 0, 0, 0);
-                break;
-		}
-	}
 
 	action void FireWeapon(int weaponSide, int ticCount)
 	{
@@ -152,24 +112,6 @@ class PB_Excavator : PB_WeaponBase
 		super.attachtoowner(other);
 	}
     
-	Override void DoEffect(){
-		if (!owner || !owner.player)
-        return;
-
-		Weapon rw = owner.player.ReadyWeapon;
-		if (!rw)
-        return;
-		
-		if( self.GetClass() is owner.player.readyweapon.GetClass() ){
-			if( (owner.player.cmd.buttons & BT_ALTATTACK) && !owner.FindInventory("GrenadeDetonator") ){
-				owner.A_SetInventory("GrenadeDetonator",1);owner.A_PlaySound("excavator/detonate");
-			}
-			if( !(owner.player.cmd.buttons & BT_ALTATTACK) && owner.FindInventory("GrenadeDetonator") ){
-				owner.A_SetInventory("GrenadeDetonator",0);
-			}
-		}
-	}
-
 	override void postbeginplay()
 	{
 		excavatorMode = eDrillChargeMode;
@@ -191,13 +133,12 @@ class PB_Excavator : PB_WeaponBase
 		    5DKF EFGHI 1;
 			TNT1 AAA 0 A_lower();
 			Wait;
-		// NO RESPECT ANIMATION
-		// WeaponRespect:
-		// 	TNT1 A 1 A_DoPBWeaponAction(); dont forget to add A_DoPBWeaponAction() so you can cancel this animation in game
-		// 	goto WeaponReady;
+		WeaponRespect:
+			TNT1 A 1 A_DoPBWeaponAction(); dont forget to add A_DoPBWeaponAction() so you can cancel this animation in game
+			goto WeaponReady;
 		Select:
 			TNT1 A 0 PB_WeaponRaise("RLANDRAW");
-			// TNT1 A 0 PB_RespectIfNeeded();
+			TNT1 A 0 PB_RespectIfNeeded();
 		SelectContinue:
 			TNT1 A 0;
 		SelectAnimation:
@@ -231,24 +172,6 @@ class PB_Excavator : PB_WeaponBase
             5DKF DDDD 1 A_WeaponReady(WRF_NOPRIMARY);
             5DKF D 0 A_ReFire;
 			Goto ReadyDrillChargaMode;
-
-            // I DONT THINK THIS IS EVEN USED
-            //AltFire:
-            //TNT1 A 0 A_JumpIfInventory("DropShotMode", 1, "DetonateDropShot");
-            DETO B 0 A_PlaySound("excavator/detonate");
-            TNT1 A 0 A_SetInventory("GrenadeDetonator",1);
-            5DKF C 1 ;
-            /*
-            //TNT1 A 0 Thing_Projectile(1743,205,0,0,0);
-            TNT1 A 0 Thing_Projectile(1743,"DrillBombExplode",0,0,0);
-            //MGLG B 0 Thing_Projectile(1744,208,0,0,0);
-            MGLG B 0 Thing_Projectile(1744,"DropShotExplode",0,0,0);
-            TNT1 A 0 Thing_ReMove(1743);
-            TNT1 A 0 Thing_ReMove(1744);
-            */
-            TNT1 A 0 A_SetInventory("GrenadeDetonator",0);
-            5DKF C 3;
-            Goto Ready3;
 		
 //////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
 		Reload:
@@ -329,79 +252,27 @@ class PB_Excavator : PB_WeaponBase
 		
 //////////////////////////// WEAPON SPECIAL ////////////////////////////////////////////////////////////////////////////////////
 		Weaponspecial:
-           TNT1 A 0 {
-				A_Takeinventory("GoWeaponSpecialAbility",1);
-				A_Takeinventory("Zoomed",1);
-				A_Takeinventory("ADSmode",1);
-				A_ZoomFactor(1.0);
-			}
-            TNT1 A 0 {
-				if((findinventory("EX_Select_DropMode") && getExcavatorMode() == eDropShotMode) || 
-				(findinventory("EX_Select_DrillMode") && getExcavatorMode() == eDrillChargeMode))
-				{
-					A_print("$PBX_AlreadySelected");
-					cleanmodetokens();
-					return resolvestate("ready3");
-				}
-				
-				if(findinventory("EX_Select_DropMode"))
-				{
-					setExcavatorMode(eDropShotMode);
-                    A_takeinventory("EX_Select_DropMode",1);
-					A_Print("$PBX_Excavator_DropMode");
-				}
-				if(findinventory("EX_Select_DrillMode"))
-				{
-					setExcavatorMode(eDrillChargeMode);
-                    A_takeinventory("EX_Select_DrillMode",1);
-					A_Print("$PBX_Excavator_DrillMode");
-				}
-				return resolvestate(null);
-			}
-            TNT1 A 0 A_JumpIf(getExcavatorMode() == eDropShotMode, "SwitchToDrill");
-        SwitchToDrop:
-            7DKF LMNOP 1;
-            TNT1 A 0 A_PlaySound("excavator/switch");		
-            7DKF PONML 1;
-            Goto ReadyDropShotMode;
-
-        SwitchToDrill:
-            7DKF LMNOP 1;
-            TNT1 A 0 A_PlaySound("excavator/switch");		
-            7DKF PONML 1 ;
-            Goto ReadyDrillChargaMode;
+           TNT1 A 0 A_Takeinventory("GoWeaponSpecialAbility",1);
 		
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////
 		FlashPunching:
-            7DKF L 1;
-            7DKF MNOP 1;
-            7DKF P 4;
-            7DKF PONML 1;
-			goto ReadyDrillChargaMode;
+            TNT1 AAAAAAAAAAAAAA 0; //14 frames
+			goto Ready3;
 
         FlashKicking:
-			5DKF E 1;
-            5DKF FGHI 1 ;
-            TNT1 A 4;
-            5DKF IHGFE 1; //15 frames
-			goto ReadyDrillChargaMode;
+			TNT1 AAAAAAAAAAAAAAA 0 //15 frames
+			goto Ready3;
 			
 		FlashAirKicking:
-            5DKF E 1;
-            5DKF FGHI 1;
-            TNT1 A 8;
-            5DKF IHGFE 1; //16 frames
-			goto ReadyDrillChargaMode;
+            TNT1 AAAAAAAAAAAAAAAA 0 //16 frames
+			goto Ready3;
 			
 		FlashSlideKicking:
-            5DKF E 1;
-            5DKF EFGHI 1;
-            TNT1 A 16; //27 frames
-			goto ready3;
+            TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 //27 frames
+			goto Ready3;
 			
 		FlashSlideKickingStop:
-			5DKF I 1;
-		    5DKF IIHGFE 1; //7 frames 
-			goto ReadyDrillChargaMode;
+			TNT1 AAAAAAA 0 //7 frames 
+			goto Ready3;
 	}
 }
