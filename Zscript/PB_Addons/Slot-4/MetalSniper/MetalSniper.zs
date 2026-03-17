@@ -510,16 +510,16 @@ Class PB_MetalSniper : PB_WeaponBase
 		super.postbeginplay();
 	}
 	
-	override void attachtoowner(actor other)
-	{
-		if(other && other.player)
-		{
-			if(other.countinv(ammotype2) < 1 && (countinv(respectInventoryItem) < 1))
-				other.A_giveinventory(ammotype2,20);
+	// override void attachtoowner(actor other)
+	// {
+	// 	if(other && other.player)
+	// 	{
+	// 		if(other.countinv(ammotype2) < 1 && (countinv(respectInventoryItem) < 1))
+	// 			other.A_giveinventory(ammotype2,20);
 			
-		}
-		super.attachtoowner(other);
-	}
+	// 	}
+	// 	super.attachtoowner(other);
+	// }
 	
 }
 

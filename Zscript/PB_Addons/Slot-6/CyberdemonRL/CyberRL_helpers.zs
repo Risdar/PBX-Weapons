@@ -1,24 +1,25 @@
 
-class CyberBallsPlayer : PB_ProjectileAlt
+class CyberBallsPlayer : actor
 {
     Default
     {
+        Projectile;
         Radius 10;
         Height 8;
         Speed 90;
-        PB_Projectile.BaseDamage 250;
-		PB_Projectile.RipperCount 0;
-		PB_Projectile.PenetrationCount 0;
-        DamageType "Extreme";
+        Damage 180;
+        DamageType "Explosive";
         Gravity 0.00;
         Decal "Scorch";
         RenderStyle "Add";
-        // +PROJECTILE;
-        -NOGRAVITY;
-        +EXTREMEDEATH;
-        +THRUGHOST;
-        -THRUSPECIES;
-        Species "None";
+        // +MISSILE;
+        -NOGRAVITY
+        +EXTREMEDEATH
+        +BLOODSPLATTER 
+        +THRUSPECIES
+        +MTHRUSPECIES
+        +RANDOMIZE
+        Species "Marines";
         Scale 1.7;
         SeeSound "DSCANFIR";
         DeathSound "Explosion";

@@ -1,3 +1,13 @@
+Class ExcavatorRounds : PB_Ammo{
+	Default{
+		inventory.maxamount excavatorFullAmmo;
+		ammo.backpackamount 0;
+		ammo.backpackmaxamount excavatorFullAmmo;
+		+INVENTORY.IGNORESKILL
+		Inventory.Icon "5DUNA0";
+	}
+}
+
 Class DiggerTrail : Actor{
 	Default{
 		Scale 1.1;

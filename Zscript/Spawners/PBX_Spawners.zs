@@ -26,10 +26,12 @@ class PBXSlot3_Injector : PBInjector
 	override void Init(PB_EventHandler handler)
 	{
 		// CSSG
-		if(pbx_shotgun_filter & DisablePBX_CSSG) return;
-		handler.InjectSpawn('PB_SSGSpawnerT2', 'PB_CSSG', 255, 1);
-		handler.InjectSpawn('PB_SSGSpawnerT3', 'PB_CSSG', 255, 1);
-		handler.InjectSpawn('PB_SSGSpawnerT4', 'PB_CSSG', 255, 1);
+		if(!(pbx_shotgun_filter & DisablePBX_CSSG))
+		{
+			handler.InjectSpawn('PB_SSGSpawnerT2', 'PB_CSSG', 255, 1);
+			handler.InjectSpawn('PB_SSGSpawnerT3', 'PB_CSSG', 255, 1);
+			handler.InjectSpawn('PB_SSGSpawnerT4', 'PB_CSSG', 255, 1);
+		}
 	}
 }
 
@@ -80,8 +82,10 @@ class PBXSlot9_Injector : PBInjector
     override void Init(PB_EventHandler handler)
     {
 		// Demon Ext
-		if(pbx_bfg_filter & DisablePBX_DemonExt) return;
-        handler.InjectSpawn("PB_BFGSpawnerT4","PB_DemonExt",255,1);
+		if(!(pbx_bfg_filter & DisablePBX_DemonExt))
+		{
+		   handler.InjectSpawn("PB_BFGSpawnerT4","PB_DemonExt",255,1);
+		}
     }
 }
 

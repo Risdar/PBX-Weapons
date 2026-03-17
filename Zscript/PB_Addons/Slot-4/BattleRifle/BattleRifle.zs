@@ -23,7 +23,6 @@ class BDPBattleRifle : PB_WeaponBase
         weapon.ammotype1 "PB_HighCalMag"; // Reserve
 		weapon.ammogive1 30;
 		weapon.ammotype2 "BR_Ammo"; // Primary
-		weapon.ammogive2 15;
 		
         // Flags
 		+WEAPON.NOALERT;
@@ -473,16 +472,16 @@ class BDPBattleRifle : PB_WeaponBase
 		super.postbeginplay();
 	}
 	
-	override void attachtoowner(actor other)
-	{
-		if(other && other.player)
-		{
-			if(other.countinv(ammotype2) < 1 && (countinv(respectInventoryItem) < 1))
-				other.A_giveinventory(ammotype2,30);
+	// override void attachtoowner(actor other)
+	// {
+	// 	if(other && other.player)
+	// 	{
+	// 		if(other.countinv(ammotype2) < 1 && (countinv(respectInventoryItem) < 1))
+	// 			other.A_giveinventory(ammotype2,30);
 			
-		}
-		super.attachtoowner(other);
-	}
+	// 	}
+	// 	super.attachtoowner(other);
+	// }
 }
 
 class BattleRifleRespect : inventory

@@ -1,6 +1,6 @@
 Gameinfo
 {
 	addeventhandlers = "CSSGEvent",
-	"PBX_WeaponSpawner",
+	"PBX_WeaponSpawner", "PBX_Handler",
 	"ExterminatorStuff"
 }

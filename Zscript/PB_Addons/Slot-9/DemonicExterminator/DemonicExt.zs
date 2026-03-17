@@ -135,7 +135,7 @@ Class PB_DemonExt : PB_WeaponBase
 			TNT1 A 0 A_startsound("unmaker/fire",21);
 			TNT1 A 0 A_startsound("unmaker/pick",23);
 			UNMF A 1 bright A_FireProjectile("UNMK_AltPj",0,0);
-			TNT1 A 0 A_TakeInventory(invoker.ammotype1,invoker.secammouse);
+			TNT1 A 0 A_TakeInventory(invoker.ammotype1,invoker.secammouse,TIF_NOTAKEINFINITE);
 			TNT1 A 0 PB_FireOffset();
 			TNT1 A 0 PB_WeaponRecoil(-4.25,frandom(-1.7,1.7));
 			UNMF BC 1 bright;
@@ -153,7 +153,7 @@ Class PB_DemonExt : PB_WeaponBase
 			TNT1 A 0 A_jumpif(countinv(invoker.ammotype1) < invoker.primammouse, "FireNoAmmo");
 			TNT1 A 0 A_overlay(-64,"MuzzleFlash2");
 			TNT1 A 0 A_startsound("unmaker/laser",21);
-			TNT1 A 0 A_TakeInventory(invoker.ammotype1,invoker.primammouse);
+			TNT1 A 0 A_TakeInventory(invoker.ammotype1,invoker.primammouse,TIF_NOTAKEINFINITE);
 			UNMF A 1 bright UNM_FireLasers();
 			TNT1 A 0 PB_FireOffset();
 			TNT1 A 0 PB_WeaponRecoil(-0.32,frandom(-0.25,0.25));
@@ -238,7 +238,7 @@ Class PB_DemonExt : PB_WeaponBase
 				A_Overlay(-5,"FireRecoilScale");
 				A_FireProjectile("ReaperBall",0,0);//UNMK_StormShot1
 			}
-			TNT1 A 0 A_TakeInventory(invoker.ammotype2,invoker.primammo2use3);
+			TNT1 A 0 A_TakeInventory(invoker.ammotype2,invoker.primammo2use3,TIF_NOTAKEINFINITE);
 			TNT1 A 0 PB_FireOffset();
 			TNT1 A 0 PB_WeaponRecoil(-4.25,frandom(-1.7,1.7));
 			UNMI JI 1 bright A_weaponoffset(0,36);
@@ -250,7 +250,7 @@ Class PB_DemonExt : PB_WeaponBase
 		Fire.Incineration:
 			
 			TNT1 A 0 A_jumpif(countinv(invoker.ammotype1) < invoker.primammouse2, "FireNoAmmo");
-			UNMF A 1 bright {A_overlay(-64,"MuzzleFlash0");A_startsound("unmaker/fire",21);UNM_FireBeams(invoker.U_Level);A_TakeInventory(invoker.ammotype1,invoker.primammouse2);UNM_Add_level();}
+			UNMF A 1 bright {A_overlay(-64,"MuzzleFlash0");A_startsound("unmaker/fire",21);UNM_FireBeams(invoker.U_Level);A_TakeInventory(invoker.ammotype1,invoker.primammouse2,TIF_NOTAKEINFINITE);UNM_Add_level();}
 			TNT1 A 0 {PB_FireOffset();PB_WeaponRecoil(-0.32,frandom(-0.25,0.25));}
 			UNMF BC 1 bright A_weaponoffset(0,35);
 			UNMF MNO 1 bright A_WeaponOffset(0,-1,WOF_ADD);
@@ -346,7 +346,7 @@ Class PB_DemonExt : PB_WeaponBase
 			TNT1 A 0 A_startsound("unmaker/fire",21);
 			TNT1 A 0 A_startsound("unmaker/pick",23);
 			UNMF A 1 bright A_FireProjectile("UNMK_Grounder",0,0);	//A_Fireprojectile("UNMK_AltPj",0,0);
-			TNT1 A 0 A_TakeInventory(invoker.ammotype1,invoker.secammouse2);
+			TNT1 A 0 A_TakeInventory(invoker.ammotype1,invoker.secammouse2,TIF_NOTAKEINFINITE);
 			TNT1 A 0 PB_FireOffset();
 			TNT1 A 0 PB_WeaponRecoil(-4.25,frandom(-1.7,1.7));
 			UNMF BC 1 bright;
@@ -393,7 +393,7 @@ Class PB_DemonExt : PB_WeaponBase
 				A_Overlay(-5,"FireRecoilScaleLightning");
 				UNM_FireStorm();
 			}
-			TNT1 A 0 A_TakeInventory(invoker.ammotype2,invoker.secammo2use3);
+			TNT1 A 0 A_TakeInventory(invoker.ammotype2,invoker.secammo2use3,TIF_NOTAKEINFINITE);
 			TNT1 A 0 PB_FireOffset();
 			TNT1 A 0 PB_WeaponRecoil(-4.25,frandom(-1.7,1.7));
 			UNMI KK 1 bright;

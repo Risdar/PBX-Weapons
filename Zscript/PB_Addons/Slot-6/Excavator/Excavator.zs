@@ -1,15 +1,5 @@
 const excavatorFullAmmo = 5;
 
-Class ExcavatorRounds : PB_Ammo{
-	Default{
-		inventory.maxamount excavatorFullAmmo;
-		ammo.backpackamount 0;
-		ammo.backpackmaxamount excavatorFullAmmo;
-		+INVENTORY.IGNORESKILL
-		Inventory.Icon "5DUNA0";
-	}
-}
-
 class PB_Excavator : PB_WeaponBase
 {
 	Default
@@ -143,14 +133,14 @@ class PB_Excavator : PB_WeaponBase
 	}
 	
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
-    override void attachtoowner(actor other)
-	{
-		if(other && other.player)
-		{
-			if(other.countinv(ammotype2) < 1 &&(countinv(respectInventoryItem) < 1))other.A_giveinventory(ammotype2,GetAmmoCapacity(ammotype2));
-		}
-		super.attachtoowner(other);
-	}
+    // override void attachtoowner(actor other)
+	// {
+	// 	if(other && other.player)
+	// 	{
+	// 		if(other.countinv(ammotype2) < 1 &&(countinv(respectInventoryItem) < 1))other.A_giveinventory(ammotype2,GetAmmoCapacity(ammotype2));
+	// 	}
+	// 	super.attachtoowner(other);
+	// }
     
 	Override void DoEffect(){
 		if (!owner || !owner.player)

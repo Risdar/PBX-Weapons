@@ -1,3 +1,5 @@
+server bool FirstTimeLoadingPBX = true;
+
 server int pbx_chainsaw_filter = 0;
 server int pbx_pistol_filter = 0;
 server int pbx_shotgun_filter = 0;

@@ -48,7 +48,7 @@ class CyberdemonRL : PB_WeaponBase
 						A_StartSound("Rifle/DSCANFIR", CHAN_WEAPON, CHANF_OVERLAP, 1.0, pitch: 0.6);
 						// PB_FireBullets("CyberBallsPlayer", 1, frandom(-2,2), 0, 0, frandom(-0.5, 0.5));
 						A_FireCustomMissile("CyberBallsPlayer", random(-2,2), 0, 0, 0, 0, frandom(-0.5,0.5));
-						A_TakeInventory(invoker.AmmoType1,1);
+						A_TakeInventory(invoker.AmmoType1,1,TIF_NOTAKEINFINITE);
 						A_ZoomFactor(0.98, SPF_INTERPOLATE);
 						break;
 				}
@@ -83,7 +83,7 @@ class CyberdemonRL : PB_WeaponBase
 				break;
 			case 2:
 				A_ZoomFactor(1.0, SPF_INTERPOLATE);
-				A_TakeInventory(invoker.AmmoType1,1);
+				A_TakeInventory(invoker.AmmoType1,1,TIF_NOTAKEINFINITE);
 				A_SetAngle(Angle + random(-2, 2), SPF_INTERPOLATE);
 				A_SetPitch(pitch - 2, SPF_INTERPOLATE);
 				break;
@@ -91,14 +91,14 @@ class CyberdemonRL : PB_WeaponBase
 	}
 	
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
-    override void attachtoowner(actor other)
-	{
-		if(other && other.player)
-		{
-			if(other.countinv(ammotype1) < 1)other.A_giveinventory(ammotype1,GetAmmoCapacity(ammotype1));
-		}
-		super.attachtoowner(other);
-	}
+    // override void attachtoowner(actor other)
+	// {
+	// 	if(other && other.player)
+	// 	{
+	// 		if(other.countinv(ammotype1) < 1)other.A_giveinventory(ammotype1,GetAmmoCapacity(ammotype1));
+	// 	}
+	// 	super.attachtoowner(other);
+	// }
       
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
 	States
