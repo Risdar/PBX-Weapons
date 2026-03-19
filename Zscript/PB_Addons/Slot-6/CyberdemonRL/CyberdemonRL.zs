@@ -48,7 +48,7 @@ class CyberdemonRL : PB_WeaponBase
 						A_StartSound("Rifle/DSCANFIR", CHAN_WEAPON, CHANF_OVERLAP, 1.0, pitch: 0.6);
 						// PB_FireBullets("CyberBallsPlayer", 1, frandom(-2,2), 0, 0, frandom(-0.5, 0.5));
 						A_FireCustomMissile("CyberBallsPlayer", random(-2,2), 0, 0, 0, 0, frandom(-0.5,0.5));
-						A_TakeInventory(invoker.AmmoType1,1,TIF_NOTAKEINFINITE);
+						A_TakeInventory(invoker.AmmoType1,2,TIF_NOTAKEINFINITE);
 						A_ZoomFactor(0.98, SPF_INTERPOLATE);
 						break;
 				}
@@ -83,7 +83,7 @@ class CyberdemonRL : PB_WeaponBase
 				break;
 			case 2:
 				A_ZoomFactor(1.0, SPF_INTERPOLATE);
-				A_TakeInventory(invoker.AmmoType1,1,TIF_NOTAKEINFINITE);
+				A_TakeInventory(invoker.AmmoType1,2,TIF_NOTAKEINFINITE);
 				A_SetAngle(Angle + random(-2, 2), SPF_INTERPOLATE);
 				A_SetPitch(pitch - 2, SPF_INTERPOLATE);
 				break;
@@ -141,7 +141,7 @@ class CyberdemonRL : PB_WeaponBase
 		
 //////////////////////////// FIRE ////////////////////////////////////////////////////////////////////////////////////
 		Fire:
-            TNT1 A 0 PB_JumpIfNoAmmo("NoAmmo",1,false,false);
+            TNT1 A 0 PB_JumpIfNoAmmo("NoAmmo",2,false,false);
             TNT1 AAAA 0;
 			CYBF A 1 BRIGHT CyberRl_FireWeapon(0,1);
 			CYBF B 1 BRIGHT CyberRl_FireWeapon(0,2);
@@ -159,28 +159,28 @@ class CyberdemonRL : PB_WeaponBase
 		AltFire:
 			TNT1 AAAA 0;
 			// Shot 1
-			TNT1 A 0 PB_JumpIfNoAmmo("NoAmmo", 1, false, false);
+			TNT1 A 0 PB_JumpIfNoAmmo("NoAmmo", 2, false, false);
 			CYBF A 1 BRIGHT CyberRl_AltFire(0, 1);
 			CYBF B 1 BRIGHT CyberRl_AltFire(0, 2);
 			CYBF C 1 A_SetPitch(pitch - 1, SPF_INTERPOLATE);
 			CYBF D 1 BRIGHT A_SetPitch(pitch + 0.6, SPF_INTERPOLATE);
 			CYBF EFG 1 BRIGHT A_SetPitch(pitch + 0.8, SPF_INTERPOLATE);
 			// Shot 2
-			TNT1 A 0 PB_JumpIfNoAmmo("NoAmmo", 1, false, false);
+			TNT1 A 0 PB_JumpIfNoAmmo("NoAmmo", 2, false, false);
 			CYBF A 1 BRIGHT CyberRl_AltFire(1, 1);
 			CYBF B 1 BRIGHT CyberRl_AltFire(1, 2);
 			CYBF C 1 A_SetPitch(pitch - 1, SPF_INTERPOLATE);
 			CYBF D 1 BRIGHT A_SetPitch(pitch + 0.6, SPF_INTERPOLATE);
 			CYBF EFG 1 BRIGHT A_SetPitch(pitch + 0.8, SPF_INTERPOLATE);
 			// Shot 3
-			TNT1 A 0 PB_JumpIfNoAmmo("NoAmmo", 1, false, false);
+			TNT1 A 0 PB_JumpIfNoAmmo("NoAmmo", 2, false, false);
 			CYBF A 1 BRIGHT CyberRl_AltFire(2, 1);
 			CYBF B 1 BRIGHT CyberRl_AltFire(2, 2);
 			CYBF C 1 A_SetPitch(pitch - 1, SPF_INTERPOLATE);
 			CYBF D 1 BRIGHT A_SetPitch(pitch + 0.6, SPF_INTERPOLATE);
 			CYBF EFG 1 BRIGHT A_SetPitch(pitch + 0.8, SPF_INTERPOLATE);
 			// Shot 4
-			TNT1 A 0 PB_JumpIfNoAmmo("NoAmmo", 1, false, false);
+			TNT1 A 0 PB_JumpIfNoAmmo("NoAmmo", 2, false, false);
 			CYBF A 1 BRIGHT CyberRl_AltFire(0, 1);
 			CYBF B 1 BRIGHT CyberRl_AltFire(0, 2);
 			CYBF C 1 A_SetPitch(pitch - 1, SPF_INTERPOLATE);

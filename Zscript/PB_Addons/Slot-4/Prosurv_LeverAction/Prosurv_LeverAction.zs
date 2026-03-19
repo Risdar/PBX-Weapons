@@ -47,7 +47,6 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
         
 //////////////////////////// WEAPON FLAGS ////////////////////////////////////////////////////////////////////////////////////
         +WEAPON.NOAUTOAIM
-        +WEAPON.NOAUTOFIRE
 		+WEAPON.NOALERT
 		+WEAPON.NOAUTOAIM
         +FORCEXYBILLBOARD

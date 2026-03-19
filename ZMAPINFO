@@ -1,5 +1,6 @@
 Gameinfo
 {
+	StatusBarClass = "PBX_Hud"
 	addeventhandlers = "CSSGEvent",
 	"PBX_WeaponSpawner", "PBX_Handler",
 	"ExterminatorStuff"

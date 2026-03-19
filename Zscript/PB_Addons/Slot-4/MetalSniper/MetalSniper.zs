@@ -68,6 +68,7 @@ Class PB_MetalSniper : PB_WeaponBase
 			wait;
 		
 		Ready:
+			MST0 ABCDEFGHIJKL 0;
 		Ready3:
 			TNT1 A 0 PB_HandleCrosshair(42);
 			TNT1 A 0 A_jumpif(countinv("zoomed") > 0,"Ready_ADS");
@@ -143,7 +144,7 @@ Class PB_MetalSniper : PB_WeaponBase
 					if(!PressingAltfire() || JustReleased(BT_ALTATTACK))
 						return resolvestate("Zoomout");
 					
-					if (PressingFire() && PressingAltfire() && CountInv("MetalSniperAmmo") > 0)
+					if (PressingFire() && PressingAltfire() && CountInv(invoker.ammotype2) > 0)
 							return resolvestate("Fire_ADS");
 					
 					return A_DoPBWeaponAction(WRF_ALLOWRELOAD|WRF_NOSECONDARY);
@@ -151,7 +152,7 @@ Class PB_MetalSniper : PB_WeaponBase
 				}
 				else 
 				{
-					if (PressingFire() && CountInv("MetalSniperAmmo") > 0)
+					if (PressingFire() && CountInv(invoker.ammotype2) > 0)
 						return resolvestate("Fire_ADS");
 					
 					return A_DoPBWeaponAction(WRF_ALLOWRELOAD);
@@ -252,7 +253,7 @@ Class PB_MetalSniper : PB_WeaponBase
 		ReloadFromADS:
 			TNT1 A 0 A_Zoomfactor(1.0);
 			TNT1 A 0 A_takeinventory("Zoomed",10);
-		 Reload:
+		Reload:
             TNT1 A 0 A_Zoomfactor(1.0);
             TNT1 A 0 A_takeinventory("Zoomed",10);
             TNT1 A 0 setZoom(false);
@@ -263,18 +264,16 @@ Class PB_MetalSniper : PB_WeaponBase
             MSU1 ABCD 1;
             MSU1 EFGH 1;
             MSU1 IJKL 1;
-            //TNT1 A 0 A_JumpIf(PB_GetMagUnloaded(),"ResumeReload");
             //take
-            MST1 ABCD 1;
+            MST1 ABCD 1 {if(PB_GetMagEmpty()) {A_SetWeaponSprite("MST0");}}
             TNT1 A 0 A_startsound("MS/Button",22);
-            MST1 E 1;
+            MST1 E 1 {if(PB_GetMagEmpty()) {A_SetWeaponSprite("MST0");}}
             TNT1 A 0 {
                 A_startsound("MS/TakeMag",23);
                 PB_SetMagUnloaded(true);
-				PB_SetMagEmpty(true);
             }
-            MST1 FGH 1;
-            MST1 IJKL 1;
+            MST1 FGH 1 {if(PB_GetMagEmpty()) {A_SetWeaponSprite("MST0");}}
+            MST1 IJKL 1 {if(PB_GetMagEmpty()) {A_SetWeaponSprite("MST0");}}
         ResumeReload:
             //insert
             MSNR ABCD 1;
@@ -297,7 +296,6 @@ Class PB_MetalSniper : PB_WeaponBase
             TNT1 A 0 PB_SetReloading(false);
             goto ready3;
         
-		
         Start_Rechamber:
 			//raise
             TNT1 A 0 A_startsound("IronSights",30);
@@ -326,27 +324,48 @@ Class PB_MetalSniper : PB_WeaponBase
 			
 			
 		Unload:
-			TNT1 A 0 A_Jumpif(pb_getmagunloaded() || countinv(invoker.ammotype2) < 1,"Ready3");
+			MST0 ABCDEFGHIJKL 0;
+			
+			// TNT1 A 0 A_Jumpif(pb_getmagunloaded() || countinv(invoker.ammotype2) < 1,"Ready3");
 			TNT1 A 0 A_startsound("IronSights",30);
+			TNT1 A 0 A_JumpIf(PB_GetMagUnloaded() && !PB_GetChamberEmpty(), "StartUnloadChamber");
 			MSU1 ABCD 1;
 			MSU1 EFGH 1;
 			MSU1 IJKL 1;
-			MST1 ABCD 1;
+			MST1 ABCD 1 {if(PB_GetMagEmpty()) {A_SetWeaponSprite("MST0");}}
 			TNT1 A 0 A_startsound("MS/Button",22);
-			MST1 E 1;
+			MST1 E 1 {if(PB_GetMagEmpty()) {A_SetWeaponSprite("MST0");}}
 			TNT1 A 0 {
-				PB_UnloadMag("MetalSniperAmmo", "PB_HighCalMag", 2,1,0,0,"PB_HigherCalRound");
+				PB_UnloadMag("MetalSniperAmmo", "PB_HighCalMag", 2,1,0,1,"PB_HigherCalRound");
 				PB_SetMagUnloaded(true);
 				PB_SetMagEmpty(true);
-				PB_SetChamberEmpty(true);
 			}
 			TNT1 A 0 A_startsound("MS/TakeMag",23);
-			MST1 FGH 1;
-			MST1 IJKL 1;
-			MSU0 LKJIHGFEDCBA 1;
+			MST1 FGH 1 {if(PB_GetMagEmpty()) {A_SetWeaponSprite("MST0");}}
+            MST1 IJKL 1 {if(PB_GetMagEmpty()) {A_SetWeaponSprite("MST0");}}
+			TNT1 A 0 A_JumpIf(PB_GetChamberEmpty(), "FinishUnload");
+		UnloadChamber:
+			M3NC ABCD 1;
+            M3NC EFGHI 1;
+            TNT1 A 0 A_startsound("MS/BoltDown",24);
+            M3NC JKL 1;
+			TNT1 A 0 {
+				PB_UnloadMag("MetalSniperAmmo", "PB_HighCalMag", 2,1,0,0,"PB_HigherCalRound");
+				PB_SetChamberEmpty(true);
+			}
+            TNT1 A 0 A_startsound("MS/BoltUp",25);
+            M3NC M 1;
+		FinishUnload:
+           	MSU0 LKJI 1;
+			MSU0 HGFE 1;
+			MSU0 DCBA 1;
 			goto ready3;
-		
-		
+
+		StartUnloadChamber:
+			MSU0 ABCD 1;
+			MSU0 EFGH 1;
+			MSU0 IJKL 1;
+			goto UnloadChamber;
 		//
 		WeaponSpecial:
 			TNT1 A 0 {

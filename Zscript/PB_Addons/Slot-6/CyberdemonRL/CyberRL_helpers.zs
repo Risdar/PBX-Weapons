@@ -7,7 +7,7 @@ class CyberBallsPlayer : actor
         Radius 10;
         Height 8;
         Speed 90;
-        Damage 180;
+        Damage 200;
         DamageType "Explosive";
         Gravity 0.00;
         Decal "Scorch";
