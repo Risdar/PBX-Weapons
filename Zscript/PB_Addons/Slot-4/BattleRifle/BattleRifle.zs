@@ -148,7 +148,6 @@ class BDPBattleRifle : PB_WeaponBase
 				A_StartSound("BR45FIRE", CHAN_WEAPON, 0, 1.0, pitch: 1.2);
 				invoker.burstcount++;
 				PB_IncrementHeat(4);
-
 				switch (weaponSide)
 				{
 					default:
@@ -164,6 +163,7 @@ class BDPBattleRifle : PB_WeaponBase
 						A_ZoomFactor(3.0, SPF_INTERPOLATE);
 						break;
 				}
+				break;
 			//Tic 2
 			case 2:
 				break;
@@ -257,6 +257,12 @@ class BDPBattleRifle : PB_WeaponBase
 		
 		//[Pop] Firing states
 		Fire:
+			TNT1 A 0 {
+				A_WeaponOffset(0,32);
+				A_SetRoll(0);
+				PB_HandleCrosshair(42);
+				A_SetInventory("PB_LockScreenTilt",0);
+			}
 			TNT1 A 0 A_jumpifinventory("zoomed",1,"FireADS");
 			TNT1 A 0 PB_JumpIfNoAmmo("Reload",1,false);
             BR4F A 0 A_Jump(85,3);
@@ -272,7 +278,8 @@ class BDPBattleRifle : PB_WeaponBase
 			{
 				If(getBRMag() < 1)
 				{
-					A_fireprojectile("RifleClipSpawn",5,false,0,-14,0);
+					PB_SpawnCasing("RifleClipSpawn");
+					// A_fireprojectile("RifleClipSpawn",5,false,0,-14,0);
 				}
 			}
 			TNT1 A 0 A_jumpif(invoker.burstcount < 3,"burstfirerecoil");
@@ -303,7 +310,8 @@ class BDPBattleRifle : PB_WeaponBase
 			{
 				If(getBRMag() < 1)
 				{
-					A_fireprojectile("RifleClipSpawn",5,false,15,-7,0);
+					PB_SpawnCasing("RifleClipSpawn");
+					// A_fireprojectile("RifleClipSpawn",5,false,15,-7,0);
 				}
 				if(invoker.burstcount > 2)
 				{
@@ -375,6 +383,7 @@ class BDPBattleRifle : PB_WeaponBase
                 PB_SetChamberEmpty(true);
                 If(getBRMag() > 0)
                     {
+						PB_SpawnCasing("RifleClipSpawn");
                         A_fireprojectile("RifleClipSpawn",5,false,0,-14,0);
                     }
 			}
@@ -408,7 +417,8 @@ class BDPBattleRifle : PB_WeaponBase
 				If(getBRMag() > 0)
 					{
 						PB_UnloadMag("BR_Ammo", "PB_HighCalMag", 1);
-						A_fireprojectile("RifleClipSpawn",5,false,0,-14,0);
+						PB_SpawnCasing("RifleClipSpawn");
+						// A_fireprojectile("RifleClipSpawn",5,false,0,-14,0);
 						PB_SetMagUnloaded(true);
 						PB_SetMagEmpty(true);
 						PB_SetChamberEmpty(true);
@@ -497,7 +507,5 @@ class BR_Ammo : PB_Ammo
 	Default
 	{
 		inventory.maxamount BR_AmmoFull;
-		ammo.backpackamount 0;
-		ammo.backpackmaxamount BR_AmmoFull;
 	}
 }

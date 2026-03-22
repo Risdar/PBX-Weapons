@@ -26,6 +26,15 @@ extend class PB_DemonExt{
 		A_TakeInventory("UMDE_Select_IncinerationMode",1);
 		A_TakeInventory("UMDE_Select_LightningMode",1);
 	}
+	action void DemonExtCrosshair(){
+		switch(invoker.ExterminatorMode){
+			case 0 : PB_HandleCrosshair(26); break;
+			case 1 : PB_HandleCrosshair(14); break;
+			case 2 : PB_HandleCrosshair(90); break;
+			default : PB_HandleCrosshair(0); break;
+		}
+	}
+	
 	Action void WeaponSpecialCheckContinue(){
 		if(
 		(findinventory("UMDE_Select_LaserMode") && invoker.ExterminatorMode == LaserMode) || 
@@ -82,12 +91,7 @@ extend class PB_DemonExt{
 		//if(invoker.ExterminatorMode == 0){PB_HandleCrosshair(26);}
 		//if(invoker.ExterminatorMode == 0){PB_HandleCrosshair(26);}
 		//if(invoker.ExterminatorMode == 0){PB_HandleCrosshair(90);}
-		switch(invoker.ExterminatorMode){
-			case 0 : PB_HandleCrosshair(26); break;
-			case 1 : PB_HandleCrosshair(14); break;
-			case 2 : PB_HandleCrosshair(90); break;
-			default : PB_HandleCrosshair(0); break;
-		}
+		DemonExtCrosshair();
 		A_TakeInventory("CantDoAction",0);
 		if(!invoker.ExterminatorWeaponSpecial){
 			A_DoPBWeaponAction(0);

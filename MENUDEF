@@ -8,6 +8,7 @@ AddOptionMenu "AddonWeaponSpawns" after "SHOT2"
 AddOptionMenu "AddonWeaponSpawns" after "CHNT1"
 {
     FlagOption    "Battle Rifle",    "pbx_chaingun_filter",    "OffOn", 0
+    FlagOption    "Lever Action Rifle",    "pbx_chaingun_filter",    "OffOn", 2
 }
 AddOptionMenu "AddonWeaponSpawns" after "CHNT2"
 {

@@ -53,6 +53,7 @@ class CyberdemonRL : PB_WeaponBase
 						// A_FireCustomMissile(, random(-2,2), 0, 0, 0, 0, frandom(-0.5,0.5));
 						break;
 				}
+				break;
 			//Tic 2
 			case 2:
 				A_ZoomFactor(1.0, SPF_INTERPOLATE);

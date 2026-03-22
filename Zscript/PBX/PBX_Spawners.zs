@@ -6,6 +6,7 @@ enum PBX_WeaponSpawnerFlags
 	// SLOT 4
 	DisablePBX_BattleRifle					= 1 << 0,
 	DisablePBX_MetalSniper			        = 1 << 1,
+	DisablePBX_LeverActionRifle				= 1 << 2,
 
 	// SLOT 6
 	DisablePBX_Excavator			        = 1 << 0,
@@ -52,6 +53,16 @@ class PBXSlot4_Injector : PBInjector
 			handler.InjectSpawn('PB_MGSpawnerT2', 'PB_MetalSniper', 255, 1);
 			handler.InjectSpawn('PB_MGSpawnerT3', 'PB_MetalSniper', 255, 1);
 			// handler.InjectSpawn('PB_UpgradeSpawnerT3', 'PB_MetalSniper', 255, 1);
+		}
+
+		// Lever Action
+		if(!(pbx_chaingun_filter & DisablePBX_LeverActionRifle))
+		{
+			handler.InjectSpawn('PB_ShotSpawnerT1', 'PBX_Prosurv_LeverAction', 255, 1);
+			handler.InjectSpawn('PB_ShotSpawnerT2', 'PBX_Prosurv_LeverAction', 255, 1);
+
+			handler.InjectSpawn('PB_MGSpawnerT1', 'PBX_Prosurv_LeverAction', 255, 1);
+			handler.InjectSpawn('PB_MGSpawnerT2', 'PBX_Prosurv_LeverAction', 255, 1);
 		}
 	}
 }

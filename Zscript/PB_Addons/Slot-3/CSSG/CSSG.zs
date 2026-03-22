@@ -123,6 +123,12 @@ Class PB_CSSG : PB_WeaponBase
 		Fire:
 			//TNT1 A 0 PB_CheckBarrelThrow1();
 			//TNT1 A 0 PB_CheckAmmoFire();
+			TNT1 A 0 {
+				A_WeaponOffset(0,32);
+				A_SetRoll(0);
+				A_SetInventory("PB_LockScreenTilt",0);
+				CM_HandleCrosshair();
+			}
 			TNT1 A 0 PB_JumpIfNoAmmo("LeftFire",2);
 			TNT1 A 0 A_overlay(-31,"MuzzleFlashFull");
 			TNT1 A 0 CM_PlayFireSound();
@@ -149,6 +155,7 @@ Class PB_CSSG : PB_WeaponBase
 		
 		AltFire:
 			TNT1 A 0 PB_JumpIfNoAmmo("LeftFire",2,true,true,"");
+			TNT1 A 0 CM_HandleCrosshair();
 		RightFire:
 			TNT1 A 0 CM_PlayAltFireSound();
 			TNT1 A 0 A_overlay(-31,"MuzzleFlashRight");

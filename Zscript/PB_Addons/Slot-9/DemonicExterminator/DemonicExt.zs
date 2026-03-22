@@ -146,6 +146,12 @@ Class PB_DemonExt : PB_WeaponBase
 			goto ready3;
 		Fire:
 			// TNT1 A 0 PB_CheckBarrelThrow1();
+			TNT1 A 0 {
+				A_WeaponOffset(0,32);
+				A_SetRoll(0);
+			DemonExtCrosshair();
+				A_SetInventory("PB_LockScreenTilt",0);
+			}
 			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == 1,"Fire.Incineration");
 			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == 2,"Fire.Soul");
 		Fire.Laser:

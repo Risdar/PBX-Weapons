@@ -22,6 +22,9 @@ Version 4.13
 // Metal Sniper
 #include "Zscript/PB_Addons/Slot-4/MetalSniper/MetalSniper.zs"
 #include "Zscript/PB_Addons/Slot-4/MetalSniper/MetalSniper_Wheel.zs"
+// Lever Action 
+#include "Zscript/PB_Addons/Slot-4/Prosurv_LeverAction/Prosurv_LeverAction.zs"
+#include "Zscript/PB_Addons/Slot-4/Prosurv_LeverAction/LeverAction_helpers.zs"
 
 // Slot 5
 

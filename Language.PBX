@@ -5,27 +5,31 @@
 
 //////////////////////////// SLOT 3 ///////////////////////////////////////////////////////////////////////////////
 // CSSG 
-PBX_CM_BUCKLD = "\cgBuckshot \c- Shells selected";
-PBX_CM_SLUGLD = "\cdSlugs \c- Shells selected";
-PBX_CM_DGBTLD = "\ciDragon Breath \c- Shells selected";
-PBX_CM_FLAKLD = "\chFlak \c-Shells Loaded";
-PBX_CM_FLCHLD = "\cjFlechette \c-Shells Loaded";
-PBX_CM_EXPLLD = "\cuExplosive \c-Shells Loaded";
-PBX_CM_WPLOAD = "\c[WPBronze]White Phosphorus\c- Shells Loaded";
-PBX_CM_DOOMLD = "\ctTriple Doom\c- Shells Loaded";
-PBX_CM_DNMKULD = "\c[DanmakuYellow]Danmaku \c-Shells Loaded";   
+PBX_CM_BUCKLD = "\cgBuckshot \c- Shells";
+PBX_CM_SLUGLD = "\cdSlugs \c- Shells";
+PBX_CM_DGBTLD = "\ciDragon Breath \c- Shells";
+PBX_CM_FLAKLD = "\chFlak \c-Shells";
+PBX_CM_FLCHLD = "\cjFlechette \c-Shells";
+PBX_CM_EXPLLD = "\cuExplosive \c-Shells";
+PBX_CM_WPLOAD = "\c[WPBronze]White Phosphorus\c- Shells";
+PBX_CM_DOOMLD = "\ctTriple Doom\c- Shells";
+PBX_CM_DNMKULD = "\c[DanmakuYellow]Danmaku \c-Shells";   
 
 //////////////////////////// SLOT 4 ///////////////////////////////////////////////////////////////////////////////
 // BattleRifle 
 
 // Metal Sniper
-PBX_MetalSniper_AimMode = "\cdAim Secondary \c- Selected";
-PBX_MetalSniper_GrenMode = "\ciGrenade Secondary \c- Selected";
+PBX_MetalSniper_AimMode = "\cdAim Secondary \c- Mode";
+PBX_MetalSniper_GrenMode = "\ciGrenade Secondary \c- Mode";
+
+// Lever Action
+PBX_LeverAction_Marlin = "\cd.444 Marlin Caliber \c-Mode";
+PBX_LeverAction_Magnum = "\cd.357 Magnum Caliber \c-Mode";
 
 //////////////////////////// SLOT 5 ///////////////////////////////////////////////////////////////////////////////
 // Excavator
-PBX_Excavator_DrillMode = "\cdDrill Charge \c-Mode Activated";
-PBX_Excavator_DropMode = "\ciDrop Charge \c-Mode Activated";
+PBX_Excavator_DrillMode = "\cdDrill Charge \c-Mode";
+PBX_Excavator_DropMode = "\ciDrop Charge \c-Mode";
 
 //////////////////////////// SLOT 6 ///////////////////////////////////////////////////////////////////////////////
 
@@ -35,9 +39,9 @@ PBX_Excavator_DropMode = "\ciDrop Charge \c-Mode Activated";
 
 //////////////////////////// SLOT 9 ///////////////////////////////////////////////////////////////////////////////
 // Demonic Exterminator
-PBX_DemonExt_Laser = "\caLaser \c-Mode Activated";
-PBX_DemonExt_Incin = "\crDark Incinerator \c-Mode Activated";
-PBX_DemonExt_Lightning = "\cjSoul Lightning \c-Mode Activated";
+PBX_DemonExt_Laser = "\caLaser \c-Mode";
+PBX_DemonExt_Incin = "\crDark Incinerator \c-Mode";
+PBX_DemonExt_Lightning = "\cjSoul Lightning \c-Mode";
 
 //////////////////////////// OTHERS ///////////////////////////////////////////////////////////////////////////////
 // SHARED

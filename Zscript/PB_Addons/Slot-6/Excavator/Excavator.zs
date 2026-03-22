@@ -81,11 +81,13 @@ class PB_Excavator : PB_WeaponBase
 					
 		switch(getExcavatorMode())
 		{
-			case eDrillChargeMode:   
+			case eDrillChargeMode:  
+				PB_HandleCrosshair(78);
                 A_StartSound("excavator/firedigger", 18);
                 PB_FireBullets("ExcavatorDrill", 1, 0, 0, 0, 3);
                 break;
-			case eDropShotMode: 	    
+			case eDropShotMode: 	
+				PB_HandleCrosshair(79);
                 A_StartSound("excavator/firedropshot", 0);
                 PB_FireBullets("ExcavatorDropShot", 1, 0, 0, 0, 0);
                 break;
@@ -174,7 +176,7 @@ class PB_Excavator : PB_WeaponBase
             TNT1 A 0;
             Goto Ready;
         Deselect:
-            TNT1 A 0 setExcavatorMode();
+            // TNT1 A 0 setExcavatorMode();
 		    5DKF EFGHI 1;
 			TNT1 AAA 0 A_lower();
 			Wait;
@@ -206,6 +208,11 @@ class PB_Excavator : PB_WeaponBase
 		
 //////////////////////////// FIRE ////////////////////////////////////////////////////////////////////////////////////
 		Fire:
+            TNT1 A 0 {
+				A_WeaponOffset(0,32);
+				A_SetRoll(0);
+				A_SetInventory("PB_LockScreenTilt",0);
+			}
             TNT1 A 0 PB_JumpIfNoAmmo("Reload",1,false);
             6DKF A 1 BRIGHT FireWeapon(0,1);
 			6DKF A 1 BRIGHT FireWeapon(0,2);
@@ -219,23 +226,6 @@ class PB_Excavator : PB_WeaponBase
             5DKF D 0 A_ReFire;
 			Goto ReadyDrillChargaMode;
 
-            // I DONT THINK THIS IS EVEN USED
-            //AltFire:
-            //TNT1 A 0 A_JumpIfInventory("DropShotMode", 1, "DetonateDropShot");
-            DETO B 0 A_PlaySound("excavator/detonate");
-            TNT1 A 0 A_SetInventory("GrenadeDetonator",1);
-            5DKF C 1 ;
-            /*
-            //TNT1 A 0 Thing_Projectile(1743,205,0,0,0);
-            TNT1 A 0 Thing_Projectile(1743,"DrillBombExplode",0,0,0);
-            //MGLG B 0 Thing_Projectile(1744,208,0,0,0);
-            MGLG B 0 Thing_Projectile(1744,"DropShotExplode",0,0,0);
-            TNT1 A 0 Thing_ReMove(1743);
-            TNT1 A 0 Thing_ReMove(1744);
-            */
-            TNT1 A 0 A_SetInventory("GrenadeDetonator",0);
-            5DKF C 3;
-            Goto Ready3;
 		
 //////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
 		Reload:

@@ -88,11 +88,15 @@ Class PB_MetalSniper : PB_WeaponBase
 			goto AltFire_Grenade;
 		
 		Fire:
+			TNT1 A 0 {
+				A_WeaponOffset(0,32);
+				A_SetRoll(0);
+				PB_HandleCrosshair(42);
+				A_SetInventory("PB_LockScreenTilt",0);
+			}
 			TNT1 A 0 A_jumpifinventory("zoomed",1,"Fire_ADS");
 			TNT1 A 0 PB_JumpIfNoAmmo("Reload",1);
 			TNT1 A 0 A_AlertMonsters();
-			TNT1 A 0 A_overlay(muzzlelayer,"MuzzleFlash");
-			TNT1 A 0 A_startsound("MS/Fire",20,CHANF_OVERLAP);
 			MSNF B 1 bright MetalSniperFire();
 			MSNF C 1 bright;
 			MSNF DDDEF 1;
@@ -166,10 +170,6 @@ Class PB_MetalSniper : PB_WeaponBase
 		ActualFireADS:
 			MSNS B 1 bright MetalSniperFireADS();
 		FireADSContinue:
-			TNT1 A 0 PB_FireOffset();
-			TNT1 A 0 PB_GunSmoke(0,0,-2);
-			TNT1 A 0 PB_WeaponRecoil(-5,frandom(-1.5,1.5));
-			TNT1 A 0 PB_SpawnCasing("LMGCasingStandard",26,2,28,0,Frandom(5,8),Frandom(1,4));
 			MSNS C 1 bright;
 			MSNS DDD 1;
 			MSNS EFG 1;
@@ -322,27 +322,40 @@ Class PB_MetalSniper : PB_WeaponBase
 			MSU0 IJKL 1;
 			goto ResumeReload;
 			
-			
-		Unload:
-			MST0 ABCDEFGHIJKL 0;
-			
-			// TNT1 A 0 A_Jumpif(pb_getmagunloaded() || countinv(invoker.ammotype2) < 1,"Ready3");
-			TNT1 A 0 A_startsound("IronSights",30);
-			TNT1 A 0 A_JumpIf(PB_GetMagUnloaded() && !PB_GetChamberEmpty(), "StartUnloadChamber");
-			MSU1 ABCD 1;
-			MSU1 EFGH 1;
-			MSU1 IJKL 1;
-			MST1 ABCD 1 {if(PB_GetMagEmpty()) {A_SetWeaponSprite("MST0");}}
+		UnloadMagEmpty:
+			MST0 ABCD 1;
 			TNT1 A 0 A_startsound("MS/Button",22);
-			MST1 E 1 {if(PB_GetMagEmpty()) {A_SetWeaponSprite("MST0");}}
+			MST0 E 1;
 			TNT1 A 0 {
 				PB_UnloadMag("MetalSniperAmmo", "PB_HighCalMag", 2,1,0,1,"PB_HigherCalRound");
 				PB_SetMagUnloaded(true);
 				PB_SetMagEmpty(true);
 			}
 			TNT1 A 0 A_startsound("MS/TakeMag",23);
-			MST1 FGH 1 {if(PB_GetMagEmpty()) {A_SetWeaponSprite("MST0");}}
-            MST1 IJKL 1 {if(PB_GetMagEmpty()) {A_SetWeaponSprite("MST0");}}
+			MST0 FGH 1;
+            MST0 IJKL 1;
+			TNT1 A 0 A_JumpIf(PB_GetChamberEmpty(), "FinishUnload");
+			Goto UnloadChamber;
+
+		Unload:
+			// TNT1 A 0 A_Jumpif(pb_getmagunloaded() || countinv(invoker.ammotype2) < 1,"Ready3");
+			TNT1 A 0 A_startsound("IronSights",30);
+			TNT1 A 0 A_JumpIf(PB_GetMagUnloaded() && !PB_GetChamberEmpty(), "StartUnloadChamber");
+			MSU1 ABCD 1;
+			MSU1 EFGH 1;
+			MSU1 IJKL 1;
+			TNT1 A 0 A_JumpIf(PB_GetMagEmpty(), "UnloadMagEmpty");
+			MST1 ABCD 1;
+			TNT1 A 0 A_startsound("MS/Button",22);
+			MST1 E 1;
+			TNT1 A 0 {
+				PB_UnloadMag("MetalSniperAmmo", "PB_HighCalMag", 2,1,0,1,"PB_HigherCalRound");
+				PB_SetMagUnloaded(true);
+				PB_SetMagEmpty(true);
+			}
+			TNT1 A 0 A_startsound("MS/TakeMag",23);
+			MST1 FGH 1;
+            MST1 IJKL 1;
 			TNT1 A 0 A_JumpIf(PB_GetChamberEmpty(), "FinishUnload");
 		UnloadChamber:
 			M3NC ABCD 1;
@@ -452,8 +465,8 @@ Class PB_MetalSniper : PB_WeaponBase
 	{
 		A_weaponoffset(0,32);
 		A_AlertMonsters();
-		A_startsound("MS/Fire",20,CHANF_OVERLAP);
 		PB_DynamicTail("lmg", "lmg");
+		A_startsound("MS/Fire",20,CHANF_OVERLAP);
 		A_overlay(muzzlelayer,"MuzzleFlash_ADS");
 		PB_FireBullets("PB_762x51mmAP", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
 		PB_LowAmmoSoundWarning("lmg");
@@ -461,11 +474,19 @@ Class PB_MetalSniper : PB_WeaponBase
 		A_SetInventory("CantDoAction",1);
 		PB_IncrementHeat(4);
 		PB_IncrementHeat(4,true);
+		PB_FireOffset();
+		PB_GunSmoke(0,0,-2);
+		PB_WeaponRecoil(-5,frandom(-1.5,1.5));
+		PB_SpawnCasing("LMGCasingStandard",26,2,28,0,Frandom(5,8),Frandom(1,4));
 	}
 	
 	action void MetalSniperFire()
 	{
+		A_weaponoffset(0,32);
+		A_AlertMonsters();
 		PB_DynamicTail("lmg", "lmg");
+		A_startsound("MS/Fire",20,CHANF_OVERLAP);
+		A_overlay(muzzlelayer,"MuzzleFlash");
 		PB_FireBullets("PB_762x51mmAP", 1, frandom(-0.2, 0.2), 0, 0, frandom(-0.1, 0.1));
 		PB_LowAmmoSoundWarning("lmg");
 		pb_takeammo(invoker.ammotype2,1);

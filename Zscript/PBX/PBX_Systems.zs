@@ -16,6 +16,7 @@ class PBX_Handler : EventHandler
         pm.giveinventory("BR_Ammo",15);
         pm.giveinventory("MetalSniperAmmo",10);
         pm.giveinventory("ExcavatorRounds",5);
+        pm.giveinventory("LeverActionAmmo",12);
         return;
     }
 }

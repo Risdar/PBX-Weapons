@@ -11,7 +11,7 @@ Class DemonicExtWheel : wheelinfocontainer
 		
 		PB_SpecialWheel_Mode DE_LaserMode = new ("PB_SpecialWheel_Mode");
 		DE_LaserMode.img = "graphics/Weapon Wheel/DemonExt/LaserAlt.png";
-		DE_LaserMode.Alias = "Laser Mode";
+		DE_LaserMode.Alias = "$PBX_DemonExt_Laser";
 		DE_LaserMode.tokentogive = "UMDE_Select_LaserMode";
 		DE_LaserMode.scalex = 0.6;
 		DE_LaserMode.scaley = 0.6;
@@ -19,7 +19,7 @@ Class DemonicExtWheel : wheelinfocontainer
 		
 		PB_SpecialWheel_Mode DE_IncinMode = new ("PB_SpecialWheel_Mode");
 		DE_IncinMode.img = "graphics/Weapon Wheel/DemonExt/IncinerationAlt.png";
-		DE_IncinMode.Alias = "Incineration Mode";
+		DE_IncinMode.Alias = "$PBX_DemonExt_Incin";
 		DE_IncinMode.tokentogive = "UMDE_Select_IncinerationMode";
 		DE_IncinMode.scalex = 0.6;
 		DE_IncinMode.scaley = 0.6;
@@ -27,7 +27,7 @@ Class DemonicExtWheel : wheelinfocontainer
 		
 		PB_SpecialWheel_Mode DE_LightningMode = new ("PB_SpecialWheel_Mode");
 		DE_LightningMode.img = "graphics/Weapon Wheel/DemonExt/LightningAlt.png";
-		DE_LightningMode.Alias = "Lightning Mode";
+		DE_LightningMode.Alias = "$PBX_DemonExt_Lightning";
 		DE_LightningMode.tokentogive = "UMDE_Select_LightningMode";
 		DE_LightningMode.scalex = 0.6;
 		DE_LightningMode.scaley = 0.6;
