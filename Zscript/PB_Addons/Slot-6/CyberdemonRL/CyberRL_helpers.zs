@@ -1,5 +1,5 @@
 
-class CyberBallsPlayer : actor
+class CyberBallsPlayer : actor //PB_ProjectileAlt
 {
     Default
     {
@@ -47,7 +47,9 @@ class CyberBallsPlayer : actor
             WYVB A 1 Bright A_SpawnItem("YellowFlareSmall",0,0);
             // TNT1 A 0 A_CustomMissile ("BUBULZ", 0, 0, random (0, 360), 2, random (0, 180));
             Goto Spawn1;
-            
+           
+        XDeath:
+        Crash:
         Death:
             EXPL A 1 A_Explode(80,200);
             EXPL A 0 Radius_Quake (2, 8, 0, 15, 0);

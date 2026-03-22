@@ -251,6 +251,7 @@ Class ExcavatorDrill : PB_ProjectileAlt{
 		Loop;
 	Dig:
 	Bounce.Floor:
+	XDeath:
 	Death:
 		TNT1 A 0 ;
 		TNT1 A 0 A_Playsound("excavator/digging");
@@ -322,6 +323,7 @@ Class ExcavatorDropShot : PB_ProjectileAlt{
 		TNT1 A 0 A_CustomMissile("ShotgunParticles", 0, 0, random(0, 360), 2, random(30, 150));
 		5DKP A 2 BRIGHT A_SpawnItem("RocketSmokeTrail52");
 		Loop;
+	XDeath:
 	Death:
 	Crash:
 	Bounce.Ceiling:

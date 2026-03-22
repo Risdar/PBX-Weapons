@@ -4,15 +4,9 @@ class PBX_Hud : PB_Hud_ZS
     {
 		Super.Draw(state, TicFrac);
 
-        hudState = state;
-		fractic = TicFrac;
-
         if(hudState != HUD_None)
 		{
-			super.BeginHUD();
-			super.DrawFullScreenStuff();
             DrawPBXHud();
-            if(showtutorials) DrawTooltip();
 		}
     }
 

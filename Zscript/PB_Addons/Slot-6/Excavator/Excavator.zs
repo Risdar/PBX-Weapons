@@ -126,9 +126,6 @@ class PB_Excavator : PB_WeaponBase
 				//A_ZoomFactor(1.0, SPF_INTERPOLATE); WE DONT NEED THIS SINCE THE NEXT FRAMES ALREADY GOES TO 1.0
 				break;
 			//Tic 3
-			case 3:
-				//Nothing this time
-				break;
 		}
 	}
 	

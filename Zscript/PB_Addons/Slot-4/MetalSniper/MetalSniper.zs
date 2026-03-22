@@ -455,7 +455,7 @@ Class PB_MetalSniper : PB_WeaponBase
 		A_startsound("MS/Fire",20,CHANF_OVERLAP);
 		PB_DynamicTail("lmg", "lmg");
 		A_overlay(muzzlelayer,"MuzzleFlash_ADS");
-		A_FireProjectile("PB_762x51mmAP", frandom(-0.1,0.1),0,0,0, FPF_NOAUTOAIM, frandom(-0.1,0.1));
+		PB_FireBullets("PB_762x51mmAP", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
 		PB_LowAmmoSoundWarning("lmg");
 		pb_takeammo(invoker.ammotype2,1);
 		A_SetInventory("CantDoAction",1);
@@ -466,7 +466,7 @@ Class PB_MetalSniper : PB_WeaponBase
 	action void MetalSniperFire()
 	{
 		PB_DynamicTail("lmg", "lmg");
-		A_FireProjectile("PB_762x51mmAP", frandom(-0.2,0.2),0,0,0, FPF_NOAUTOAIM, frandom(-0.1,0.1));
+		PB_FireBullets("PB_762x51mmAP", 1, frandom(-0.2, 0.2), 0, 0, frandom(-0.1, 0.1));
 		PB_LowAmmoSoundWarning("lmg");
 		pb_takeammo(invoker.ammotype2,1);
 		PB_IncrementHeat(4);
