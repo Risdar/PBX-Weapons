@@ -9,8 +9,8 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
         //$Category Weapons
         //$Sprite LVR4E0
 //////////////////////////// WEAPON DATA ////////////////////////////////////////////////////////////////////////////////////
-		Weapon.SlotNumber 4;
-		Weapon.SlotPriority 0;
+		Weapon.SlotNumber 2;
+		Weapon.SlotPriority 9999;
 		Weapon.SelectionOrder 1300;
         PB_WeaponBase.UsesWheel true;
 		PB_WeaponBase.WheelInfo "LeverActionWheel";
@@ -31,9 +31,9 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 
 //////////////////////////// MESSAGES & SOUNDS ////////////////////////////////////////////////////////////////////////////////////
 		Obituary "%k Drew a Bead On %o with a Lever Action";
-		Inventory.PickupMessage "Lever Action (Slot 4)";
+		Inventory.PickupMessage "Lever Action (Slot 2)";
 		Inventory.PickupSound "weapons/leveraction/rechamber";
-	    Tag "UAC M1893 Mod 0 Lever Action";
+	    Tag "$PBX_LeverAction_Tag";
         
 //////////////////////////// WEAPON FLAGS ////////////////////////////////////////////////////////////////////////////////////
         +WEAPON.NOAUTOAIM
@@ -261,11 +261,11 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 			TNT1 AAA 0 A_lower();
 			Wait;
 		WeaponRespect:
+			TNT1 A 0 A_setInventory(invoker.respectInventoryItem,1);
 			TNT1 A 0 {
 				PB_HandleCrosshair(-1);
 				A_Giveinventory("PB_LockScreenTilt",1);
                 A_Takeinventory("Zoomed",1);
-				A_Takeinventory("ADSmode",1);
 			}
 			TNT1 AAAAAA 1 {
 				A_SetRoll(roll-0.3,SPF_INTERPOLATE);

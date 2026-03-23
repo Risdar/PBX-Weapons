@@ -1,5 +1,5 @@
 
-class CyberBallsPlayer : actor //PB_ProjectileAlt
+class CyberBallsPlayer : PB_ProjectileAlt
 {
     Default
     {
@@ -8,7 +8,7 @@ class CyberBallsPlayer : actor //PB_ProjectileAlt
         Height 8;
         Speed 90;
         Damage 200;
-        DamageType "Explosive";
+        DamageType "ExplosiveImpact";
         Gravity 0.00;
         Decal "Scorch";
         RenderStyle "Add";

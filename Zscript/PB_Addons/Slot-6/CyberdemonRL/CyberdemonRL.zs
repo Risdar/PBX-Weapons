@@ -1,4 +1,4 @@
-class CyberdemonRL : PB_WeaponBase
+class PBX_CyberdemonRL : PB_WeaponBase
 {
 	Default
 	{
@@ -20,7 +20,7 @@ class CyberdemonRL : PB_WeaponBase
 		Obituary "%o was blown up by %k's Cyberdemon missile launcher. Ouch!";
 		Inventory.Pickupmessage "You got the Cyberdemon's missile launcher! Holy shit, that thing's heavy... (Slot 6)";
 		Inventory.PickupSound "BFGREADY";
-		Tag "Cyberdemon's Missile Launcher";
+		Tag "$PBX_CyberdemonRL_Tag";
         
 //////////////////////////// WEAPON FLAGS ////////////////////////////////////////////////////////////////////////////////////
         +WEAPON.NOAUTOAIM

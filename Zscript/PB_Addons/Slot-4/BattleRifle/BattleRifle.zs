@@ -1,6 +1,6 @@
 const BR_AmmoFull = 15;
 
-class BDPBattleRifle : PB_WeaponBase
+class PBX_BDPBattleRifle : PB_WeaponBase
 {
 	Default
 	{
@@ -17,7 +17,7 @@ class BDPBattleRifle : PB_WeaponBase
         // Messages
 	    Obituary "%o was pierced by %k's Battle Rifle.";
 	    Inventory.Pickupmessage "Battle Rifle (Slot 4)";
-		Tag "Battle Rifle";
+		Tag "$PBX_BattleRifle_Tag";
 		
         // Ammo
         weapon.ammotype1 "PB_HighCalMag"; // Reserve
@@ -202,6 +202,7 @@ class BDPBattleRifle : PB_WeaponBase
 			goto WeaponReady;
 		
 		WeaponRespect:
+			TNT1 A 0 A_setInventory(invoker.respectInventoryItem,1);
 			BR4S EDCBA 1 A_DoPBWeaponAction();
 			BR45 BBB 1 A_DoPBWeaponAction();
 			TNT1 A 0 A_startsound("BR45OPEN",3,CHANF_OVERLAP);

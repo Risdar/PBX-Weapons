@@ -1,0 +1,12 @@
+/*=============================================================================
+//
+//	PB neo HMG
+//	(neo means nothing actually, i just think it sounds cool)
+//
+//	carrot: resprite of the old PB HMG
+//	PC1073: firing sounds
+//	Tesefy: the weapons pickup sheet used to frankensprite the pickup sprite of this thing
+//	me(jaih1r0): animations and code
+//	old PB 3.0 HMG sprite (couldnt found specific credits :p but im almost sure is eriance)
+//		
+==============================================================================*/

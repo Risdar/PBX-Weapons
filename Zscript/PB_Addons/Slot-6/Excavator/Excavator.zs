@@ -1,6 +1,6 @@
 const excavatorFullAmmo = 5;
 
-class PB_Excavator : PB_WeaponBase
+class PBX_Excavator : PB_WeaponBase
 {
 	Default
 	{
@@ -23,7 +23,6 @@ class PB_Excavator : PB_WeaponBase
 	    Weapon.AmmoGive2 5;
 	    Weapon.AmmoGive1 5;
 		//PB_WeaponBase.unloadertoken "MyWeaponUnloaded"; token that indicates if this specific weapon is unloaded, example of the token defined below this class
-		//PB_WeaponBase.respectItem "MyWeaponRespect"; token needed for the respect to work, in case your weapon has a respect animation, example of the token defined below this class
 		
 //////////////////////////// SPRITES & OFFSETS ////////////////////////////////////////////////////////////////////////////////////
         Weapon.BobRangeX 0.3;
@@ -37,7 +36,7 @@ class PB_Excavator : PB_WeaponBase
         Obituary "Shattered Into Pieces By Excavator Launcher. Ouch!";
         Inventory.PickupMessage "Excavator (Slot 6)";
         Inventory.PickupSound "misc/ROCKBOXA";
-	    Tag "UAC-M2 Excavator Launcher";
+	    Tag "$PBX_Excavator_Tag";
         
 //////////////////////////// WEAPON FLAGS ////////////////////////////////////////////////////////////////////////////////////
         +WEAPON.NOAUTOAIM
@@ -180,13 +179,41 @@ class PB_Excavator : PB_WeaponBase
 		    5DKF EFGHI 1;
 			TNT1 AAA 0 A_lower();
 			Wait;
-		// NO RESPECT ANIMATION
-		// WeaponRespect:
-		// 	TNT1 A 1 A_DoPBWeaponAction(); dont forget to add A_DoPBWeaponAction() so you can cancel this animation in game
-		// 	goto WeaponReady;
+		WeaponRespect:
+			TNT1 A 0 A_setInventory(invoker.respectInventoryItem,1);
+			5DKF IHGFE 1 A_DoPBWeaponAction();
+			6DKF A 1 A_PlaySound("Ironsights", 15);
+            TNT1 A 0 A_SetRoll(roll-0.6,SPF_INTERPOLATE);
+            6DKF BCDEF 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_PlaySound("weapons/sgl/cycle", 14);
+            //TNT1 A 0 A_FireCustomMissile("RocketCaseSpawn",-30,0,-4,-4);
+            TNT1 A 0 A_SetRoll(roll+0.6,SPF_INTERPOLATE);
+            6DKF GHIJK 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_PlaySound("RLCYCLE2", 13);
+            TNT1 A 0 A_SetRoll(0,SPF_INTERPOLATE);
+            6DKF KKKKK 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_PlaySound("weapons/minigun/respect1", 13);
+            TNT1 A 0 A_SetRoll(roll-0.5,SPF_INTERPOLATE);
+            6DKF LMNOPQRS 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_PlaySound("weapons/nailgun/up", 10);
+            TNT1 A 0 A_SetRoll(roll-0.5,SPF_INTERPOLATE);
+            6DKF TUVWWWWW 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_SetRoll(0,SPF_INTERPOLATE);
+            TNT1 A 0 A_PlaySound("Ironsights", 15);
+            TNT1 A 0 A_SetRoll(roll+1.0,SPF_INTERPOLATE);
+            6DKF XYZ 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_PlaySound("weapons/sgl/inspect1", 15);
+            7DKF A 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_SetRoll(roll-1.0,SPF_INTERPOLATE);
+            7DKF BCD 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_SetRoll(0,SPF_INTERPOLATE);
+            7DKF EFGHIJK 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_PlaySound("excavator/detonate");
+            5DKF CCDDCCDDCCDCDCD 1 A_DoPBWeaponAction();
+			goto Ready3;
 		Select:
 			TNT1 A 0 PB_WeaponRaise("RLANDRAW");
-			// TNT1 A 0 PB_RespectIfNeeded();
+			TNT1 A 0 PB_RespectIfNeeded();
 		SelectContinue:
 			TNT1 A 0;
 		SelectAnimation:

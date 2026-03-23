@@ -1,7 +1,7 @@
 //
 //	the info object that holds the data for the wheel handler to read
 //
-Class PB_CSSGWeaponWheel : wheelinfocontainer
+Class CSSGWeaponWheel : wheelinfocontainer
 {
 	override int GetSPCount(actor requester)
 	{

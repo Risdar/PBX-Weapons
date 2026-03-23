@@ -1,0 +1,64 @@
+//Fire
+Brightmap Sprite HG0FA0 { map "Brightmaps/Weapons/HMG/BMHG0FA0.png" DisableFullbright }
+Brightmap Sprite HG0FB0 { map "Brightmaps/Weapons/HMG/BMHG0FB0.png" DisableFullbright }
+Brightmap Sprite HG0FC0 { map "Brightmaps/Weapons/HMG/BMHG0FC0.png" DisableFullbright }
+Brightmap Sprite HG0FD0 { map "Brightmaps/Weapons/HMG/BMHG0FD0.png" DisableFullbright }
+Brightmap Sprite HG0FE0 { map "Brightmaps/Weapons/HMG/BMHG0FE0.png" DisableFullbright }
+Brightmap Sprite HG0FF0 { map "Brightmaps/Weapons/HMG/BMHG0FF0.png" DisableFullbright }
+
+//select
+Brightmap Sprite HG0UA0 { map "Brightmaps/Weapons/HMG/BMHG0UA0.png" DisableFullbright }
+Brightmap Sprite HG0UB0 { map "Brightmaps/Weapons/HMG/BMHG0UB0.png" DisableFullbright }
+Brightmap Sprite HG0UC0 { map "Brightmaps/Weapons/HMG/BMHG0UC0.png" DisableFullbright }
+Brightmap Sprite HG0UD0 { map "Brightmaps/Weapons/HMG/BMHG0UD0.png" DisableFullbright }
+
+//deselect
+Brightmap Sprite HG0DA0 { map "Brightmaps/Weapons/HMG/BMHG0DA0.png" DisableFullbright }
+Brightmap Sprite HG0DB0 { map "Brightmaps/Weapons/HMG/BMHG0DB0.png" DisableFullbright }
+Brightmap Sprite HG0DC0 { map "Brightmaps/Weapons/HMG/BMHG0DC0.png" DisableFullbright }
+Brightmap Sprite HG0DD0 { map "Brightmaps/Weapons/HMG/BMHG0DD0.png" DisableFullbright }
+
+//kick
+Brightmap Sprite HG0KA0 { map "Brightmaps/Weapons/HMG/BMHG0KA0.png" DisableFullbright }
+Brightmap Sprite HG0KB0 { map "Brightmaps/Weapons/HMG/BMHG0KB0.png" DisableFullbright }
+Brightmap Sprite HG0KC0 { map "Brightmaps/Weapons/HMG/BMHG0KC0.png" DisableFullbright }
+Brightmap Sprite HG0KD0 { map "Brightmaps/Weapons/HMG/BMHG0KD0.png" DisableFullbright }
+Brightmap Sprite HG0KE0 { map "Brightmaps/Weapons/HMG/BMHG0KE0.png" DisableFullbright }
+Brightmap Sprite HG0KF0 { map "Brightmaps/Weapons/HMG/BMHG0KF0.png" DisableFullbright }
+Brightmap Sprite HG0KG0 { map "Brightmaps/Weapons/HMG/BMHG0KG0.png" DisableFullbright }
+Brightmap Sprite HG0KH0 { map "Brightmaps/Weapons/HMG/BMHG0KH0.png" DisableFullbright }
+
+
+//Reload
+Brightmap Sprite HG0RA0 { map "Brightmaps/Weapons/HMG/BMHG0RA0.png" DisableFullbright }
+Brightmap Sprite HG0RB0 { map "Brightmaps/Weapons/HMG/BMHG0RB0.png" DisableFullbright }
+Brightmap Sprite HG0RC0 { map "Brightmaps/Weapons/HMG/BMHG0RC0.png" DisableFullbright }
+Brightmap Sprite HG0RD0 { map "Brightmaps/Weapons/HMG/BMHG0RD0.png" DisableFullbright }
+Brightmap Sprite HG0RE0 { map "Brightmaps/Weapons/HMG/BMHG0RE0.png" DisableFullbright }
+Brightmap Sprite HG0RF0 { map "Brightmaps/Weapons/HMG/BMHG0RF0.png" DisableFullbright }
+Brightmap Sprite HG0RG0 { map "Brightmaps/Weapons/HMG/BMHG0RG0.png" DisableFullbright }
+Brightmap Sprite HG0RH0 { map "Brightmaps/Weapons/HMG/BMHG0RH0.png" DisableFullbright }
+
+Brightmap Sprite HG0RI0 { map "Brightmaps/Weapons/HMG/BMHG0RI0.png" DisableFullbright }
+Brightmap Sprite HG0RJ0 { map "Brightmaps/Weapons/HMG/BMHG0RJ0.png" DisableFullbright }
+Brightmap Sprite HG0RK0 { map "Brightmaps/Weapons/HMG/BMHG0RK0.png" DisableFullbright }
+Brightmap Sprite HG0RL0 { map "Brightmaps/Weapons/HMG/BMHG0RL0.png" DisableFullbright }
+Brightmap Sprite HG0RM0 { map "Brightmaps/Weapons/HMG/BMHG0RM0.png" DisableFullbright }
+Brightmap Sprite HG0RN0 { map "Brightmaps/Weapons/HMG/BMHG0RN0.png" DisableFullbright }
+Brightmap Sprite HG0RO0 { map "Brightmaps/Weapons/HMG/BMHG0RO0.png" DisableFullbright }
+Brightmap Sprite HG0RP0 { map "Brightmaps/Weapons/HMG/BMHG0RP0.png" DisableFullbright }
+
+Brightmap Sprite HG0RQ0 { map "Brightmaps/Weapons/HMG/BMHG0RQ0.png" DisableFullbright }
+Brightmap Sprite HG0RR0 { map "Brightmaps/Weapons/HMG/BMHG0RR0.png" DisableFullbright }
+Brightmap Sprite HG0RS0 { map "Brightmaps/Weapons/HMG/BMHG0RS0.png" DisableFullbright }
+Brightmap Sprite HG0RT0 { map "Brightmaps/Weapons/HMG/BMHG0RT0.png" DisableFullbright }
+Brightmap Sprite HG0RU0 { map "Brightmaps/Weapons/HMG/BMHG0RU0.png" DisableFullbright }
+Brightmap Sprite HG0RV0 { map "Brightmaps/Weapons/HMG/BMHG0RV0.png" DisableFullbright }
+Brightmap Sprite HG0RW0 { map "Brightmaps/Weapons/HMG/BMHG0RW0.png" DisableFullbright }
+Brightmap Sprite HG0RX0 { map "Brightmaps/Weapons/HMG/BMHG0RX0.png" DisableFullbright }
+Brightmap Sprite HG0RY0 { map "Brightmaps/Weapons/HMG/BMHG0RY0.png" DisableFullbright }
+Brightmap Sprite HG0RZ0 { map "Brightmaps/Weapons/HMG/BMHG0RZ0.png" DisableFullbright }
+
+Brightmap Sprite HG1RA0 { map "Brightmaps/Weapons/HMG/BMHG1RA0.png" DisableFullbright }
+Brightmap Sprite HG1RB0 { map "Brightmaps/Weapons/HMG/BMHG1RB0.png" DisableFullbright }
+Brightmap Sprite HG1RC0 { map "Brightmaps/Weapons/HMG/BMHG1RC0.png" DisableFullbright }

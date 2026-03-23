@@ -3,13 +3,13 @@ class UMDE_Select_IncinerationMode : inventory{default{inventory.maxamount 1;}}
 class UMDE_Select_LightningMode : inventory{default{inventory.maxamount 1;}}
 Class RespectDemonExt : Inventory{Default{Inventory.MaxAmount 1;}}
 Class SoulCharge: Ammo{Default{Inventory.MaxAmount 333;Ammo.BackpackMaxAmount 666;}}
-Class PB_DemonExt : PB_WeaponBase
+Class PBX_DemonExt : PB_WeaponBase
 {
 	default
 	{
 		weapon.slotnumber 9;
 		//Demonic_Exterminator
-		Tag "UnMaker Extermination Type";
+		Tag "$PBX_DemonExt_Tag";
 		inventory.pickupsound "UNMPCK";
 		inventory.pickupmessage "You Have Found The UnMaker Extermination Type. (Slot 0)!";
 		Obituary "Was Undone By UnMaker Extermination Type.";
@@ -76,6 +76,7 @@ Class PB_DemonExt : PB_WeaponBase
 		Ready:
 			TNT1 A 0 PB_RespectIfNeeded;
 		WeaponRespect:
+			TNT1 A 0 A_setInventory(invoker.respectInventoryItem,1);
 			UNMD EDCBA 1 UNM_WeaponReady();
 			
 			UNMI AAAAAAAAAAAAAAA 1 UNM_WeaponReady();//A_PlaySound("RCHARGE",CHAN_ITEM);

@@ -1,0 +1,4 @@
+// NeoHMG
+weapon/HMG/Fire "sounds/weapons/hmg/HMGFIRE.ogg"
+weapon/HMG/Stop "sounds/weapons/hmg/DIBSTOP"
+weapon/HMG/Reload1 "sounds/weapons/hmg/9HAINAM1.ogg"

@@ -1,82 +1,101 @@
 enum PBX_WeaponSpawnerFlags
 {
-	// SLOT 3
+	// SHOTGUN
+		// SLOT 2
+	DisablePBX_LeverActionRifle				= 1 << 0,
+
+	// SSG
+		//SLOT 3
 	DisablePBX_CSSG			                = 1 << 0,
     
-	// SLOT 4
+	// CHAINGUN
+		// SLOT 4
 	DisablePBX_BattleRifle					= 1 << 0,
 	DisablePBX_MetalSniper			        = 1 << 1,
-	DisablePBX_LeverActionRifle				= 1 << 2,
 
-	// SLOT 6
+	// ROCKET LAUNCHER
+		// SLOT 6
 	DisablePBX_Excavator			        = 1 << 0,
 
-	// SLOT 9
+	// BFG
+		// SLOT 9
 	DisablePBX_DemonExt			            = 1 << 0,
 
 	// Monster Drops
+		// SLOT 6
 	DisablePBX_CyberdemonRL			        = 1 << 0,
 
 	// Upgrades
 	DisablePBX_CSSGUpgrades			        = 1 << 0
 }
+//////////////////////////// CHAINSAW ////////////////////////////////////////////////////////////////////////////////////
 
-//////////////////////////// SLOT 3 ////////////////////////////////////////////////////////////////////////////////////
-class PBXSlot3_Injector : PBInjector
+
+//////////////////////////// PISTOL ////////////////////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////// SHOTGUN ////////////////////////////////////////////////////////////////////////////////////
+class PBXShotgun_Injector : PBInjector
 {
 	override void Init(PB_EventHandler handler)
 	{
-		// CSSG
-		if(!(pbx_shotgun_filter & DisablePBX_CSSG))
+		// Lever Action
+		if(!(pbx_shotgun_filter & DisablePBX_LeverActionRifle))
 		{
-			handler.InjectSpawn('PB_SSGSpawnerT2', 'PB_CSSG', 255, 1);
-			handler.InjectSpawn('PB_SSGSpawnerT3', 'PB_CSSG', 255, 1);
-			handler.InjectSpawn('PB_SSGSpawnerT4', 'PB_CSSG', 255, 1);
+			handler.InjectSpawn('PB_ShotSpawnerT1', 'PBX_Prosurv_LeverAction', 255, 1);
+			handler.InjectSpawn('PB_ShotSpawnerT2', 'PBX_Prosurv_LeverAction', 255, 1);
+
+			// handler.InjectSpawn('PB_MGSpawnerT1', 'PBX_Prosurv_LeverAction', 255, 1);
 		}
 	}
 }
 
-//////////////////////////// SLOT 4 ////////////////////////////////////////////////////////////////////////////////////
-class PBXSlot4_Injector : PBInjector
+//////////////////////////// SSG ////////////////////////////////////////////////////////////////////////////////////
+class PBXSSG_Injector : PBInjector
+{
+	override void Init(PB_EventHandler handler)
+	{
+		// CSSG
+		if(!(pbx_ssg_filter & DisablePBX_CSSG))
+		{
+			handler.InjectSpawn('PB_SSGSpawnerT2', 'PBX_CSSG', 255, 1);
+			handler.InjectSpawn('PB_SSGSpawnerT3', 'PBX_CSSG', 255, 1);
+			handler.InjectSpawn('PB_SSGSpawnerT4', 'PBX_CSSG', 255, 1);
+		}
+	}
+}
+
+//////////////////////////// CHAINGUN ////////////////////////////////////////////////////////////////////////////////////
+class PBXChaingun_Injector : PBInjector
 {
 	override void Init(PB_EventHandler handler)
 	{
 		// Battle Rifle
 		if(!(pbx_chaingun_filter & DisablePBX_BattleRifle))
 		{
-			handler.InjectSpawn('PB_MGSpawnerT1', 'BDPBattleRifle', 255, 1);
-			handler.InjectSpawn('PB_MGSpawnerT2', 'BDPBattleRifle', 255, 1);
+			handler.InjectSpawn('PB_MGSpawnerT1', 'PBX_BattleRifle', 255, 1);
+			handler.InjectSpawn('PB_MGSpawnerT2', 'PBX_BattleRifle', 255, 1);
 		}
 		// Metal Sniper
 		if(!(pbx_chaingun_filter & DisablePBX_MetalSniper))
 		{
-			handler.InjectSpawn('PB_MGSpawnerT2', 'PB_MetalSniper', 255, 1);
-			handler.InjectSpawn('PB_MGSpawnerT3', 'PB_MetalSniper', 255, 1);
-			// handler.InjectSpawn('PB_UpgradeSpawnerT3', 'PB_MetalSniper', 255, 1);
-		}
-
-		// Lever Action
-		if(!(pbx_chaingun_filter & DisablePBX_LeverActionRifle))
-		{
-			handler.InjectSpawn('PB_ShotSpawnerT1', 'PBX_Prosurv_LeverAction', 255, 1);
-			handler.InjectSpawn('PB_ShotSpawnerT2', 'PBX_Prosurv_LeverAction', 255, 1);
-
-			handler.InjectSpawn('PB_MGSpawnerT1', 'PBX_Prosurv_LeverAction', 255, 1);
-			handler.InjectSpawn('PB_MGSpawnerT2', 'PBX_Prosurv_LeverAction', 255, 1);
+			handler.InjectSpawn('PB_MGSpawnerT2', 'PBX_MetalSniper', 255, 1);
+			handler.InjectSpawn('PB_MGSpawnerT3', 'PBX_MetalSniper', 255, 1);
+			// handler.InjectSpawn('PB_UpgradeSpawnerT3', 'PBX_MetalSniper', 255, 1);
 		}
 	}
 }
 
-//////////////////////////// SLOT 6 ////////////////////////////////////////////////////////////////////////////////////
-class PBXSlot6_Injector : PBInjector
+//////////////////////////// ROCKETLAUNCHER ////////////////////////////////////////////////////////////////////////////////////
+class PBXRocketLauncher_Injector : PBInjector
 {
 	override void Init(PB_EventHandler handler)
 	{
 		// Excavator
 		if(!(pbx_rocketlauncher_filter & DisablePBX_Excavator))
 		{
-			handler.InjectSpawn('PB_RLSpawnerT3', 'PB_Excavator', 255, 1);
-			handler.InjectSpawn('PB_RLSpawnerT4', 'PB_Excavator', 255, 1);
+			handler.InjectSpawn('PB_RLSpawnerT3', 'PBX_Excavator', 255, 1);
+			handler.InjectSpawn('PB_RLSpawnerT4', 'PBX_Excavator', 255, 1);
 		}
 		// // Cyberdemon RL
 		// if(!(pbx_rocketlauncher_filter & DisablePBX_CyberdemonRL))
@@ -86,20 +105,20 @@ class PBXSlot6_Injector : PBInjector
 		// }
 	}
 }
+//////////////////////////// PLASMARIFLE ////////////////////////////////////////////////////////////////////////////////////
 
-//////////////////////////// SLOT 9 ////////////////////////////////////////////////////////////////////////////////////
-class PBXSlot9_Injector : PBInjector
+//////////////////////////// BFG ////////////////////////////////////////////////////////////////////////////////////
+class PBXBFG_Injector : PBInjector
 {
     override void Init(PB_EventHandler handler)
     {
 		// Demon Ext
 		if(!(pbx_bfg_filter & DisablePBX_DemonExt))
 		{
-		   handler.InjectSpawn("PB_BFGSpawnerT4","PB_DemonExt",255,1);
+		   handler.InjectSpawn("PB_BFGSpawnerT4","PBX_DemonExt",255,1);
 		}
     }
 }
-
 //////////////////////////// BACKPACKS ////////////////////////////////////////////////////////////////////////////////////
 class PBXUpgrades_Injector : PBInjector
 {
@@ -131,7 +150,7 @@ class PBX_WeaponSpawner : EventHandler
                 if(!(special_drop_filter & DisablePBX_CyberdemonRL))
                 { 
 					// console.printf("Spawning CyberdemonRL from %s", actor.GetClassName());
-                   	actor.spawn("CyberdemonRL", actor.pos);
+                   	actor.spawn("PBX_CyberdemonRL", actor.pos);
                     actor.destroy(); 
                 } 
                 break;

@@ -1,5 +1,5 @@
 //the main weapon, defined here before a thousand tokens
-Class PB_CSSG : PB_WeaponBase
+Class PBX_CSSG : PB_WeaponBase
 {
 	default
 	{
@@ -19,7 +19,7 @@ Class PB_CSSG : PB_WeaponBase
 		PB_WeaponBase.respectItem "RespectCSSG";
 		
 		PB_WeaponBase.UsesWheel true;
-		PB_WeaponBase.WheelInfo "PB_CSSGWeaponWheel";
+		PB_WeaponBase.WheelInfo "CSSGWeaponWheel";
 	}
 	
 	int shellsmode;
@@ -69,6 +69,7 @@ Class PB_CSSG : PB_WeaponBase
 			wait;
 			
 		WeaponRespect:
+			TNT1 A 0 A_setInventory(invoker.respectInventoryItem,1);
 			TNT1 A 1 A_DoPBWeaponAction();
 			TNT1 A 0 A_Startsound("Ironsights", CHAN_AUTO);
 			C0XR ABC 1 A_DoPBWeaponAction();
@@ -883,19 +884,19 @@ Class PB_CSSG : PB_WeaponBase
 			return resolvestate("CancelWheel");
 		}
 
-		if(countinv(PB_CSSG.CSSG_ShellsToken1[actmode]) > 0)
+		if(countinv(PBX_CSSG.CSSG_ShellsToken1[actmode]) > 0)
 		{
-			A_Print("Ammo type already selected: "..PB_CSSG.CSSG_ShellsType[actmode]);
+			A_Print("Ammo type already selected: "..PBX_CSSG.CSSG_ShellsType[actmode]);
 			return resolvestate("CancelWheel");
 		}
 		
-		for(int i = 0; i < PB_CSSG.CSSG_ShellsToken1.size(); i++)
+		for(int i = 0; i < PBX_CSSG.CSSG_ShellsToken1.size(); i++)
 		{
-			if(countinv(PB_CSSG.CSSG_ShellsToken1[i]) > 0)
+			if(countinv(PBX_CSSG.CSSG_ShellsToken1[i]) > 0)
 			{
 				invoker.oldshells = invoker.shellsmode;
 				invoker.shellsmode = i;
-				A_print(PB_CSSG.CSSG_ConfirmShell[i]);
+				A_print(PBX_CSSG.CSSG_ConfirmShell[i]);
 				return resolvestate("EndSelection");
 			}
 		}
@@ -905,8 +906,8 @@ Class PB_CSSG : PB_WeaponBase
 	
 	action void clearcssgtokens()
 	{
-		for(int j = 0; j < PB_CSSG.CSSG_ShellsToken1.size(); j++)
-			A_takeinventory(PB_CSSG.CSSG_ShellsToken1[j],10);
+		for(int j = 0; j < PBX_CSSG.CSSG_ShellsToken1.size(); j++)
+			A_takeinventory(PBX_CSSG.CSSG_ShellsToken1[j],10);
 	}
 	
 	//so i dont need to override the player to add "player.startitem "blablabla",1"

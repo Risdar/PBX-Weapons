@@ -1,13 +1,15 @@
-Class PB_MetalSniper : PB_WeaponBase
+const MetalSniperFullAmmo = 11;
+
+Class PBX_MetalSniper : PB_WeaponBase
 {
 	default
 	{
 		weapon.slotnumber 4;
-		Tag "Metal Sniper";
+		Tag "$PBX_MetalSniper_Tag";
 		inventory.pickupsound "CLIPIN";
 		inventory.pickupmessage "Metal Sniper (slot 4)";
 		weapon.ammotype1 "PB_HighCalMag";
-		weapon.ammogive1 20;
+		weapon.ammogive1 30;
 		weapon.ammotype2 "MetalSniperAmmo";
 		//PB_WeaponBase.unloadertoken "SniperUnloaded"; 
 		PB_WeaponBase.respectItem "MetalSniperRespect";
@@ -35,6 +37,7 @@ Class PB_MetalSniper : PB_WeaponBase
 			Goto Ready;
 		
 		WeaponRespect:	//no respect yet
+			TNT1 A 0 A_setInventory(invoker.respectInventoryItem,1);
 			MSNI ABCD 1 A_DoPBWeaponAction();
 			MSNI EFGH 1 A_DoPBWeaponAction();
 			MSNI IJKL 1 A_DoPBWeaponAction();
@@ -257,7 +260,7 @@ Class PB_MetalSniper : PB_WeaponBase
             TNT1 A 0 A_Zoomfactor(1.0);
             TNT1 A 0 A_takeinventory("Zoomed",10);
             TNT1 A 0 setZoom(false);
-            TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, "Start_Rechamber", "Ready3", "NoAmmo", 20, 2);
+            TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, "Start_Rechamber", "Ready3", "NoAmmo", MetalSniperFullAmmo, 2);
         StandardReload:
             //raise
             TNT1 A 0 A_startsound("IronSights",30);
@@ -282,9 +285,9 @@ Class PB_MetalSniper : PB_WeaponBase
 			MSNR HIJKL 1;
 			TNT1 A 0 {
 				if(PB_GetChamberEmpty())
-					PB_AmmoIntoMag("MetalSniperAmmo","PB_HighCalMag",9,2);
+					PB_AmmoIntoMag("MetalSniperAmmo","PB_HighCalMag",MetalSniperFullAmmo-1,2);
 				else
-					PB_AmmoIntoMag("MetalSniperAmmo","PB_HighCalMag",10,2);
+					PB_AmmoIntoMag("MetalSniperAmmo","PB_HighCalMag",MetalSniperFullAmmo,2);
 			}
             TNT1 A 0 PB_SetMagUnloaded(false);
             TNT1 A 0 PB_SetMagEmpty(false);
@@ -567,7 +570,7 @@ class MetalSniperAmmo : Ammo
 {
 	default
 	{
-		inventory.maxamount 10;
+		inventory.maxamount MetalSniperFullAmmo;
 	}
 }
 

@@ -1,4 +1,4 @@
-extend class PB_DemonExt{
+extend class PBX_DemonExt{
 	override void ondrop(actor dropper)
 	{
 		dropper.A_StopSound(chan_unmkidle);

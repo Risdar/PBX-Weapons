@@ -1,30 +1,48 @@
-// SLOT 3
-AddOptionMenu "AddonWeaponSpawns" after "SHOT2"
+// SHOTGUN
+    // TIER 1
+AddOptionMenu "AddonWeaponSpawns" after "SHOT1"
 {
-    FlagOption    "Commander Shotgun",    "pbx_shotgun_filter",    "OffOn", 0
+        // SLOT 2
+    FlagOption    "Lever Action Rifle",    "pbx_shotgun_filter",    "OffOn", 0
 }
 
-// SLOT 4
+// SSG
+    // TIER 2
+AddOptionMenu "AddonWeaponSpawns" after "SSGT2"
+{
+        // SLOT 3
+    FlagOption    "Commander Shotgun",    "pbx_ssg_filter",    "OffOn", 0
+}
+
+// CHAINGUN
+    // TIER 1
 AddOptionMenu "AddonWeaponSpawns" after "CHNT1"
 {
+        // SLOT 4
     FlagOption    "Battle Rifle",    "pbx_chaingun_filter",    "OffOn", 0
-    FlagOption    "Lever Action Rifle",    "pbx_chaingun_filter",    "OffOn", 2
 }
+    // TIER 2
 AddOptionMenu "AddonWeaponSpawns" after "CHNT2"
 {
+        // SLOT 4
     FlagOption    "Metal Sniper",    "pbx_chaingun_filter",    "OffOn", 1
 }
 
-// SLOT 6
+// ROCKET LAUNCHER
+    // TIER 3
 AddOptionMenu "AddonWeaponSpawns" after "LAUT3"
 {
+        // SLOT 6
     FlagOption    "Excavator",    "pbx_rocketlauncher_filter",    "OffOn", 0
+        // SPECIAL
     FlagOption    "Cyberdemon drop their Weapon",    "special_drop_filter",    "OffOn", 0
 }
 
-// SLOT 9
+// BFG
+    // TIER 4
 AddOptionMenu "AddonWeaponSpawns" after "BFGT4"
 {
+        // SLOT 9
     FlagOption    "Demonic Exterminator",    "pbx_bfg_filter",    "OffOn", 0
 }
 
