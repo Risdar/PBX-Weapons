@@ -239,7 +239,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 					if(!PressingAltfire() || JustReleased(BT_ALTATTACK))
 						return resolvestate("ZoomOut");
 					
-					if (PressingFire() && PressingAltfire() && CountInv("BR_Ammo") > 0)
+					if (PressingFire() && PressingAltfire() && invoker.ammo2.amount > 0)
 							return resolvestate("FireADS");
 					
 					return A_DoPBWeaponAction(WRF_ALLOWRELOAD|WRF_NOSECONDARY);
@@ -247,7 +247,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 				}
 				else 
 				{
-					if (PressingFire() && CountInv("BR_Ammo") > 0)
+					if (PressingFire() && invoker.ammo2.amount > 0)
 						return resolvestate("FireADS");
 					
 					return A_DoPBWeaponAction(WRF_ALLOWRELOAD);
@@ -303,7 +303,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			TNT1 A 0 PB_JumpIfNoAmmo("ReloadFromADS",1,false);
 			BR4Z D 1 Bright
             {
-				PB_LowAmmoSoundWarning("default", "BR_Ammo");
+				PB_LowAmmoSoundWarning();
                 FireWeapon(1,1);
                 FireWeapon(1,2);
             }
@@ -394,7 +394,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			TNT1 A 0 
 			{
 				A_startsound("BR45LOAD",3);
-				PB_AmmoIntoMag("BR_Ammo","PB_HighCalMag",BR_AmmoFull,1);
+				PB_AmmoIntoMag(invoker.ammo2.getclassname(), invoker.ammo1.getclassname(), BR_AmmoFull,1);
                 PB_SetMagUnloaded(false);
                 PB_SetMagEmpty(false);
                 PB_SetChamberEmpty(false);
@@ -417,7 +417,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			{
 				If(getBRMag() > 0)
 					{
-						PB_UnloadMag("BR_Ammo", "PB_HighCalMag", 1);
+						PB_UnloadMag(invoker.ammotype2, invoker.ammotype1, 1);
 						PB_SpawnCasing("RifleClipSpawn");
 						// A_fireprojectile("RifleClipSpawn",5,false,0,-14,0);
 						PB_SetMagUnloaded(true);

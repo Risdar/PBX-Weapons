@@ -3,6 +3,22 @@ class LA_Select_Marlin : inventory {default{inventory.maxamount 1;}}
 class LA_Select_Magnum : inventory {default{inventory.maxamount 1;}}
 class LeverActionAmmo : PB_Ammo {default{inventory.maxamount leveractionFullAmmo;}}
 
+class PBX_MarlinRound : PB_LowCalMag // What the PB_Unload uses
+{
+	Default
+	{
+		Inventory.Amount 2;
+		Inventory.PickupSound "weapons/casing";
+		PB_Ammo.ammotype "marlinround";
+	}
+	States
+	{
+		Spawn:
+			4LVM A -1;
+			stop;
+	}
+}
+
 class PB_357Magnum : PB_500SW
 {
 	Default

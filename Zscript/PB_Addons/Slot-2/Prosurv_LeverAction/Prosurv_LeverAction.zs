@@ -46,6 +46,7 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 	
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
 	bool isZooming;
+	int currentMaxAmmo;
 	int LAMode;
 	enum eLAMode
 	{
@@ -159,13 +160,13 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 		switch(Mode)
 		{
 			case LA_444Marlin:
-				PB_UnloadMag("LeverActionAmmo","PB_LowCalMag",1,1,0,CountInv("LeverActionAmmo") - CountInv("LeverActionAmmo") % 2);
-				A_SetInventory("LeverActionAmmo",CountInv("LeverActionAmmo") / 2);
-				SetAmmoCapacity("LeverActionAmmo",6);
+				PB_UnloadMag(invoker.ammotype2,invoker.ammotype1,1,1,0,invoker.ammo2.amount - invoker.ammo2.amount % 2);
+				A_SetInventory(invoker.ammotype2,invoker.ammo2.amount / 2);
+				SetAmmoCapacity(invoker.ammotype2,6);
 				break;
 			case LA_357Magnum:
-				SetAmmoCapacity("LeverActionAmmo",leveractionFullAmmo);
-				A_SetInventory("LeverActionAmmo",CountInv("LeverActionAmmo") * 2);
+				SetAmmoCapacity(invoker.ammotype2,leveractionFullAmmo);
+				A_SetInventory(invoker.ammotype2,invoker.ammo2.amount * 2);
 				break;
 		}
 		PB_SetChamberEmpty(true);
@@ -198,10 +199,12 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 				if (CountInv("LA_Select_Marlin") == 1) {
 					LA_SetAmmo(LA_444Marlin);
 					setLAMode(LA_444Marlin);
+					invoker.currentMaxAmmo = leveractionFullAmmoMarlin;
 				}
 				if (CountInv("LA_Select_Magnum") == 1) {
 					LA_SetAmmo(LA_357Magnum);
 					setLAMode(LA_357Magnum);
+					invoker.currentMaxAmmo = leveractionFullAmmo;
 				}
 			}
 			A_SetInventory("CantWeaponSpecial" ,0 );
@@ -218,28 +221,11 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 		if(findinventory("LA_Select_Magnum")) A_Print("$PBX_LeverAction_Magnum", 2);
 	}
 
-	// THIS IS SUCH JANK LMAOOOOO
-	action state HandleReload()
-	{
-		if(CountInv("PB_LowCalMag") == 0)
-		{
-			return resolvestate("ReloadFinished");
-		}
-		else if(getLAMode() == LA_357Magnum && CountInv("LeverActionAmmo") == leveractionFullAmmo)
-		{
-			return resolvestate("ReloadFinished");
-		}
-		else if(getLAMode() == LA_444Marlin && CountInv("LeverActionAmmo") == leveractionFullAmmoMarlin)
-		{
-			return resolvestate("ReloadFinished");
-		}
-		return resolvestate(null);
-	}
-
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////  
 	override void postbeginplay()
 	{
 		LAMode = LA_357Magnum;
+		currentMaxAmmo = leveractionFullAmmo;
 		super.postbeginplay();
 	}
     
@@ -526,8 +512,7 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 			LVR2 QQ 1 A_SetRoll(roll-2.0,SPF_INTERPOLATE);
 			LVR2 RSTUVV 1 A_SetRoll(roll-0.6,SPF_INTERPOLATE);
 		ReloadLoop:
-			// TNT1 A 0 A_JumpIf(invoker.ammotype2 == 0 || invoker.ammotype1 == ammoAmount(),"ReloadFinished");
-			TNT1 A 0 HandleReload();
+			TNT1 A 0 A_JumpIf(invoker.ammo1.amount == 0 || invoker.ammo2.amount == invoker.currentMaxAmmo,"ReloadFinished");
 			LVR2 V 2 A_DoPBWeaponAction(WRF_NOBOB);
 			LVR3 AB 1 A_DoPBWeaponAction(WRF_NOBOB);
 			LVR3 C 1 { 
@@ -542,7 +527,6 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 						A_Takeinventory(invoker.ammotype1,1,TIF_NOTAKEINFINITE);
 						break;
 				}
-				
 				// PB_SetMagUnloaded(false);
 				PB_SetMagEmpty(false);
 				A_SetPitch(pitch-0.2,SPF_INTERPOLATE);
@@ -590,21 +574,21 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 			Goto FinishUnload;
 			TNT1 A 0 {
 				if (getLAMode() == LA_444Marlin) {
-					PB_UnloadMag(invoker.ammotype2,invoker.ammotype1,2,1,1,CountInv(invoker.ammotype2) - 1);
-					if(CountInv(invoker.ammotype2) < 1) 
+					PB_UnloadMag(invoker.ammotype2,invoker.ammotype1,2,1,1,invoker.ammo2.amount - 1,"PBX_MarlinRound");
+					if(invoker.ammo2.amount < 1) 
 					{
 						PB_SetMagEmpty(true);
-						// PB_SetMagUnloaded(true);
 						PB_SetChamberEmpty(true);
+						// PB_SetMagUnloaded(true);
 					}
 				}
 				else { 
-					PB_UnloadMag(invoker.ammotype2,invoker.ammotype1,1,1,1,CountInv(invoker.ammotype2) - 1);
-					if(CountInv(invoker.ammotype2) < 1) 
+					PB_UnloadMag(invoker.ammotype2,invoker.ammotype1,1,1,1,invoker.ammo2.amount - 1,"PB_MagnumRound");
+					if(invoker.ammo2.amount < 1) 
 					{
 						PB_SetMagEmpty(true);
-						// PB_SetMagUnloaded(true);
 						PB_SetChamberEmpty(true);
+						// PB_SetMagUnloaded(true);
 					}
 				}
 				A_StartSound("weapons/leveraction/rechamber");

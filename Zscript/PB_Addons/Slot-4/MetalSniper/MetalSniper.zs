@@ -9,7 +9,7 @@ Class PBX_MetalSniper : PB_WeaponBase
 		inventory.pickupsound "CLIPIN";
 		inventory.pickupmessage "Metal Sniper (slot 4)";
 		weapon.ammotype1 "PB_HighCalMag";
-		weapon.ammogive1 30;
+		weapon.ammogive1 32;
 		weapon.ammotype2 "MetalSniperAmmo";
 		//PB_WeaponBase.unloadertoken "SniperUnloaded"; 
 		PB_WeaponBase.respectItem "MetalSniperRespect";
@@ -36,13 +36,37 @@ Class PBX_MetalSniper : PB_WeaponBase
 			TNT1 A 1;
 			Goto Ready;
 		
-		WeaponRespect:	//no respect yet
+		WeaponRespect:
 			TNT1 A 0 A_setInventory(invoker.respectInventoryItem,1);
 			MSNI ABCD 1 A_DoPBWeaponAction();
 			MSNI EFGH 1 A_DoPBWeaponAction();
 			MSNI IJKL 1 A_DoPBWeaponAction();
 			MSNI MNOP 1 A_DoPBWeaponAction();
-			MSNI QRST 1 A_DoPBWeaponAction();
+			MSNI QRSSSS 1 A_DoPBWeaponAction();
+			// Raise
+			MSU0 ABCD 1 A_DoPBWeaponAction();
+			MSU0 EFGH 1 A_DoPBWeaponAction();
+			MSU0 IJKL 1 A_DoPBWeaponAction();
+			// Check Chamber
+			M3NC ABCD 1 A_DoPBWeaponAction();
+            M3NC EFGHI 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_startsound("MS/BoltDown",24);
+            M3NC J 15 A_DoPBWeaponAction();
+            M3NC K 10 A_DoPBWeaponAction();
+			M3NC LL 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_startsound("MS/BoltUp",25);
+            M3NC M 1 A_DoPBWeaponAction();
+			// Put Mag
+			MSNR ABCD 1 A_DoPBWeaponAction();
+            MSNR EFG 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_startsound("MS/InsertMag",20);
+			MSNR HIJKL 1 A_DoPBWeaponAction();
+            MSNR MNOP 1 A_DoPBWeaponAction();
+            MSNR QR 1 A_DoPBWeaponAction();
+			// Lower
+			MSU1 LKJIHGFEDCBA 1 A_DoPBWeaponAction();
+			// Rechamber
+            MSNI T 1 A_DoPBWeaponAction();
 			MSNI UVWX 1 A_DoPBWeaponAction();
 			MSNI YZ 1 A_DoPBWeaponAction();
 			MSNJ AAB 1 A_DoPBWeaponAction();
@@ -285,9 +309,9 @@ Class PBX_MetalSniper : PB_WeaponBase
 			MSNR HIJKL 1;
 			TNT1 A 0 {
 				if(PB_GetChamberEmpty())
-					PB_AmmoIntoMag("MetalSniperAmmo","PB_HighCalMag",MetalSniperFullAmmo-1,2);
+					PB_AmmoIntoMag(invoker.ammo2.getclassname(), invoker.ammo1.getclassname(), MetalSniperFullAmmo-1,2);
 				else
-					PB_AmmoIntoMag("MetalSniperAmmo","PB_HighCalMag",MetalSniperFullAmmo,2);
+					PB_AmmoIntoMag(invoker.ammo2.getclassname(), invoker.ammo1.getclassname(), MetalSniperFullAmmo,2);
 			}
             TNT1 A 0 PB_SetMagUnloaded(false);
             TNT1 A 0 PB_SetMagEmpty(false);
@@ -330,7 +354,7 @@ Class PBX_MetalSniper : PB_WeaponBase
 			TNT1 A 0 A_startsound("MS/Button",22);
 			MST0 E 1;
 			TNT1 A 0 {
-				PB_UnloadMag("MetalSniperAmmo", "PB_HighCalMag", 2,1,0,1,"PB_HigherCalRound");
+				PB_UnloadMag(invoker.ammotype2, invoker.ammotype1, 2,1,0,1,"PB_HigherCalRound");
 				PB_SetMagUnloaded(true);
 				PB_SetMagEmpty(true);
 			}
@@ -352,7 +376,7 @@ Class PBX_MetalSniper : PB_WeaponBase
 			TNT1 A 0 A_startsound("MS/Button",22);
 			MST1 E 1;
 			TNT1 A 0 {
-				PB_UnloadMag("MetalSniperAmmo", "PB_HighCalMag", 2,1,0,1,"PB_HigherCalRound");
+				PB_UnloadMag(invoker.ammotype2, invoker.ammotype1, 2,1,0,1,"PB_HigherCalRound");
 				PB_SetMagUnloaded(true);
 				PB_SetMagEmpty(true);
 			}
@@ -366,7 +390,7 @@ Class PBX_MetalSniper : PB_WeaponBase
             TNT1 A 0 A_startsound("MS/BoltDown",24);
             M3NC JKL 1;
 			TNT1 A 0 {
-				PB_UnloadMag("MetalSniperAmmo", "PB_HighCalMag", 2,1,0,0,"PB_HigherCalRound");
+				PB_UnloadMag(invoker.ammotype2, invoker.ammotype1, 2,1,0,0,"PB_HigherCalRound");
 				PB_SetChamberEmpty(true);
 			}
             TNT1 A 0 A_startsound("MS/BoltUp",25);

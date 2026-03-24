@@ -13,10 +13,10 @@ class PBX_Handler : EventHandler
         let pm = players[e.PlayerNumber].mo;
 		if(!pm) return;
         pm.giveinventory("CSSGShellsIn",2);
-        pm.giveinventory("BR_Ammo",15);
-        pm.giveinventory("MetalSniperAmmo",10);
-        pm.giveinventory("ExcavatorRounds",5);
-        pm.giveinventory("LeverActionAmmo",12);
+        pm.giveinventory("BR_Ammo", BR_AmmoFull);
+        pm.giveinventory("MetalSniperAmmo", MetalSniperFullAmmo-1);
+        pm.giveinventory("ExcavatorRounds", excavatorFullAmmo);
+        pm.giveinventory("LeverActionAmmo", leveractionFullAmmo);
         return;
     }
 }
