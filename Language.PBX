@@ -3,7 +3,7 @@
 
 //////////////////////////// SLOT 2 ///////////////////////////////////////////////////////////////////////////////
 // Lever Action
-PBX_LeverAction_Pickup = "Commander Super Shotgun (Slot 2)";
+PBX_LeverAction_Pickup = "Lever Action Rifle (Slot 2)";
 PBX_LeverAction_Tag = "UAC M1893 Mod 0 Lever Action";
 
 PBX_LeverAction_Marlin = "\cd.444 Marlin \c-Mode";

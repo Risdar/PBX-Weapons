@@ -1,4 +1,4 @@
-enum PBX_WeaponSpawnerFlags
+enum PBX_eWeaponSpawnerFlags
 {
 	// SHOTGUN
 		// SLOT 2

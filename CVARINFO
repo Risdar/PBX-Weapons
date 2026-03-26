@@ -12,3 +12,13 @@ server int pbx_bfg_filter = 0;
 server int pbx_backpack_filter = 0;
 
 server int special_drop_filter = 0;
+
+server int pbx_hudsetting_filter = 0;
+
+user float pbx_Weaponhud_x = -100.0;
+user float pbx_Weaponhud_y = -90.0;
+user float pbx_Weaponhud_scale = 1.0;
+
+user float pbx_WeaponModehud_x = -100.0;
+user float pbx_WeaponModehud_y = -130.0;
+user float pbx_WeaponModehud_scale = 2.0;
