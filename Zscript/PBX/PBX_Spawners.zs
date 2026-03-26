@@ -26,7 +26,8 @@ enum PBX_WeaponSpawnerFlags
 	DisablePBX_CyberdemonRL			        = 1 << 0,
 
 	// Upgrades
-	DisablePBX_CSSGUpgrades			        = 1 << 0
+	DisablePBX_CSSGUpgrades			        = 1 << 0,
+	DisablePBX_MetalSniperUpgrade			= 1 << 1
 }
 //////////////////////////// CHAINSAW ////////////////////////////////////////////////////////////////////////////////////
 
@@ -131,6 +132,13 @@ class PBXUpgrades_Injector : PBInjector
 			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'WPShellsUpgrade', 255, 1);
 			handler.InjectSpawn('PB_UpgradeSpawnerT4', 'ExplosiveShellsUpgrade', 255, 1);
 			handler.InjectSpawn('PB_UpgradeSpawnerT4', 'DoomShellsUpgrade', 255, 1);
+		}
+		
+		// Metal Sniper Upgrade
+		if(!(pbx_backpack_filter & DisablePBX_MetalSniperUpgrade))
+		{
+			handler.InjectSpawn('PB_UpgradeSpawnerT2', 'ResonanceAmmo_Upgrade', 255, 1);
+			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'ResonanceAmmo_Upgrade', 255, 1);
 		}
     }
 }

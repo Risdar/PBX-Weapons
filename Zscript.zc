@@ -5,37 +5,39 @@ Version 4.13
 
 // Slot 2
 // Lever Action 
-#include "Zscript/PB_Addons/Slot-2/Prosurv_LeverAction/Prosurv_LeverAction.zs"
-#include "Zscript/PB_Addons/Slot-2/Prosurv_LeverAction/LeverAction_helpers.zs"
+#include "Zscript/PBX_Weapons/Slot-2/Prosurv_LeverAction/Prosurv_LeverAction.zs"
+#include "Zscript/PBX_Weapons/Slot-2/Prosurv_LeverAction/LeverAction_wheel.zs"
+#include "Zscript/PBX_Weapons/Slot-2/Prosurv_LeverAction/LeverAction_helpers.zs"
 
 // Slot 3
 // CSSG
-#include "Zscript/PB_Addons/Slot-3/CSSG/CSSG.zs"
-#include "Zscript/PB_Addons/Slot-3/CSSG/Casings.zs"
-#include "Zscript/PB_Addons/Slot-3/CSSG/CSSGEvent.zs"
-#include "Zscript/PB_Addons/Slot-3/CSSG/CSSG_Upgrades.zs"
-#include "Zscript/PB_Addons/Slot-3/CSSG/CSSG_Wheel.zs"
+#include "Zscript/PBX_Weapons/Slot-3/CSSG/CSSG.zs"
+#include "Zscript/PBX_Weapons/Slot-3/CSSG/Casings.zs"
+#include "Zscript/PBX_Weapons/Slot-3/CSSG/CSSGEvent.zs"
+#include "Zscript/PBX_Weapons/Slot-3/CSSG/CSSG_Upgrades.zs"
+#include "Zscript/PBX_Weapons/Slot-3/CSSG/CSSG_Wheel.zs"
 
 // Slot 4
 // Battle Rifle
-#include "Zscript/PB_Addons/Slot-4/BattleRifle/BattleRifle.zs"
-#include "Zscript/PB_Addons/Slot-4/BattleRifle/BattleRifle_helpers.zs"
-// #Include "Zscript/PB_Addons/Slot-4/BattleRifle/math.zs"
+#include "Zscript/PBX_Weapons/Slot-4/BattleRifle/BattleRifle.zs"
+#include "Zscript/PBX_Weapons/Slot-4/BattleRifle/BattleRifle_helpers.zs"
+// #Include "Zscript/PBX_Weapons/Slot-4/BattleRifle/math.zs"
 // Metal Sniper
-#include "Zscript/PB_Addons/Slot-4/MetalSniper/MetalSniper.zs"
-#include "Zscript/PB_Addons/Slot-4/MetalSniper/MetalSniper_Wheel.zs"
+#include "Zscript/PBX_Weapons/Slot-4/MetalSniper/MetalSniper.zs"
+#include "Zscript/PBX_Weapons/Slot-4/MetalSniper/MetalSniper_Wheel.zs"
+#include "Zscript/PBX_Weapons/Slot-4/MetalSniper/MetalSniper_helpers.zs"
 
 
 // Slot 5
 
 // Slot 6
 // Excavator
-#include "Zscript/PB_Addons/Slot-6/Excavator/Excavator.zs"
-#include "Zscript/PB_Addons/Slot-6/Excavator/Excavator_wheel.zs"
-#include "Zscript/PB_Addons/Slot-6/Excavator/Excavator_Helpers.zs"
+#include "Zscript/PBX_Weapons/Slot-6/Excavator/Excavator.zs"
+#include "Zscript/PBX_Weapons/Slot-6/Excavator/Excavator_wheel.zs"
+#include "Zscript/PBX_Weapons/Slot-6/Excavator/Excavator_Helpers.zs"
 // Cyberdemon RL
-#include "Zscript/PB_Addons/Slot-6/CyberdemonRL/CyberdemonRL.zs"
-#include "Zscript/PB_Addons/Slot-6/CyberdemonRL/CyberRL_helpers.zs"
+#include "Zscript/PBX_Weapons/Slot-6/CyberdemonRL/CyberdemonRL.zs"
+#include "Zscript/PBX_Weapons/Slot-6/CyberdemonRL/CyberRL_helpers.zs"
 
 // Slot 7
 
@@ -43,14 +45,14 @@ Version 4.13
 
 // Slot 9
 // Demon Ext
-#include "Zscript/PB_Addons/Slot-9/DemonicExterminator/DemonicExt.zs"
-#include "Zscript/PB_Addons/Slot-9/DemonicExterminator/DemonicExtFunctions.zs"
-#include "Zscript/PB_Addons/Slot-9/DemonicExterminator/DemonicExtAttacks.zs"
-#include "Zscript/PB_Addons/Slot-9/DemonicExterminator/DemonicExtProj.zs"
-#include "Zscript/PB_Addons/Slot-9/DemonicExterminator/DemonicExtProj2.zs"
-#include "Zscript/PB_Addons/Slot-9/DemonicExterminator/DemonicExtProj3.zs"
-#include "Zscript/PB_Addons/Slot-9/DemonicExterminator/DemonicExtStuff.zs"
-#include "Zscript/PB_Addons/Slot-9/DemonicExterminator/DemonicExt_Wheel.zs"
+#include "Zscript/PBX_Weapons/Slot-9/DemonicExterminator/DemonicExt.zs"
+#include "Zscript/PBX_Weapons/Slot-9/DemonicExterminator/DemonicExtFunctions.zs"
+#include "Zscript/PBX_Weapons/Slot-9/DemonicExterminator/DemonicExtAttacks.zs"
+#include "Zscript/PBX_Weapons/Slot-9/DemonicExterminator/DemonicExtProj.zs"
+#include "Zscript/PBX_Weapons/Slot-9/DemonicExterminator/DemonicExtProj2.zs"
+#include "Zscript/PBX_Weapons/Slot-9/DemonicExterminator/DemonicExtProj3.zs"
+#include "Zscript/PBX_Weapons/Slot-9/DemonicExterminator/DemonicExtStuff.zs"
+#include "Zscript/PBX_Weapons/Slot-9/DemonicExterminator/DemonicExt_Wheel.zs"
 
 // Others
 #include "Zscript/PBX/PBX_Spawners.zs"

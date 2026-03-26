@@ -7,3 +7,4 @@ for some of the weapons:
 3. ThePopeofDope
 4. Renegade_Android
 5. doc
+6. Dr_Cosmobyte (Metal Sniper Upgrade Pickup Sprite)
