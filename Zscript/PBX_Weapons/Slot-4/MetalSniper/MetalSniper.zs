@@ -404,7 +404,7 @@ Class PBX_MetalSniper : PB_WeaponBase
             TNT1 A 0 A_startsound("MS/BoltDown",24);
             M3NC JKL 1;
 			TNT1 A 0{
-				MS_UnloadMag();
+				MS_UnloadMag(true);
 				PB_SetChamberEmpty(true);
 			}
             TNT1 A 0 A_startsound("MS/BoltUp",25);
@@ -511,10 +511,10 @@ Class PBX_MetalSniper : PB_WeaponBase
 		PB_AmmoIntoMag(invoker.ammo2.getclassname(), invoker.ammo1.getclassname(), amount, type);
 	}
 
-	action void MS_UnloadMag()
+	action void MS_UnloadMag(bool UnloadChamber = false)
 	{
 		int goal = 1;
-		if(PB_GetChamberEmpty()) goal--;
+		if(UnloadChamber) goal = 0;
 		int type = invoker.resonanceAmmoLoaded ? 3 : 2;
 		PB_UnloadMag(invoker.ammotype2, invoker.ammotype1, type, 1, 0, goal, "PB_HigherCalRound");
 	}

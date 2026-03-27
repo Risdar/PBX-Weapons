@@ -574,7 +574,7 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 					}
 				}
 				else { 
-					PB_UnloadMag(invoker.ammotype2,invoker.ammotype1,1,1,1,0,"PB_MagnumRound");
+					PB_UnloadMag(invoker.ammotype2,invoker.ammotype1,1,1,1,0,"PBX_MagnumRound");
 					if(invoker.ammo2.amount < 1) 
 					{
 						PB_SetMagEmpty(true);

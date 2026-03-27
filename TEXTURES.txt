@@ -9,6 +9,14 @@ Sprite "4LVMA0", 62, 14
 	Patch "MAR4A0", 0, 0
 }
 
+Sprite "4M35A0", 38, 12
+{
+	XScale 7.600
+	YScale 7.600
+	Offset 19, 10
+	Patch "357MA0", 0, 0
+}
+
 Texture "5DUNA0", 110, 42
 {
 	XScale 1.100

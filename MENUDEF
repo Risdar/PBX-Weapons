@@ -1,26 +1,29 @@
 AddOptionMenu "PB_AddonOptions"
 {
-    Submenu "PBX HUD Customization", "PBX_HudMenu"
+    Submenu "$PBX_Settings", "PBX_HudMenu"
 }
 OptionMenu "PBX_HudMenu"
 {
-    Title "PBX HUD SETTINGS"
-    
+    Title "$PBX_Settings"
+
+    StaticText "PBX Settings"
+
+    StaticText " "
+
+    StaticText "HUD Settings"
     StaticText "Weapon Position"
-    // Slider "Label", "CVarName", Min, Max, Step
-    FlagOption "Weapon HUD",    "pbx_hudsetting_filter",    "OffOn", 0
-    Slider "Horizontal (X)", "pbx_Weaponhud_x", -500, 500, 1
-    Slider "Vertical (Y)",   "pbx_Weaponhud_y", -500, 500, 1
-    Slider "Scale",   "pbx_Weaponhud_scale", 1, 10, 0.1
+    FlagOption "Weapon HUD",            "pbx_hudsetting_filter",    "OffOn", 0
+    Slider "Horizontal (X)",            "pbx_Weaponhud_x", -700, 700, 1
+    Slider "Vertical (Y)",              "pbx_Weaponhud_y", -700, 700, 1
+    Slider "Scale",                     "pbx_Weaponhud_scale", 0.1, 10, 0.1
     
     StaticText " "
 
     StaticText "Weapon Mode Position"
-    // Slider "Label", "CVarName", Min, Max, Step
-    FlagOption "Weapon Mode HUD",    "pbx_hudsetting_filter",    "OffOn", 1
-    Slider "Horizontal (X)", "pbx_WeaponModehud_x", -500, 500, 1
-    Slider "Vertical (Y)",   "pbx_WeaponModehud_y", -500, 500, 1
-    Slider "Scale",   "pbx_WeaponModehud_scale", 0.1, 10, 0.1
+    FlagOption "Weapon Mode HUD",       "pbx_hudsetting_filter",    "OffOn", 1
+    Slider "Horizontal (X)",            "pbx_WeaponModehud_x", -700, 700, 1
+    Slider "Vertical (Y)",              "pbx_WeaponModehud_y", -700, 700, 1
+    Slider "Scale",                     "pbx_WeaponModehud_scale", 0.1, 10, 0.1
 
     /* Spacer 8 */
 
@@ -28,8 +31,8 @@ OptionMenu "PBX_HudMenu"
     Slider "HUD Opacity", "pbx_hud_alpha", 0.0, 1.0, 0.1 */
     StaticText " "
     
-    // A handy reset button
-    Command "Reset HUD to Default", "set pbx_Weaponhud_x -100.0; set pbx_Weaponhud_y -90.0; set pbx_Weaponhud_scale 1.0; set pbx_WeaponModehud_x -100.0; set pbx_WeaponModehud_y -130.0; pbx_WeaponModehud_scale 2.0"
+    // Reset
+    Command "Reset HUD to Default", "set pbx_Weaponhud_x -100.0; set pbx_Weaponhud_y -90.0; set pbx_Weaponhud_scale 1.0; set pbx_WeaponModehud_x -260; set pbx_WeaponModehud_y -14; pbx_WeaponModehud_scale 2.5"
 }
 
 

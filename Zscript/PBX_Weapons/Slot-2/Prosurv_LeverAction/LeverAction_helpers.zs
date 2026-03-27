@@ -5,25 +5,42 @@ class LeverActionAmmo : PB_Ammo {default{inventory.maxamount leveractionFullAmmo
 
 class PBX_MarlinRound : PB_LowCalMag // What the PB_Unload uses
 {
-	Default
-	{
-		Inventory.Amount 2;
-		Inventory.PickupSound "weapons/casing";
-		PB_Ammo.ammotype "marlinround";
-	}
-
-	override void PostBeginPlay()
+    Default
     {
-        Super.PostBeginPlay();
+        Inventory.Amount 2;
+        Inventory.PickupSound "weapons/casing";
+    }
+
+    override void PB_SetAmmoSprite()
+    {
         sprite = GetSpriteIndex("4LVM");
     }
 
 	States
-	{
-		Spawn:
-			4LVM A -1;
-			stop;
-	}
+    {
+        CacheSprites:
+            4LVM A 0;
+    }
+}
+
+class PBX_MagnumRound : PB_LowCalMag
+{
+    Default
+    {
+        Inventory.Amount 1;
+        Inventory.PickupSound "weapons/casing";
+    }
+
+    override void PB_SetAmmoSprite()
+    {
+        sprite = GetSpriteIndex("4M35");
+    }
+
+	States
+    {
+        CacheSprites:
+            4M35 A 0;
+    }
 }
 
 class PB_357Magnum : PB_500SW
