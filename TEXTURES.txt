@@ -17,6 +17,14 @@ Sprite "4M35A0", 38, 12
 	Patch "357MA0", 0, 0
 }
 
+Sprite "MSXEA0", 64, 14
+{
+	XScale 5.500
+	YScale 7.900
+	Offset 32, 12
+	Patch "RESOAMMO", 0, 0
+}
+
 Texture "5DUNA0", 110, 42
 {
 	XScale 1.100

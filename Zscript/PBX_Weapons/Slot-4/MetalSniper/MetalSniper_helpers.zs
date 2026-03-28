@@ -9,6 +9,25 @@ class MetalSniperAmmo : PB_Ammo
 		Ammo.BackpackMaxAmount MetalSniperFullAmmo;
 	}
 }
+class PBX_ResoRound : PB_HighCalMag
+{
+    Default
+    {
+        Inventory.Amount 6;
+        Inventory.PickupSound "weapons/casing";
+    }
+
+    override void PB_SetAmmoSprite()
+    {
+        sprite = GetSpriteIndex("MSXEA0");
+    }
+
+	States
+    {
+        CacheSprites:
+            MSXE A 0;
+    }
+}
 
 class MetalSniperRespect : inventory {default{inventory.maxamount 1;}}
 class SniperUnloaded : inventory {default{inventory.maxamount 1;}}
@@ -58,7 +77,7 @@ class MS_ResonanceAmmo : PB_Projectile
 {
 	Default
 	{
-		PB_Projectile.BaseDamage 150;
+		PB_Projectile.BaseDamage 200;
 		PB_Projectile.RipperCount 3;
 		PB_Projectile.PenetrationCount 0;
         DamageType "Stun";

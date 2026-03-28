@@ -30,6 +30,7 @@ Class MetalSniperWheel : wheelinfocontainer
 
 		if(requester.FindInventory("MetalSniperUpgraded") || pbx_backpack_filter & DisablePBX_MetalSniperUpgrade) 
 		{
+			iconScale = (1.0, 1.0);
 			if(weap && weap.resonanceAmmoLoaded)
 			{
 				PB_SpecialWheel_Mode MS_Resonance = new ("PB_SpecialWheel_Mode");

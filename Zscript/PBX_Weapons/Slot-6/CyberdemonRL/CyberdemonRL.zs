@@ -48,7 +48,7 @@ class PBX_CyberdemonRL : PB_WeaponBase
 						A_StartSound("Rifle/DSCANFIR", CHAN_WEAPON, CHANF_OVERLAP, 1.0, pitch: 0.6);
 						A_ZoomFactor(0.98, SPF_INTERPOLATE);
 						// PB_FireBullets("CyberBallsPlayer", 1, frandom(-2,2), 0, 0, frandom(-0.5, 0.5));
-				        PB_LowAmmoSoundWarning();
+				        PB_LowAmmoSoundWarning("default", invoker.ammotype1.getclassname());
 						A_TakeInventory(invoker.AmmoType1,2,TIF_NOTAKEINFINITE);
 						A_FireProjectile("CyberBallsPlayer", PB_Math.LinearMap(pb_weapon_recoil_mod_horizontal, 0.0, 1.0, 1.0, 0.2), 0, 0, 0, FPF_NOAUTOAIM, PB_Math.LinearMap(pb_weapon_recoil_mod_vertical, 0.0, 1.0, 1.0, 0.2));
 						PB_IncrementHeat(4);
