@@ -77,7 +77,7 @@ class MS_ResonanceAmmo : PB_Projectile
 {
 	Default
 	{
-		PB_Projectile.BaseDamage 200;
+		PB_Projectile.BaseDamage 300;
 		PB_Projectile.RipperCount 3;
 		PB_Projectile.PenetrationCount 0;
         DamageType "Stun";
