@@ -220,7 +220,9 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			TNT1 A 0 A_jumpif(countinv("zoomed") > 0,"WeaponReadyADS");
 			BR45 B 1 {
 				PB_HandleCrosshair(42);
+				if(!(pbx_generalsetting_filter & DisablePBX_Smoke)){
 				PB_CoolDownBarrel();
+				}
 				return A_DoPBWeaponAction(WRF_ALLOWRELOAD);
 			}
 			Loop;
@@ -232,7 +234,9 @@ class PBX_BDPBattleRifle : PB_WeaponBase
             {
 				A_SetRoll(0);
                 PB_HandleCrosshair(5);
+				if(!(pbx_generalsetting_filter & DisablePBX_Smoke)){
 				PB_CoolDownBarrel();
+				}
                 A_SetInventory("PB_LockScreenTilt",0);
 				if(Cvar.GetCvar("pb_toggle_aim_hold",player).getint() == 1) 
 				{

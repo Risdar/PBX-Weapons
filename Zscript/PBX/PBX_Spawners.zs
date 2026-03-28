@@ -137,8 +137,8 @@ class PBXUpgrades_Injector : PBInjector
 		// Metal Sniper Upgrade
 		if(!(pbx_backpack_filter & DisablePBX_MetalSniperUpgrade))
 		{
-			handler.InjectSpawn('PB_UpgradeSpawnerT2', 'ResonanceAmmo_Upgrade', 255, 1);
 			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'ResonanceAmmo_Upgrade', 255, 1);
+			handler.InjectSpawn('PB_UpgradeSpawnerT4', 'ResonanceAmmo_Upgrade', 255, 1);
 		}
     }
 }

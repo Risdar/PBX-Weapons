@@ -117,6 +117,7 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 				PB_FireLA();
 				PB_GunSmoke(0,0,0);
 				A_FireCustomMissile("YellowFlareSpawn",0,0,0,0);
+				PB_IncrementHeat(4);
 				A_GunFlash();
 				switch (weaponSide)
 				{
@@ -335,6 +336,11 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 		Ready3:
         ReadyNormal:
 			TNT1 A 0 PB_HandleCrosshair(76);
+			TNT1 A 0 {
+				if(!(pbx_generalsetting_filter & DisablePBX_Smoke)){
+					PB_CoolDownBarrel();
+				}
+			}
 			TNT1 A 0 A_jumpif(countinv("zoomed") > 0,"Ready2");
 			LVRA A 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD);
 			Loop;
@@ -344,6 +350,9 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 			LVR3 Q 1 {
 				A_SetRoll(0);
 				PB_HandleCrosshair(-1);
+				if(!(pbx_generalsetting_filter & DisablePBX_Smoke)){
+					PB_CoolDownBarrel();
+				}
 				A_SetInventory("PB_LockScreenTilt",0);
 				if(Cvar.GetCvar("pb_toggle_aim_hold",player).getint() == 1) 
 				{

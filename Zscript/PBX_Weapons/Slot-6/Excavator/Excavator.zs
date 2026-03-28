@@ -112,6 +112,7 @@ class PBX_Excavator : PB_WeaponBase
                         // ACTUAL FIRING
 						A_FireCustomMissile("ShotgunParticles", random(-16,16), 0, -1, random(-9,9));
 		                A_FireBullets(0, 0, 1, 50, "shotpuff", 0, 130);
+				        PB_IncrementHeat(4);
 		                A_FireCustomMissile("RedFlareSpawn",-5,0,0,0);
 		                A_ZoomFactor(0.96);
                         fireExcavator(); // THIS FUNCTION ALREADY PLAYS THE FIRING SOUND
@@ -216,12 +217,22 @@ class PBX_Excavator : PB_WeaponBase
 		Ready3:
         ReadyDrillChargaMode:
 			TNT1 A 0 PB_HandleCrosshair(78);
+            TNT1 A 0 {
+				if(!(pbx_generalsetting_filter & DisablePBX_Smoke)){
+					PB_CoolDownBarrel();
+				}
+			}
             TNT1 A 0 A_Jumpif(getExcavatorMode() == eDropShotMode, "ReadyDropShotMode");
 			5DKF A 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD);
 			Loop;
             
 		ReadyDropShotMode:
 			TNT1 A 0 PB_HandleCrosshair(79);
+            TNT1 A 0 {
+				if(!(pbx_generalsetting_filter & DisablePBX_Smoke)){
+					PB_CoolDownBarrel();
+				}
+			}
             TNT1 A 0 A_Jumpif(getExcavatorMode() == eDrillChargeMode, "ReadyDrillChargaMode");
 		    5DKF B 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD);
 			Loop;

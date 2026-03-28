@@ -14,6 +14,7 @@ server int pbx_backpack_filter = 0;
 server int special_drop_filter = 0;
 
 server int pbx_hudsetting_filter = 0;
+server int pbx_generalsetting_filter = 0;
 
 user int pbx_Weaponhud_x = -100;
 user int pbx_Weaponhud_y = -90;

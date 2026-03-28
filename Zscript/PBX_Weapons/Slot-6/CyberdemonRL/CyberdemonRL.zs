@@ -51,6 +51,7 @@ class PBX_CyberdemonRL : PB_WeaponBase
 				        PB_LowAmmoSoundWarning();
 						A_TakeInventory(invoker.AmmoType1,2,TIF_NOTAKEINFINITE);
 						A_FireProjectile("CyberBallsPlayer", PB_Math.LinearMap(pb_weapon_recoil_mod_horizontal, 0.0, 1.0, 1.0, 0.2), 0, 0, 0, FPF_NOAUTOAIM, PB_Math.LinearMap(pb_weapon_recoil_mod_vertical, 0.0, 1.0, 1.0, 0.2));
+						PB_IncrementHeat(4);
 						// A_FireCustomMissile(, random(-2,2), 0, 0, 0, 0, frandom(-0.5,0.5));
 						break;
 				}
@@ -109,6 +110,11 @@ class PBX_CyberdemonRL : PB_WeaponBase
 		Ready:
 		Ready3:
 			TNT1 A 0 PB_HandleCrosshair(78);
+			TNT1 A 0 {
+				if(!(pbx_generalsetting_filter & DisablePBX_Smoke)){
+					PB_CoolDownBarrel();
+				}
+			}
             TNT1 A 0 A_PlaySound("BFGHUM", 6,1,1);
 			CYBF IJ 1 BRIGHT A_DoPBWeaponAction;
 			Loop;

@@ -117,6 +117,11 @@ Class PBX_CSSG : PB_WeaponBase
 		Ready:
 		Ready3:
 			TNT1 A 0 CM_HandleCrosshair();
+			TNT1 A 0 {
+				if(!(pbx_generalsetting_filter & DisablePBX_Smoke)){
+					PB_CoolDownBarrel();
+				}
+			}
 			C0ID A 2 A_DoPBWeaponAction();
 			loop;
 		
@@ -746,6 +751,7 @@ Class PBX_CSSG : PB_WeaponBase
 				CSSG_FireBullets("DanmakuProjectile",8,1.5,2,0,1.2);
 				break;
 		}
+		PB_IncrementHeat(4);
 		
 	}
 	
@@ -786,6 +792,7 @@ Class PBX_CSSG : PB_WeaponBase
 				CSSG_FireBullets("DanmakuProjectile",8,1.6,-2,0,1.2);
 				break;
 		}
+		PB_IncrementHeat(4);
 		
 	}
 	
