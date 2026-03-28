@@ -65,7 +65,7 @@ Class CSSGWeaponWheel : wheelinfocontainer
 		spw.Push(CSSG_Flechette);
 		spw.Push(CSSG_Flak);
 
-		if(requester.FindInventory("DragonBreathUpgrade")) 
+		if(requester.FindInventory("DragonBreathUpgrade") || pbx_backpack_filter & DisablePBX_CSSGUpgrades) 
 		{
 			PB_SpecialWheel_Mode CSSG_DragonBreath = new ("PB_SpecialWheel_Mode");
 			CSSG_DragonBreath.img = "graphics/Weapon Wheel/CSSG/SG_DB.png";
@@ -87,7 +87,7 @@ Class CSSGWeaponWheel : wheelinfocontainer
 			spw.Push(CSSG_DragonBreath_No);
 		}
 
-		if(requester.FindInventory("ExplosiveUpgrade")) 
+		if(requester.FindInventory("ExplosiveUpgrade") || pbx_backpack_filter & DisablePBX_CSSGUpgrades) 
 		{
 			PB_SpecialWheel_Mode CSSG_Explosive = new ("PB_SpecialWheel_Mode");
 			CSSG_Explosive.img = "graphics/Weapon Wheel/CSSG/SG_Explosive.png";
@@ -109,7 +109,7 @@ Class CSSGWeaponWheel : wheelinfocontainer
 		}
 		
 		
-		if(requester.FindInventory("WhitePhosphorusUpgrade")) 
+		if(requester.FindInventory("WhitePhosphorusUpgrade") || pbx_backpack_filter & DisablePBX_CSSGUpgrades) 
 		{
 			PB_SpecialWheel_Mode CSSG_WPhosphorus = new ("PB_SpecialWheel_Mode");
 			CSSG_WPhosphorus.img = "graphics/Weapon Wheel/CSSG/SG_WPhosphorus.png";
@@ -130,7 +130,7 @@ Class CSSGWeaponWheel : wheelinfocontainer
 			spw.Push(CSSG_WPhosphorus_No);
 		}
 		
-		if(requester.FindInventory("TripleDoomUpgrade")) 
+		if(requester.FindInventory("TripleDoomUpgrade") || pbx_backpack_filter & DisablePBX_CSSGUpgrades) 
 		{
 			PB_SpecialWheel_Mode CSSG_Doom = new ("PB_SpecialWheel_Mode");
 			CSSG_Doom.img = "graphics/Weapon Wheel/CSSG/SG_Doom.png";
@@ -151,7 +151,7 @@ Class CSSGWeaponWheel : wheelinfocontainer
 			spw.Push(CSSG_Doom_No);
 		}
 		
-		if(requester.FindInventory("DanmakuUpgrade")) 
+		if(requester.FindInventory("DanmakuUpgrade") || pbx_backpack_filter & DisablePBX_CSSGUpgrades) 
 		{
 			PB_SpecialWheel_Mode CSSG_Danmaku = new ("PB_SpecialWheel_Mode");
 			CSSG_Danmaku.img = "graphics/Weapon Wheel/CSSG/SG_Danmaku.png";
