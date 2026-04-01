@@ -29,7 +29,7 @@ Class CSSGWeaponWheel : wheelinfocontainer
 		vector2 iconScale = (0.7, 0.7);
 		
 		PB_SpecialWheel_Mode CSSG_BuckShot = new ("PB_SpecialWheel_Mode");
-		CSSG_BuckShot.img = "graphics/Weapon Wheel/CSSG/SG_Buck.png";
+		CSSG_BuckShot.img = "graphics/WeaponWheel/CSSG/SG_Buck.png";
 		CSSG_BuckShot.Alias = "$PBX_CM_BUCKLD";
 		CSSG_BuckShot.tokentogive = "SelectCSG_Buckshot";
 		CSSG_BuckShot.scalex = iconscale.x;
@@ -37,7 +37,7 @@ Class CSSGWeaponWheel : wheelinfocontainer
 		
 		
 		PB_SpecialWheel_Mode CSSG_Slug = new ("PB_SpecialWheel_Mode");
-		CSSG_Slug.img = "graphics/Weapon Wheel/CSSG/SG_Slug.png";
+		CSSG_Slug.img = "graphics/WeaponWheel/CSSG/SG_Slug.png";
 		CSSG_Slug.Alias = "$PBX_CM_SLUGLD";
 		CSSG_Slug.tokentogive = "SelectCSG_Slugshot";
 		CSSG_Slug.scalex = iconscale.x;
@@ -46,7 +46,7 @@ Class CSSGWeaponWheel : wheelinfocontainer
 		
 		
 		PB_SpecialWheel_Mode CSSG_Flechette = new ("PB_SpecialWheel_Mode");
-		CSSG_Flechette.img = "graphics/Weapon Wheel/CSSG/SG_Flechette.png";
+		CSSG_Flechette.img = "graphics/WeaponWheel/CSSG/SG_Flechette.png";
 		CSSG_Flechette.Alias = "$PBX_CM_FLCHLD";
 		CSSG_Flechette.tokentogive = "SelectCSG_Flechette";
 		CSSG_Flechette.scalex = iconscale.x;
@@ -54,7 +54,7 @@ Class CSSGWeaponWheel : wheelinfocontainer
 		
 
 		PB_SpecialWheel_Mode CSSG_Flak = new ("PB_SpecialWheel_Mode");
-		CSSG_Flak.img = "graphics/Weapon Wheel/CSSG/SG_Flak.png";
+		CSSG_Flak.img = "graphics/WeaponWheel/CSSG/SG_Flak.png";
 		CSSG_Flak.Alias = "$PBX_CM_FLAKLD";
 		CSSG_Flak.tokentogive = "SelectCSG_Flak";
 		CSSG_Flak.scalex = iconscale.x;
@@ -68,7 +68,7 @@ Class CSSGWeaponWheel : wheelinfocontainer
 		if(requester.FindInventory("DragonBreathUpgrade") || pbx_backpack_filter & DisablePBX_CSSGUpgrades) 
 		{
 			PB_SpecialWheel_Mode CSSG_DragonBreath = new ("PB_SpecialWheel_Mode");
-			CSSG_DragonBreath.img = "graphics/Weapon Wheel/CSSG/SG_DB.png";
+			CSSG_DragonBreath.img = "graphics/WeaponWheel/CSSG/SG_DB.png";
 			CSSG_DragonBreath.Alias = "$PBX_CM_DGBTLD";
 			CSSG_DragonBreath.tokentogive = "SelectCSG_Dragonsbreath";
 			CSSG_DragonBreath.scalex = iconscale.x;
@@ -90,7 +90,7 @@ Class CSSGWeaponWheel : wheelinfocontainer
 		if(requester.FindInventory("ExplosiveUpgrade") || pbx_backpack_filter & DisablePBX_CSSGUpgrades) 
 		{
 			PB_SpecialWheel_Mode CSSG_Explosive = new ("PB_SpecialWheel_Mode");
-			CSSG_Explosive.img = "graphics/Weapon Wheel/CSSG/SG_Explosive.png";
+			CSSG_Explosive.img = "graphics/WeaponWheel/CSSG/SG_Explosive.png";
 			CSSG_Explosive.Alias = "$PBX_CM_EXPLLD";
 			CSSG_Explosive.tokentogive = "SelectCSG_Explosive";
 			CSSG_Explosive.scalex = iconscale.x;
@@ -112,7 +112,7 @@ Class CSSGWeaponWheel : wheelinfocontainer
 		if(requester.FindInventory("WhitePhosphorusUpgrade") || pbx_backpack_filter & DisablePBX_CSSGUpgrades) 
 		{
 			PB_SpecialWheel_Mode CSSG_WPhosphorus = new ("PB_SpecialWheel_Mode");
-			CSSG_WPhosphorus.img = "graphics/Weapon Wheel/CSSG/SG_WPhosphorus.png";
+			CSSG_WPhosphorus.img = "graphics/WeaponWheel/CSSG/SG_WPhosphorus.png";
 			CSSG_WPhosphorus.Alias = "$PBX_CM_WPLOAD";
 			CSSG_WPhosphorus.tokentogive = "SelectCSG_WPhosphorus";
 			CSSG_WPhosphorus.scalex = iconscale.x;
@@ -133,7 +133,7 @@ Class CSSGWeaponWheel : wheelinfocontainer
 		if(requester.FindInventory("TripleDoomUpgrade") || pbx_backpack_filter & DisablePBX_CSSGUpgrades) 
 		{
 			PB_SpecialWheel_Mode CSSG_Doom = new ("PB_SpecialWheel_Mode");
-			CSSG_Doom.img = "graphics/Weapon Wheel/CSSG/SG_Doom.png";
+			CSSG_Doom.img = "graphics/WeaponWheel/CSSG/SG_Doom.png";
 			CSSG_Doom.Alias = "$PBX_CM_DOOMLD";
 			CSSG_Doom.tokentogive = "SelectCSG_Doom";
 			CSSG_Doom.scalex = iconscale.x;
@@ -154,7 +154,7 @@ Class CSSGWeaponWheel : wheelinfocontainer
 		if(requester.FindInventory("DanmakuUpgrade") || pbx_backpack_filter & DisablePBX_CSSGUpgrades) 
 		{
 			PB_SpecialWheel_Mode CSSG_Danmaku = new ("PB_SpecialWheel_Mode");
-			CSSG_Danmaku.img = "graphics/Weapon Wheel/CSSG/SG_Danmaku.png";
+			CSSG_Danmaku.img = "graphics/WeaponWheel/CSSG/SG_Danmaku.png";
 			CSSG_Danmaku.Alias = "$PBX_CM_DNMKULD";
 			CSSG_Danmaku.tokentogive = "SelectCSG_Danmaku";
 			CSSG_Danmaku.scalex = iconscale.x;

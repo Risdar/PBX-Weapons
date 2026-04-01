@@ -10,7 +10,7 @@ Class LeverActionWheel : wheelinfocontainer
 		super.GetSpecials(spw,requester);
 		
 		PB_SpecialWheel_Mode LA_Marlin = new ("PB_SpecialWheel_Mode");
-		LA_Marlin.img = "graphics/Weapon Wheel/LeverAction/Marlin.png";
+		LA_Marlin.img = "graphics/WeaponWheel/LeverAction/Marlin.png";
 		LA_Marlin.Alias = "$PBX_LeverAction_Marlin";
 		LA_Marlin.tokentogive = "LA_Select_Marlin";
 		LA_Marlin.scalex = 0.6;
@@ -18,7 +18,7 @@ Class LeverActionWheel : wheelinfocontainer
 		spw.push(LA_Marlin);
 		
 		PB_SpecialWheel_Mode LA_357Magnum = new ("PB_SpecialWheel_Mode");
-		LA_357Magnum.img = "graphics/Weapon Wheel/LeverAction/Magnum.png";
+		LA_357Magnum.img = "graphics/WeaponWheel/LeverAction/Magnum.png";
 		LA_357Magnum.Alias = "$PBX_LeverAction_Magnum";
 		LA_357Magnum.tokentogive = "LA_Select_Magnum";
 		LA_357Magnum.scalex = 0.6;

@@ -34,7 +34,7 @@ Class MetalSniperWheel : wheelinfocontainer
 			if(weap && weap.resonanceAmmoLoaded)
 			{
 				PB_SpecialWheel_Mode MS_Resonance = new ("PB_SpecialWheel_Mode");
-				MS_Resonance.img = "graphics/Weapon Wheel/MetalSniper/StandardAlt.png";
+				MS_Resonance.img = "graphics/WeaponWheel/MetalSniper/StandardAlt.png";
 				MS_Resonance.Alias = "$PBX_MetalSniper_Standard";
 				MS_Resonance.tokentogive = "MS_Select_Resonance";
 				MS_Resonance.scalex = iconscale.x;
@@ -45,7 +45,7 @@ Class MetalSniperWheel : wheelinfocontainer
 			else
 			{
 				PB_SpecialWheel_Mode MS_StandardAmmo = new ("PB_SpecialWheel_Mode");
-				MS_StandardAmmo.img = "graphics/Weapon Wheel/MetalSniper/ResonanceAlt.png";
+				MS_StandardAmmo.img = "graphics/WeaponWheel/MetalSniper/ResonanceAlt.png";
 				MS_StandardAmmo.Alias = "$PBX_MetalSniper_Resonance";
 				MS_StandardAmmo.tokentogive = "MS_Select_Resonance";
 				MS_StandardAmmo.scalex = iconscale.x;
@@ -57,7 +57,7 @@ Class MetalSniperWheel : wheelinfocontainer
 		else 
 		{
 			PB_SpecialWheel_Mode MS_Resonance_No = new ("PB_SpecialWheel_Mode");
-			MS_Resonance_No.img = "graphics/Weapon Wheel/MetalSniper/ResonanceNo.png";
+			MS_Resonance_No.img = "graphics/WeaponWheel/MetalSniper/ResonanceNo.png";
 			MS_Resonance_No.Alias = "$PBX_AmmoNotAvailable";
 			MS_Resonance_No.tokentogive = "MS_Select_NO";
 			MS_Resonance_No.scalex = iconscale.x;
