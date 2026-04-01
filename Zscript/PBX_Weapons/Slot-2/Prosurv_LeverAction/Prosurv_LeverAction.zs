@@ -224,6 +224,22 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 		currentMaxAmmo = leveractionFullAmmo;
 		super.postbeginplay();
 	}
+
+	override void attachtoowner(actor other)
+	{
+		if(other && other.player)
+		{
+			if(!PB_HelpNotificationsHandler.CheckTipEvent(1 << 1, CVar.GetCvar("PBX_HelpFlags", other.Player)))
+            {
+                Array<String> leveractionPickup;
+                leveractionPickup.Push("$PBX_LeverAction_Tip1");
+                leveractionPickup.Push("$PBX_LeverAction_Tip2");
+                leveractionPickup.Push("$PBX_LeverAction_Tip3");
+                PB_HelpNotificationsHandler.PB_SendTipArray(leveractionPickup, "PBX_HelpFlags", 1 << 1);
+            }
+		}
+		super.attachtoowner(other);
+	}
     
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
 	States

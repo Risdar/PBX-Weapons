@@ -1,4 +1,19 @@
 extend class PBX_DemonExt{
+	override void attachtoowner(actor other)
+	{
+		if(other && other.player)
+		{
+			if(!PB_HelpNotificationsHandler.CheckTipEvent(1 << 3, CVar.GetCvar("PBX_HelpFlags", other.Player)))
+            {
+                Array<String> demonextPickup;
+                demonextPickup.Push("$PBX_DemonExt_Tip1");
+                demonextPickup.Push("$PBX_DemonExt_Tip2");
+                PB_HelpNotificationsHandler.PB_SendTipArray(demonextPickup, "PBX_HelpFlags", 1 << 3);
+            }
+		}
+		super.attachtoowner(other);
+	}
+
 	override void ondrop(actor dropper)
 	{
 		dropper.A_StopSound(chan_unmkidle);

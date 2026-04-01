@@ -1,5 +1,15 @@
+// General
 server bool FirstTimeLoadingPBX = true;
+server int PBX_HelpFlags = 0;
+/* 
+0 is on the MetalSniper Upgrade
+1 is on the LeverAction
+2 is on the CSSG
+3 is on the DemonExt
+4 is on the MetalSniper
+*/
 
+// Spawners
 server int pbx_chainsaw_filter = 0;
 server int pbx_pistol_filter = 0;
 server int pbx_shotgun_filter = 0;
@@ -13,6 +23,7 @@ server int pbx_backpack_filter = 0;
 
 server int special_drop_filter = 0;
 
+// HUD
 server int pbx_hudsetting_filter = 0;
 server int pbx_generalsetting_filter = 0;
 

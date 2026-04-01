@@ -917,14 +917,18 @@ Class PBX_CSSG : PB_WeaponBase
 			A_takeinventory(PBX_CSSG.CSSG_ShellsToken1[j],10);
 	}
 	
-	//so i dont need to override the player to add "player.startitem "blablabla",1"
-	//its not the full implementation of this, but works for now
 	override void attachtoowner(actor other)
 	{
 		if(other && other.player)
 		{
-			if(other.countinv(ammotype2) < 1 && (countinv(respectInventoryItem) < 1))
-				other.A_giveinventory(ammotype2,2);
+			if(!PB_HelpNotificationsHandler.CheckTipEvent(1 << 2, CVar.GetCvar("PBX_HelpFlags", other.Player)))
+            {
+                Array<String> cssgPickup;
+                cssgPickup.Push("$PBX_CSSG_Tip1");
+                cssgPickup.Push("$PBX_CSSG_Tip2");
+                cssgPickup.Push("$PBX_CSSG_Tip3");
+                PB_HelpNotificationsHandler.PB_SendTipArray(cssgPickup, "PBX_HelpFlags", 1 << 2);
+            }
 		}
 		super.attachtoowner(other);
 	}

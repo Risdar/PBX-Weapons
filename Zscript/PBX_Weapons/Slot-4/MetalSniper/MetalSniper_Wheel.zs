@@ -13,7 +13,7 @@ Class MetalSniperWheel : wheelinfocontainer
 		vector2 iconScale = (0.7, 0.7);
 
 		PB_SpecialWheel_Mode MS_AimMode = new ("PB_SpecialWheel_Mode");
-		MS_AimMode.img = "graphics/Weapon Wheel/MetalSniper/ADSAlt.png";
+		MS_AimMode.img = "graphics/WeaponWheel/MetalSniper/ADSAlt.png";
 		MS_AimMode.Alias = "$PBX_MetalSniper_AimMode";
 		MS_AimMode.tokentogive = "MS_Select_AimMode";
 		MS_AimMode.scalex = iconscale.x;
@@ -21,7 +21,7 @@ Class MetalSniperWheel : wheelinfocontainer
 		spw.push(MS_AimMode);
 		
 		PB_SpecialWheel_Mode MS_GrenMode = new ("PB_SpecialWheel_Mode");
-		MS_GrenMode.img = "graphics/Weapon Wheel/MetalSniper/GrenadeAlt.png";
+		MS_GrenMode.img = "graphics/WeaponWheel/MetalSniper/GrenadeAlt.png";
 		MS_GrenMode.Alias = "$PBX_MetalSniper_GrenMode";
 		MS_GrenMode.tokentogive = "MS_Select_GrenMode";
 		MS_GrenMode.scalex = iconscale.x;

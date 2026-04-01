@@ -715,4 +715,21 @@ Class PBX_MetalSniper : PB_WeaponBase
         currentMaxAmmo = MetalSniperFullAmmo;
         Super.PostBeginPlay();
     }
+    override void attachtoowner(actor other)
+	{
+		if(other && other.player)
+		{
+			if(!PB_HelpNotificationsHandler.CheckTipEvent(1 << 4, CVar.GetCvar("PBX_HelpFlags", other.Player)))
+            {
+                Array<String> metalSniperPickup;
+                metalSniperPickup.Push("$PBX_MetalSniper_Tip4");
+                metalSniperPickup.Push("$PBX_MetalSniper_Tip5");
+                metalSniperPickup.Push("$PBX_MetalSniper_Tip6");
+                metalSniperPickup.Push("$PBX_MetalSniper_Tip7");
+                metalSniperPickup.Push("$PBX_MetalSniper_Tip8");
+                PB_HelpNotificationsHandler.PB_SendTipArray(metalSniperPickup, "PBX_HelpFlags", 1 << 4);
+            }
+		}
+		super.attachtoowner(other);
+	}
 }
