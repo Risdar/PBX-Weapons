@@ -416,7 +416,7 @@ Class PBX_DemonExt : PB_WeaponBase
 		FlashPunching:
 			TNT1 A 0 A_stopsound(chan_unmkidle);
 			UNMD ABCDEEEEEEDCBA 1;
-			stop;
+			goto ready3;
 		
 		//for kicking
 		FlashKicking:
