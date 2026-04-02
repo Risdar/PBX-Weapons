@@ -150,10 +150,11 @@ class PBX_Hud : PB_Hud_ZS
                     bool hdmrSniperMode = PBX_PlayerHasInventory("HDMRSniperMode");
                     bool hdmrGrenadeMode = PBX_PlayerHasInventory("HDMRGrenadeMode");
 
-                    adjustPos = !dmrUpgraded  ? (isAkimbo ? (-5,-8) : (-5,12)) // Not Upgraded ? Akimbo : Single
+                    adjustPos = !dmrUpgraded  ? (isAkimbo ? (-5,-8) : (-5,12))                                   // Unupgraded Akimbo : Unupgraded Single
                     // Upgraded
-                    : isAkimbo       ? (hdmrSniperMode ? (-5,-14) : (5,0)) // Akimbo ? Sniper Mode : Normal Mode
-                    : hdmrSniperMode ? (-7,10) : (-5,10); // Single ? Sniper Mode : Normal Mode
+                    : hdmrGrenadeMode         ? (isAkimbo ? (-5,-14) : (hdmrSniperMode ? (2,-8) : (4,-8)))       // Akimbo Grenade Mode : Grenade Mode Single Sniper : Grenade Mode Single Normal
+                    : isAkimbo                ? (hdmrSniperMode ? (-5,-14) : (5,2))                              // Akimbo Sniper Mode : Akimbo Normal Mode
+                    : hdmrSniperMode          ? (-6,10) : (-4,10);                                               // Single Sniper Mode : Single Normal Mode
                     break;
                 case 'PB_Carbine':
                     adjustPos = isAkimbo ? (-10, -15) : (-10,15);
