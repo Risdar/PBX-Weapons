@@ -8,13 +8,7 @@ Class HMGChamberAmmo : PB_Ammo{
 	}
 }
 
-Class HMGJustRespect : inventory
-{
-	default
-	{
-		inventory.maxamount 1;
-	}
-}
+Class HMGJustRespect : inventory {default{inventory.maxamount 1;}}
 
 class PBX_NeoHMG : PB_WeaponBase
 {
@@ -25,50 +19,44 @@ class PBX_NeoHMG : PB_WeaponBase
         //$Sprite 5DUNA0
         ////SpawnID 9530;
 //////////////////////////// WEAPON DATA ////////////////////////////////////////////////////////////////////////////////////
-		Weapon.SlotNumber 6;
+		Weapon.SlotNumber 5;
 		Weapon.SlotPriority 0;
 	    Weapon.SelectionOrder 506;
-	    PB_WeaponBase.RespectItem "RespectExcavatorLauncher";
+	    PB_WeaponBase.RespectItem "HMGJustRespect";
         PB_WeaponBase.UsesWheel true;
-		PB_WeaponBase.WheelInfo "ExcavatorWheel";
-        Inventory.AltHudIcon "5DUNA0";
+		PB_WeaponBase.WheelInfo "HMGWheel";
+        Inventory.AltHudIcon "HG0WA0";
 		
 //////////////////////////// AMMO ////////////////////////////////////////////////////////////////////////////////////
-		Weapon.AmmoType1 "PB_RocketAmmo";
-	    Weapon.AmmoType2 "ExcavatorRounds";
-	    Weapon.AmmoGive2 5;
-	    Weapon.AmmoGive1 5;
-		//PB_WeaponBase.unloadertoken "MyWeaponUnloaded"; token that indicates if this specific weapon is unloaded, example of the token defined below this class
-		//PB_WeaponBase.respectItem "MyWeaponRespect"; token needed for the respect to work, in case your weapon has a respect animation, example of the token defined below this class
+		Weapon.AmmoType1 "PB_HighCalMag";
+	    Weapon.AmmoType2 "HMGChamberAmmo";
+	    Weapon.AmmoGive1 40;
 		
 //////////////////////////// SPRITES & OFFSETS ////////////////////////////////////////////////////////////////////////////////////
-        Weapon.BobRangeX 0.3;
-        Weapon.BobRangeY 0.5;
-        Weapon.BobStyle "InverseSmooth";
-        Weapon.BobSpeed 2.4;
-        Scale 0.50;
-        FloatBobStrength 0.5;
+        PB_WeaponBase.OffsetRecoilX 2.5;
+		PB_WeaponBase.OffsetRecoilY 2.0;
+		PB_WeaponBase.TailPitch 0.8;
 
 //////////////////////////// MESSAGES & SOUNDS ////////////////////////////////////////////////////////////////////////////////////
-        Obituary "Shattered Into Pieces By Excavator Launcher. Ouch!";
-        Inventory.PickupMessage "Excavator (Slot 6)";
-        Inventory.PickupSound "misc/ROCKBOXA";
-	    Tag "UAC-M2 Excavator Launcher";
+        // Obituary "Shattered Into Pieces By Excavator Launcher. Ouch!";
+        Inventory.PickupMessage "$PBX_NeoHMG_Pickup";
+        Inventory.PickupSound "LMGPKP";
+	    Tag "PBX_NeoHMG_Tag";
         
 //////////////////////////// WEAPON FLAGS ////////////////////////////////////////////////////////////////////////////////////
-        +WEAPON.NOAUTOAIM
-        +WEAPON.EXPLOSIVE
-        +WEAPON.NOAUTOFIRE
         +FORCEXYBILLBOARD
-        +FLOORCLIP
-        +DONTGIB
 	}
 	
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
 
-	action void FireWeapon(int weaponSide, int ticCount)
+	action void NeoHMG_CoolDown()
+	{
+		return A_Overlay(3,"Cooling",true);
+	}
+
+	action void fireHMG(int weaponSide, int ticCount)
 	{
 		switch (ticCount)
 		{
@@ -85,13 +73,18 @@ class PBX_NeoHMG : PB_WeaponBase
                         A_SetRoll(0);
                         A_TakeInventory("PB_LockScreenTilt",1);
                         // ACTUAL FIRING
-						A_FireCustomMissile("ShotgunParticles", random(-16,16), 0, -1, random(-9,9));
-		                A_FireBullets(0, 0, 1, 50, "shotpuff", 0, 130);
-		                A_FireCustomMissile("RedFlareSpawn",-5,0,0,0);
-		                A_ZoomFactor(0.96);
-                        fireExcavator(); // THIS FUNCTION ALREADY PLAYS THE FIRING SOUND
-		                PB_WeaponRecoil(-3.2,+1.61);//same as the SuperGL - sarge945
-						PB_SpawnCasing("EmptyGrenadeBrass", 30, 0, 34, -frandom(1, 3), -frandom(2, 4), 5);
+						PB_FireBullets("PB_792x57mm", 1, 3, 0, 0, 2.5);
+						A_Startsound("weapon/HMG/Fire",30);
+						PB_DynamicTail("lmg", "lmg");
+						PB_ModifyOverheat(5);
+						A_overlay(-7,"MuzzleFlash");
+						PB_WeaponRecoil(-1.1,frandom(-0.82,0.82));
+						PB_IncrementHeat(2);
+						PB_GunSmoke(0, 0, 0);
+						PB_LowAmmoSoundWarning("hdmr");
+						PB_FireOffset();
+						A_QuakeEx(0,1,0,12,0,10,"",QF_WAVE|QF_RELATIVE|QF_SCALEDOWN,0.6,0,0.2,0,0,0.3,0.40);
+						A_Zoomfactor(0.985);
                         // TAKE AMMO
 				        PB_LowAmmoSoundWarning();
 				        pb_takeammo(invoker.ammotype2,1,0);
@@ -99,11 +92,7 @@ class PBX_NeoHMG : PB_WeaponBase
 				}
 			//Tic 2
 			case 2:
-				//A_ZoomFactor(1.0, SPF_INTERPOLATE); WE DONT NEED THIS SINCE THE NEXT FRAMES ALREADY GOES TO 1.0
-				break;
-			//Tic 3
-			case 3:
-				//Nothing this time
+				A_ZoomFactor(1.0, SPF_INTERPOLATE);
 				break;
 		}
 	}
@@ -129,156 +118,166 @@ class PBX_NeoHMG : PB_WeaponBase
 	{
 //////////////////////////// SETUP ////////////////////////////////////////////////////////////////////////////////////
 		Spawn:
-            5DUN A -1;
+            HG0W A -1;
             Stop;
         Steady:
             TNT1 A 0;
             Goto Ready;
         Deselect:
-            TNT1 A 0 setExcavatorMode();
-		    5DKF EFGHI 1;
-			TNT1 AAA 0 A_lower();
-			Wait;
+            HG0D ABCD 1;
+			TNT1 A 0 A_lower(120);	
+			wait;
 		WeaponRespect:
-			TNT1 A 1 A_DoPBWeaponAction(); dont forget to add A_DoPBWeaponAction() so you can cancel this animation in game
-			goto WeaponReady;
+			TNT1 A 0 A_setInventory(invoker.respectInventoryItem,1);
+			HG0U ABCD 1 A_DoPBWeaponAction();
+			goto ready3;
 		Select:
-			TNT1 A 0 PB_WeaponRaise("RLANDRAW");
+			TNT1 A 0 PB_WeaponRaise("weapon/HMG/Stop");
+			TNT1 A 0 PB_WeapTokenSwitch("CarbineSelected");
+			TNT1 A 0 NeoHMG_CoolDown();
 			TNT1 A 0 PB_RespectIfNeeded();
 		SelectContinue:
 			TNT1 A 0;
 		SelectAnimation:
-			TNT1 A 0 A_JumpIf(pb_getmagunloaded(), "NoAmmo");
-            5DKF IHGFE 1;
+			TNT1 A 0 A_JumpIf(PB_GetMagUnloaded, "UnloadedSelect")
+			HG0U ABCD 1;
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
 		Ready3:
-        ReadyDrillChargaMode:
-			TNT1 A 0 PB_HandleCrosshair(78);
-            TNT1 A 0 A_Jumpif(getExcavatorMode() == eDropShotMode, "ReadyDropShotMode");
-			5DKF A 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD);
-			Loop;
-            
-		ReadyDropShotMode:
-			TNT1 A 0 PB_HandleCrosshair(79);
-            TNT1 A 0 A_Jumpif(getExcavatorMode() == eDrillChargeMode, "ReadyDrillChargaMode");
-		    5DKF B 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD);
-			Loop;
+			HG0F A 1 {
+				PB_CoolDownBarrel(0, 0, 3);
+				NeoHMG_CoolDown();
+				return A_DoPBWeaponAction(WRF_ALLOWRELOAD); 
+			}
+			TNT1 A 0 A_JumpIf(PB_GetMagUnloaded(), "ReadyUnload")
+			loop;
 		
+		ReadyUnload:
+			HG0R S 1 {
+				PB_CoolDownBarrel(0, 0, 3);
+				return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOSECONDARY); 
+			}
+			loop;
+
+		UnloadedSelect:
+			HG0R MNOPQRS 1;
+			goto ReadyUnload;
+        
 //////////////////////////// FIRE ////////////////////////////////////////////////////////////////////////////////////
 		Fire:
-            TNT1 A 0 PB_JumpIfNoAmmo("Reload",1,false);
-            6DKF A 1 BRIGHT FireWeapon(0,1);
-			6DKF A 1 BRIGHT FireWeapon(0,2);
-            5DKF L 1 BRIGHT A_ZoomFactor(0.97);
-            5DKF M 1 BRIGHT A_ZoomFactor(0.98);
-            5DKF N 1 BRIGHT A_ZoomFactor(0.99);
-            TNT1 A 0 A_ZoomFactor(1.0);
-            5DKF OPQRDDD 1 A_WeaponReady(WRF_NOPRIMARY);
-            TNT1 A 0 A_PlaySound("RLCYCLE2", 5);
-            5DKF DDDD 1 A_WeaponReady(WRF_NOPRIMARY);
-            5DKF D 0 A_ReFire;
-			Goto ReadyDrillChargaMode;
+            TNT1 A 0 PB_jumpIfNoAmmo("Reload",1);
+			HG0F B 1 bright fireHMG(0,1);
+			HG0F C 1 bright fireHMG(0,2);
+			HG0F D 1;
+			HG0F E 1;
+			TNT1 A 0 A_Weaponoffset(0,32);
+			HG0F F 1 A_refire();
+			TNT1 A 0 A_startsound("weapon/HMG/Stop",32);
+			goto Ready3;
+
+		AltFire:
+			//TNT1 A 0 PB_jumpIfHasBarrel("PlaceBarrel","PlaceFlameBarrel","PlaceIceBarrel");
+			goto Ready3;
 		
 //////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
 		Reload:
-            TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, null, "ReadyDrillChargaMode", "NoAmmo", excavatorFullAmmo, 1);
-			6DKF A 1 A_PlaySound("Ironsights", 15);
-            TNT1 A 0 A_SetRoll(roll-0.6,SPF_INTERPOLATE);
-            6DKF BCDEF 1 ;
-            TNT1 A 0 A_PlaySound("weapons/sgl/cycle", 14);
             TNT1 A 0 {
-                PB_SpawnCasing("SGL_Drum",25,0,20,Frandom(3,4),Frandom(3,4),1);
-                PB_SetMagUnloaded(true);
-                PB_SetMagEmpty(true);
-                PB_SetChamberEmpty(true);
-            }
-            //TNT1 A 0 A_FireCustomMissile("RocketCaseSpawn",-30,0,-4,-4);
-            TNT1 A 0 A_SetRoll(roll+0.6,SPF_INTERPOLATE);
-            6DKF GHIJK 1 ;
-            TNT1 A 0 A_PlaySound("RLCYCLE2", 13);
-            TNT1 A 0 A_SetRoll(0,SPF_INTERPOLATE);
-            6DKF KKKKK 1 ;
-            TNT1 A 0 A_PlaySound("weapons/minigun/respect1", 13);
-            TNT1 A 0 A_SetRoll(roll-0.5,SPF_INTERPOLATE);
-        ContinueReload:
-            6DKF LMNOPQRS 1 ;
-            TNT1 A 0 A_PlaySound("weapons/nailgun/up", 10);
-            TNT1 A 0 A_SetRoll(roll-0.5,SPF_INTERPOLATE);
-            6DKF TUVWWWWW 1 ;
-            TNT1 A 0 A_SetRoll(0,SPF_INTERPOLATE);
-            TNT1 A 0 A_PlaySound("Ironsights", 15);
-            TNT1 A 0 A_SetRoll(roll+1.0,SPF_INTERPOLATE);
-            6DKF XYZ 1 ;
-            TNT1 A 0 A_PlaySound("weapons/sgl/inspect1", 15);
-            7DKF A 1 ;
-            TNT1 A 0 {
-                PB_AmmoIntoMag("ExcavatorRounds","PB_RocketAmmo",5,2);
-                PB_SetMagUnloaded(false);
-                PB_SetMagEmpty(false);
-                PB_SetChamberEmpty(false);
-            }
-            TNT1 A 0 A_SetRoll(roll-1.0,SPF_INTERPOLATE);
-            7DKF BCD 1 ;
-            TNT1 A 0 A_SetRoll(0,SPF_INTERPOLATE);
-            7DKF EFGHIJK 1 ;
-            TNT1 A 0 A_PlaySound("excavator/detonate");
-            5DKF CCDDCCDDCCDCDCD 1 ;
-            TNT1 A 0 PB_SetReloading(false);
-            Goto ReadyDrillChargaMode;
+				A_ZoomFactor(1.0);
+				A_WeaponOffset(0,32);
+			}
+			//TNT1 A 0 PB_jumpIfHasBarrel("IdleBarrel","IdleFlameBarrel","IdleIceBarrel");
+			TNT1 A 0 PB_checkReload("RaiseFromEmpty", null, null, "Ready","ReadyUnload",neohmgFullAmmo,1);
+			HG0R ABCD 1;
+			HG0R EFGH 1;
+			TNT1 A 0 A_StartSound("weapons/sgl/detach",33);
+			TNT1 A 0 A_JumpIf(PB_GetMagUnloaded(),"Reload_Unloaded");
+			TNT1 A 0 {
+				if(invoker.ammo2.amount < 1 && !PB_GetMagUnloaded())
+					PB_SpawnCasing("EmptyLMGMag", 12, -2.5, 6.25,frandom(2,5),frandom(1,3),frandom(2,4));//A_Spawnitem("EmptyLMGMag");EmptyLMGMissileMag
+			}
+			HG0R IJK 1;
+			HG0R L 1 {
+				PB_SetMagUnloaded(true);
+			}
+			HG0R MNOOPP 1;
+			HG0R QQQ 1;
+			HG0R QRST 1;
+		Reload_Unloaded:	
+			TNT1 A 0 A_Startsound("weapon/HMG/Reload1",34);
+			HG0R UV 1;
+			HG0R W 1 {
+				PB_AmmoIntoMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname(),neohmgFullAmmo,1);
+				PB_SetMagUnloaded(false);
+			}
+			HG0R XX 1;
+			HG0R YYZ 1;
+			HG1R ABC 1;
+			goto Ready3;
 
         RaiseFromEmpty:
-            8DKF DCBA 1;
-            goto ContinueReload;
+            HG0R S 1;
+            goto Reload_Unloaded;
 
 //////////////////////////// UNLOAD ////////////////////////////////////////////////////////////////////////////////////
 		Unload:
-			TNT1 A 0 A_Jumpif(pb_getmagunloaded(),"NoAmmo");
-			6DKF A 1 A_PlaySound("Ironsights", 15);
-            TNT1 A 0 A_SetRoll(roll-0.6,SPF_INTERPOLATE);
-            6DKF BCDEF 1;
-            TNT1 A 0 A_PlaySound("weapons/sgl/cycle", 14);
-            //TNT1 A 0 A_FireCustomMissile("RocketCaseSpawn",-30,0,-4,-4);
-            TNT1 A 0 A_SetRoll(roll+0.6,SPF_INTERPOLATE);
-            6DKF GHI 1;
-		    6DKF J 1;
-			TNT1 A 0 {
-				PB_UnloadMag("ExcavatorRounds","PB_RocketAmmo", 2, 1, 0, 0, "PB_SGLAmmo");
+			TNT1 A 0 A_Jumpif(pb_getmagunloaded(),"ReadyUnload");
+			HG0R ABCD 1;
+			HG0R EFGH 1;
+			TNT1 A 0 A_StartSound("weapons/sgl/detach", 33);
+			//TNT1 A 0 PB_SpawnCasing("EmptyLMGMag", 12, -2.5, 6.25,frandom(2,5),frandom(1,3),frandom(2,4));//A_Spawnitem("EmptyLMGMag");EmptyLMGMissileMag
+			HG0R IJK 1;
+			HG0R L 1 {
+				PB_UnloadMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname(),1);
 				PB_SetMagUnloaded(true);
-				PB_SetMagEmpty(true);
-                PB_SetChamberEmpty(true);
 			}
-            6DKF K 1;
-            8DKF ABCD 1;
-            TNT1 A 0 PB_SetReloading(false);
-            goto NoAmmo;
+			HG0R MNOOPP 1;
+			HG0R QQQ 1;
+			HG0R QRS 1; 
+			goto ReadyUnload;
 
-        NoAmmo:
-            5DKF S 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD);
-		    Loop;
-		
 //////////////////////////// WEAPON SPECIAL ////////////////////////////////////////////////////////////////////////////////////
 		Weaponspecial:
-           TNT1 A 0 A_Takeinventory("GoWeaponSpecialAbility",1);
+        	TNT1 A 0 A_Takeinventory("GoWeaponSpecialAbility",1);
+			goto Ready3;
 		
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////
 		FlashPunching:
-            TNT1 AAAAAAAAAAAAAA 0; //14 frames
+			HG0K ABCDEFGHFEDCBA 1;
 			goto Ready3;
-
-        FlashKicking:
-			TNT1 AAAAAAAAAAAAAAA 0 //15 frames
+		
+		FlashKicking:
+			HG0K ABCDEFGHHFEDCBA 1;
 			goto Ready3;
 			
 		FlashAirKicking:
-            TNT1 AAAAAAAAAAAAAAAA 0 //16 frames
+			HG0K ABCDEFGHHHFEDCBA 1;
 			goto Ready3;
 			
 		FlashSlideKicking:
-            TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 //27 frames
+			HG0K ABCDEFGHHHHHHHHHHHHHGFEDCBA 1;
 			goto Ready3;
 			
 		FlashSlideKickingStop:
-			TNT1 AAAAAAA 0 //7 frames 
+			HG0K GFEDCBA 1;
 			goto Ready3;
+		
+//////////////////////////// OVERLAYS ////////////////////////////////////////////////////////////////////////////////////
+		Cooling:
+			TNT1 A 24;
+		Cooling2:
+			TNT1 A 2 PB_ModifyOverheat(-5);
+			Wait;
+
+		MuzzleFlash:
+			TNT1 A 0 A_Overlayflags(Overlayid(),PSPF_MIRROR|PSPF_FLIP,random(0,1));
+			TNT1 A 0 A_jump(256,"Muzzle1","Muzzle2");
+		Muzzle1:
+			HG0M AB 1 bright;
+			stop;
+		Muzzle2:
+			HG0M CD 1 bright;
+			stop;
+		Muzzle3:
+			HG0M EF 1 bright;
+			stop;
 	}
 }

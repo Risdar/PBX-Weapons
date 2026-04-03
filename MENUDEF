@@ -37,7 +37,7 @@ OptionMenu "PBX_HudMenu"
 }
 
 
-// SHOTGUN
+// SHOTGUN /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // TIER 1
 AddOptionMenu "AddonWeaponSpawns" after "SHOT1"
 {
@@ -45,7 +45,7 @@ AddOptionMenu "AddonWeaponSpawns" after "SHOT1"
     FlagOption    "Lever Action Rifle",    "pbx_shotgun_filter",    "OffOn", 0
 }
 
-// SSG
+// SSG /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // TIER 2
 AddOptionMenu "AddonWeaponSpawns" after "SSGT2"
 {
@@ -53,7 +53,7 @@ AddOptionMenu "AddonWeaponSpawns" after "SSGT2"
     FlagOption    "Commander Shotgun",    "pbx_ssg_filter",    "OffOn", 0
 }
 
-// CHAINGUN
+// CHAINGUN /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // TIER 1
 AddOptionMenu "AddonWeaponSpawns" after "CHNT1"
 {
@@ -67,7 +67,7 @@ AddOptionMenu "AddonWeaponSpawns" after "CHNT2"
     FlagOption    "Metal Sniper",    "pbx_chaingun_filter",    "OffOn", 1
 }
 
-// ROCKET LAUNCHER
+// ROCKET LAUNCHER /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // TIER 3
 AddOptionMenu "AddonWeaponSpawns" after "LAUT3"
 {
@@ -77,7 +77,7 @@ AddOptionMenu "AddonWeaponSpawns" after "LAUT3"
     FlagOption    "Cyberdemon drop their Weapon",    "special_drop_filter",    "OffOn", 0
 }
 
-// BFG
+// BFG /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // TIER 4
 AddOptionMenu "AddonWeaponSpawns" after "BFGT4"
 {
@@ -85,7 +85,7 @@ AddOptionMenu "AddonWeaponSpawns" after "BFGT4"
     FlagOption    "Demonic Exterminator",    "pbx_bfg_filter",    "OffOn", 0
 }
 
-// Backpacks
+// Backpacks /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 AddOptionMenu "AddonAmmoSpawns" after "PACKT3"
 {
     FlagOption    "CSSG Upgrades",    "pbx_backpack_filter",    "OffOn", 0

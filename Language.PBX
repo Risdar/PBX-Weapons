@@ -67,6 +67,8 @@ PBX_MetalSniper_Tip7 = "You can get the alternate Resonance Ammo type by picking
 PBX_MetalSniper_Tip8 = "You can bypass this requirement by disabling the Metal Sniper upgrade in the Addon Spawner Settings.";
 
 //////////////////////////// SLOT 5 ///////////////////////////////////////////////////////////////////////////////
+PBX_NeoHMG_Pickup = "HMG (Slot 5)";
+PBX_NeoHMG_Tag = "UAC PB-3 Heavy Machine Gun";
 
 //////////////////////////// SLOT 6 ///////////////////////////////////////////////////////////////////////////////
 // Excavator

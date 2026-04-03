@@ -16,7 +16,6 @@ class PBX_Hud : PB_Hud_ZS
     string pbx_image, pbx_image2, pbx_image3;
     bool isAkimbo;
     
-
     // In case I forgot
     // weap = CPlayer.ReadyWeapon;
 	// pbWeap = PB_WeaponBase(weap);
@@ -78,7 +77,7 @@ class PBX_Hud : PB_Hud_ZS
         // WEAPON PICKUP SPRITE ADJUSTMENT
         switch(pbWeap.GetClassName())
             {
-                // SLOT 1
+//////////////// SLOT 1 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 case 'PB_Fists':
                     adjustPos = (-15, 20); 
                     adjustScale = 0.6;
@@ -90,7 +89,7 @@ class PBX_Hud : PB_Hud_ZS
                     adjustPos = (-30, 40); 
                     break;
 
-                // SLOT 2
+//////////////// SLOT 2 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 case 'PB_MP40':
                     adjustPos = isAkimbo ? (-5, -10) : (-8,10); 
                     adjustScale = 0.7;
@@ -120,7 +119,7 @@ class PBX_Hud : PB_Hud_ZS
                     adjustScale = 0.7;
                     break;
 
-                // SLOT 3
+//////////////// SLOT 3 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 case 'PB_Shotgun':
                     adjustPos = (-5, 10); 
                     // adjustScale = 1.0;
@@ -133,10 +132,13 @@ class PBX_Hud : PB_Hud_ZS
                     break;
                 case 'PB_QuadSG':
                     bool demonBreath = PBX_PlayerHasInventory("BreathMode");
-                    adjustPos = isAkimbo ? (demonBreath ? (1, -15) // DUAL QSG DEMON BREATH
-                                        : (3, -12))                // DUAL QSG BUCKSHOT
-                         : (demonBreath ? (1,2)                    // SINGLE QSG DEMON BREATH
-                                        : (0,0));                  // SINGLE QSG BUCKSHOT
+                    adjustPos = isAkimbo ? (demonBreath ? (1, -5) // DUAL QSG DEMON BREATH
+                                        : (3, -2))                // DUAL QSG BUCKSHOT
+                         : (demonBreath ? (1,12)                  // SINGLE QSG DEMON BREATH
+                                        : (0,10));                // SINGLE QSG BUCKSHOT
+                    // MODE
+                    adjustPos2 = (0,-20);
+                    adjustScale2 = 0.2;
                     break;
 
                 case 'PBX_CSSG':
@@ -144,7 +146,7 @@ class PBX_Hud : PB_Hud_ZS
                     // adjustScale = 0.7;
                     break;
 
-                // SLOT 4
+//////////////// SLOT 4 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 case 'PB_DMR':
                     bool dmrUpgraded   = PBX_PlayerHasInventory("DMRUpgraded");
                     bool hdmrSniperMode = PBX_PlayerHasInventory("HDMRSniperMode");
@@ -177,28 +179,51 @@ class PBX_Hud : PB_Hud_ZS
                     let sniper = PBX_MetalSniper(pbWeap);
                     if(sniper)
                         adjustPos = sniper.AltMode ? (-3,-15) : (-3,14); 
+                    
+                    // MODE
+                    // adjustPos2 = (0, 0); 
+                    adjustScale2 = 0.7;
                     break;
 
-                // SLOT 5
+//////////////// SLOT 5 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 case 'PB_MG42':
                     adjustPos = (-10, 32);
                     adjustScale = 0.5;
                     break;
                 case 'PB_Minigun':
-                    adjustPos = PBX_PlayerHasInventory("TripleBarrelMode") ? (-15,30) : (-15,32);
+                    bool tripleMode   = PBX_PlayerHasInventory("TripleBarrelMode");
+                    bool chaingunMode = PBX_PlayerHasInventory("ChainGunMode");
+                    
+                    adjustPos = tripleMode ? (-15,30) : (-15,32);
+
+                    // MODE
+                    int mode = !chaingunMode && tripleMode  ? 2    // triple
+                            :  chaingunMode && !tripleMode ? 1     // chaingun (default)
+                            : 0;                                   // normal
+
+                    adjustPos2   = mode == 2 ? (-3, 0) : mode == 1 ? (0, 0) : (0, 0);
+                    adjustScale2 = mode == 2 ? 0.5      : mode == 1 ? 0.9     : 0.9;
                     break;
                 case 'PB_Nailgun':
                     adjustPos = (-9,12);
                     break;
                 
-                // SLOT 6
+//////////////// SLOT 6 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 case 'PB_RocketLauncher':
                     adjustPos = (-8 , 15);
                     adjustScale = 0.9;
+
+                    // MODE
+                    adjustPos2 = (0,-20);
+                    adjustScale2 = 0.3;
                     break;
                 case 'PB_SuperGL':
                     adjustPos = (-5, 13);
                     adjustScale = 0.9;
+
+                    // MODE
+                    adjustPos2 = (3,-18);
+                    adjustScale2 = 0.3;
                     break;
 
                 case 'PBX_CyberdemonRL':
@@ -210,7 +235,7 @@ class PBX_Hud : PB_Hud_ZS
                     adjustScale = 1.1;
                     break;
 
-                // SLOT 7
+//////////////// SLOT 7 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 case 'PB_M1Plasma':
                     adjustPos = isAkimbo ? (-5, -10) : (-10,12);
                     break;
@@ -223,16 +248,22 @@ class PBX_Hud : PB_Hud_ZS
                     adjustScale = 0.9;
                     break;
 
-                // SLOT 8
+//////////////// SLOT 8 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 case 'PB_Flamethrower':
                     adjustPos = PBX_PlayerHasInventory("FlamerUpgraded") ? (-15, 40) : (-10,15); 
                     break;
                 case 'PB_CryoRifle':
                     adjustPos = (-5, 15);
                     // adjustScale = 0.9;
+
+                    // MODE
+                    adjustPos2 = (0,-60);
+                    adjustScale2 = 0.3;
+                    adjustPos3 = (0,-10);
+                    adjustScale3 = 0.3;
                     break;
 
-                // SLOT 9
+//////////////// SLOT 9 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 case 'PB_BFG9000':
                     adjustPos = (-10,32);
                     adjustScale = 0.8;
@@ -254,64 +285,12 @@ class PBX_Hud : PB_Hud_ZS
                 default:
                     adjustPos = (0,0);
                     adjustScale = 1.0;
-                    break;
-            }
-        // WEAPON MODE ADJUSTMENT
-        switch(pbWeap.GetClassName())
-            {
-                // PBX WEAPONS
-                // SLOT 4
-                case 'PBX_MetalSniper':
-                    // adjustPos2 = (0, 0); 
-                    adjustScale2 = 0.8;
-                    break;
-
-                // PB WEAPONS
-                // SLOT 3
-                case 'PB_QuadSG':
-                    adjustPos2 = (0,-20);
-                    adjustScale2 = 0.2;
-                    break;
-
-                // SLOT 5
-                case 'PB_Minigun':
-                    bool chaingunMode = PBX_PlayerHasInventory("ChainGunMode");
-                    bool tripleMode   = PBX_PlayerHasInventory("TripleBarrelMode");
-
-                    int mode = !chaingunMode && tripleMode  ? 2    // triple
-                            :  chaingunMode && !tripleMode ? 1    // chaingun
-                            : 0;                                  // normal
-
-                    adjustPos2   = mode == 2 ? (-3, 0) : mode == 1 ? (0, 0) : (0, 0);
-                    adjustScale2 = mode == 2 ? 0.5      : mode == 1 ? 0.9     : 0.9;
-                    break;
-
-                // SLOT 6
-                case 'PB_RocketLauncher':
-                    adjustPos2 = (0,-20);
-                    adjustScale2 = 0.3;
-                    break;
-                case 'PB_SuperGL':
-                    adjustPos2 = (3,-18);
-                    adjustScale2 = 0.3;
-                    break;
-
-                // SLOT 8
-                case 'PB_CryoRifle':
-                    adjustPos2 = (0,-60);
-                    adjustScale2 = 0.3;
-                    adjustPos3 = (0,-10);
-                    adjustScale3 = 0.3;
-                    break;
-
-                default:
                     adjustPos2 = (0,0);
                     adjustScale2 = 1.0;
                     adjustPos3 = (0,0);
                     adjustScale3 = 1.0;
                     break;
             }
-            
         // Send the Values
         pbx_weapon_pos += adjustPos;
         pbx_weapon_truescale *= adjustScale;
@@ -332,40 +311,7 @@ class PBX_Hud : PB_Hud_ZS
         // ADD WEAPON MODES HERE
         switch(pbWeap.GetClassName())
         {
-            // PBX WEAPONS
-            // SLOT 3
-            case 'PBX_CSSG':
-                let cssg = PBX_CSSG(pbWeap);
-                if (cssg) 
-                {
-                    static const string cssgIcons[] = {
-                        "buckhud", "slughud", "flcthud", "flakhud", "drgnhud", 
-                        "explhud", "phoshud", "doomhud", "dnmkhud"
-                    };
-                    
-                    // Show what Ammo type is selected
-                    int m = clamp(cssg.shellsmode, 0, cssgIcons.Size() - 1);
-                    pbx_image2 = cssgIcons[m];
-                }
-                break;
-
-            // SLOT 4
-            case 'PBX_MetalSniper':
-                let sniper = PBX_MetalSniper(pbWeap);
-                // Show Rocket Ammo if Grenade Secondary Mode is Selected
-                if (sniper && sniper.AltMode) 
-                {
-                    PBHud_DrawImage("BARBACR3", (-90, -71), flagsright, playerBoxAlpha);
-                    PBHud_DrawBar("ABAR4", "BGBARL", GetAmount("PB_RocketAmmo"), GetMaxAmount("PB_RocketAmmo"), (-100, -72), 0, 1, flagsright);
-                    PBHud_DrawString(mDefaultFont, Formatnumber(GetAmount("PB_RocketAmmo")), (-207, -90), DI_TEXT_ALIGN_RIGHT, Font.CR_RED);
-                }
-
-                // Show what Ammo type is selected
-                pbx_image2 = sniper && sniper.resonanceAmmoLoaded ? "graphics/WeaponWheel/metalsniper/ResonanceAlt.png" : "graphics/WeaponWheel/metalsniper/StandardAlt.png";
-                break;
-
-            // PB WEAPONS
-            // SLOT 3
+//////////////// SLOT 3 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             case 'PB_Shotgun':
                 let shotgun = PB_Shotgun(pbWeap);
                 // Show what Ammo type is selected
@@ -391,26 +337,52 @@ class PBX_Hud : PB_Hud_ZS
                 pbx_image2 = quadFullBlast ? "graphics/WeaponIcons/QUAD_FULL.png" : "graphics/WeaponIcons/QUAD_HALF.png";
                 break;
 
-            // SLOT 5
+            case 'PBX_CSSG':
+                let cssg = PBX_CSSG(pbWeap);
+                if (cssg) 
+                {
+                    static const string cssgIcons[] = {
+                        "buckhud", "slughud", "flcthud", "flakhud", "drgnhud", 
+                        "explhud", "phoshud", "doomhud", "dnmkhud"
+                    };
+                    
+                    // Show what Ammo type is selected
+                    int m = clamp(cssg.shellsmode, 0, cssgIcons.Size() - 1);
+                    pbx_image2 = cssgIcons[m];
+                }
+                break;
+
+//////////////// SLOT 4 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            case 'PBX_MetalSniper':
+                let sniper = PBX_MetalSniper(pbWeap);
+                // Show Rocket Ammo if Grenade Secondary Mode is Selected
+                if (sniper && sniper.AltMode) 
+                {
+                    PBHud_DrawImage("BARBACR3", (-90, -71), flagsright, playerBoxAlpha);
+                    PBHud_DrawBar("ABAR4", "BGBARL", GetAmount("PB_RocketAmmo"), GetMaxAmount("PB_RocketAmmo"), (-100, -72), 0, 1, flagsright);
+                    PBHud_DrawString(mDefaultFont, Formatnumber(GetAmount("PB_RocketAmmo")), (-207, -90), DI_TEXT_ALIGN_RIGHT, Font.CR_RED);
+                }
+
+                // Show what Ammo type is selected
+                pbx_image2 = sniper && sniper.resonanceAmmoLoaded ? "graphics/WeaponWheel/metalsniper/ResonanceAlt.png" : "graphics/WeaponWheel/metalsniper/StandardAlt.png";
+                break;
+
+//////////////// SLOT 5 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             case 'PB_Minigun':
                 bool chaingunMode = PBX_PlayerHasInventory("ChainGunMode");
                 bool tripleMode = PBX_PlayerHasInventory("TripleBarrelMode");
 
                 // Show what Mode is selected
                 int mode = !chaingunMode && tripleMode  ? 2       // triple
-                            :  chaingunMode && !tripleMode ? 1    // chaingun
+                            :  chaingunMode && !tripleMode ? 1    // chaingun (default)
                             : 0;                                  // normal
 
                 pbx_image2   =  mode == 2 ? "graphics/WeaponIcons/EXTREMELYHIHGSPID.png" : 
                                 mode == 1 ? "graphics/WeaponIcons/NORMALSPEED.png" : 
                                 "graphics/WeaponIcons/HIGHSPEED.png";
                 break;
-                // pbx_image2 = !chaingunMode && tripleMode  ? "graphics/WeaponIcons/EXTREMELYHIHGSPID.png"
-                //         :  chaingunMode && !tripleMode  ? "graphics/WeaponIcons/NORMALSPEED.png"
-                //         : "graphics/WeaponIcons/HIGHSPEED.png";
-                // break;
 
-            // SLOT 6
+//////////////// SLOT 6 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             case 'PB_RocketLauncher':
                 // WHY IS THE ROCKETLAUNCHER MODE SWITCH SO JANK
                 // WHAT DO YOU MEAN ITS A STRING
@@ -447,7 +419,7 @@ class PBX_Hud : PB_Hud_ZS
                 }
                 break;
 
-            //  SLOT 8
+//////////////// SLOT 8 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             case 'PB_CryoRifle':
                 // Shows the current primary and secondary mode
                 bool cryoMissile = PBX_PlayerHasInventory("FireModeCryoRifleMissile");
@@ -533,7 +505,7 @@ class PBX_Hud : PB_Hud_ZS
         // Add the weapons here
         switch(pbWeap.GetClassName())
         {
-            // SLOT 2
+//////////////// SLOT 2 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             case 'PB_SMG':
                 bool smgSilenced = PBX_PlayerHasInventory("SilencedSMG");
                 pbx_image = isAkimbo ? 
@@ -560,7 +532,7 @@ class PBX_Hud : PB_Hud_ZS
                 pbx_image = isAkimbo ? "graphics/WeaponPickups/DEAGLE_DUAL.png" : icon;
                 break;
 
-            // SLOT 3
+//////////////// SLOT 3 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             case 'PB_Shotgun':
                 bool shotgunUpgraded = PBX_PlayerHasInventory("PumpshotgunMagazine");
                 // If Upgraded
@@ -585,7 +557,7 @@ class PBX_Hud : PB_Hud_ZS
                                         : "QSPGA0");                                             // SINGLE QSG BUCKSHOT
                 break;
 
-            // SLOT 4
+//////////////// SLOT 4 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             case 'PB_Carbine':
                 // If Akimbo
                 pbx_image = isAkimbo ? "graphics/pywheel/Carbine_Dual.png" : icon;
@@ -602,15 +574,14 @@ class PBX_Hud : PB_Hud_ZS
                 : "HIFLA0";
                 break;
 
-            // SLOT 5
+//////////////// SLOT 5 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             case 'PB_Minigun':
                 bool tripleBarrel = PBX_PlayerHasInventory("TripleBarrelMode");
                 // If the current mode is the triplebarrel
                 pbx_image = tripleBarrel ? "8GUNA0" : icon;
                 break;
 
-
-            // SLOT 7
+//////////////// SLOT 7 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             case 'PB_M1Plasma':
                 // If Akimbo
                 pbx_image = isAkimbo ? "graphics/WeaponPickups/M1_DUAL.png" : icon;
@@ -624,14 +595,15 @@ class PBX_Hud : PB_Hud_ZS
                     (m2Upgraded ? "M2PRB0" : icon);
                 break;
 
-            // SLOT 8
+//////////////// SLOT 8 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             case 'PB_Flamethrower':
                 bool flamerUpgraded = PBX_PlayerHasInventory("FlamerUpgraded");
                 // If Upgraded
                 pbx_image = flamerUpgraded ? "FSPWB0" : "FSPWA0";
                 break;
 
-            // Missing Icons
+//////////////// Missing Icons /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // You dont need to these weapons to the exceptions above since they dont count as valid
             case 'PB_ChexRifle':
                 pbx_image = "CRRSA0";
                 break;
