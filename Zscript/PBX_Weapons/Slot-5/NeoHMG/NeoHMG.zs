@@ -48,12 +48,31 @@ class PBX_NeoHMG : PB_WeaponBase
 	}
 	
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
+	int ammoType;
+	enum NeoHMGRounds
+	{
+		eHeatedRounds = 0,
+        eChargedRounds = 1
+	}
 
 //////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
 
-	action void NeoHMG_CoolDown()
+	action int getAmmoType()
 	{
-		return A_Overlay(3,"Cooling",true);
+		return invoker.ammoType;
+	}
+
+	action int setAmmoType(int set)
+	{
+		return invoker.ammoType = set;
+	}
+
+	action void Cooldown_Overlay(bool select = false)
+	{
+		if(!select)
+			return A_Overlay(3,"Cooling",true);
+		else
+			return A_Overlay(3,"Cooling2",true);
 	}
 
 	action void fireHMG(int weaponSide, int ticCount)
@@ -109,7 +128,7 @@ class PBX_NeoHMG : PB_WeaponBase
     
 	override void postbeginplay()
 	{
-		excavatorMode = eDrillChargeMode;
+		ammoType = eHeatedRounds;
 		super.postbeginplay();
 	}
     
@@ -134,7 +153,7 @@ class PBX_NeoHMG : PB_WeaponBase
 		Select:
 			TNT1 A 0 PB_WeaponRaise("weapon/HMG/Stop");
 			TNT1 A 0 PB_WeapTokenSwitch("CarbineSelected");
-			TNT1 A 0 NeoHMG_CoolDown();
+			TNT1 A 0 Cooldown_Overlay(true);
 			TNT1 A 0 PB_RespectIfNeeded();
 		SelectContinue:
 			TNT1 A 0;
@@ -143,12 +162,12 @@ class PBX_NeoHMG : PB_WeaponBase
 			HG0U ABCD 1;
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
 		Ready3:
+			TNT1 A 0 A_JumpIf(PB_GetMagUnloaded(), "ReadyUnload")
 			HG0F A 1 {
 				PB_CoolDownBarrel(0, 0, 3);
-				NeoHMG_CoolDown();
+				Cooldown_Overlay();
 				return A_DoPBWeaponAction(WRF_ALLOWRELOAD); 
 			}
-			TNT1 A 0 A_JumpIf(PB_GetMagUnloaded(), "ReadyUnload")
 			loop;
 		
 		ReadyUnload:
@@ -164,7 +183,7 @@ class PBX_NeoHMG : PB_WeaponBase
         
 //////////////////////////// FIRE ////////////////////////////////////////////////////////////////////////////////////
 		Fire:
-            TNT1 A 0 PB_jumpIfNoAmmo("Reload",1);
+            TNT1 A 0 PB_jumpIfNoAmmo("Reload",1,false);
 			HG0F B 1 bright fireHMG(0,1);
 			HG0F C 1 bright fireHMG(0,2);
 			HG0F D 1;
@@ -175,7 +194,6 @@ class PBX_NeoHMG : PB_WeaponBase
 			goto Ready3;
 
 		AltFire:
-			//TNT1 A 0 PB_jumpIfHasBarrel("PlaceBarrel","PlaceFlameBarrel","PlaceIceBarrel");
 			goto Ready3;
 		
 //////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
@@ -184,8 +202,8 @@ class PBX_NeoHMG : PB_WeaponBase
 				A_ZoomFactor(1.0);
 				A_WeaponOffset(0,32);
 			}
-			//TNT1 A 0 PB_jumpIfHasBarrel("IdleBarrel","IdleFlameBarrel","IdleIceBarrel");
 			TNT1 A 0 PB_checkReload("RaiseFromEmpty", null, null, "Ready","ReadyUnload",neohmgFullAmmo,1);
+			TNT1 A 0 Cooldown_Overlay();
 			HG0R ABCD 1;
 			HG0R EFGH 1;
 			TNT1 A 0 A_StartSound("weapons/sgl/detach",33);
@@ -206,6 +224,7 @@ class PBX_NeoHMG : PB_WeaponBase
 			HG0R UV 1;
 			HG0R W 1 {
 				PB_AmmoIntoMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname(),neohmgFullAmmo,1);
+				PB_SetMagEmpty(false);
 				PB_SetMagUnloaded(false);
 			}
 			HG0R XX 1;
@@ -223,7 +242,6 @@ class PBX_NeoHMG : PB_WeaponBase
 			HG0R ABCD 1;
 			HG0R EFGH 1;
 			TNT1 A 0 A_StartSound("weapons/sgl/detach", 33);
-			//TNT1 A 0 PB_SpawnCasing("EmptyLMGMag", 12, -2.5, 6.25,frandom(2,5),frandom(1,3),frandom(2,4));//A_Spawnitem("EmptyLMGMag");EmptyLMGMissileMag
 			HG0R IJK 1;
 			HG0R L 1 {
 				PB_UnloadMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname(),1);
@@ -241,6 +259,7 @@ class PBX_NeoHMG : PB_WeaponBase
 		
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////
 		FlashPunching:
+			TNT1 A 0 Cooldown_Overlay();
 			HG0K ABCDEFGHFEDCBA 1;
 			goto Ready3;
 		
