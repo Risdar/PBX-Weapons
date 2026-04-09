@@ -207,6 +207,11 @@ class PBX_Hud : PB_Hud_ZS
                 case 'PB_Nailgun':
                     adjustPos = (-9,12);
                     break;
+
+                case 'PBX_NeoHMG':
+                    adjustPos = (-8,15);
+                    adjustScale = 1.6;
+                    break;
                 
 //////////////// SLOT 6 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 case 'PB_RocketLauncher':

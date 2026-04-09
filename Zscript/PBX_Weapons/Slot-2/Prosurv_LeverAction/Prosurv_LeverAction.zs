@@ -15,7 +15,6 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
         PB_WeaponBase.UsesWheel true;
 		PB_WeaponBase.WheelInfo "LeverActionWheel";
         Inventory.AltHudIcon "LVR4E0";
-		PB_WeaponBase.RespectItem "RespectLeverAction";
 		
 //////////////////////////// AMMO ////////////////////////////////////////////////////////////////////////////////////
 		Weapon.AmmoType1 "PB_LowCalMag";
@@ -259,7 +258,6 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 			TNT1 AAA 0 A_lower();
 			Wait;
 		WeaponRespect:
-			TNT1 A 0 A_setInventory(invoker.respectInventoryItem,1);
 			TNT1 A 0 {
 				PB_HandleCrosshair(-1);
 				A_Giveinventory("PB_LockScreenTilt",1);

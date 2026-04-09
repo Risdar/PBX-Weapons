@@ -70,6 +70,9 @@ PBX_MetalSniper_Tip8 = "You can bypass this requirement by disabling the Metal S
 PBX_NeoHMG_Pickup = "HMG (Slot 5)";
 PBX_NeoHMG_Tag = "UAC PB-3 Heavy Machine Gun";
 
+PBX_NeoHMG_Heated = "\caHeated \c-Rounds";
+PBX_NeoHMG_Charged = "\cnCharged \c-Rounds";
+
 //////////////////////////// SLOT 6 ///////////////////////////////////////////////////////////////////////////////
 // Excavator
 PBX_Excavator_Pickup = "Excavator (Slot 6)";

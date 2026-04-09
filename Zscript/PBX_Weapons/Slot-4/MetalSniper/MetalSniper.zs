@@ -13,7 +13,6 @@ Class PBX_MetalSniper : PB_WeaponBase
         weapon.ammotype1 "PB_HighCalMag";
         weapon.ammogive1 32;
         weapon.ammotype2 "MetalSniperAmmo";
-        PB_WeaponBase.respectItem "MetalSniperRespect";
         PB_WeaponBase.UsesWheel true;
         PB_WeaponBase.WheelInfo "MetalSniperWheel";
         scale 0.62;
@@ -50,7 +49,6 @@ Class PBX_MetalSniper : PB_WeaponBase
             goto Ready;
 
         WeaponRespect:
-            TNT1 A 0 A_SetInventory(invoker.respectInventoryItem, 1);
             MSNI ABCDEFGHIJKLMNOPQRSSSS 1 A_DoPBWeaponAction();
             MSU0 ABCDEFGHIJKL 1 A_DoPBWeaponAction();
             M3NC ABCDEFGHI 1 A_DoPBWeaponAction();

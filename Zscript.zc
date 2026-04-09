@@ -6,7 +6,7 @@ Version 4.13
 // Slot 2
 // Lever Action 
 #include "Zscript/PBX_Weapons/Slot-2/Prosurv_LeverAction/Prosurv_LeverAction.zs"
-#include "Zscript/PBX_Weapons/Slot-2/Prosurv_LeverAction/LeverAction_wheel.zs"
+#include "Zscript/PBX_Weapons/Slot-2/Prosurv_LeverAction/LeverAction_Wheel.zs"
 #include "Zscript/PBX_Weapons/Slot-2/Prosurv_LeverAction/LeverAction_helpers.zs"
 
 // Slot 3
@@ -29,6 +29,9 @@ Version 4.13
 
 
 // Slot 5
+#include "Zscript/PBX_Weapons/Slot-5/NeoHMG/NeoHMG.zs"
+#include "Zscript/PBX_Weapons/Slot-5/NeoHMG/NeoHMG_Wheel.zs"
+#include "Zscript/PBX_Weapons/Slot-5/NeoHMG/NeoHMG_helpers.zs"
 
 // Slot 6
 // Excavator

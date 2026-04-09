@@ -1,5 +1,3 @@
-class BattleRifleRespect : inventory {default{inventory.maxamount 1;}}
-
 class BR_Ammo : PB_Ammo
 {
 	Default

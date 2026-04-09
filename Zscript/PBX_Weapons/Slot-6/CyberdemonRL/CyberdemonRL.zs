@@ -9,7 +9,6 @@ class PBX_CyberdemonRL : PB_WeaponBase
 		Weapon.SlotNumber 6;
 		Weapon.SlotPriority 0;
 	    Weapon.SelectionOrder 3800;
-	    // PB_WeaponBase.RespectItem "RespectExcavatorLauncher";
         Inventory.AltHudIcon "HND7E0";
 		
 //////////////////////////// AMMO ////////////////////////////////////////////////////////////////////////////////////

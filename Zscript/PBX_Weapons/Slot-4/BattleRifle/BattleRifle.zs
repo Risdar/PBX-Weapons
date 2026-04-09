@@ -11,7 +11,6 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 	    Inventory.PickupSound "BR45PICK";
 	    Inventory.AltHUDIcon "BR45A0";
 		inventory.maxamount 1;
-		PB_WeaponBase.respectItem "BattleRifleRespect";
 		Scale 1.0;
 		
         // Messages
@@ -202,7 +201,6 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			goto WeaponReady;
 		
 		WeaponRespect:
-			TNT1 A 0 A_setInventory(invoker.respectInventoryItem,1);
 			BR4S EDCBA 1 A_DoPBWeaponAction();
 			BR45 BBB 1 A_DoPBWeaponAction();
 			TNT1 A 0 A_startsound("BR45OPEN",3,CHANF_OVERLAP);
@@ -487,14 +485,4 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 		super.postbeginplay();
 	}
 	
-	// override void attachtoowner(actor other)
-	// {
-	// 	if(other && other.player)
-	// 	{
-	// 		if(other.countinv(ammotype2) < 1 && (countinv(respectInventoryItem) < 1))
-	// 			other.A_giveinventory(ammotype2,30);
-			
-	// 	}
-	// 	super.attachtoowner(other);
-	// }
 }

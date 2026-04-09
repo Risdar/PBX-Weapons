@@ -15,9 +15,6 @@ Class PBX_CSSG : PB_WeaponBase
 		weapon.ammotype2 "CSSGShellsIn";
 		weapon.ammotype1 "PB_Shell";
 		weapon.ammogive1 4;
-		//PB_WeaponBase.unloadertoken "CSSGHasUnloaded";
-		PB_WeaponBase.respectItem "RespectCSSG";
-		
 		PB_WeaponBase.UsesWheel true;
 		PB_WeaponBase.WheelInfo "CSSGWeaponWheel";
 	}
@@ -69,7 +66,6 @@ Class PBX_CSSG : PB_WeaponBase
 			wait;
 			
 		WeaponRespect:
-			TNT1 A 0 A_setInventory(invoker.respectInventoryItem,1);
 			TNT1 A 1 A_DoPBWeaponAction();
 			TNT1 A 0 A_Startsound("Ironsights", CHAN_AUTO);
 			C0XR ABC 1 A_DoPBWeaponAction();
@@ -956,14 +952,6 @@ Class CSSGHasUnloaded : inventory
 	}
 }
 
-//random token for respect animation to work
-class RespectCSSG : inventory
-{
-	default
-	{
-		inventory.maxamount 1;
-	}
-}
 
 ////////////////////////////////////////////////////
 //the projectiles and effects 

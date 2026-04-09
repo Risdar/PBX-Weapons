@@ -8,14 +8,6 @@ Class ExcavatorRounds : PB_Ammo{
 	}
 }
 
-class RespectExcavatorLauncher : inventory
-{
-	default
-	{
-		inventory.maxamount 1;
-	}
-}
-
 Class DiggerTrail : Actor{
 	Default{
 		Scale 1.1;

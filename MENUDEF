@@ -26,7 +26,6 @@ OptionMenu "PBX_HudMenu"
     Slider "Vertical (Y)",              "pbx_WeaponModehud_y", -700, 700, 1
     Slider "Scale",                     "pbx_WeaponModehud_scale", 0.1, 10, 0.1
 
-    /* Spacer 8 */
 
     /* StaticText "Visuals"
     Slider "HUD Opacity", "pbx_hud_alpha", 0.0, 1.0, 0.1 */
@@ -65,6 +64,7 @@ AddOptionMenu "AddonWeaponSpawns" after "CHNT2"
 {
         // SLOT 4
     FlagOption    "Metal Sniper",    "pbx_chaingun_filter",    "OffOn", 1
+    FlagOption    "Neo HMG",    "pbx_chaingun_filter",    "OffOn", 2
 }
 
 // ROCKET LAUNCHER /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

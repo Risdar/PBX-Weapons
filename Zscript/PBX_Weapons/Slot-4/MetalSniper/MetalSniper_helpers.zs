@@ -29,8 +29,6 @@ class PBX_ResoRound : PB_HighCalMag
     }
 }
 
-class MetalSniperRespect : inventory {default{inventory.maxamount 1;}}
-class SniperUnloaded : inventory {default{inventory.maxamount 1;}}
 class MS_Select_AimMode : inventory {default{inventory.maxamount 1;}}
 class MS_Select_GrenMode : inventory {default{inventory.maxamount 1;}}
 class MS_Select_Resonance : inventory {default{inventory.maxamount 1;}}

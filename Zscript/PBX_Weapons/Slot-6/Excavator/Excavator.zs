@@ -12,7 +12,6 @@ class PBX_Excavator : PB_WeaponBase
 		Weapon.SlotNumber 6;
 		Weapon.SlotPriority 0;
 	    Weapon.SelectionOrder 506;
-	    PB_WeaponBase.RespectItem "RespectExcavatorLauncher";
         PB_WeaponBase.UsesWheel true;
 		PB_WeaponBase.WheelInfo "ExcavatorWheel";
         Inventory.AltHudIcon "5DUNA0";
@@ -173,7 +172,6 @@ class PBX_Excavator : PB_WeaponBase
 			TNT1 AAA 0 A_lower();
 			Wait;
 		WeaponRespect:
-			TNT1 A 0 A_setInventory(invoker.respectInventoryItem,1);
 			5DKF IHGF 1 A_DoPBWeaponAction();
 			5DKF E 15 A_DoPBWeaponAction();
 			6DKF A 1 A_PlaySound("Ironsights", 15);

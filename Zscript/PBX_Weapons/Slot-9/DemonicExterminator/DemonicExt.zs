@@ -1,7 +1,6 @@
 class UMDE_Select_LaserMode : inventory{default{inventory.maxamount 1;}}
 class UMDE_Select_IncinerationMode : inventory{default{inventory.maxamount 1;}}
 class UMDE_Select_LightningMode : inventory{default{inventory.maxamount 1;}}
-Class RespectDemonExt : Inventory{Default{Inventory.MaxAmount 1;}}
 Class SoulCharge: Ammo{Default{Inventory.MaxAmount 333;Ammo.BackpackMaxAmount 666;}}
 Class PBX_DemonExt : PB_WeaponBase
 {
@@ -22,7 +21,6 @@ Class PBX_DemonExt : PB_WeaponBase
 		Inventory.althudicon "UNMXA0";
 		+weapon.noautofire;
 		PB_WeaponBase.UsesWheel true;
-		PB_WeaponBase.RespectItem "RespectDemonExt";
 		PB_WeaponBase.WheelInfo "DemonicExtWheel";
 	}
 	const chan_unmkidle = 66;	//the channel of the idle sound
@@ -74,9 +72,8 @@ Class PBX_DemonExt : PB_WeaponBase
 			wait;
 		
 		Ready:
-			TNT1 A 0 PB_RespectIfNeeded;
+			TNT1 A 0 PB_RespectIfNeeded();
 		WeaponRespect:
-			TNT1 A 0 A_setInventory(invoker.respectInventoryItem,1);
 			UNMD EDCBA 1 UNM_WeaponReady();
 			
 			UNMI AAAAAAAAAAAAAAA 1 UNM_WeaponReady();//A_PlaySound("RCHARGE",CHAN_ITEM);

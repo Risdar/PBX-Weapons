@@ -12,6 +12,8 @@ enum PBX_eWeaponSpawnerFlags
 		// SLOT 4
 	DisablePBX_BattleRifle					= 1 << 0,
 	DisablePBX_MetalSniper			        = 1 << 1,
+		// SLOT 6
+	DisablePBX_NeoHMG			        	= 1 << 2,
 
 	// ROCKET LAUNCHER
 		// SLOT 6
@@ -82,6 +84,14 @@ class PBXChaingun_Injector : PBInjector
 		{
 			handler.InjectSpawn('PB_MGSpawnerT2', 'PBX_MetalSniper', 255, 1);
 			handler.InjectSpawn('PB_MGSpawnerT3', 'PBX_MetalSniper', 255, 1);
+			// handler.InjectSpawn('PB_UpgradeSpawnerT3', 'PBX_MetalSniper', 255, 1);
+		}
+
+		// Neo HMG
+		if(!(pbx_chaingun_filter & DisablePBX_NeoHMG))
+		{
+			handler.InjectSpawn('PB_MGSpawnerT2', 'PBX_NeoHMG', 255, 1);
+			handler.InjectSpawn('PB_MGSpawnerT3', 'PBX_NeoHMG', 255, 1);
 			// handler.InjectSpawn('PB_UpgradeSpawnerT3', 'PBX_MetalSniper', 255, 1);
 		}
 	}
