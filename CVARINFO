@@ -1,13 +1,10 @@
 // General
 server bool FirstTimeLoadingPBX = true;
-server int PBX_HelpFlags = 0;
-/* 
-0 is on the MetalSniper Upgrade
-1 is on the LeverAction
-2 is on the CSSG
-3 is on the DemonExt
-4 is on the MetalSniper
-*/
+
+// Tip Flags
+server int PBX_WeaponHelpFlags = 0;
+server int PBX_UpgradeHelpFlags = 0;
+
 
 // Spawners
 server int pbx_chainsaw_filter = 0;
@@ -30,7 +27,9 @@ server int pbx_generalsetting_filter = 0;
 user int pbx_Weaponhud_x = -100;
 user int pbx_Weaponhud_y = -90;
 user float pbx_Weaponhud_scale = 1.0;
+user float pbx_Weaponhud_alpha = 1.0;
 
 user int pbx_WeaponModehud_x = -260;
 user int pbx_WeaponModehud_y = -14;
 user float pbx_WeaponModehud_scale = 2.5;
+user float pbx_WeaponModehud_alpha = 1.0;

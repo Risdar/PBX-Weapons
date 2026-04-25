@@ -8,6 +8,7 @@ class PBX_Hud : PB_Hud_ZS
     // Set Variables
     int pbx_weapon_PosX, pbx_weapon_PosY, pbx_weaponmode_PosX, pbx_weaponmode_PosY;
     double pbx_weaponmode_hudscale, pbx_weapon_hudscale;
+    double pbx_weapon_alpha, pbx_weaponmode_alpha;
     Vector2 pbx_weapon_pos, pbx_weapon_truescale;
     Vector2 pbx_weapon_pos2, pbx_weapon_truescale2;
     Vector2 pbx_weapon_pos3, pbx_weapon_truescale3; // For specific cases
@@ -42,6 +43,7 @@ class PBX_Hud : PB_Hud_ZS
         pbx_weapon_PosX = CVar.GetCVar("pbx_Weaponhud_x", CPlayer).GetInt();
         pbx_weapon_PosY = CVar.GetCVar("pbx_Weaponhud_y", CPlayer).GetInt();
         pbx_weapon_hudscale = CVar.GetCVar("pbx_Weaponhud_scale", CPlayer).GetFloat();
+        pbx_weapon_alpha = CVar.GetCVar("pbx_Weaponhud_alpha", CPlayer).GetFloat();
 
         pbx_weapon_pos = (pbx_weapon_PosX, pbx_weapon_PosY);
         pbx_weapon_truescale = (pbx_weapon_hudscale, pbx_weapon_hudscale);
@@ -50,11 +52,12 @@ class PBX_Hud : PB_Hud_ZS
         pbx_weaponmode_PosX = CVar.GetCVar("pbx_WeaponModehud_x", CPlayer).GetInt();
         pbx_weaponmode_PosY = CVar.GetCVar("pbx_WeaponModehud_y", CPlayer).GetInt();
         pbx_weaponmode_hudscale = CVar.GetCVar("pbx_WeaponModehud_scale", CPlayer).GetFloat();
+        pbx_weaponmode_alpha = CVar.GetCVar("pbx_WeaponModehud_alpha", CPlayer).GetFloat();
 
         pbx_weapon_pos2 = (pbx_weaponmode_PosX, pbx_weaponmode_PosY);
         pbx_weapon_truescale2 = (pbx_weaponmode_hudscale, pbx_weaponmode_hudscale);
         
-        // Special cases where weapons uses two mods at the same time
+        // Special cases where weapons uses two modes at the same time
         pbx_weapon_pos3 = pbx_weapon_pos2 + (0,-10);
         pbx_weapon_truescale3 = pbx_weapon_truescale2;
 
@@ -643,20 +646,35 @@ class PBX_Hud : PB_Hud_ZS
     {
         switch(whatimage)
         {
+            string image;
+            Vector2 pos;
+            Vector2 scale;
+            double transparency;
+
             // Weapon Pickup Sprite
             default:
             case 1:
-                PBHud_DrawImage(pbx_image, pbx_weapon_pos, flagsright, playerBoxAlpha, scale: pbx_weapon_truescale);
+                image = pbx_image;
+                pos = pbx_weapon_pos;
+                scale = pbx_weapon_truescale;
+                transparency = pbx_weapon_alpha;
                 break;
             // Weapon Mode Sprite
             case 2:
-                PBHud_DrawImage(pbx_image2, pbx_weapon_pos2, flagsright, playerBoxAlpha, scale: pbx_weapon_truescale2);
+                image = pbx_image2;
+                pos = pbx_weapon_pos2;
+                scale = pbx_weapon_truescale2;
+                transparency = pbx_weaponmode_alpha;
                 break;
             // Weapon Mode 2 Sprite
             case 3:
-                PBHud_DrawImage(pbx_image3, pbx_weapon_pos3, flagsright, playerBoxAlpha, scale: pbx_weapon_truescale3);
+                image = pbx_image3;
+                pos = pbx_weapon_pos3;
+                scale = pbx_weapon_truescale3;
+                transparency = pbx_weaponmode_alpha;
                 break;
         }
+        PBHud_DrawImage(image, pos, flagsright, transparency, scale: scale);
     }
 
     // Check if the player has an inventory item, returns true if yes
@@ -670,7 +688,7 @@ class PBX_Hud : PB_Hud_ZS
     {
         let plr = PlayerPawn(CPlayer.mo);
         if(!plr) return;
-        if(!weap) return;
+        if(!weap || !pbWeap) return;
         weaponAdjustments();
         DrawPBXWeaponMode();
         DrawPBXWeapon();

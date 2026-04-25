@@ -3,6 +3,8 @@ class CyberBallsPlayer : PB_ProjectileAlt
 {
     Default
     {
+		PB_Projectile.RipperCount 0;
+        PB_Projectile.PenetrationCount 0;
         Projectile;
         Radius 10;
         Height 8;

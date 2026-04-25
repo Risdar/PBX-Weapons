@@ -181,6 +181,7 @@ Class ExcavatorDrillBomb : Actor{
 		Projectile;
 		Missileheight 0;
 	}
+	
 	Override Void Tick(){
 		if(target.CountInv("GrenadeDetonator")){
 			A_StopSound(5);
@@ -189,6 +190,15 @@ Class ExcavatorDrillBomb : Actor{
 		}
 		Super.Tick();
 	}
+	override int SpecialMissileHit(Actor victim)
+	{
+		if(victim && victim is "PB_Monster")
+		{
+			self.SetStateLabel("Death");
+		}
+		return super.SpecialMissileHit(victim);
+	}
+
 	States{
 	Spawn:
 		TNT1 A 1 NODELAY A_StartSound("excavator/digloop", 5, CHANF_LOOPING,1.0,0.5);
@@ -239,6 +249,7 @@ Class ExcavatorDrill : PB_ProjectileAlt{
 		DamageType "ExplosiveImpact";
 		Decal "Scorch";
 	}
+
 	States{
 	Spawn:
 		TNT1 A 0 NODELAY A_CheckFloor("Dig");

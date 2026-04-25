@@ -30,6 +30,8 @@ class PBX_Handler : EventHandler
         // SLOT 6
         pm.giveinventory("ExcavatorRounds", excavatorFullAmmo);
         // SLOT 9
+        // OTHERS
+        pm.giveinventory("PBX_TipsManager",1);
         return;
     }
 }

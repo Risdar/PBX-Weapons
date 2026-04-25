@@ -54,27 +54,6 @@ class ResonanceAmmo_Upgrade : PB_UpgradeItem
 		FloatBobStrength 0.5;
 	}
 
-	override bool TryPickup(in out Actor toucher)
-	{
-		// first call super. and save the result:
-		bool ret = super.TryPickup(toucher);
-		// If the result is true (the item was picked
-		// up successfuly), do:
-		if (ret)
-		{
-			if(!PB_HelpNotificationsHandler.CheckTipEvent(1 << 0, CVar.GetCvar("PBX_HelpFlags", toucher.Player)))
-            {
-                Array<String> metalsniperUpgradePickup;
-                metalsniperUpgradePickup.Push("$PBX_MetalSniper_Tip1");
-                metalsniperUpgradePickup.Push("$PBX_MetalSniper_Tip2");
-                metalsniperUpgradePickup.Push("$PBX_MetalSniper_Tip3");
-                PB_HelpNotificationsHandler.PB_SendTipArray(metalsniperUpgradePickup, "PBX_HelpFlags", 1 << 0);
-            }
-		}
-		// Return the result, whatever it was:
-		return ret;
-	}
-
 	States
 	{
 	Spawn:

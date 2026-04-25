@@ -95,7 +95,7 @@ class PBX_NeoHMG : PB_WeaponBase
 		string loadedbullets;
 		string soundtouse;
 		
-		if(PB_GetOverheat() > 150)
+		if(PB_GetOverheat() > 115)
 		{
 			switch(getAmmoType())
 			{
@@ -245,7 +245,7 @@ class PBX_NeoHMG : PB_WeaponBase
 				A_ZoomFactor(1.0);
 				A_WeaponOffset(0,32);
 			}
-			TNT1 A 0 PB_checkReload("RaiseFromEmpty", null, null, "Ready","ReadyUnload",neohmgFullAmmo,1);
+			TNT1 A 0 PB_checkReload("RaiseFromEmpty", null, null, "Ready","Ready",neohmgFullAmmo,1);
 			TNT1 A 0 A_Overlay(3,"Cooling",true);
 			HG0R ABCD 1;
 			HG0R EFGH 1;

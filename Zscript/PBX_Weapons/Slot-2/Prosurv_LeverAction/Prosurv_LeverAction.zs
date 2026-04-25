@@ -223,22 +223,6 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 		currentMaxAmmo = leveractionFullAmmo;
 		super.postbeginplay();
 	}
-
-	override void attachtoowner(actor other)
-	{
-		if(other && other.player)
-		{
-			if(!PB_HelpNotificationsHandler.CheckTipEvent(1 << 1, CVar.GetCvar("PBX_HelpFlags", other.Player)))
-            {
-                Array<String> leveractionPickup;
-                leveractionPickup.Push("$PBX_LeverAction_Tip1");
-                leveractionPickup.Push("$PBX_LeverAction_Tip2");
-                leveractionPickup.Push("$PBX_LeverAction_Tip3");
-                PB_HelpNotificationsHandler.PB_SendTipArray(leveractionPickup, "PBX_HelpFlags", 1 << 1);
-            }
-		}
-		super.attachtoowner(other);
-	}
     
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
 	States
@@ -588,7 +572,7 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 			Goto FinishUnload;
 			TNT1 A 0 {
 				if (getLAMode() == LA_444Marlin) {
-					PB_UnloadMag(invoker.ammotype2,invoker.ammotype1,2,1,1,0,"PBX_MarlinRound");
+					PB_UnloadMag(invoker.ammotype2,invoker.ammotype1,2,1,1,CountInv(invoker.ammotype2) - 1,"PBX_MarlinRound");
 					if(invoker.ammo2.amount < 1) 
 					{
 						PB_SetMagEmpty(true);
@@ -597,7 +581,7 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 					}
 				}
 				else { 
-					PB_UnloadMag(invoker.ammotype2,invoker.ammotype1,1,1,1,0,"PBX_MagnumRound");
+					PB_UnloadMag(invoker.ammotype2,invoker.ammotype1,1,1,1,CountInv(invoker.ammotype2) - 1,"PBX_MagnumRound");
 					if(invoker.ammo2.amount < 1) 
 					{
 						PB_SetMagEmpty(true);
@@ -607,7 +591,7 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 				}
 				A_StartSound("weapons/leveraction/rechamber");
 			}
-			LVR2 POPQQQQQ 1;
+			LVR2 POPQQQQ 1;
 			Goto RemoveBullets;
 		FinishUnload:
 			TNT1 A 0 PB_HandleWheel();

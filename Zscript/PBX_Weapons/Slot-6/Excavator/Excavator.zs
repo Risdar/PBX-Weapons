@@ -220,6 +220,7 @@ class PBX_Excavator : PB_WeaponBase
 					PB_CoolDownBarrel();
 				}
 			}
+            TNT1 A 0 A_Jumpif(PB_GetMagUnloaded(), "NoAmmo");
             TNT1 A 0 A_Jumpif(getExcavatorMode() == eDropShotMode, "ReadyDropShotMode");
 			5DKF A 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD);
 			Loop;
@@ -242,7 +243,7 @@ class PBX_Excavator : PB_WeaponBase
 				A_SetRoll(0);
 				A_SetInventory("PB_LockScreenTilt",0);
 			}
-            TNT1 A 0 PB_JumpIfNoAmmo("Reload",1,false);
+			TNT1 A 0 PB_JumpIfNoAmmo("Reload",1,false);
             6DKF A 1 BRIGHT FireWeapon(0,1);
 			6DKF A 1 BRIGHT FireWeapon(0,2);
             5DKF L 1 BRIGHT A_ZoomFactor(0.97);
@@ -258,7 +259,7 @@ class PBX_Excavator : PB_WeaponBase
 		
 //////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
 		Reload:
-            TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, null, "ReadyDrillChargaMode", "NoAmmo", excavatorFullAmmo, 1);
+            TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, null, "ReadyDrillChargaMode", "ReadyDrillChargaMode", excavatorFullAmmo, 2);
 			6DKF A 1 A_PlaySound("Ironsights", 15);
             TNT1 A 0 A_SetRoll(roll-0.6,SPF_INTERPOLATE);
             6DKF BCDEF 1 ;
@@ -266,8 +267,8 @@ class PBX_Excavator : PB_WeaponBase
             TNT1 A 0 {
                 PB_SpawnCasing("SGL_Drum",25,0,20,Frandom(3,4),Frandom(3,4),1);
                 PB_SetMagUnloaded(true);
-                PB_SetMagEmpty(true);
                 PB_SetChamberEmpty(true);
+                PB_SetMagEmpty(true);
             }
             //TNT1 A 0 A_FireCustomMissile("RocketCaseSpawn",-30,0,-4,-4);
             TNT1 A 0 A_SetRoll(roll+0.6,SPF_INTERPOLATE);
@@ -291,8 +292,8 @@ class PBX_Excavator : PB_WeaponBase
             TNT1 A 0 {
                 PB_AmmoIntoMag(invoker.ammo2.getclassname(), invoker.ammo1.getclassname(), excavatorFullAmmo, 2);
                 PB_SetMagUnloaded(false);
-                PB_SetMagEmpty(false);
                 PB_SetChamberEmpty(false);
+                PB_SetMagEmpty(false);
             }
             TNT1 A 0 A_SetRoll(roll-1.0,SPF_INTERPOLATE);
             7DKF BCD 1 ;
@@ -403,7 +404,7 @@ class PBX_Excavator : PB_WeaponBase
             5DKF E 1;
             5DKF EFGHI 1;
             TNT1 A 16; //27 frames
-			goto ready3;
+			goto ReadyDrillChargaMode;
 			
 		FlashSlideKickingStop:
 			5DKF I 1;

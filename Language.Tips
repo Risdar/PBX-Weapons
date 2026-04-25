@@ -1,0 +1,48 @@
+[enu default]
+
+//////////////////////////// SLOT 1 ///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////// SLOT 2 ///////////////////////////////////////////////////////////////////////////////
+// Lever Action
+PBX_LeverAction_Tip1 = "The Lever Action Rifle can use two types of ammo.";
+PBX_LeverAction_Tip2 = "The .444 Marlin rounds deal high damage but only has 6 shots.";
+PBX_LeverAction_Tip3 = "While the .357 Magnum rounds deal less damage but has 12 shots.";
+
+//////////////////////////// SLOT 3 ///////////////////////////////////////////////////////////////////////////////
+// CSSG 
+PBX_CSSG_Tip1 = "The Commander Shotgun has many different types of Ammo.";
+PBX_CSSG_Tip2 = "Most are locked behind upgrades that spawn on backpacks.";
+
+//////////////////////////// SLOT 4 ///////////////////////////////////////////////////////////////////////////////
+// BattleRifle 
+
+
+// Metal Sniper
+PBX_MetalSniper_Tip1 = "The Metal Sniper is a high powered sniper rifle that has two altfire modes.";
+PBX_MetalSniper_Tip2 = "The Grenade altfire needs to be primed before firing by pressing alt and then fire.";
+PBX_MetalSniper_Tip3 = "The standard 7.62x51mm Armor Piercing deals high piercing damage";
+PBX_MetalSniper_Tip4 = "You can get the alternate Resonance Ammo type by picking it's upgrade that spawn on backpacks.";
+
+PBX_MetalSniperUpgrade_Tip1 = "The Resonance Ammo is a special Anti Arachno-Shield round.";
+PBX_MetalSniperUpgrade_Tip2 = "Shooting it at an Arachnotron shield will ignite the shield and stun all nearby enemies.";
+PBX_MetalSniperUpgrade_Tip3 = "Every shot has a high chance to stun the target.";
+
+//////////////////////////// SLOT 5 ///////////////////////////////////////////////////////////////////////////////
+// HMG
+PBX_NeoHMG_Tip1 = "The HMG is an automatic heavy weapon that has a built in charging system and can modify projectiles on the fly.";
+PBX_NeoHMG_Tip2 = "When the internal system reaches 115° C, the weapon will modify the projectile to a more powerful version.";
+PBX_NeoHMG_Tip3 = "There are two types of projectiles available, heated rounds that deals fire damage with high penetration and charged rounds that deals plasma damage but has lower damage.";
+PBX_NeoHMG_Tip4 = "You can change what type of projectile it can shoot when overheated using The Weapon Special Key.";
+//////////////////////////// SLOT 6 ///////////////////////////////////////////////////////////////////////////////
+// Excavator
+
+// CyberdemonRL
+
+//////////////////////////// SLOT 7 ///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////// SLOT 8 ///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////// SLOT 9 ///////////////////////////////////////////////////////////////////////////////
+// Demonic Exterminator
+PBX_DemonExt_Tip1 = "By killing enemies with the Demonic Exterminator, you will earn souls.";
+PBX_DemonExt_Tip2 = "You can use the souls when in \cjSoul Lightning \c-Mode";

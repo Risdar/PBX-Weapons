@@ -913,23 +913,6 @@ Class PBX_CSSG : PB_WeaponBase
 			A_takeinventory(PBX_CSSG.CSSG_ShellsToken1[j],10);
 	}
 	
-	override void attachtoowner(actor other)
-	{
-		if(other && other.player)
-		{
-			if(!PB_HelpNotificationsHandler.CheckTipEvent(1 << 2, CVar.GetCvar("PBX_HelpFlags", other.Player)))
-            {
-                Array<String> cssgPickup;
-                cssgPickup.Push("$PBX_CSSG_Tip1");
-                cssgPickup.Push("$PBX_CSSG_Tip2");
-                cssgPickup.Push("$PBX_CSSG_Tip3");
-                PB_HelpNotificationsHandler.PB_SendTipArray(cssgPickup, "PBX_HelpFlags", 1 << 2);
-            }
-		}
-		super.attachtoowner(other);
-	}
-	
-	
 }
 
 //the ammo counter

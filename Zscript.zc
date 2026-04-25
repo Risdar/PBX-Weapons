@@ -61,3 +61,4 @@ Version 4.13
 #include "Zscript/PBX/PBX_Spawners.zs"
 #include "Zscript/PBX/PBX_Systems.zs"
 #include "Zscript/PBX/PBX_Hud.zs"
+#include "Zscript/PBX/PBX_Tips.zs"

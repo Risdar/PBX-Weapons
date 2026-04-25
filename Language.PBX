@@ -12,10 +12,6 @@ PBX_LeverAction_Tag = "UAC M1893 Mod 0 Lever Action";
 PBX_LeverAction_Marlin = "\cd.444 Marlin \c-Mode";
 PBX_LeverAction_Magnum = "\cd.357 Magnum \c-Mode";
 
-PBX_LeverAction_Tip1 = "The Lever Action Rifle can use two types of ammo.";
-PBX_LeverAction_Tip2 = "The .444 Marlin rounds deal high damage but only has 6 shots.";
-PBX_LeverAction_Tip3 = "While the .357 Magnum rounds deal less damage but has 12 shots.";
-
 //////////////////////////// SLOT 3 ///////////////////////////////////////////////////////////////////////////////
 // CSSG 
 PBX_CSSG_PICKUP = "Commander Super Shotgun (Slot 3)";
@@ -36,17 +32,13 @@ PBX_PICKUP_WPSP = "Got the White phosphorus shell upgrade!";
 PBX_PICKUP_DOOM = "Got the Triple Doom shell upgrade!";
 PBX_PICKUP_DNMK = "You got the Danmaku Shell Upgrade!!!";
 
-PBX_CSSG_Tip1 = "The Commander Shotgun has many different types of Ammo.";
-PBX_CSSG_Tip2 = "Most are locked behind upgrades that spawn on backpacks.";
-PBX_CSSG_Tip3 = "You can bypass this requirement by disabling the CSSG upgrade in the Addon Spawner Settings.";
-
 //////////////////////////// SLOT 4 ///////////////////////////////////////////////////////////////////////////////
 // BattleRifle 
 PBX_BattleRifle_Pickup = "Battle Rifle (Slot 4)";
 PBX_BattleRifle_Tag = "UAC M1 'BDP' Battle Rifle";
 
 // Metal Sniper
-PBX_MetalSniper_Pickup = "Metal Sniper (slot 4)";
+PBX_MetalSniper_Pickup = "Metal Sniper (Slot 4)";
 PBX_MetalSniper_Tag = "UAC-45 Heavy 'Metal' Sniper";
 PBX_MetalSniper_AimMode = "\cdAim Secondary \c-Mode";
 PBX_MetalSniper_GrenMode = "\ciGrenade Secondary \c-Mode";
@@ -54,19 +46,10 @@ PBX_MetalSniper_GrenMode = "\ciGrenade Secondary \c-Mode";
 PBX_MetalSniper_Resonance = "\cjResonance Ammo \c-Mode";
 PBX_MetalSniper_Standard = "\cd7.62x51mm Armor Piercing \c-Mode";
 
-PBX_MetalSniper_UpgradePickup = "Metal Sniper Resonance Ammo Upgrade (slot 4)";
-
-PBX_MetalSniper_Tip1 = "The Resonance Ammo is a special Anti Arachno-Shield round.";
-PBX_MetalSniper_Tip2 = "Shooting it at an Arachnotron shield will ignite the shield and stun all nearby enemies.";
-PBX_MetalSniper_Tip3 = "Every shot has a high chance to stun the target.";
-
-PBX_MetalSniper_Tip4 = "The Metal Sniper is a high powered sniper rifle that has two altfire modes.";
-PBX_MetalSniper_Tip5 = "The Grenade altfire needs to be primed before firing by pressing alt and then fire.";
-PBX_MetalSniper_Tip6 = "The standard 7.62x51mm Armor Piercing deals high piercing damage";
-PBX_MetalSniper_Tip7 = "You can get the alternate Resonance Ammo type by picking it's upgrade that spawn on backpacks.";
-PBX_MetalSniper_Tip8 = "You can bypass this requirement by disabling the Metal Sniper upgrade in the Addon Spawner Settings.";
+PBX_MetalSniper_UpgradePickup = "Metal Sniper Resonance Ammo Type Upgrade (Slot 4)";
 
 //////////////////////////// SLOT 5 ///////////////////////////////////////////////////////////////////////////////
+// HMG
 PBX_NeoHMG_Pickup = "HMG (Slot 5)";
 PBX_NeoHMG_Tag = "UAC PB-3 Heavy Machine Gun";
 
@@ -96,11 +79,10 @@ PBX_DemonExt_Laser = "\caLaser \c-Mode";
 PBX_DemonExt_Incin = "\crDark Incinerator \c-Mode";
 PBX_DemonExt_Lightning = "\cjSoul Lightning \c-Mode";
 
-PBX_DemonExt_Tip1 = "By killing enemies with the Demonic Exterminator, you will earn souls.";
-PBX_DemonExt_Tip2 = "You can use the souls when in \cjSoul Lightning \c-Mode";
 //////////////////////////// OTHERS ///////////////////////////////////////////////////////////////////////////////
 // SHARED
 PBX_AlreadySelected = "Mode Already Selected";
 PBX_AmmoNotAvailable = "Ammo Type Not Available";
 PBX_ModeNotAvailable = "Mode Not Available";
 PBX_NoSpecial = "No Weapon Special Available";
+PBX_DisableUpgrade = "You can bypass this requirement by disabling the upgrade in the Addon Spawner Settings.";
