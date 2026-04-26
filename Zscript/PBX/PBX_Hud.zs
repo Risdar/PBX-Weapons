@@ -212,7 +212,7 @@ class PBX_Hud : PB_Hud_ZS
                     break;
 
                 case 'PBX_NeoHMG':
-                    adjustPos = (-8,15);
+                    adjustPos = (-3,-3);
                     adjustScale = 1.6;
                     break;
                 
@@ -388,6 +388,20 @@ class PBX_Hud : PB_Hud_ZS
                 pbx_image2   =  mode == 2 ? "graphics/WeaponIcons/EXTREMELYHIHGSPID.png" : 
                                 mode == 1 ? "graphics/WeaponIcons/NORMALSPEED.png" : 
                                 "graphics/WeaponIcons/HIGHSPEED.png";
+                break;
+
+            case 'PBX_NeoHMG':
+                let neoHMG = PBX_NeoHMG(pbWeap);
+                // Show Shield Durability
+                if (neoHMG) 
+                {
+                    PBHud_DrawImage("BARBACC3", (-90, -71), flagsright, playerBoxAlpha);
+                    PBHud_DrawBar("ABAR8", "BGBARL", GetAmount("HMGShield"), GetMaxAmount("HMGShield"), (-100, -72), 0, 1, flagsright);
+                    PBHud_DrawString(mDefaultFont, Formatnumber(GetAmount("HMGShield")), (-207, -90), DI_TEXT_ALIGN_RIGHT, Font.CR_CYAN);
+                }
+
+                // // Show what Ammo type is selected
+                // pbx_image2 = sniper && sniper.resonanceAmmoLoaded ? "graphics/WeaponWheel/metalsniper/ResonanceAlt.png" : "graphics/WeaponWheel/metalsniper/StandardAlt.png";
                 break;
 
 //////////////// SLOT 6 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

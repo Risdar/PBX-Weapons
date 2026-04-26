@@ -9,6 +9,14 @@ Class HMGChamberAmmo : PB_Ammo{
 	}
 }
 
+class HMGShield : PB_Ammo 
+{
+    Default 
+	{
+        Inventory.MaxAmount 100;
+    }
+}
+
 class PB_792x57mm_Heated : PB_792x57mm
 {
 	Default
@@ -34,5 +42,29 @@ class PB_792x57mm_Charged : PB_792x57mm
 		+PB_Projectile.SMALLIMPACT;
 		DamageType "Plasma";
 		// Obituary "%k forced %o to read Mein Kampf.";
+	}
+}
+
+class ShieldParticle : VisualThinker
+{
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		texture = TexMan.CheckForTexture('SPKGA0');
+		scale = (0.01,0.01);
+		alpha = 1;
+		flags = SPF_FULLBRIGHT;
+		SetRenderStyle(STYLE_Add);
+	}
+	
+	override void Tick()
+	{
+		if(alpha <= 0)
+		{
+			Destroy();
+		}
+		vel.z -= 0.2;
+		alpha -= 0.04;
+		Super.Tick();
 	}
 }

@@ -59,8 +59,8 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			return true;
 		return false;
 	}
-    // UNUSED RICOCHET FUNCTION
-    
+
+    // UNUSED RICOCHET FUNCTION 
     // Action void a_FireBattleRifle()
 	// {
 	// 	FLineTraceData ricochetdata;

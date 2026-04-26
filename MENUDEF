@@ -55,18 +55,23 @@ AddOptionMenu "AddonWeaponSpawns" after "SSGT2"
 
 // CHAINGUN /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // TIER 1
-AddOptionMenu "AddonWeaponSpawns" after "CHNT1"
-{
+    AddOptionMenu "AddonWeaponSpawns" after "CHNT1"
+    {
         // SLOT 4
-    FlagOption    "Battle Rifle",    "pbx_chaingun_filter",    "OffOn", 0
-}
+        FlagOption    "Battle Rifle",    "pbx_chaingun_filter",    "OffOn", 0
+    }
     // TIER 2
-AddOptionMenu "AddonWeaponSpawns" after "CHNT2"
-{
+    AddOptionMenu "AddonWeaponSpawns" after "CHNT2"
+    {
         // SLOT 4
-    FlagOption    "Metal Sniper",    "pbx_chaingun_filter",    "OffOn", 1
-    FlagOption    "Neo HMG",    "pbx_chaingun_filter",    "OffOn", 2
-}
+        FlagOption    "Metal Sniper",    "pbx_chaingun_filter",    "OffOn", 1
+    }
+    // TIER 3
+    AddOptionMenu "AddonWeaponSpawns" after "CHNT3"
+    {
+        // SLOT 4
+        FlagOption    "Neo HMG",    "pbx_chaingun_filter",    "OffOn", 2
+    }
 
 // ROCKET LAUNCHER /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // TIER 3

@@ -1,5 +1,14 @@
 Version 4.13
 
+// General
+#include "Zscript/PBX/PBX_Spawners.zs"
+#include "Zscript/PBX/PBX_Systems.zs"
+#include "Zscript/PBX/PBX_Hud.zs"
+#include "Zscript/PBX/PBX_Tips.zs"
+
+// Big thanks to EmeraldCoastt and the BDP team for this
+#include "Zscript/Maths/Include.zsc"
+
 // Slot 1
 
 
@@ -21,7 +30,6 @@ Version 4.13
 // Battle Rifle
 #include "Zscript/PBX_Weapons/Slot-4/BattleRifle/BattleRifle.zs"
 #include "Zscript/PBX_Weapons/Slot-4/BattleRifle/BattleRifle_helpers.zs"
-// #Include "Zscript/PBX_Weapons/Slot-4/BattleRifle/math.zs"
 // Metal Sniper
 #include "Zscript/PBX_Weapons/Slot-4/MetalSniper/MetalSniper.zs"
 #include "Zscript/PBX_Weapons/Slot-4/MetalSniper/MetalSniper_Wheel.zs"
@@ -29,6 +37,7 @@ Version 4.13
 
 
 // Slot 5
+// NeoHMG
 #include "Zscript/PBX_Weapons/Slot-5/NeoHMG/NeoHMG.zs"
 #include "Zscript/PBX_Weapons/Slot-5/NeoHMG/NeoHMG_Wheel.zs"
 #include "Zscript/PBX_Weapons/Slot-5/NeoHMG/NeoHMG_helpers.zs"
@@ -57,8 +66,4 @@ Version 4.13
 #include "Zscript/PBX_Weapons/Slot-9/DemonicExterminator/DemonicExtStuff.zs"
 #include "Zscript/PBX_Weapons/Slot-9/DemonicExterminator/DemonicExt_Wheel.zs"
 
-// Others
-#include "Zscript/PBX/PBX_Spawners.zs"
-#include "Zscript/PBX/PBX_Systems.zs"
-#include "Zscript/PBX/PBX_Hud.zs"
-#include "Zscript/PBX/PBX_Tips.zs"
+

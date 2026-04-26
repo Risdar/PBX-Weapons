@@ -20,7 +20,7 @@ class PBX_NeoHMG : PB_WeaponBase
 //////////////////////////// AMMO ////////////////////////////////////////////////////////////////////////////////////
 		Weapon.AmmoType1 "PB_HighCalMag";
 	    Weapon.AmmoType2 "HMGChamberAmmo";
-	    Weapon.AmmoGive1 40;
+	    Weapon.AmmoGive1 80;
 		
 //////////////////////////// SPRITES & OFFSETS ////////////////////////////////////////////////////////////////////////////////////
         PB_WeaponBase.OffsetRecoilX 2.5;
@@ -38,7 +38,16 @@ class PBX_NeoHMG : PB_WeaponBase
 	}
 	
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
+	const shieldlayer = -567;
 	int ammoType;
+	bool shieldEnabled;
+	bool shieldactive;
+	bool shieldReady;
+	bool shieldWasActive;
+	bool shieldBroken;
+	int shieldTimer;
+	int rechargeTimer;
+	int shieldFrame;
 	enum NeoHMGRounds
 	{
 		eHeatedRounds = 0,
@@ -159,14 +168,142 @@ class PBX_NeoHMG : PB_WeaponBase
 		}
 	}
 	
+	action void A_FireVisualThinker(class<VisualThinker> thinker, int speed = 0, double offsetangle = 0, double offsetpitch = 0, double offsetx = 0, double offsety = 0, double offsetz = 0, bool rvel = true)	
+	{
+		let thonk = Level.SpawnVisualThinker(thinker);
+		if(thonk)
+		{
+			BDPGMQuaternion base = BDPGMQuaternion.createFromAngles(angle,pitch,roll);
+			BDPGMQuaternion angl = BDPGMQuaternion.createFromAngles(offsetangle,0,0);
+			BDPGMQuaternion ptch = BDPGMQuaternion.createFromAngles(0,offsetpitch,0);
+			BDPGMQuaternion rotated = base.multiplyQuat(angl).multiplyQuat(ptch);
+			Vector3 dir;
+			[dir.x, dir.y, dir.z] = rotated.toAngles();
+			quat ofsbase = Quat.FromAngles(angle, pitch, roll);
+			Vector3 offset = (offsety, -offsetx, offsetz);
+			Vector3 ppos = ofsbase * offset;
+			Vector3 ofs = level.Vec3Offset(pos, ppos);
+			thonk.pos = ofs;
+			thonk.pos.z += player.mo.height * 0.5 - player.mo.floorclip + player.mo.AttackZOffset*player.crouchFactor - 4 + offsetz; //i want to die
+			invoker.Vel3DFromAngle(speed,dir.x,dir.y);
+			thonk.vel = invoker.vel;
+			invoker.Vel3DFromAngle(clamp(speed/2,0,player.mo.radius),dir.x,dir.y);
+			thonk.pos += invoker.vel;
+			if(rvel)
+			{
+				thonk.vel += player.mo.vel;
+			}
+		}
+	}
+
+	action void A_FireShieldParticles()
+	{
+		for(int i = 40; i > 0; i--)
+		{
+			A_FireVisualThinker("ShieldParticle", i > 40 / 2 ? 2 : 4,random(-4,4),random(-20,20),frandom(-20,20),10,frandom(0,6));
+		}
+	}
+
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
     
 	override void postbeginplay()
 	{
 		ammoType = eHeatedRounds;
+		shieldReady = true;
+		giveinventory("HMGShield", 100);
 		super.postbeginplay();
 	}
+
+	override void ModifyDamage(int damage, Name damageType, out int newDamage, bool passive, Actor inflictor, Actor source, int flags)
+    {
+		if (passive && damage > 0)
+		{
+			// console.printf("Damage dealt");
+			if (owner.player && owner.player.readyweapon is "PBX_NeoHMG" && shieldWasActive)
+			{
+				// console.printf("Blocked damage");
+				owner.TakeInventory("HMGShield", damage);
+				owner.A_StartSound("StickyGrenade/Hit", 125);
+				newDamage = 0;
+			}
+		}
+
+    }
     
+	override void DoEffect() 
+	{
+		super.DoEffect();
+		If(owner.player && owner.player.readyweapon is "PBX_NeoHMG" && owner.player.cmd.buttons & BT_ALTATTACK && shieldready && countinv("HMGShield") > 0)
+		{
+			owner.Player.SetPSprite(shieldlayer,resolvestate("HMGShield"));
+			If(!shieldwasactive)
+			{
+				owner.Player.SetPSprite(shieldlayer,resolvestate("HMGShieldBash"));
+				owner.A_startsound("HMGSHLD3",234);
+			}
+			shieldwasactive = true;
+			Shieldactive = true;
+			owner.bnoblood = true;
+			
+			//console.printf("Shield active wooo");
+		}
+		else if(owner.player)
+		{
+			Shieldactive = false;
+			owner.bnoblood = false;
+			If(shieldwasactive)
+			{
+				owner.Player.SetPSprite(shieldlayer,resolvestate("HMGShieldBreak"));
+				owner.A_startsound("HMGSHLD4",234);
+				owner.a_startsound("StickyGrenade/Hit",125,0,0.5);
+				Shieldtimer = 15; // Change this to adjust the shield cooldown
+				shieldready = false;
+				If(countinv("HMGShield") < 1)
+				{
+					shieldbroken = true;
+					owner.A_startsound("HMGSHLD1",234);
+				}
+				shieldwasactive = false;
+			}
+			If(shieldtimer > 0)
+			{
+				shieldtimer--;
+			}
+			Else if(!shieldbroken && !shieldready)
+			{
+				shieldready = true;
+				
+				If(owner.player && owner.player.readyweapon is "PBX_NeoHMG")
+					{
+						owner.A_startsound("HMGSHLD",233);
+						
+					}
+			}
+			If(ShieldTimer < 1)
+			{
+				If(rechargetimer < 1) // Change this to adjust shield recharge
+				{
+					rechargetimer++;
+				}
+				Else if(countinv("HMGShield") < 100)
+				{
+					rechargetimer = 0;
+					giveinventory("HMGShield",10); // Changethis to adjust shield recharge amount
+				}
+				Else if(shieldbroken)
+				{
+					ShieldBroken = false;
+					ShieldReady = true;
+					// ChangeAmmoIcon2("ASGSA0");
+					If(owner.player && owner.player.readyweapon is "PBX_NeoHMG")
+					{
+						owner.A_startsound("HMGSHLD",233);
+					}
+				}
+			}
+		}
+	}
+
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
 	States
 	{
@@ -238,6 +375,55 @@ class PBX_NeoHMG : PB_WeaponBase
 
 		AltFire:
 			goto Ready3;
+		HMGShieldBash:
+			PSHL E 0 A_FireProjectile("KickAttack");
+		HMGShield:
+			TNT1 A 0 
+			{
+				If(random(0,1) == 1)
+					{
+						A_OverlayFlags(shieldlayer,PSPF_FLIP,true);
+					}
+					Else
+					{
+						A_OverlayFlags(shieldlayer,PSPF_FLIP,false);
+					}
+					A_OverlayFlags(shieldlayer,PSPF_RENDERSTYLE|PSPF_FORCESTYLE,true);
+					A_OverlayRenderStyle(shieldlayer,STYLE_Add);
+			}
+			TNT1 A 0 A_JumpIf(invoker.ShieldFrame > 0,"HMGShield2");
+			PSHL A 1 BRIGHT {invoker.ShieldFrame++;}
+			stop;
+		HMGShield2:
+			TNT1 A 0 A_JumpIf(invoker.ShieldFrame > 1,"HMGShield3");
+			PSHL B 1 BRIGHT {invoker.ShieldFrame++;}
+			stop;
+		HMGShield3:
+			TNT1 A 0 A_JumpIf(invoker.ShieldFrame > 2,"HMGShield4");
+			PSHL C 1 BRIGHT {invoker.ShieldFrame++;}
+			stop;
+		HMGShield4:
+			TNT1 A 0 A_JumpIf(invoker.ShieldFrame > 3,"HMGShield5");
+			PSHL D 1 BRIGHT {invoker.ShieldFrame++;}
+			stop;
+		HMGShield5:
+			TNT1 A 0 A_JumpIf(invoker.ShieldFrame > 4,"HMGShield6");
+			PSHL E 1 BRIGHT {invoker.ShieldFrame++;}
+			stop;
+		HMGShield6:
+			TNT1 A 0 A_JumpIf(invoker.ShieldFrame > 5,"HMGShield7");
+			PSHL F 1 BRIGHT {invoker.ShieldFrame++;}
+			stop;
+		HMGShield7:
+			TNT1 A 0 A_JumpIf(invoker.ShieldFrame > 6,"HMGShield8");
+			PSHL G 1 BRIGHT {invoker.ShieldFrame++;}
+			stop;
+		HMGShield8:
+			PSHL H 1 BRIGHT {invoker.ShieldFrame = 0;}
+			stop;
+		HMGShieldBreak:
+			PSHL A 0 A_FireShieldParticles();
+			stop;
 		
 //////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
 		Reload:
@@ -352,3 +538,4 @@ class PBX_NeoHMG : PB_WeaponBase
 			stop;
 	}
 }
+
