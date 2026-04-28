@@ -1,4 +1,5 @@
 const neohmgFullAmmo = 80;
+const neohmgShieldAmmo = 100;
 
 class PBX_NeoHMG : PB_WeaponBase
 {
@@ -31,15 +32,19 @@ class PBX_NeoHMG : PB_WeaponBase
         // Obituary "Shattered Into Pieces By Excavator Launcher. Ouch!";
         Inventory.PickupMessage "$PBX_NeoHMG_Pickup";
         Inventory.PickupSound "LMGPKP";
-	    Tag "PBX_NeoHMG_Tag";
+	    Tag "$PBX_NeoHMG_Tag";
         
 //////////////////////////// WEAPON FLAGS ////////////////////////////////////////////////////////////////////////////////////
         +FORCEXYBILLBOARD
 	}
 	
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
-	const shieldlayer = -567;
-	int ammoType;
+	// Constants
+	const HMG_SHIELDLAYER = -567;
+	const HMG_SHIELDSOUNDLAYER = 234;
+	const HMG_SHIELDSOUNDLAYER2 = 233;
+
+	// Shield Variables
 	bool shieldEnabled;
 	bool shieldactive;
 	bool shieldReady;
@@ -48,6 +53,16 @@ class PBX_NeoHMG : PB_WeaponBase
 	int shieldTimer;
 	int rechargeTimer;
 	int shieldFrame;
+	int shieldDrain;
+
+	// Shield Values
+	const shieldProtectionMultiplier = 1; // How many shield charges are consumed per point of damage (Multiplier)
+	const shieldRechargeSpeed = 1; // How many tics before giving the shield charge
+	const shieldRechargeRate = 5; // How many shield charges to give each tic
+	const shieldCooldown = 15; // How many tics before shield is available again
+
+	// Modes
+	int ammoType;
 	enum NeoHMGRounds
 	{
 		eHeatedRounds = 0,
@@ -210,7 +225,7 @@ class PBX_NeoHMG : PB_WeaponBase
 	{
 		ammoType = eHeatedRounds;
 		shieldReady = true;
-		giveinventory("HMGShield", 100);
+		giveinventory("HMGShield", neohmgShieldAmmo);
 		super.postbeginplay();
 	}
 
@@ -218,11 +233,12 @@ class PBX_NeoHMG : PB_WeaponBase
     {
 		if (passive && damage > 0)
 		{
+			shieldDrain = clamp(int(damage * shieldProtectionMultiplier), 1, neohmgShieldAmmo);
 			// console.printf("Damage dealt");
 			if (owner.player && owner.player.readyweapon is "PBX_NeoHMG" && shieldWasActive)
 			{
 				// console.printf("Blocked damage");
-				owner.TakeInventory("HMGShield", damage);
+				owner.TakeInventory("HMGShield", shieldDrain);
 				owner.A_StartSound("StickyGrenade/Hit", 125);
 				newDamage = 0;
 			}
@@ -233,13 +249,17 @@ class PBX_NeoHMG : PB_WeaponBase
 	override void DoEffect() 
 	{
 		super.DoEffect();
-		If(owner.player && owner.player.readyweapon is "PBX_NeoHMG" && owner.player.cmd.buttons & BT_ALTATTACK && shieldready && countinv("HMGShield") > 0)
+		If(	owner.player 
+			&& owner.player.readyweapon is "PBX_NeoHMG" 
+			&& owner.player.cmd.buttons & BT_ALTATTACK 
+			&& shieldready 
+			&& countinv("HMGShield") > 0)
 		{
-			owner.Player.SetPSprite(shieldlayer,resolvestate("HMGShield"));
+			owner.Player.SetPSprite(HMG_SHIELDLAYER,resolvestate("HMGShield"));
 			If(!shieldwasactive)
 			{
-				owner.Player.SetPSprite(shieldlayer,resolvestate("HMGShieldBash"));
-				owner.A_startsound("HMGSHLD3",234);
+				owner.Player.SetPSprite(HMG_SHIELDLAYER,resolvestate("HMGShieldBash"));
+				owner.A_startsound("HMGSHLD3",HMG_SHIELDSOUNDLAYER);
 			}
 			shieldwasactive = true;
 			Shieldactive = true;
@@ -253,15 +273,15 @@ class PBX_NeoHMG : PB_WeaponBase
 			owner.bnoblood = false;
 			If(shieldwasactive)
 			{
-				owner.Player.SetPSprite(shieldlayer,resolvestate("HMGShieldBreak"));
-				owner.A_startsound("HMGSHLD4",234);
+				owner.Player.SetPSprite(HMG_SHIELDLAYER,resolvestate("HMGShieldBreak"));
+				owner.A_startsound("HMGSHLD4",HMG_SHIELDSOUNDLAYER);
 				owner.a_startsound("StickyGrenade/Hit",125,0,0.5);
-				Shieldtimer = 15; // Change this to adjust the shield cooldown
+				Shieldtimer = shieldCooldown;
 				shieldready = false;
 				If(countinv("HMGShield") < 1)
 				{
 					shieldbroken = true;
-					owner.A_startsound("HMGSHLD1",234);
+					owner.A_startsound("HMGSHLD1",HMG_SHIELDSOUNDLAYER);
 				}
 				shieldwasactive = false;
 			}
@@ -275,20 +295,20 @@ class PBX_NeoHMG : PB_WeaponBase
 				
 				If(owner.player && owner.player.readyweapon is "PBX_NeoHMG")
 					{
-						owner.A_startsound("HMGSHLD",233);
+						owner.A_startsound("HMGSHLD",HMG_SHIELDSOUNDLAYER2);
 						
 					}
 			}
 			If(ShieldTimer < 1)
 			{
-				If(rechargetimer < 1) // Change this to adjust shield recharge
+				If(rechargetimer < shieldRechargeSpeed)
 				{
 					rechargetimer++;
 				}
 				Else if(countinv("HMGShield") < 100)
 				{
 					rechargetimer = 0;
-					giveinventory("HMGShield",10); // Changethis to adjust shield recharge amount
+					giveinventory("HMGShield",shieldRechargeRate);
 				}
 				Else if(shieldbroken)
 				{
@@ -297,7 +317,7 @@ class PBX_NeoHMG : PB_WeaponBase
 					// ChangeAmmoIcon2("ASGSA0");
 					If(owner.player && owner.player.readyweapon is "PBX_NeoHMG")
 					{
-						owner.A_startsound("HMGSHLD",233);
+						owner.A_startsound("HMGSHLD",HMG_SHIELDSOUNDLAYER2);
 					}
 				}
 			}
@@ -339,20 +359,29 @@ class PBX_NeoHMG : PB_WeaponBase
 				PB_HandleCrosshair(52);
 			}
 		ReadyToFire:
+			// Load Sprites
+			XH01 A 0;
+			XH02 A 0;
+			XH03 A 0;
+			XH04 A 0;
+			// Actual Code
 			TNT1 A 0 A_JumpIf(PB_GetMagUnloaded(), "ReadyUnload");
 			HG0F A 1 {
-				if (!(pbx_generalsetting_filter & DisablePBX_Smoke))
-                	{PB_CoolDownBarrel(0, 0, 3);}
+				PB_CoolDownBarrel(0, 0, 3);
+				if (invoker.ammo2.amount == 4 )	{A_SetWeaponSprite("XH04");}
+				if (invoker.ammo2.amount == 3 )	{A_SetWeaponSprite("XH03");}
+				if (invoker.ammo2.amount == 2 )	{A_SetWeaponSprite("XH02");}
+				if (invoker.ammo2.amount <= 1 )	{A_SetWeaponSprite("XH01");}
+				if (invoker.ammo2.amount == 0 )	{A_SetWeaponSprite("XH01");}
 				return A_DoPBWeaponAction(WRF_ALLOWRELOAD); 
 			}
 			loop;
 		
 		ReadyUnload:
 			HG0R R 1 {
-				if (!(pbx_generalsetting_filter & DisablePBX_Smoke))
-                	{PB_CoolDownBarrel(0, 0, 3);}
+				PB_CoolDownBarrel(0, 0, 3);
 				PB_HandleCrosshair(52);
-				return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOSECONDARY); 
+				return A_DoPBWeaponAction(WRF_ALLOWRELOAD); 
 			}
 			loop;
 
@@ -362,14 +391,50 @@ class PBX_NeoHMG : PB_WeaponBase
         
 //////////////////////////// FIRE ////////////////////////////////////////////////////////////////////////////////////
 		Fire:
+			// Load Sprites
+			XH01 BCDEF 0;
+			XH02 BCDEF 0;
+			XH03 BCDEF 0;
+			XH04 EF 0;
+			// Actual Code
 			TNT1 A 0 PB_HandleCrosshair(52);
             TNT1 A 0 PB_jumpIfNoAmmo("Reload",1,false);
-			HG0F B 1 bright fireHMG(0,1);
-			HG0F C 1 bright fireHMG(0,2);
-			HG0F D 1;
-			HG0F E 1;
+			HG0F B 1 bright {
+				if (invoker.ammo2.amount == 3 )	{A_SetWeaponSprite("XH03");}
+				if (invoker.ammo2.amount == 2 )	{A_SetWeaponSprite("XH02");}
+				if (invoker.ammo2.amount <= 1 )	{A_SetWeaponSprite("XH01");}
+				if (invoker.ammo2.amount == 0 )	{A_SetWeaponSprite("XH01");}
+				return fireHMG(0,1);
+			}
+			HG0F C 1 bright {
+				if (invoker.ammo2.amount == 3 )	{A_SetWeaponSprite("XH03");}
+				if (invoker.ammo2.amount == 2 )	{A_SetWeaponSprite("XH02");}
+				if (invoker.ammo2.amount <= 1 )	{A_SetWeaponSprite("XH01");}
+				if (invoker.ammo2.amount == 0 )	{A_SetWeaponSprite("XH01");}
+				return fireHMG(0,2);
+			}
+			HG0F D 1 {
+				if (invoker.ammo2.amount == 3 )	{A_SetWeaponSprite("XH03");}
+				if (invoker.ammo2.amount == 2 )	{A_SetWeaponSprite("XH02");}
+				if (invoker.ammo2.amount <= 1 )	{A_SetWeaponSprite("XH01");}
+				if (invoker.ammo2.amount == 0 )	{A_SetWeaponSprite("XH01");}
+			}
+			HG0F E 1 {
+				if (invoker.ammo2.amount == 4 )	{A_SetWeaponSprite("XH04");}
+				if (invoker.ammo2.amount == 3 )	{A_SetWeaponSprite("XH03");}
+				if (invoker.ammo2.amount == 2 )	{A_SetWeaponSprite("XH02");}
+				if (invoker.ammo2.amount <= 1 )	{A_SetWeaponSprite("XH01");}
+				if (invoker.ammo2.amount == 0 )	{A_SetWeaponSprite("XH01");}
+			}
 			TNT1 A 0 A_Weaponoffset(0,32);
-			HG0F F 1 A_refire();
+			HG0F F 1 {
+				if (invoker.ammo2.amount == 4 )	{A_SetWeaponSprite("XH04");}
+				if (invoker.ammo2.amount == 3 )	{A_SetWeaponSprite("XH03");}
+				if (invoker.ammo2.amount == 2 )	{A_SetWeaponSprite("XH02");}
+				if (invoker.ammo2.amount <= 1 )	{A_SetWeaponSprite("XH01");}
+				if (invoker.ammo2.amount == 0 )	{A_SetWeaponSprite("XH01");}
+				return A_refire();
+			}
 			TNT1 A 0 A_startsound("weapon/HMG/Stop",32);
 			goto Ready3;
 
@@ -382,14 +447,14 @@ class PBX_NeoHMG : PB_WeaponBase
 			{
 				If(random(0,1) == 1)
 					{
-						A_OverlayFlags(shieldlayer,PSPF_FLIP,true);
+						A_OverlayFlags(HMG_SHIELDLAYER,PSPF_FLIP,true);
 					}
 					Else
 					{
-						A_OverlayFlags(shieldlayer,PSPF_FLIP,false);
+						A_OverlayFlags(HMG_SHIELDLAYER,PSPF_FLIP,false);
 					}
-					A_OverlayFlags(shieldlayer,PSPF_RENDERSTYLE|PSPF_FORCESTYLE,true);
-					A_OverlayRenderStyle(shieldlayer,STYLE_Add);
+					A_OverlayFlags(HMG_SHIELDLAYER,PSPF_RENDERSTYLE|PSPF_FORCESTYLE,true);
+					A_OverlayRenderStyle(HMG_SHIELDLAYER,STYLE_Add);
 			}
 			TNT1 A 0 A_JumpIf(invoker.ShieldFrame > 0,"HMGShield2");
 			PSHL A 1 BRIGHT {invoker.ShieldFrame++;}
@@ -427,21 +492,53 @@ class PBX_NeoHMG : PB_WeaponBase
 		
 //////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
 		Reload:
+			// Load Sprites
+			XH1R ABC 0;
+			XH2R ABC 0;
+			XH3R ABC 0;
+			XH4R ABC 0;
+			XHR1 ABCDEFGHI 0;
+			XHR1 VWXYZ 0;
+			XHR2 ABCDEFGHI 0;
+			XHR2 VWXYZ 0;
+			XHR3 ABCDEFGHI 0;
+			XHR3 VWXYZ 0;
+			XHR4 ABCDE 0;
+			XHR4 VWXYZ 0;
+			// Actual Code
             TNT1 A 0 {
 				A_ZoomFactor(1.0);
 				A_WeaponOffset(0,32);
 			}
 			TNT1 A 0 PB_checkReload("RaiseFromEmpty", null, null, "Ready","Ready",neohmgFullAmmo,1);
 			TNT1 A 0 A_Overlay(3,"Cooling",true);
-			HG0R ABCD 1;
-			HG0R EFGH 1;
+			HG0R ABCDE 1 {
+				if (invoker.ammo2.amount == 4 )	{A_SetWeaponSprite("XHR4");}
+				if (invoker.ammo2.amount == 3 )	{A_SetWeaponSprite("XHR3");}
+				if (invoker.ammo2.amount == 2 )	{A_SetWeaponSprite("XHR2");}
+				if (invoker.ammo2.amount <= 1 )	{A_SetWeaponSprite("XHR1");}
+				if (invoker.ammo2.amount == 0 )	{A_SetWeaponSprite("XHR1");}
+			}
+			HG0R FGH 1 {
+				if (invoker.ammo2.amount == 3 )	{A_SetWeaponSprite("XHR3");}
+				if (invoker.ammo2.amount == 2 )	{A_SetWeaponSprite("XHR2");}
+				if (invoker.ammo2.amount <= 1 )	{A_SetWeaponSprite("XHR1");}
+				if (invoker.ammo2.amount == 0 )	{A_SetWeaponSprite("XHR1");}
+			}
 			TNT1 A 0 A_StartSound("weapons/sgl/detach",33);
 			TNT1 A 0 A_JumpIf(PB_GetMagUnloaded(),"Reload_Unloaded");
 			TNT1 A 0 {
 				if(invoker.ammo2.amount < 1 && !PB_GetMagUnloaded())
-					PB_SpawnCasing("EmptyLMGMag", 12, -2.5, 6.25,frandom(2,5),frandom(1,3),frandom(2,4));//A_Spawnitem("EmptyLMGMag");EmptyLMGMissileMag
+					PB_SpawnCasing("EmptyLMGMag", 12, -2.5, 6.25,frandom(2,5),frandom(1,3),frandom(2,4));
+					//A_Spawnitem("EmptyLMGMag");EmptyLMGMissileMag
 			}
-			HG0R IJK 1;
+			HG0R I 1 {
+				if (invoker.ammo2.amount == 3 )	{A_SetWeaponSprite("XHR3");}
+				if (invoker.ammo2.amount == 2 )	{A_SetWeaponSprite("XHR2");}
+				if (invoker.ammo2.amount <= 1 )	{A_SetWeaponSprite("XHR1");}
+				if (invoker.ammo2.amount == 0 )	{A_SetWeaponSprite("XHR1");}
+			}
+			HG0R JK 1;
 			HG0R L 1 {
 				PB_SetMagUnloaded(true);
 				PB_SetChamberEmpty(true);
@@ -451,16 +548,48 @@ class PBX_NeoHMG : PB_WeaponBase
 			HG0R QRST 1;
 		Reload_Unloaded:	
 			TNT1 A 0 A_Startsound("weapon/HMG/Reload1",34);
-			HG0R UV 1;
-			HG0R W 1 {
+			HG0R U 1;
+			HG0R V 1 {
+				if (invoker.ammo2.amount == 4 )	{A_SetWeaponSprite("XHR4");}
+				if (invoker.ammo2.amount == 3 )	{A_SetWeaponSprite("XHR3");}
+				if (invoker.ammo2.amount == 2 )	{A_SetWeaponSprite("XHR2");}
+				if (invoker.ammo2.amount <= 1 )	{A_SetWeaponSprite("XHR1");}
+				if (invoker.ammo2.amount == 0 )	{A_SetWeaponSprite("XHR1");}
+			}
+			TNT1 A 0 {
 				PB_AmmoIntoMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname(),neohmgFullAmmo,1);
 				PB_SetMagEmpty(false);
 				PB_SetMagUnloaded(false);
 				PB_SetChamberEmpty(false);
 			}
-			HG0R XX 1;
-			HG0R YYZ 1;
-			HG1R ABC 1;
+			HG0R W 1 {
+				if (invoker.ammo2.amount == 4 )	{A_SetWeaponSprite("XHR4");}
+				if (invoker.ammo2.amount == 3 )	{A_SetWeaponSprite("XHR3");}
+				if (invoker.ammo2.amount == 2 )	{A_SetWeaponSprite("XHR2");}
+				if (invoker.ammo2.amount <= 1 )	{A_SetWeaponSprite("XHR1");}
+				if (invoker.ammo2.amount == 0 )	{A_SetWeaponSprite("XHR1");}
+			}
+			HG0R XX 1 {
+				if (invoker.ammo2.amount == 4 )	{A_SetWeaponSprite("XHR4");}
+				if (invoker.ammo2.amount == 3 )	{A_SetWeaponSprite("XHR3");}
+				if (invoker.ammo2.amount == 2 )	{A_SetWeaponSprite("XHR2");}
+				if (invoker.ammo2.amount <= 1 )	{A_SetWeaponSprite("XHR1");}
+				if (invoker.ammo2.amount == 0 )	{A_SetWeaponSprite("XHR1");}
+			}
+			HG0R YYZ 1 {
+				if (invoker.ammo2.amount == 4 )	{A_SetWeaponSprite("XHR4");}
+				if (invoker.ammo2.amount == 3 )	{A_SetWeaponSprite("XHR3");}
+				if (invoker.ammo2.amount == 2 )	{A_SetWeaponSprite("XHR2");}
+				if (invoker.ammo2.amount <= 1 )	{A_SetWeaponSprite("XHR1");}
+				if (invoker.ammo2.amount == 0 )	{A_SetWeaponSprite("XHR1");}
+			}
+			HG1R ABC 1 {
+				if (invoker.ammo2.amount == 4 )	{A_SetWeaponSprite("XH4R");}
+				if (invoker.ammo2.amount == 3 )	{A_SetWeaponSprite("XH3R");}
+				if (invoker.ammo2.amount == 2 )	{A_SetWeaponSprite("XH2R");}
+				if (invoker.ammo2.amount <= 1 )	{A_SetWeaponSprite("XH1R");}
+				if (invoker.ammo2.amount == 0 )	{A_SetWeaponSprite("XH1R");}
+			}
 			goto Ready3;
 
         RaiseFromEmpty:
@@ -469,11 +598,34 @@ class PBX_NeoHMG : PB_WeaponBase
 
 //////////////////////////// UNLOAD ////////////////////////////////////////////////////////////////////////////////////
 		Unload:
+			// Load Sprites
+			XHR1 ABCDEFGHI 0;
+			XHR2 ABCDEFGHI 0;
+			XHR3 ABCDEFGHI 0;
+			XHR4 ABCDE 0;
+			// Actual Code
 			TNT1 A 0 A_Jumpif(pb_getmagunloaded(),"ReadyUnload");
-			HG0R ABCD 1;
-			HG0R EFGH 1;
+			HG0R ABCDE 1 {
+				if (invoker.ammo2.amount == 4 )	{A_SetWeaponSprite("XHR4");}
+				if (invoker.ammo2.amount == 3 )	{A_SetWeaponSprite("XHR3");}
+				if (invoker.ammo2.amount == 2 )	{A_SetWeaponSprite("XHR2");}
+				if (invoker.ammo2.amount <= 1 )	{A_SetWeaponSprite("XHR1");}
+				if (invoker.ammo2.amount == 0 )	{A_SetWeaponSprite("XHR1");}
+			}
+			HG0R FGH 1 {
+				if (invoker.ammo2.amount == 3 )	{A_SetWeaponSprite("XHR3");}
+				if (invoker.ammo2.amount == 2 )	{A_SetWeaponSprite("XHR2");}
+				if (invoker.ammo2.amount <= 1 )	{A_SetWeaponSprite("XHR1");}
+				if (invoker.ammo2.amount == 0 )	{A_SetWeaponSprite("XHR1");}
+			}
 			TNT1 A 0 A_StartSound("weapons/sgl/detach", 33);
-			HG0R IJK 1;
+			HG0R I 1 {
+				if (invoker.ammo2.amount == 3 )	{A_SetWeaponSprite("XHR3");}
+				if (invoker.ammo2.amount == 2 )	{A_SetWeaponSprite("XHR2");}
+				if (invoker.ammo2.amount <= 1 )	{A_SetWeaponSprite("XHR1");}
+				if (invoker.ammo2.amount == 0 )	{A_SetWeaponSprite("XHR1");}
+			}
+			HG0R JK 1;
 			HG0R L 1 {
 				PB_UnloadMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname(),1);
 				PB_SetMagUnloaded(true);

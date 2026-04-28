@@ -29,10 +29,10 @@ PBX_MetalSniperUpgrade_Tip3 = "Every shot has a high chance to stun the target."
 
 //////////////////////////// SLOT 5 ///////////////////////////////////////////////////////////////////////////////
 // HMG
-PBX_NeoHMG_Tip1 = "The HMG is an automatic heavy weapon that has a built in charging system and can modify projectiles on the fly.";
-PBX_NeoHMG_Tip2 = "When the internal system reaches 115° C, the weapon will modify the projectile to a more powerful version.";
-PBX_NeoHMG_Tip3 = "There are two types of projectiles available, heated rounds that deals fire damage with high penetration and charged rounds that deals plasma damage but has lower damage.";
-PBX_NeoHMG_Tip4 = "You can change what type of projectile it can shoot when overheated using The Weapon Special Key.";
+PBX_NeoHMG_Tip1 = "The HMG is an automatic heavy weapon that has an overheat system and a shield accumulator.";
+PBX_NeoHMG_Tip2 = "When the overheat system reaches 115° C, the weapon will modify the projectile to a more powerful version.";
+PBX_NeoHMG_Tip3 = "You can choose between heated rounds and charged rounds using the Weapon Special Key.";
+PBX_NeoHMG_Tip4 = "You can activate the shield by holding the Alt-Fire key, it will then block any damage and recharge when not in use";
 //////////////////////////// SLOT 6 ///////////////////////////////////////////////////////////////////////////////
 // Excavator
 

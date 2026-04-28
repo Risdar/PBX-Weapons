@@ -106,11 +106,8 @@ Class PBX_MetalSniper : PB_WeaponBase
             TNT1 A 0 A_JumpIf(CountInv("Zoomed") > 0, "Ready_ADS");
             MSNF A 1
             {
-                if (!(pbx_generalsetting_filter & DisablePBX_Smoke))
-                {
-                    PB_CoolDownBarrel(-4, 0, 6, 0,  1);
-                    PB_CoolDownBarrel( 4, 0, 6, 0, -1);
-                }
+                PB_CoolDownBarrel(-4, 0, 6, 0,  1);
+                PB_CoolDownBarrel( 4, 0, 6, 0, -1);
                 return A_DoPBWeaponAction(WRF_ALLOWRELOAD);
             }
             loop;
@@ -184,11 +181,8 @@ Class PBX_MetalSniper : PB_WeaponBase
             {
                 A_SetRoll(0);
                 PB_HandleCrosshair(-1);
-                if (!(pbx_generalsetting_filter & DisablePBX_Smoke))
-                {
-                    PB_CoolDownBarrel(-5, 0, 7, 0,  1);
-                    PB_CoolDownBarrel( 5, 0, 7, 0, -1);
-                }
+                PB_CoolDownBarrel(-5, 0, 7, 0,  1);
+                PB_CoolDownBarrel( 5, 0, 7, 0, -1);
                 A_SetInventory("PB_LockScreenTilt", 0);
 
                 bool holdMode = (CVar.GetCVar("pb_toggle_aim_hold", player).GetInt() == 1);
@@ -247,14 +241,10 @@ Class PBX_MetalSniper : PB_WeaponBase
         AltFire_Grenade:
             MSNG A 1
             {
-                if (!(pbx_generalsetting_filter & DisablePBX_Smoke))
-                {
-                    PB_CoolDownBarrel(-4, 0, 6,  0,  1);
-                    PB_CoolDownBarrel( 4, 0, 6,  0, -1); 
-                }
+                PB_CoolDownBarrel(-4, 0, 6,  0,  1);
+                PB_CoolDownBarrel( 4, 0, 6,  0, -1); 
                 if (PlayerPressedOnce(BT_ATTACK))
                     return (getgrenqtty() > 0) ? resolvestate("FireGrenade") : resolvestate("Reload_Grenade");
-
                 return resolvestate(null);
             }
             TNT1 A 0 A_Refire("AltFire_Grenade");

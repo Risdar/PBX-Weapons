@@ -395,9 +395,9 @@ class PBX_Hud : PB_Hud_ZS
                 // Show Shield Durability
                 if (neoHMG) 
                 {
-                    PBHud_DrawImage("BARBACC3", (-90, -71), flagsright, playerBoxAlpha);
-                    PBHud_DrawBar("ABAR8", "BGBARL", GetAmount("HMGShield"), GetMaxAmount("HMGShield"), (-100, -72), 0, 1, flagsright);
-                    PBHud_DrawString(mDefaultFont, Formatnumber(GetAmount("HMGShield")), (-207, -90), DI_TEXT_ALIGN_RIGHT, Font.CR_CYAN);
+                    PBHud_DrawImage("BARBASH3", (-90, -71), flagsright, playerBoxAlpha);
+                    PBHud_DrawBar("ABAR9", "BGBARL", GetAmount("HMGShield"), GetMaxAmount("HMGShield"), (-100, -72), 0, 1, flagsright);
+                    PBHud_DrawString(mDefaultFont, Formatnumber(GetAmount("HMGShield")), (-207, -90), DI_TEXT_ALIGN_RIGHT, Font.CR_GREEN);
                 }
 
                 // // Show what Ammo type is selected
@@ -625,7 +625,7 @@ class PBX_Hud : PB_Hud_ZS
                 break;
 
 //////////////// Missing Icons /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // You dont need to these weapons to the exceptions above since they dont count as valid
+            // You dont need to add these weapons to the exceptions above since they dont count as valid
             case 'PB_ChexRifle':
                 pbx_image = "CRRSA0";
                 break;

@@ -7,7 +7,6 @@ OptionMenu "PBX_HudMenu"
     Title "$PBX_Settings"
 
     StaticText "PBX Settings"
-    FlagOption "Weapon Smoke",            "pbx_generalsetting_filter",    "OffOn", 0
 
     StaticText " "
 

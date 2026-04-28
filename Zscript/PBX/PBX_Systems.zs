@@ -1,7 +1,3 @@
-enum PBX_eGeneralSettingFlags{
-    DisablePBX_Smoke				= 1 << 0
-}
-
 class PBX_Handler : EventHandler
 {
     // Override void WorldLoaded (WorldEvent e)

@@ -215,11 +215,7 @@ class PBX_Excavator : PB_WeaponBase
 		Ready3:
         ReadyDrillChargaMode:
 			TNT1 A 0 PB_HandleCrosshair(78);
-            TNT1 A 0 {
-				if(!(pbx_generalsetting_filter & DisablePBX_Smoke)){
-					PB_CoolDownBarrel();
-				}
-			}
+            TNT1 A 0 PB_CoolDownBarrel();
             TNT1 A 0 A_Jumpif(PB_GetMagUnloaded(), "NoAmmo");
             TNT1 A 0 A_Jumpif(getExcavatorMode() == eDropShotMode, "ReadyDropShotMode");
 			5DKF A 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD);
@@ -227,11 +223,7 @@ class PBX_Excavator : PB_WeaponBase
             
 		ReadyDropShotMode:
 			TNT1 A 0 PB_HandleCrosshair(79);
-            TNT1 A 0 {
-				if(!(pbx_generalsetting_filter & DisablePBX_Smoke)){
-					PB_CoolDownBarrel();
-				}
-			}
+            TNT1 A 0 PB_CoolDownBarrel();
             TNT1 A 0 A_Jumpif(getExcavatorMode() == eDrillChargeMode, "ReadyDrillChargaMode");
 		    5DKF B 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD);
 			Loop;

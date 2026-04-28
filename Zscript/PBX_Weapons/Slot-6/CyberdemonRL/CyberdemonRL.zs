@@ -109,11 +109,7 @@ class PBX_CyberdemonRL : PB_WeaponBase
 		Ready:
 		Ready3:
 			TNT1 A 0 PB_HandleCrosshair(78);
-			TNT1 A 0 {
-				if(!(pbx_generalsetting_filter & DisablePBX_Smoke)){
-					PB_CoolDownBarrel();
-				}
-			}
+			TNT1 A 0 PB_CoolDownBarrel();
             TNT1 A 0 A_PlaySound("BFGHUM", 6,1,1);
 			CYBF IJ 1 BRIGHT A_DoPBWeaponAction;
 			Loop;
