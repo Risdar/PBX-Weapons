@@ -21,7 +21,7 @@ class PB_792x57mm_Heated : PB_792x57mm
 {
 	Default
 	{
-		PB_Projectile.BaseDamage 35;
+		PB_Projectile.BaseDamage 45;
 		PB_Projectile.RipperCount 8;
 		PB_Projectile.PenetrationCount 3;
 		+PB_Projectile.WHIZCRACK;
@@ -35,7 +35,7 @@ class PB_792x57mm_Charged : PB_792x57mm
 {
 	Default
 	{
-		PB_Projectile.BaseDamage 45;
+		PB_Projectile.BaseDamage 35;
 		PB_Projectile.RipperCount 1;
 		PB_Projectile.PenetrationCount 3;
 		+PB_Projectile.WHIZCRACK;

@@ -7,6 +7,8 @@ OptionMenu "PBX_HudMenu"
     Title "$PBX_Settings"
 
     StaticText "PBX Settings"
+    Command "Reset PB Tool Tips", "set pb_helpflags 0"
+    Command "Reset PBX Tool Tips", "set PBX_WeaponHelpFlags 0; set PBX_UpgradeHelpFlags 0"
 
     StaticText " "
 
