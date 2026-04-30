@@ -11,6 +11,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 	    Inventory.PickupSound "BR45PICK";
 	    Inventory.AltHUDIcon "BR45A0";
 		inventory.maxamount 1;
+		PB_WeaponBase.ReserveToMagAmmoFactor 1;
 		Scale 1.0;
 		
         // Messages

@@ -1,3 +1,7 @@
+enum PBXWeapons_eGeneralFlags{
+    ePBX_Weapons_Version = 1 << 0
+}
+
 class PBX_Handler : EventHandler
 {
     // Override void WorldLoaded (WorldEvent e)
@@ -27,6 +31,7 @@ class PBX_Handler : EventHandler
         pm.giveinventory("ExcavatorRounds", excavatorFullAmmo);
         // SLOT 9
         // OTHERS
+        PB_HelpNotificationsHandler.PB_SendTip("$PBXWeapons_Version", "PBXWeapons_GeneralFlags", ePBX_Weapons_Version);
         if(!pm.findinventory("PBX_TipsManager"))
             pm.giveinventory("PBX_TipsManager",1);
         return;

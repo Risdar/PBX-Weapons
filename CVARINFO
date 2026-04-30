@@ -1,35 +1,36 @@
 // General
-server bool FirstTimeLoadingPBX = true;
+/* server bool FirstTimeLoadingPBX = true; */
 
 // Tip Flags
-server int PBX_WeaponHelpFlags = 0;
-server int PBX_UpgradeHelpFlags = 0;
+server int PBXWeapons_GeneralFlags = 0;
+server int PBXWeapons_WeaponHelpFlags = 0;
+server int PBXWeapons_UpgradeHelpFlags = 0;
 
 
 // Spawners
-server int pbx_chainsaw_filter = 0;
-server int pbx_pistol_filter = 0;
-server int pbx_shotgun_filter = 0;
-server int pbx_ssg_filter = 0;
-server int pbx_chaingun_filter = 0;
-server int pbx_rocketlauncher_filter = 0;
-server int pbx_plasmarifle_filter = 0;
-server int pbx_bfg_filter = 0;
+server int PBXWeapons_chainsaw_filter = 0;
+server int PBXWeapons_pistol_filter = 0;
+server int PBXWeapons_shotgun_filter = 0;
+server int PBXWeapons_ssg_filter = 0;
+server int PBXWeapons_chaingun_filter = 0;
+server int PBXWeapons_rocketlauncher_filter = 0;
+server int PBXWeapons_plasmarifle_filter = 0;
+server int PBXWeapons_bfg_filter = 0;
 
-server int pbx_backpack_filter = 0;
+server int PBXWeapons_backpack_filter = 0;
 
-server int special_drop_filter = 0;
+server int PBXWeapons_specialdrop_filter = 0;
 
 // HUD
-server int pbx_hudsetting_filter = 0;
-server int pbx_generalsetting_filter = 0;
+server int PBXWeapons_hudsetting_filter = 0;
+server int PBXWeapons_generalsetting_filter = 0;
 
-user int pbx_Weaponhud_x = -100;
-user int pbx_Weaponhud_y = -90;
-user float pbx_Weaponhud_scale = 1.0;
-user float pbx_Weaponhud_alpha = 1.0;
+user int PBXWeapons_Weaponhud_x = -100;
+user int PBXWeapons_Weaponhud_y = -90;
+user float PBXWeapons_Weaponhud_scale = 1.0;
+user float PBXWeapons_Weaponhud_alpha = 1.0;
 
-user int pbx_WeaponModehud_x = -260;
-user int pbx_WeaponModehud_y = -14;
-user float pbx_WeaponModehud_scale = 2.5;
-user float pbx_WeaponModehud_alpha = 1.0;
+user int PBXWeapons_WeaponModehud_x = -260;
+user int PBXWeapons_WeaponModehud_y = -14;
+user float PBXWeapons_WeaponModehud_scale = 2.5;
+user float PBXWeapons_WeaponModehud_alpha = 1.0;

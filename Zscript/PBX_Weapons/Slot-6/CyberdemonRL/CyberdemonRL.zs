@@ -10,6 +10,7 @@ class PBX_CyberdemonRL : PB_WeaponBase
 		Weapon.SlotPriority 0;
 	    Weapon.SelectionOrder 3800;
         Inventory.AltHudIcon "HND7E0";
+		PB_WeaponBase.ReserveToMagAmmoFactor 2;
 		
 //////////////////////////// AMMO ////////////////////////////////////////////////////////////////////////////////////
 		Weapon.AmmoType1 "PB_RocketAmmo";

@@ -50,8 +50,8 @@ class PBX_TipsManager : inventory
 
 	override bool HandlePickup(Inventory item)
 	{
-		string weaponHelpCvar = "PBX_WeaponHelpFlags";
-		string upgradeHelpCvar = "PBX_UpgradeHelpFlags";
+		string weaponHelpCvar = "PBXWeapons_WeaponHelpFlags";
+		string upgradeHelpCvar = "PBXWeapons_UpgradeHelpFlags";
 
         switch(item.getClassName())
         {

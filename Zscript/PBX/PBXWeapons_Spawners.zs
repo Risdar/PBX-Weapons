@@ -1,30 +1,30 @@
-enum PBX_eWeaponSpecialSpawns
+enum PBXWeapons_eWeaponSpecialSpawns
 {
 ////// Monster Drops /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// SLOT 6
 	DisablePBX_CyberdemonRL			        = 1 << 0
 }
 
-enum PBX_eUpgradeSpawns
+enum PBXWeapons_eUpgradeSpawns
 {
 ////// Upgrades /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	DisablePBX_CSSGUpgrades			        = 1 << 0,
 	DisablePBX_MetalSniperUpgrade			= 1 << 1
 }
 
-enum PBX_eShotgunSpawns
+enum PBXWeapons_eShotgunSpawns
 {
 ////// SLOT 2  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	DisablePBX_LeverActionRifle				= 1 << 0,
 }
 
-enum PBX_eSSGSpawns
+enum PBXWeapons_eSSGSpawns
 {
 ////// SLOT 3 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	DisablePBX_CSSG			                = 1 << 0,
 }
 
-enum PBX_eChaingunSpawns
+enum PBXWeapons_eChaingunSpawns
 {
 ////// SLOT 4 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	DisablePBX_BattleRifle					= 1 << 0,
@@ -33,13 +33,13 @@ enum PBX_eChaingunSpawns
 	DisablePBX_NeoHMG			        	= 1 << 2
 }
 
-enum PBX_eRocketLauncherSpawns
+enum PBXWeapons_eRocketLauncherSpawns
 {
 ////// SLOT 6 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	DisablePBX_Excavator			        = 1 << 0,
 }
 
-enum PBX_eBFGSpawns
+enum PBXWeapons_eBFGSpawns
 {
 ////// SLOT 9 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	DisablePBX_DemonExt			            = 1 << 0,
@@ -56,7 +56,7 @@ class PBXShotgun_Injector : PBInjector
 	override void Init(PB_EventHandler handler)
 	{
 		// Lever Action
-		if(!(pbx_shotgun_filter & DisablePBX_LeverActionRifle))
+		if(!(pbxweapons_shotgun_filter & DisablePBX_LeverActionRifle))
 		{
 			handler.InjectSpawn('PB_ShotSpawnerT1', 'PBX_Prosurv_LeverAction', 255, 1);
 			handler.InjectSpawn('PB_ShotSpawnerT2', 'PBX_Prosurv_LeverAction', 255, 1);
@@ -72,7 +72,7 @@ class PBXSSG_Injector : PBInjector
 	override void Init(PB_EventHandler handler)
 	{
 		// CSSG
-		if(!(pbx_ssg_filter & DisablePBX_CSSG))
+		if(!(pbxweapons_ssg_filter & DisablePBX_CSSG))
 		{
 			handler.InjectSpawn('PB_SSGSpawnerT2', 'PBX_CSSG', 255, 1);
 			handler.InjectSpawn('PB_SSGSpawnerT3', 'PBX_CSSG', 255, 1);
@@ -87,13 +87,13 @@ class PBXChaingun_Injector : PBInjector
 	override void Init(PB_EventHandler handler)
 	{
 		// Battle Rifle
-		if(!(pbx_chaingun_filter & DisablePBX_BattleRifle))
+		if(!(pbxweapons_chaingun_filter & DisablePBX_BattleRifle))
 		{
 			handler.InjectSpawn('PB_MGSpawnerT1', 'PBX_BattleRifle', 255, 1);
 			handler.InjectSpawn('PB_MGSpawnerT2', 'PBX_BattleRifle', 255, 1);
 		}
 		// Metal Sniper
-		if(!(pbx_chaingun_filter & DisablePBX_MetalSniper))
+		if(!(pbxweapons_chaingun_filter & DisablePBX_MetalSniper))
 		{
 			handler.InjectSpawn('PB_MGSpawnerT2', 'PBX_MetalSniper', 255, 1);
 			handler.InjectSpawn('PB_MGSpawnerT3', 'PBX_MetalSniper', 255, 1);
@@ -101,7 +101,7 @@ class PBXChaingun_Injector : PBInjector
 		}
 
 		// Neo HMG
-		if(!(pbx_chaingun_filter & DisablePBX_NeoHMG))
+		if(!(pbxweapons_chaingun_filter & DisablePBX_NeoHMG))
 		{
 			handler.InjectSpawn('PB_MGSpawnerT3', 'PBX_NeoHMG', 255, 1);
 			handler.InjectSpawn('PB_MGSpawnerT4', 'PBX_NeoHMG', 255, 1);
@@ -115,7 +115,7 @@ class PBXRocketLauncher_Injector : PBInjector
 	override void Init(PB_EventHandler handler)
 	{
 		// Excavator
-		if(!(pbx_rocketlauncher_filter & DisablePBX_Excavator))
+		if(!(pbxweapons_rocketlauncher_filter & DisablePBX_Excavator))
 		{
 			handler.InjectSpawn('PB_RLSpawnerT3', 'PBX_Excavator', 255, 1);
 			handler.InjectSpawn('PB_RLSpawnerT4', 'PBX_Excavator', 255, 1);
@@ -136,7 +136,7 @@ class PBXBFG_Injector : PBInjector
     override void Init(PB_EventHandler handler)
     {
 		// Demon Ext
-		if(!(pbx_bfg_filter & DisablePBX_DemonExt))
+		if(!(pbxweapons_bfg_filter & DisablePBX_DemonExt))
 		{
 		   handler.InjectSpawn("PB_BFGSpawnerT4","PBX_DemonExt",255,1);
 		}
@@ -148,7 +148,7 @@ class PBXUpgrades_Injector : PBInjector
     override void Init(PB_EventHandler handler)
     {
 		// CSSG Upgrades
-		if(!(pbx_backpack_filter & DisablePBX_CSSGUpgrades))
+		if(!(pbxweapons_backpack_filter & DisablePBX_CSSGUpgrades))
 		{
 			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'DanmakuShellsUpgrade', 255, 1);
 			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'WPShellsUpgrade', 255, 1);
@@ -157,7 +157,7 @@ class PBXUpgrades_Injector : PBInjector
 		}
 		
 		// Metal Sniper Upgrade
-		if(!(pbx_backpack_filter & DisablePBX_MetalSniperUpgrade))
+		if(!(pbxweapons_backpack_filter & DisablePBX_MetalSniperUpgrade))
 		{
 			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'ResonanceAmmo_Upgrade', 255, 1);
 			handler.InjectSpawn('PB_UpgradeSpawnerT4', 'ResonanceAmmo_Upgrade', 255, 1);
@@ -177,7 +177,7 @@ class PBX_WeaponSpawner : EventHandler
         switch(actor.GetClassName())
         {
             case 'XDeathCyberdemonGun':
-                if(!(special_drop_filter & DisablePBX_CyberdemonRL))
+                if(!(pbxweapons_specialdrop_filter & DisablePBX_CyberdemonRL))
                 { 
 					// console.printf("Spawning CyberdemonRL from %s", actor.GetClassName());
                    	actor.spawn("PBX_CyberdemonRL", actor.pos);

@@ -1,10 +1,10 @@
 Version 4.13
 
 // General
-#include "Zscript/PBX/PBX_Spawners.zs"
-#include "Zscript/PBX/PBX_Systems.zs"
-#include "Zscript/PBX/PBX_Hud.zs"
-#include "Zscript/PBX/PBX_Tips.zs"
+#include "Zscript/PBX/PBXWeapons_Spawners.zs"
+#include "Zscript/PBX/PBXWeapons_Systems.zs"
+#include "Zscript/PBX/PBXWeapons_Hud.zs"
+#include "Zscript/PBX/PBXWeapons_Tips.zs"
 
 // Big thanks to EmeraldCoastt and the BDP team for this
 #include "Zscript/Maths/Include.zsc"

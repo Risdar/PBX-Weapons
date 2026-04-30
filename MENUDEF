@@ -1,40 +1,42 @@
 AddOptionMenu "PB_AddonOptions"
 {
-    Submenu "$PBX_Settings", "PBX_HudMenu"
+    Submenu "$PBXWeapons_Settings", "PBXWeapons_Menu"
 }
-OptionMenu "PBX_HudMenu"
+OptionMenu "PBXWeapons_Menu"
 {
-    Title "$PBX_Settings"
+    Title "$PBXWeapons_Settings"
 
-    StaticText "PBX Settings"
+    StaticText "PBX - Weapon Settings", gold
     Command "Reset PB Tool Tips", "set pb_helpflags 0"
-    Command "Reset PBX Tool Tips", "set PBX_WeaponHelpFlags 0; set PBX_UpgradeHelpFlags 0"
+    Command "Reset PBX Tool Tips", "set PBXWeapons_WeaponHelpFlags 0; set PBXWeapons_UpgradeHelpFlags 0"
 
     StaticText " "
 
-    StaticText "HUD Settings"
+    StaticText "HUD Settings", grey
     StaticText "Weapon Position"
-    FlagOption "Weapon HUD",            "pbx_hudsetting_filter",    "OffOn", 0
-    Slider     "Horizontal (X)",        "pbx_Weaponhud_x",          -700, 700, 1
-    Slider     "Vertical (Y)",          "pbx_Weaponhud_y",          -700, 700, 1
-    Slider     "Scale",                 "pbx_Weaponhud_scale",      0.1, 10, 0.1
-    Slider     "Transparency",	        "pbx_Weaponhud_alpha",      0, 1, 0.02, 2
+    FlagOption "Weapon HUD",            "PBXWeapons_hudsetting_filter",    "OffOn", 0
+    Slider     "Horizontal (X)",        "PBXWeapons_Weaponhud_x",          -700, 700, 1
+    Slider     "Vertical (Y)",          "PBXWeapons_Weaponhud_y",          -700, 700, 1
+    Slider     "Scale",                 "PBXWeapons_Weaponhud_scale",      0.1, 10, 0.1
+    Slider     "Transparency",	        "PBXWeapons_Weaponhud_alpha",      0, 1, 0.02, 2
     
     StaticText " "
 
-    StaticText "Weapon Mode Position"
-    FlagOption "Weapon Mode HUD",       "pbx_hudsetting_filter",    "OffOn", 1
-    Slider     "Horizontal (X)",        "pbx_WeaponModehud_x",      -700, 700, 1
-    Slider     "Vertical (Y)",          "pbx_WeaponModehud_y",      -700, 700, 1
-    Slider     "Scale",                 "pbx_WeaponModehud_scale",  0.1, 10, 0.1
-    Slider     "Transparency",	        "pbx_WeaponModehud_alpha",  0, 1, 0.02, 2
+    StaticText "Weapon Mode Position", grey
+    FlagOption "Weapon Mode HUD",       "PBXWeapons_hudsetting_filter",    "OffOn", 1
+    Slider     "Horizontal (X)",        "PBXWeapons_WeaponModehud_x",      -700, 700, 1
+    Slider     "Vertical (Y)",          "PBXWeapons_WeaponModehud_y",      -700, 700, 1
+    Slider     "Scale",                 "PBXWeapons_WeaponModehud_scale",  0.1, 10, 0.1
+    Slider     "Transparency",	        "PBXWeapons_WeaponModehud_alpha",  0, 1, 0.02, 2
 
-    /* StaticText "Visuals"
-    Slider "HUD Opacity", "pbx_hud_alpha", 0.0, 1.0, 0.1 */
     StaticText " "
     
     // Reset
-    Command "Reset HUD to Default", "set pbx_Weaponhud_x -100.0; set pbx_Weaponhud_y -90.0; set pbx_Weaponhud_scale 1.0; set pbx_WeaponModehud_x -260; set pbx_WeaponModehud_y -14; pbx_WeaponModehud_scale 2.5; set pbx_WeaponModehud_alpha 1.0; set pbx_Weaponhud_alpha 1.0"
+    Command "Reset HUD to Default", "set PBXWeapons_Weaponhud_x -100.0; set PBXWeapons_Weaponhud_y -90.0; set PBXWeapons_Weaponhud_scale 1.0; set PBXWeapons_WeaponModehud_x -260; set PBXWeapons_WeaponModehud_y -14; set PBXWeapons_WeaponModehud_scale 2.5; set PBXWeapons_WeaponModehud_alpha 1.0; set PBXWeapons_Weaponhud_alpha 1.0"
+    
+    StaticText " "
+
+    StaticText "$PBXWeapons_Version"
 }
 
 
@@ -43,7 +45,7 @@ OptionMenu "PBX_HudMenu"
 AddOptionMenu "AddonWeaponSpawns" after "SHOT1"
 {
         // SLOT 2
-    FlagOption    "Lever Action Rifle",    "pbx_shotgun_filter",    "OffOn", 0
+    FlagOption    "Lever Action Rifle",    "PBXWeapons_shotgun_filter",    "OffOn", 0
 }
 
 // SSG /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,7 +53,7 @@ AddOptionMenu "AddonWeaponSpawns" after "SHOT1"
 AddOptionMenu "AddonWeaponSpawns" after "SSGT2"
 {
         // SLOT 3
-    FlagOption    "Commander Shotgun",    "pbx_ssg_filter",    "OffOn", 0
+    FlagOption    "Commander Shotgun",    "PBXWeapons_ssg_filter",    "OffOn", 0
 }
 
 // CHAINGUN /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,19 +61,19 @@ AddOptionMenu "AddonWeaponSpawns" after "SSGT2"
     AddOptionMenu "AddonWeaponSpawns" after "CHNT1"
     {
         // SLOT 4
-        FlagOption    "Battle Rifle",    "pbx_chaingun_filter",    "OffOn", 0
+        FlagOption    "Battle Rifle",    "PBXWeapons_chaingun_filter",    "OffOn", 0
     }
     // TIER 2
     AddOptionMenu "AddonWeaponSpawns" after "CHNT2"
     {
         // SLOT 4
-        FlagOption    "Metal Sniper",    "pbx_chaingun_filter",    "OffOn", 1
+        FlagOption    "Metal Sniper",    "PBXWeapons_chaingun_filter",    "OffOn", 1
     }
     // TIER 3
     AddOptionMenu "AddonWeaponSpawns" after "CHNT3"
     {
         // SLOT 4
-        FlagOption    "Neo HMG",    "pbx_chaingun_filter",    "OffOn", 2
+        FlagOption    "Neo HMG",    "PBXWeapons_chaingun_filter",    "OffOn", 2
     }
 
 // ROCKET LAUNCHER /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,9 +81,9 @@ AddOptionMenu "AddonWeaponSpawns" after "SSGT2"
 AddOptionMenu "AddonWeaponSpawns" after "LAUT3"
 {
         // SLOT 6
-    FlagOption    "Excavator",    "pbx_rocketlauncher_filter",    "OffOn", 0
+    FlagOption    "Excavator",    "PBXWeapons_rocketlauncher_filter",    "OffOn", 0
         // SPECIAL
-    FlagOption    "Cyberdemon drop their Weapon",    "special_drop_filter",    "OffOn", 0
+    FlagOption    "Cyberdemon drop their Weapon",    "PBXWeapons_specialdrop_filter",    "OffOn", 0
 }
 
 // BFG /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,12 +91,12 @@ AddOptionMenu "AddonWeaponSpawns" after "LAUT3"
 AddOptionMenu "AddonWeaponSpawns" after "BFGT4"
 {
         // SLOT 9
-    FlagOption    "Demonic Exterminator",    "pbx_bfg_filter",    "OffOn", 0
+    FlagOption    "Demonic Exterminator",    "PBXWeapons_bfg_filter",    "OffOn", 0
 }
 
 // Backpacks /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 AddOptionMenu "AddonAmmoSpawns" after "PACKT3"
 {
-    FlagOption    "CSSG Upgrades",    "pbx_backpack_filter",    "OffOn", 0
-    FlagOption    "Metal Sniper Upgrades",    "pbx_backpack_filter",    "OffOn", 1
+    FlagOption    "CSSG Upgrades",    "PBXWeapons_backpack_filter",    "OffOn", 0
+    FlagOption    "Metal Sniper Upgrades",    "PBXWeapons_backpack_filter",    "OffOn", 1
 }

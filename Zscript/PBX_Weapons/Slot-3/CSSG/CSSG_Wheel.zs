@@ -65,7 +65,12 @@ Class CSSGWeaponWheel : wheelinfocontainer
 		spw.Push(CSSG_Flechette);
 		spw.Push(CSSG_Flak);
 
-		if(requester.FindInventory("DragonBreathUpgrade") || pbx_backpack_filter & DisablePBX_CSSGUpgrades) 
+		bool disabled;
+		let disableUpgrade = Cvar.GetCvar('PBXWeapons_backpack_filter', requester.player);
+		if(disableUpgrade)
+			disabled = disableUpgrade.getint() & DisablePBX_CSSGUpgrades;
+
+		if(requester.FindInventory("DragonBreathUpgrade") || disabled) 
 		{
 			PB_SpecialWheel_Mode CSSG_DragonBreath = new ("PB_SpecialWheel_Mode");
 			CSSG_DragonBreath.img = "graphics/WeaponWheel/CSSG/SG_DB.png";
@@ -87,7 +92,7 @@ Class CSSGWeaponWheel : wheelinfocontainer
 			spw.Push(CSSG_DragonBreath_No);
 		}
 
-		if(requester.FindInventory("ExplosiveUpgrade") || pbx_backpack_filter & DisablePBX_CSSGUpgrades) 
+		if(requester.FindInventory("ExplosiveUpgrade") || disabled) 
 		{
 			PB_SpecialWheel_Mode CSSG_Explosive = new ("PB_SpecialWheel_Mode");
 			CSSG_Explosive.img = "graphics/WeaponWheel/CSSG/SG_Explosive.png";
@@ -109,7 +114,7 @@ Class CSSGWeaponWheel : wheelinfocontainer
 		}
 		
 		
-		if(requester.FindInventory("WhitePhosphorusUpgrade") || pbx_backpack_filter & DisablePBX_CSSGUpgrades) 
+		if(requester.FindInventory("WhitePhosphorusUpgrade") || disabled) 
 		{
 			PB_SpecialWheel_Mode CSSG_WPhosphorus = new ("PB_SpecialWheel_Mode");
 			CSSG_WPhosphorus.img = "graphics/WeaponWheel/CSSG/SG_WPhosphorus.png";
@@ -130,7 +135,7 @@ Class CSSGWeaponWheel : wheelinfocontainer
 			spw.Push(CSSG_WPhosphorus_No);
 		}
 		
-		if(requester.FindInventory("TripleDoomUpgrade") || pbx_backpack_filter & DisablePBX_CSSGUpgrades) 
+		if(requester.FindInventory("TripleDoomUpgrade") || disabled) 
 		{
 			PB_SpecialWheel_Mode CSSG_Doom = new ("PB_SpecialWheel_Mode");
 			CSSG_Doom.img = "graphics/WeaponWheel/CSSG/SG_Doom.png";
@@ -151,7 +156,7 @@ Class CSSGWeaponWheel : wheelinfocontainer
 			spw.Push(CSSG_Doom_No);
 		}
 		
-		if(requester.FindInventory("DanmakuUpgrade") || pbx_backpack_filter & DisablePBX_CSSGUpgrades) 
+		if(requester.FindInventory("DanmakuUpgrade") || disabled) 
 		{
 			PB_SpecialWheel_Mode CSSG_Danmaku = new ("PB_SpecialWheel_Mode");
 			CSSG_Danmaku.img = "graphics/WeaponWheel/CSSG/SG_Danmaku.png";

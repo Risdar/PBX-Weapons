@@ -17,6 +17,7 @@ class PBX_NeoHMG : PB_WeaponBase
         Inventory.AltHudIcon "HG0WA0";
 		PB_WeaponBase.MaxOverheat 400;
 		PB_WeaponBase.OverheatCoolingRate 4;
+		PB_WeaponBase.ReserveToMagAmmoFactor 1;
 
 //////////////////////////// AMMO ////////////////////////////////////////////////////////////////////////////////////
 		Weapon.AmmoType1 "PB_HighCalMag";

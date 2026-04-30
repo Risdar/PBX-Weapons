@@ -17,6 +17,7 @@ Class PBX_CSSG : PB_WeaponBase
 		weapon.ammogive1 4;
 		PB_WeaponBase.UsesWheel true;
 		PB_WeaponBase.WheelInfo "CSSGWeaponWheel";
+		PB_WeaponBase.ReserveToMagAmmoFactor 1;
 	}
 	
 	int shellsmode;

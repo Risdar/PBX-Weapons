@@ -28,7 +28,12 @@ Class MetalSniperWheel : wheelinfocontainer
 		MS_GrenMode.scaley = iconscale.y;
 		spw.push(MS_GrenMode);
 
-		if(requester.FindInventory("MetalSniperUpgraded") || pbx_backpack_filter & DisablePBX_MetalSniperUpgrade) 
+		bool disabled;
+		let disableUpgrade = Cvar.GetCvar('PBXWeapons_backpack_filter', requester.player);
+		if(disableUpgrade)
+			disabled = disableUpgrade.getint() & DisablePBX_MetalSniperUpgrade;
+
+		if(requester.FindInventory("MetalSniperUpgraded") || disabled) 
 		{
 			iconScale = (1.0, 1.0);
 			if(weap && weap.resonanceAmmoLoaded)

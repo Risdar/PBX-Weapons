@@ -40,19 +40,19 @@ class PBX_Hud : PB_Hud_ZS
     void gatherPBXCVARs()
     {
         // Weapon Pickup Sprites
-        pbx_weapon_PosX = CVar.GetCVar("pbx_Weaponhud_x", CPlayer).GetInt();
-        pbx_weapon_PosY = CVar.GetCVar("pbx_Weaponhud_y", CPlayer).GetInt();
-        pbx_weapon_hudscale = CVar.GetCVar("pbx_Weaponhud_scale", CPlayer).GetFloat();
-        pbx_weapon_alpha = CVar.GetCVar("pbx_Weaponhud_alpha", CPlayer).GetFloat();
+        pbx_weapon_PosX = CVar.GetCVar("pbxweapons_Weaponhud_x", CPlayer).GetInt();
+        pbx_weapon_PosY = CVar.GetCVar("pbxweapons_Weaponhud_y", CPlayer).GetInt();
+        pbx_weapon_hudscale = CVar.GetCVar("pbxweapons_Weaponhud_scale", CPlayer).GetFloat();
+        pbx_weapon_alpha = CVar.GetCVar("pbxweapons_Weaponhud_alpha", CPlayer).GetFloat();
 
         pbx_weapon_pos = (pbx_weapon_PosX, pbx_weapon_PosY);
         pbx_weapon_truescale = (pbx_weapon_hudscale, pbx_weapon_hudscale);
 
         // Weapon Modes
-        pbx_weaponmode_PosX = CVar.GetCVar("pbx_WeaponModehud_x", CPlayer).GetInt();
-        pbx_weaponmode_PosY = CVar.GetCVar("pbx_WeaponModehud_y", CPlayer).GetInt();
-        pbx_weaponmode_hudscale = CVar.GetCVar("pbx_WeaponModehud_scale", CPlayer).GetFloat();
-        pbx_weaponmode_alpha = CVar.GetCVar("pbx_WeaponModehud_alpha", CPlayer).GetFloat();
+        pbx_weaponmode_PosX = CVar.GetCVar("pbxweapons_WeaponModehud_x", CPlayer).GetInt();
+        pbx_weaponmode_PosY = CVar.GetCVar("pbxweapons_WeaponModehud_y", CPlayer).GetInt();
+        pbx_weaponmode_hudscale = CVar.GetCVar("pbxweapons_WeaponModehud_scale", CPlayer).GetFloat();
+        pbx_weaponmode_alpha = CVar.GetCVar("pbxweapons_WeaponModehud_alpha", CPlayer).GetFloat();
 
         pbx_weapon_pos2 = (pbx_weaponmode_PosX, pbx_weaponmode_PosY);
         pbx_weapon_truescale2 = (pbx_weaponmode_hudscale, pbx_weaponmode_hudscale);
@@ -313,7 +313,7 @@ class PBX_Hud : PB_Hud_ZS
     void DrawPBXWeaponMode()
     {
         // Standard check
-        if(pbx_hudsetting_filter & DisablePBX_WeaponModeHud) return;
+        if(PBXWeapons_hudsetting_filter & DisablePBX_WeaponModeHud) return;
         if (!pbWeap) return;
 
         // ADD WEAPON MODES HERE
@@ -472,7 +472,7 @@ class PBX_Hud : PB_Hud_ZS
     void DrawPBXWeapon()
     {
         // Standard check
-        if(pbx_hudsetting_filter & DisablePBX_WeaponHud) return;
+        if(PBXWeapons_hudsetting_filter & DisablePBX_WeaponHud) return;
         if (!pbWeap) return;
 
         // Add exceptions here
@@ -517,7 +517,7 @@ class PBX_Hud : PB_Hud_ZS
     void DrawPBXManualWeapon()
     {
         // Standard Check
-        if(pbx_hudsetting_filter & DisablePBX_WeaponHud) return;
+        if(PBXWeapons_hudsetting_filter & DisablePBX_WeaponHud) return;
         if (!pbWeap) return;
 
         // Set Defaults & Variables

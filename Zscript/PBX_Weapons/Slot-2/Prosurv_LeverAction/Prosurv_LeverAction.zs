@@ -13,6 +13,7 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 		Weapon.SlotPriority 9999;
 		Weapon.SelectionOrder 1300;
         PB_WeaponBase.UsesWheel true;
+		PB_WeaponBase.ReserveToMagAmmoFactor 1;
 		PB_WeaponBase.WheelInfo "LeverActionWheel";
         Inventory.AltHudIcon "LVR4E0";
 		
@@ -196,11 +197,13 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 				if (CountInv("LA_Select_Marlin") == 1) {
 					LA_SetAmmo(LA_444Marlin);
 					setLAMode(LA_444Marlin);
+					invoker.ReserveToMagAmmoFactor = 2;
 					invoker.currentMaxAmmo = leveractionFullAmmoMarlin;
 				}
 				if (CountInv("LA_Select_Magnum") == 1) {
 					LA_SetAmmo(LA_357Magnum);
 					setLAMode(LA_357Magnum);
+					invoker.ReserveToMagAmmoFactor = 1;
 					invoker.currentMaxAmmo = leveractionFullAmmo;
 				}
 			}

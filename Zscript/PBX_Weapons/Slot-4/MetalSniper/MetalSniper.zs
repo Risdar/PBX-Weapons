@@ -15,6 +15,7 @@ Class PBX_MetalSniper : PB_WeaponBase
         weapon.ammotype2 "MetalSniperAmmo";
         PB_WeaponBase.UsesWheel true;
         PB_WeaponBase.WheelInfo "MetalSniperWheel";
+		PB_WeaponBase.ReserveToMagAmmoFactor 2;
         scale 0.62;
         +weapon.noalert;
         +weapon.noautofire;
@@ -563,6 +564,7 @@ Class PBX_MetalSniper : PB_WeaponBase
         int  amount   = res ? invoker.ammo2.amount / 3 : invoker.ammo2.amount * 3;
         A_SetInventory(invoker.ammotype2, amount);
         SetAmmoCapacity(invoker.ammotype2, capacity);
+        invoker.ReserveToMagAmmoFactor = res ? 6 : 2;
         invoker.currentMaxAmmo = capacity;
     }
 

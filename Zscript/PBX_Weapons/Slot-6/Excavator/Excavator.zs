@@ -14,6 +14,7 @@ class PBX_Excavator : PB_WeaponBase
 	    Weapon.SelectionOrder 506;
         PB_WeaponBase.UsesWheel true;
 		PB_WeaponBase.WheelInfo "ExcavatorWheel";
+		PB_WeaponBase.ReserveToMagAmmoFactor 2;
         Inventory.AltHudIcon "5DUNA0";
 		
 //////////////////////////// AMMO ////////////////////////////////////////////////////////////////////////////////////

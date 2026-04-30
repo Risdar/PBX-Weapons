@@ -22,6 +22,7 @@ Class PBX_DemonExt : PB_WeaponBase
 		+weapon.noautofire;
 		PB_WeaponBase.UsesWheel true;
 		PB_WeaponBase.WheelInfo "DemonicExtWheel";
+		PB_WeaponBase.ReserveToMagAmmoFactor 1;
 	}
 	const chan_unmkidle = 66;	//the channel of the idle sound
 	int U_level;				//the offset of the beams (its actually in an array, this is the index of that value, check UN_LevelOfs[] below)
