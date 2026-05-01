@@ -81,6 +81,16 @@ class PBX_TipsManager : inventory
             break;
 
             // SLOT 4
+            case 'PBX_BDPBattleRifle':
+            {
+                Array<String> tips;
+                tips.Push("$PBX_BattleRifle_Tip1");
+                tips.Push("$PBX_BattleRifle_Tip2");
+                tips.Push("$PBX_BattleRifle_Tip3");
+                SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_BATTLERIFLE);
+            }
+            break;
+            
             case 'PBX_MetalSniper':
             {
                 Array<String> tips;

@@ -29,6 +29,7 @@ Version 4.13
 // Slot 4
 // Battle Rifle
 #include "Zscript/PBX_Weapons/Slot-4/BattleRifle/BattleRifle.zs"
+#include "Zscript/PBX_Weapons/Slot-4/BattleRifle/BattleRifle_Wheel.zs"
 #include "Zscript/PBX_Weapons/Slot-4/BattleRifle/BattleRifle_helpers.zs"
 // Metal Sniper
 #include "Zscript/PBX_Weapons/Slot-4/MetalSniper/MetalSniper.zs"

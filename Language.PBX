@@ -38,6 +38,9 @@ PBX_PICKUP_DNMK = "You got the Danmaku Shell Upgrade!!!";
 PBX_BattleRifle_Pickup = "Battle Rifle (Slot 4)";
 PBX_BattleRifle_Tag = "UAC M1 'BDP' Battle Rifle";
 
+PBX_BattleRifle_SemiAuto = "\cdSemi-Auto \c-Mode";
+PBX_BattleRifle_Burst = "\ciBurst Fire \c-Mode";
+
 // Metal Sniper
 PBX_MetalSniper_Pickup = "Metal Sniper (Slot 4)";
 PBX_MetalSniper_Tag = "UAC-45 Heavy 'Metal' Sniper";

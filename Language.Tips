@@ -15,7 +15,9 @@ PBX_CSSG_Tip2 = "Most are locked behind upgrades that spawn on backpacks.";
 
 //////////////////////////// SLOT 4 ///////////////////////////////////////////////////////////////////////////////
 // BattleRifle 
-
+PBX_BattleRifle_Tip1 = "The Battle Rifle is a simple weapon that has two modes.";
+PBX_BattleRifle_Tip2 = "You can switch between Burst fire and Semi-auto using the Weapon Special Key";
+PBX_BattleRifle_Tip3 = "The Battle Rifle Scope is equipped with the latest target scanner.";
 
 // Metal Sniper
 PBX_MetalSniper_Tip1 = "The Metal Sniper is a high powered sniper rifle that has two altfire modes.";

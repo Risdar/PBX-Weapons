@@ -1,8 +1,73 @@
+class BR_Select_Semi : inventory {default{inventory.maxamount 1;}}
+class BR_Select_Burst : inventory {default{inventory.maxamount 1;}}
+
 class BR_Ammo : PB_Ammo
 {
 	Default
 	{
 		inventory.maxamount BR_AmmoFull;
+	}
+}
+
+class DecorativeTracer: FastProjectile
+{
+	default
+	{
+		-DONTSPLASH;
+		Projectile;
+		+RANDOMIZE;
+		+FORCEXYBILLBOARD;
+		+DONTSPLASH;
+		//+BLOODSPLATTER 
+		+NOEXTREMEDEATH;
+		damage 0;
+		radius 2;
+		height 2;
+		speed 140;
+		renderstyle "ADD";
+		alpha 0.9;
+		scale .15;
+	}
+
+	states
+	{
+		Spawn:
+			TNT1 A 0 A_JumpIf(GetCvar("PB_TracerLight") >=1,"Spawn2");
+		Spawn1:
+			TRAC A 1 BRIGHT;
+			Loop;
+		Spawn2:
+			TRAC A 1 BRIGHT Light("TracerLight");
+			Loop;
+		Death:
+			TNT1 A 0;
+			Stop;
+		XDeath:
+			TNT1 A 0;
+			Stop;
+	}
+}
+
+class BR45BulletPuff: PB_BulletPuff
+{
+	default
+	{
+		DamageType "Pistol";
+		renderstyle "Translucent";
+		alpha 0.4;
+		Scale 1.5;
+		radius 0;
+		height 0;
+		+NOBLOCKMAP;
+		+NOGRAVITY;
+		Gravity 0.01;
+		+NOEXTREMEDEATH;
+		+FORCEXYBILLBOARD;
+		+THRUACTORS;
+		+NOCLIP;
+		Decal "BulletDecalNew1";
+		+DONTSPLASH;
+		-EXPLODEONWATER;
 	}
 }
 

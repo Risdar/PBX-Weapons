@@ -11,6 +11,8 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 	    Inventory.PickupSound "BR45PICK";
 	    Inventory.AltHUDIcon "BR45A0";
 		inventory.maxamount 1;
+		PB_WeaponBase.UsesWheel true;
+		PB_WeaponBase.WheelInfo "BattleRifleWheel";
 		PB_WeaponBase.ReserveToMagAmmoFactor 1;
 		Scale 1.0;
 		
@@ -34,9 +36,95 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 	
     // VARIABLES
     bool isADS;
+    bool isSemiAuto;
+	bool semiclear;
+	bool LockedOn;
 	int burstcount;
 
     // FUCNTIONS
+	action void cleanmodetokens()
+	{
+		A_SetInventory("BR_Select_Semi",0);
+		A_SetInventory("BR_Select_Burst",0);
+	}
+
+	action bool getSemiAuto()
+	{
+		return invoker.isSemiAuto;
+	}
+
+	action void setSemiAuto(bool set)
+	{
+		invoker.isSemiAuto = set;
+	}
+
+	action void BR_ReadyNormal()
+    {
+        FLineTraceData Bule;
+        bool hit = LineTrace(Angle, 6000, Pitch, 0, player.ViewHeight, 0, 0, Bule);
+        if(hit)
+        {
+            if(Bule.HitActor && Bule.HitActor.bISMONSTER && Bule.HitActor.bFRIENDLY == false && Bule.HitActor is "PB_Monster")
+            {				
+                if(!invoker.LockedOn)
+                {
+                    invoker.LockedOn = true;
+                    A_StartSound("IronSights", CHAN_WEAPON, volume:0.5, pitch:1.4);
+                }
+                // let damn = player.FindPSprite(1);
+                // if(damn)
+                // {
+                //     damn.frame = 3;
+                //     damn.sprite = GetSpriteIndex("SPRF");
+                // }
+            }
+            else
+            if(invoker.LockedOn)
+            {
+                invoker.LockedOn = false;
+                A_StartSound("IronSights", CHAN_WEAPON, volume:0.5, pitch:1.3);
+            }
+        }	
+        // return A_DoPBWeaponAction();
+    }
+    
+    action void BR_ReadyScope()
+    {
+        FLineTraceData Bule;
+        bool hit = LineTrace(Angle, 6000, Pitch, 0, player.ViewHeight, 0, 0, Bule); //Line to kick enemy or wall
+        if(hit)
+        {
+            if(Bule.HitActor && Bule.HitActor.bISMONSTER && Bule.HitActor.bFRIENDLY == false && Bule.HitActor is "PB_Monster")
+            {	
+                if(!invoker.LockedOn)
+                {
+                    // A_SetBlend(0x00a100, 0.2, 3);
+                    invoker.LockedOn = true;
+                    A_StartSound("IronSights", CHAN_WEAPON, pitch:1.4);
+                }
+                //show the actor's wireframe
+                let Wireframe = Spawn("PBX_CubeRadius", Bule.HitActor.pos);
+                if(Wireframe)
+                {
+                    Wireframe.scale.x = double(Bule.HitActor.Radius) * 2;
+                    Wireframe.scale.Y = double(Bule.HitActor.Height) * Level.pixelstretch;
+                    Wireframe.vel = Bule.HitActor.vel;
+                }
+                player.PSprites.frame = 1;
+                PBXWeapons_Handler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData:"..Bule.HitActor.GetTag(), Bule.HitActor.health, Bule.HitActor.GetSpawnHealth(), Bule.HitActor.PainChance);
+                PBXWeapons_Handler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData2:", Distance3D(Bule.HitActor), 3.0);
+            }
+            else
+            if(invoker.LockedOn)
+            {
+                // A_SetBlend(0xa19900, 0.2, 3);
+                invoker.LockedOn = false;
+                A_StartSound("IronSights", CHAN_WEAPON, pitch:1.3);
+            }
+        }
+        // return A_DoPBWeaponAction();
+    }
+
     action int getBRMag()
     {
         return CountInv(invoker.ammotype2);
@@ -61,71 +149,70 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 		return false;
 	}
 
-    // UNUSED RICOCHET FUNCTION 
-    // Action void a_FireBattleRifle()
-	// {
-	// 	FLineTraceData ricochetdata;
-	// 	invoker.owner.LineTrace(invoker.owner.angle, 4096, invoker.owner.pitch, TRF_SOLIDACTORS, offsetz: invoker.owner.player.viewz - invoker.owner.pos.z, data: ricochetdata);
-	// 	vector3 hitNormal;
-	// 	if(ricochetdata.HitType == TRACE_HitWall )
-	// 	{
-	// 		if(!ricochetdata.LineSide)
-	// 		{
-	// 			hitnormal = (ricochetdata.Hitline.delta.y, -ricochetdata.Hitline.delta.x, 0).unit();
-	// 		}
-	// 		else
-	// 		{
-	// 			hitnormal = (-ricochetdata.Hitline.delta.y, ricochetdata.Hitline.delta.x, 0).unit();
-	// 		}
+    Action void a_FireBattleRifle()
+	{
+		FLineTraceData ricochetdata;
+		invoker.owner.LineTrace(invoker.owner.angle, 4096, invoker.owner.pitch, TRF_SOLIDACTORS, offsetz: invoker.owner.player.viewz - invoker.owner.pos.z, data: ricochetdata);
+		vector3 hitNormal;
+		if(ricochetdata.HitType == TRACE_HitWall )
+		{
+			if(!ricochetdata.LineSide)
+			{
+				hitnormal = (ricochetdata.Hitline.delta.y, -ricochetdata.Hitline.delta.x, 0).unit();
+			}
+			else
+			{
+				hitnormal = (-ricochetdata.Hitline.delta.y, ricochetdata.Hitline.delta.x, 0).unit();
+			}
 			
-	// 	}
-	// 	else if (ricochetdata.HitType == TRACE_HitFloor)
-	// 	{
-	// 		hitnormal = ricochetdata.HitSector.FloorPlane.normal;
+		}
+		else if (ricochetdata.HitType == TRACE_HitFloor)
+		{
+			hitnormal = ricochetdata.HitSector.FloorPlane.normal;
 			
-	// 	}
-	// 	else if (ricochetdata.HitType == TRACE_HitCeiling)
-	// 	{
-	// 		hitnormal = ricochetdata.HitSector.CeilingPlane.normal;
-	// 	}
-	// 	Vector3 PlayerAngle = BDPMATH.AngletoVector3(1.0,invoker.owner.angle,invoker.owner.pitch);
+		}
+		else if (ricochetdata.HitType == TRACE_HitCeiling)
+		{
+			hitnormal = ricochetdata.HitSector.CeilingPlane.normal;
+		}
+		Vector3 PlayerAngle = BDPMATH.AngletoVector3(1.0,invoker.owner.angle,invoker.owner.pitch);
 		
-	// 	Vector3 BounceAngle = BDPMATH.BounceNormal(PlayerAngle,hitNormal);
+		Vector3 BounceAngle = BDPMATH.BounceNormal(PlayerAngle,hitNormal);
 		
-	// 	Double NextShotAngle;
-	// 	Double NextShotPitch;
+		Double NextShotAngle;
+		Double NextShotPitch;
 		
 		
 		
-	// 	[NextShotAngle, NextShotPitch] = BDPMATH.Vector3toangles(BounceAngle);
+		[NextShotAngle, NextShotPitch] = BDPMATH.Vector3toangles(BounceAngle);
 
-	// 	double anglediff = BDPMath.AngleDiff(invoker.owner.angle % 360.0,nextshotangle % 360.0);
-	// 	double pitchdiff = BDPMath.AngleDiff(invoker.owner.pitch % 360.0,nextshotpitch % 360.0);
-	// 	//Console.printf("%f",anglediff);
+		double anglediff = BDPMath.AngleDiff(invoker.owner.angle % 360.0,nextshotangle % 360.0);
+		double pitchdiff = BDPMath.AngleDiff(invoker.owner.pitch % 360.0,nextshotpitch % 360.0);
+		//Console.printf("%f",anglediff);
 		
 		
-	// 	Vector3 NextShotPosition = level.Vec3Offset(ricochetData.hitlocation, hitnormal * 2.0);
+		Vector3 NextShotPosition = level.Vec3Offset(ricochetData.hitlocation, hitnormal * 2.0);
 		
-	// 	//A_FireBullets (0, 0, -1, 25, "BR45BulletPuff", FBF_NORANDOM,8192,"decorativetracer",-12);
-	// 	PB_FireBullets("PB_762x51mm", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
-    //     PB_SpawnCasing("PB_EmptyBrass",22,2,28,Frandom(-2, -1),Frandom(5,8),Frandom(3,4));
-	// 	If(pitchdiff > 45 || anglediff > 45 || pitchdiff < -45 || anglediff < -45)
-	// 	{
-	// 		return;
-	// 	}
-	// 	If(ricochetdata.HitType == TRACE_HitWall || ricochetdata.HitType == TRACE_HitFloor || ricochetdata.HitType == TRACE_HitCeiling)
-	// 	{
-	// 		Invoker.Owner.LineAttack(NextShotAngle,8192,NextShotPitch,35,"Pistol","BR45BulletPuff",LAF_ABSPOSITION | LAF_ABSOFFSET,null,NextShotPosition.Z,NextShotPosition.x,NextShotPosition.y);
-	// 		let ricochettracer = Invoker.owner.spawn("decorativetracer",nextshotposition);
-	// 		If(ricochettracer)
-	// 		{
-	// 			ricochettracer.angle = nextshotangle;
-	// 			ricochettracer.pitch = nextshotpitch;
-	// 			ricochettracer.vel3dfromangle(140,nextshotangle,nextshotpitch);
-	// 		}
+		//A_FireBullets (0, 0, -1, 25, "BR45BulletPuff", FBF_NORANDOM,8192,"decorativetracer",-12);
+		PB_FireBullets("PB_762x51mm", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
+        PB_SpawnCasing("PB_EmptyBrass",22,2,28,Frandom(-2, -1),Frandom(5,8),Frandom(3,4));
+		If(pitchdiff > 45 || anglediff > 45 || pitchdiff < -45 || anglediff < -45)
+		{
+			return;
+		}
+		If(ricochetdata.HitType == TRACE_HitWall || ricochetdata.HitType == TRACE_HitFloor || ricochetdata.HitType == TRACE_HitCeiling)
+		{
+			Invoker.Owner.LineAttack(NextShotAngle,8192,NextShotPitch,35,"Pistol","BR45BulletPuff",LAF_ABSPOSITION | LAF_ABSOFFSET,null,NextShotPosition.Z,NextShotPosition.x,NextShotPosition.y);
+			let ricochettracer = Invoker.owner.spawn("decorativetracer",nextshotposition);
+			If(ricochettracer)
+			{
+				ricochettracer.angle = nextshotangle;
+				ricochettracer.pitch = nextshotpitch;
+				ricochettracer.vel3dfromangle(140,nextshotangle,nextshotpitch);
+			}
 			
-	// 	}
-	// }
+		}
+	}
 
     // FIRE FUNCTION
 	action void FireWeapon(int weaponSide, int ticCount)
@@ -138,13 +225,9 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 				A_AlertMonsters();
 				//a_FireBattleRifle();
 				PB_DynamicTail("lmg", "lmg");
-				PB_FireBullets("PB_762x51mm", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
-				PB_SpawnCasing("PB_EmptyBrass",22,2,28,Frandom(-2, -1),Frandom(5,8),Frandom(3,4));
-				//a_FireBattleRifle();
-				PB_FireBullets("PB_762x51mm", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
+				a_FireBattleRifle();
 				PB_LowAmmoSoundWarning("default");
 				pb_takeammo(invoker.ammotype2,1,0);
-				PB_SpawnCasing("PB_EmptyBrass",22,2,28,Frandom(-2, -1),Frandom(5,8),Frandom(3,4));
 				A_StartSound("BR45FIRE", CHAN_WEAPON, 0, 1.0, pitch: 1.2);
 				invoker.burstcount++;
 				PB_IncrementHeat(4);
@@ -169,6 +252,8 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 				break;
 		}
 	}
+	
+	
 	
 	States
 	{
@@ -220,6 +305,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			BR45 B 1 {
 				PB_HandleCrosshair(42);
 				PB_CoolDownBarrel();
+				BR_ReadyNormal();
 				return A_DoPBWeaponAction(WRF_ALLOWRELOAD);
 			}
 			Loop;
@@ -233,6 +319,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
                 PB_HandleCrosshair(5);
 				PB_CoolDownBarrel();
                 A_SetInventory("PB_LockScreenTilt",0);
+				BR_ReadyScope();
 				if(Cvar.GetCvar("pb_toggle_aim_hold",player).getint() == 1) 
 				{
 					if(!PressingAltfire() || JustReleased(BT_ALTATTACK))
@@ -257,96 +344,110 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 		
 		//[Pop] Firing states
 		Fire:
-			TNT1 A 0 {
-				A_WeaponOffset(0,32);
+			TNT1 A 0
+			{
+				A_WeaponOffset(0, 32);
 				A_SetRoll(0);
 				PB_HandleCrosshair(42);
-				A_SetInventory("PB_LockScreenTilt",0);
+				A_SetInventory("PB_LockScreenTilt", 0);
 			}
-			TNT1 A 0 A_jumpifinventory("zoomed",1,"FireADS");
-			TNT1 A 0 PB_JumpIfNoAmmo("Reload",1,false);
-            BR4F A 0 A_Jump(85,3);
-			BR4F B 0 A_Jump(85,2);
+			TNT1 A 0 A_JumpIfInventory("zoomed", 1, "FireADS");
+			TNT1 A 0 PB_JumpIfNoAmmo("Reload", 1, false);
+			BR4F A 0 A_Jump(85, 3);
+			BR4F B 0 A_Jump(85, 2);
 			BR4F C 0;
-			BR4F "#" 1 
-            {
-				//PB_LowAmmoSoundWarning("default", "BR_Ammo");
-                FireWeapon(0,1);
-                FireWeapon(0,2);
-            }
+			BR4F "#" 1
+			{
+				FireWeapon(0, 1);
+				FireWeapon(0, 2);
+			}
 			BR45 D 1
 			{
-				If(getBRMag() < 1)
-				{
+				if (getBRMag() < 1)
 					PB_SpawnCasing("RifleClipSpawn");
-					// A_fireprojectile("RifleClipSpawn",5,false,0,-14,0);
-				}
 			}
-			TNT1 A 0 A_jumpif(invoker.burstcount < 3,"burstfirerecoil");
-			TNT1 A 0 A_DoPBWeaponAction(WRF_NOFIRE|WRF_NOPRIMARY);
-			BR45 DEFGH 1 {
-                if(PlayerPressedOnce(BT_ATTACK)) return resolvestate("Fire");
-                return A_DoPBWeaponAction(WRF_ALLOWRELOAD|WRF_NOFIRE);
-            }
-			TNT1 A 0 {invoker.burstcount = 0;}
-			TNT1 A 0 A_refire("Fire");
+			// Semi-auto: always go to BurstDone after 1 shot
+			// Burst: loop until burstcount hits 3
+			TNT1 A 0 A_JumpIf(invoker.isSemiAuto, "BurstDone");
+			TNT1 A 0 A_JumpIf(invoker.burstcount < 3, "BurstFireRecoil");
+			goto BurstDone;
+
+		BurstDone:
+			TNT1 A 0 { invoker.burstcount = 0; }
+			BR45 DEFGH 1
+			{
+				// Track button release
+				if (!(player.cmd.buttons & BT_ATTACK))
+					invoker.semiclear = true;
+				// Refire only if button was released and pressed again
+				if (invoker.semiclear && PlayerPressedOnce(BT_ATTACK))
+					return resolvestate("Fire");
+				return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOFIRE | WRF_NOPRIMARY);
+			}
+			TNT1 A 0 { invoker.semiclear = false; }
 			goto WeaponReady;
 
-            BurstFireRecoil:
+		BurstFireRecoil:
 			BR45 EF 1;
 			goto Fire;
 
 		//[Pop] because different animations too
 		FireADS:
-            TNT1 A 0 A_zoomfactor(3.0);
-			TNT1 A 0 PB_JumpIfNoAmmo("ReloadFromADS",1,false);
-			BR4Z D 1 Bright
-            {
-				PB_LowAmmoSoundWarning();
-                FireWeapon(1,1);
-                FireWeapon(1,2);
-            }
-			BR4Z D 1 Bright
+		TNT1 A 0 A_ZoomFactor(3.0);
+		TNT1 A 0 PB_JumpIfNoAmmo("ReloadFromADS", 1, false);
+		BR4Z D 1 Bright
+		{
+			FireWeapon(1, 1);
+			FireWeapon(1, 2);
+		}
+		BR4Z D 1 Bright
+		{
+			if (getBRMag() < 1)
+				PB_SpawnCasing("RifleClipSpawn");
+		}
+		// Same logic as hipfire
+		TNT1 A 0 A_JumpIf(invoker.isSemiAuto, "BurstDoneADS");
+		TNT1 A 0 A_JumpIf(invoker.burstcount < 3, "BurstFireRecoilADS");
+		goto BurstDoneADS;
+
+	BurstDoneADS:
+		TNT1 A 0
+		{
+			invoker.burstcount = 0;
+			A_SetInventory("CantDoAction", 0);
+		}
+		BR4Z DDDDDDDDDDDD 1 Bright
+		{
+			// Track button release
+			if (!(player.cmd.buttons & BT_ATTACK))
+				invoker.semiclear = true;
+			// Refire only if button was released and repressed
+			if (invoker.semiclear && PlayerPressedOnce(BT_ATTACK))
+				return resolvestate("FireADS");
+
+			if (Cvar.GetCvar("pb_toggle_aim_hold", player).getint())
 			{
-				If(getBRMag() < 1)
-				{
-					PB_SpawnCasing("RifleClipSpawn");
-					// A_fireprojectile("RifleClipSpawn",5,false,15,-7,0);
-				}
-				if(invoker.burstcount > 2)
-				{
-					A_DoPBWeaponAction(WRF_NOFIRE|WRF_NOPRIMARY);
-				}
+				if (JustReleased(BT_ALTATTACK))
+					return resolvestate("ZoomOut");
 			}
-			BR4Z D 2 Bright;
-			TNT1 A 0 A_Jumpif(invoker.burstcount < 3,"FireADS");
-			BR4Z D 2 Bright;
-			TNT1 A 0 {invoker.burstcount = 0;}
-            BR4Z DDDDDDDDDDDD 1 Bright
-            {
-				A_SetInventory("CantDoAction",0);
-				 
-				if(Cvar.GetCvar("pb_toggle_aim_hold",player).getint()) 
-				{
-					if(JustReleased(BT_ALTATTACK))
-						return resolvestate("Zoomout");
-					if (JustPressed(BT_ATTACK) && PressingAltfire())
-							return resolvestate("FireADS");
-				}
-				else 
-				{
-					if(PressingAltfire())
-						return resolvestate("Zoomout");
-					if (JustPressed(BT_ATTACK))
-							return resolvestate("FireADS");
-					A_Refire("FireADS");
-				}
-				return A_DoPBWeaponAction(WRF_ALLOWRELOAD|WRF_NOFIRE);
+			else
+			{
+				if (PressingAltfire())
+					return resolvestate("ZoomOut");
 			}
-			goto WeaponReadyADS;
+
+			return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOFIRE | WRF_NOPRIMARY);
+		}
+		TNT1 A 0 { invoker.semiclear = false; }
+		goto WeaponReadyADS;
+
+	BurstFireRecoilADS:
+		BR4Z DD 1 Bright;
+		goto FireADS;
 	
         // ALTFIRE
         AltFire:
+            TNT1 A 0 {invoker.LockedOn = false;}
 			TNT1 A 0 A_Jumpif(countinv("Zoomed") > 0 && getADS(),"ZoomOut");
 		ZoomIn:
             TNT1 A 0 A_giveinventory("Zoomed",1);
@@ -431,12 +532,52 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			BR45 B 1 A_StartSound("weapons/empty");
 			goto WeaponReady;
 
+		SpecialFromADS:
+			TNT1 A 0 A_Takeinventory("GoWeaponSpecialAbility",1);
+			goto ActualModeChange;
 		Weaponspecial:
+			TNT1 A 0 A_JumpIf(countinv("Zoomed") > 0 && getADS(),"SpecialFromADS");
 			TNT1 A 0 {
+				A_Takeinventory("GoWeaponSpecialAbility",1);
 				A_Takeinventory("Zoomed",1);
-				A_takeinventory("GoWeaponSpecialAbility",1);
+				A_Takeinventory("ADSmode",1);
+				A_ZoomFactor(1.0);
 			}
-            TNT1 A 0 A_print("$PBX_NoSpecial");
+		ActualModeChange:
+			TNT1 A 0 {
+				if((findinventory("BR_Select_Semi") && getSemiAuto()) || 
+				(findinventory("BR_Select_Burst") && !getSemiAuto()))
+				{
+					A_print("$PBX_AlreadySelected");
+					cleanmodetokens();
+					return resolvestate("ready3");
+				}
+				
+				if(findinventory("BR_Select_Semi"))
+				{
+					setSemiAuto(true);
+					cleanmodetokens();
+					A_Print("$PBX_BattleRifle_SemiAuto");
+				}
+				if(findinventory("BR_Select_Burst"))
+				{
+					setSemiAuto(false);
+					cleanmodetokens();
+					A_Print("$PBX_BattleRifle_Burst");
+				}
+
+				if(countinv("Zoomed") > 0 && getADS())
+				{
+					A_StartSound("MS/Button", 26);
+				}
+
+				return resolvestate(null);
+			}
+			TNT1 A 0 A_JumpIf(countinv("Zoomed") > 0 && getADS(),"WeaponReadyADS");
+        SwitchAnimation:
+            BR4R ABCDEFG 1;
+            TNT1 A 0 A_StartSound("MS/Button", 26);
+			BR4R GFEDCBA 1;
 			goto WeaponReady;
 		
         // FLASH STATES
@@ -479,6 +620,9 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 	override void postbeginplay()
 	{
 		isADS = false;
+		LockedOn = false;
+		semiClear = false;
+		isSemiAuto = true;
 		super.postbeginplay();
 	}
 	

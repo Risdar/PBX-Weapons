@@ -166,7 +166,7 @@ class PBXUpgrades_Injector : PBInjector
 }
 
 //////////////////////////// OTHER TYPES ////////////////////////////////////////////////////////////////////////////////////
-class PBX_WeaponSpawner : EventHandler
+class PBXWeapons_WeaponSpawner : EventHandler
 {
 	override void WorldThingSpawned (WorldEvent e)
     {
