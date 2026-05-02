@@ -56,6 +56,10 @@ PBX_MetalSniper_Standard = "\cd7.62x51mm Armor Piercing \c-Mode";
 PBX_MetalSniper_UpgradePickup = "Metal Sniper Resonance Ammo Type Upgrade (Slot 4)";
 PBX_MetalSniper_UpgradeTag = "Metal Sniper Upgrade";
 
+PBX_MetalSniper_Scope1 = "\cdSmart Scope \c-Off";
+PBX_MetalSniper_Scope2 = "\cdSmart Scope \c-Highlight Activated";
+PBX_MetalSniper_Scope3 = "\cdSmart Scope \c-Target Analysis Activated";
+
 //////////////////////////// SLOT 5 ///////////////////////////////////////////////////////////////////////////////
 // HMG
 PBX_NeoHMG_Pickup = "HMG (Slot 5)";

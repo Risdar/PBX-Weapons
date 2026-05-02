@@ -99,6 +99,7 @@ class PBX_TipsManager : inventory
                 tips.Push("$PBX_MetalSniper_Tip2");
                 tips.Push("$PBX_MetalSniper_Tip3");
                 tips.Push("$PBX_MetalSniper_Tip4");
+                tips.Push("$PBX_MetalSniper_Tip5");
                 tips.Push("$PBX_DisableUpgrade");
                 SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_METALSNIPER);
             }

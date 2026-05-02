@@ -32,8 +32,10 @@ Class PBX_MetalSniper : PB_WeaponBase
     bool grenadeloaded;
     bool AltMode;
     bool isZooming;
+    bool LockedOn;
     int  currentMaxAmmo;
     int  usedAmmo;
+    int ScopeMode;
 
     // ═════════════════════════════════════════════════════════════════════════
     // STATES
@@ -76,6 +78,7 @@ Class PBX_MetalSniper : PB_WeaponBase
         // ── Select / Deselect ─────────────────────────────────────────────
         Select:
             TNT1 A 0 PB_WeaponRaise("MS/Up");
+            TNT1 A 0 PB_SetUsableWheel(true);
         SelectContinue:
             TNT1 A 0 PB_RespectIfNeeded();
         SelectAnimation:
@@ -85,6 +88,7 @@ Class PBX_MetalSniper : PB_WeaponBase
         Deselect:
             TNT1 A 0 A_ZoomFactor(1.0);
             TNT1 A 0 A_TakeInventory("Zoomed", 10);
+            TNT1 A 0 PB_SetUsableWheel(true);
             TNT1 A 0 setZoom(false);
             MSND ABCD 1;
             TNT1 A 0 A_Lower(120);
@@ -110,7 +114,8 @@ Class PBX_MetalSniper : PB_WeaponBase
             {
                 PB_CoolDownBarrel(-4, 0, 6, 0,  1);
                 PB_CoolDownBarrel( 4, 0, 6, 0, -1);
-                // MS_ReadyNormal();
+                if(invoker.ScopeMode == 1 || invoker.ScopeMode == 2)
+                    MS_ReadyNormal();
                 return A_DoPBWeaponAction(WRF_ALLOWRELOAD);
             }
             loop;
@@ -149,13 +154,14 @@ Class PBX_MetalSniper : PB_WeaponBase
 
         // ── AltFire: zoom or grenade mode ────────────────────────────────
         AltFire:
-            // TNT1 A 0 {invoker.LockedOn = false;}
+            TNT1 A 0 {invoker.LockedOn = false;}
             TNT1 A 0 A_JumpIf(MS_getmode() == GrenadeMode, "AltFire_Grenade");
         AltFire_Zoom:
             TNT1 A 0 A_JumpIf(CountInv("Zoomed") > 0 && iszoom(), "ZoomOut");
         ZoomIn:
             TNT1 A 0 A_GiveInventory("Zoomed", 1);
             TNT1 A 0 setZoom(true);
+            TNT1 A 0 PB_SetUsableWheel(false);
             TNT1 A 0 A_StartSound("IronSights", 29);
             MSNA A 1 A_ZoomFactor(1.5);
             MSNA B 1 A_ZoomFactor(2.0);
@@ -168,6 +174,7 @@ Class PBX_MetalSniper : PB_WeaponBase
         ZoomOut:
             TNT1 A 0 A_TakeInventory("Zoomed", 1);
             TNT1 A 0 setZoom(false);
+            TNT1 A 0 PB_SetUsableWheel(true);
             TNT1 A 0 A_StartSound("IronSights", 29);
             MSNA F 1 A_ZoomFactor(3.5);
             MSNA E 1 A_ZoomFactor(3.0);
@@ -188,7 +195,8 @@ Class PBX_MetalSniper : PB_WeaponBase
                 PB_CoolDownBarrel(-5, 0, 7, 0,  1);
                 PB_CoolDownBarrel( 5, 0, 7, 0, -1);
                 A_SetInventory("PB_LockScreenTilt", 0);
-                // MS_ReadyScope();
+                if(invoker.ScopeMode == 1 || invoker.ScopeMode == 2)
+                    MS_ReadyScope();
 
                 bool holdMode = (CVar.GetCVar("pb_toggle_aim_hold", player).GetInt() == 1);
 
@@ -475,10 +483,15 @@ Class PBX_MetalSniper : PB_WeaponBase
             goto UnloadChamber;
 
         // ── Weapon Special ────────────────────
+        WeaponSpecial_ToggleScope:
+            TNT1 A 0 CycleScopeMode();
+            goto Ready2;
+
         WeaponSpecial:
+            TNT1 A 0 A_TakeInventory("GoWeaponSpecialAbility", 1);
+            TNT1 A 0 A_JumpIf(CountInv("Zoomed") > 0, "WeaponSpecial_ToggleScope");
             TNT1 A 0
             {
-                A_TakeInventory("GoWeaponSpecialAbility", 1);
                 A_TakeInventory("Zoomed", 1);
                 A_TakeInventory("ADSmode", 1);
                 A_ZoomFactor(1.0);
@@ -544,73 +557,90 @@ Class PBX_MetalSniper : PB_WeaponBase
     // ═════════════════════════════════════════════════════════════════════════
 
     // ── Scope Function ────────────────────────────────────────────────────────
-    // action void MS_ReadyNormal()
-    // {
-    //     FLineTraceData Bule;
-    //     bool hit = LineTrace(Angle, 6000, Pitch, 0, player.ViewHeight, 0, 0, Bule);
-    //     if(hit)
-    //     {
-    //         if(Bule.HitActor && Bule.HitActor.bISMONSTER && Bule.HitActor.bFRIENDLY == false && Bule.HitActor is "PB_Monster")
-    //         {				
-    //             if(!invoker.LockedOn)
-    //             {
-    //                 invoker.LockedOn = true;
-    //                 A_StartSound("IronSights", CHAN_WEAPON, volume:0.5, pitch:1.4);
-    //             }
-    //             // let damn = player.FindPSprite(1);
-    //             // if(damn)
-    //             // {
-    //             //     damn.frame = 3;
-    //             //     damn.sprite = GetSpriteIndex("SPRF");
-    //             // }
-    //         }
-    //         else
-    //         if(invoker.LockedOn)
-    //         {
-    //             invoker.LockedOn = false;
-    //             A_StartSound("IronSights", CHAN_WEAPON, volume:0.5, pitch:1.3);
-    //         }
-    //     }	
-    //     // return A_DoPBWeaponAction();
-    // }
+    action void MS_ReadyNormal()
+    {
+        FLineTraceData Bule;
+        bool hit = LineTrace(Angle, 6000, Pitch, 0, player.ViewHeight, 0, 0, Bule);
+        if(hit)
+        {
+            if(Bule.HitActor && Bule.HitActor.bISMONSTER && Bule.HitActor.bFRIENDLY == false && Bule.HitActor is "PB_Monster")
+            {				
+                if(!invoker.LockedOn)
+                {
+                    invoker.LockedOn = true;
+                    A_StartSound("IronSights", CHAN_WEAPON, volume:0.5, pitch:1.4);
+                }
+                // let damn = player.FindPSprite(1);
+                // if(damn)
+                // {
+                //     damn.frame = 3;
+                //     damn.sprite = GetSpriteIndex("SPRF");
+                // }
+            }
+            else
+            if(invoker.LockedOn)
+            {
+                invoker.LockedOn = false;
+                A_StartSound("IronSights", CHAN_WEAPON, volume:0.5, pitch:1.3);
+            }
+        }	
+        // return A_DoPBWeaponAction();
+    }
     
-    // action void MS_ReadyScope()
-    // {
-    //     FLineTraceData Bule;
-    //     bool hit = LineTrace(Angle, 6000, Pitch, 0, player.ViewHeight, 0, 0, Bule); //Line to kick enemy or wall
-    //     if(hit)
-    //     {
-    //         if(Bule.HitActor && Bule.HitActor.bISMONSTER && Bule.HitActor.bFRIENDLY == false && Bule.HitActor is "PB_Monster")
-    //         {	
-    //             if(!invoker.LockedOn)
-    //             {
-    //                 A_SetBlend(0x00a100, 0.2, 3);
-    //                 invoker.LockedOn = true;
-    //                 A_StartSound("IronSights", CHAN_WEAPON, pitch:1.4);
-    //             }
-    //             //show the actor's wireframe
-    //             let Wireframe = Spawn("PBX_CubeRadius", Bule.HitActor.pos);
-    //             if(Wireframe)
-    //             {
-    //                 Wireframe.scale.x = double(Bule.HitActor.Radius) * 2;
-    //                 Wireframe.scale.Y = double(Bule.HitActor.Height) * Level.pixelstretch;
-    //                 Wireframe.vel = Bule.HitActor.vel;
-    //             }
-    //             player.PSprites.frame = 1;
-    //             PBXWeapons_Handler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData:"..Bule.HitActor.GetTag(), Bule.HitActor.health, Bule.HitActor.GetSpawnHealth(), Bule.HitActor.PainChance);
-    //             PBXWeapons_Handler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData2:", Distance3D(Bule.HitActor), 4.0);
-    //         }
-    //         else
-    //         if(invoker.LockedOn)
-    //         {
-    //             A_SetBlend(0xa19900, 0.2, 3);
-    //             invoker.LockedOn = false;
-    //             A_StartSound("IronSights", CHAN_WEAPON, pitch:1.3);
-    //         }
-    //     }
-    //     // return A_DoPBWeaponAction();
-    // }
+    action void MS_ReadyScope()
+    {
+        FLineTraceData Bule;
+        bool hit = LineTrace(Angle, 6000, Pitch, 0, player.ViewHeight, 0, 0, Bule); //Line to kick enemy or wall
+        if(hit)
+        {
+            if(Bule.HitActor && Bule.HitActor.bISMONSTER && Bule.HitActor.bFRIENDLY == false && Bule.HitActor is "PB_Monster")
+            {	
+                if(!invoker.LockedOn)
+                {
+                    A_SetBlend(0x00a100, 0.2, 3);
+                    invoker.LockedOn = true;
+                    A_StartSound("IronSights", CHAN_WEAPON, pitch:1.4);
+                }
+                //show the actor's wireframe
+                let Wireframe = Spawn("PBX_CubeRadius", Bule.HitActor.pos);
+                if(Wireframe)
+                {
+                    Wireframe.scale.x = double(Bule.HitActor.Radius) * 2;
+                    Wireframe.scale.Y = double(Bule.HitActor.Height) * Level.pixelstretch;
+                    Wireframe.vel = Bule.HitActor.vel;
+                }
+                if(invoker.ScopeMode == 2)
+                {
+                    // player.PSprites.frame = 1;
+                    PBXWeapons_Handler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData:"..Bule.HitActor.GetTag(), Bule.HitActor.health, Bule.HitActor.GetSpawnHealth(), Bule.HitActor.PainChance);
+                    PBXWeapons_Handler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData2:", Distance3D(Bule.HitActor), 4.0);
+                }
+            }
+            else
+            if(invoker.LockedOn)
+            {
+                A_SetBlend(0x00a100, 0.2, 3);
+                // A_SetBlend(0xa19900, 0.2, 3);
+                invoker.LockedOn = false;
+                A_StartSound("IronSights", CHAN_WEAPON, pitch:1.3);
+            }
+        }
+        // return A_DoPBWeaponAction();
+    }
 
+    action void CycleScopeMode()
+    {
+        invoker.ScopeMode = (invoker.ScopeMode + 1) % 3;
+        A_StartSound("MS/Button", CHAN_WEAPON);
+        A_SetBlend(0x00a100, 0.2, 3);
+
+        switch (invoker.ScopeMode)
+        {
+            case 0: A_Print("$PBX_MetalSniper_Scope1"); break;
+            case 1: A_Print("$PBX_MetalSniper_Scope2"); break;
+            case 2: A_Print("$PBX_MetalSniper_Scope3"); break;
+        }
+    }
     // ── Ammo / magazine helpers ───────────────────────────────────────────────
     action void MS_ReloadMag()
     {
@@ -775,6 +805,8 @@ Class PBX_MetalSniper : PB_WeaponBase
     {
         grenadeloaded  = true;
         currentMaxAmmo = MetalSniperFullAmmo;
+        LockedOn = false;
+        ScopeMode = 0;
         Super.PostBeginPlay();
     }
 }

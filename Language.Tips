@@ -24,10 +24,11 @@ PBX_BattleRifle_Tip2 = "The Scope will now show information on the highlighted e
 PBX_BattleRifle_Tip3 = "Your every bullets will now ricochet.";
 
 // Metal Sniper
-PBX_MetalSniper_Tip1 = "The Metal Sniper is a high powered sniper rifle that has two altfire modes.";
+PBX_MetalSniper_Tip1 = "The Metal Sniper two altfire modes and three scope modes.";
 PBX_MetalSniper_Tip2 = "The Grenade altfire needs to be primed before firing by pressing alt and then fire.";
-PBX_MetalSniper_Tip3 = "The standard 7.62x51mm Armor Piercing deals high piercing damage";
-PBX_MetalSniper_Tip4 = "You can get the alternate Resonance Ammo type by picking it's upgrade that spawn on backpacks.";
+PBX_MetalSniper_Tip3 = "The Scope mode can be switched between by pressing the weapon special key when scoped in";
+PBX_MetalSniper_Tip4 = "The standard 7.62x51mm Armor Piercing deals high piercing damage";
+PBX_MetalSniper_Tip5 = "You can get the alternate Resonance Ammo type by picking it's upgrade that spawn on backpacks.";
 
 PBX_MetalSniperUpgrade_Tip1 = "The Resonance Ammo is a special Anti Arachno-Shield round.";
 PBX_MetalSniperUpgrade_Tip2 = "Shooting it at an Arachnotron shield will ignite the shield and stun all nearby enemies.";
