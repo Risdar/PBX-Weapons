@@ -255,7 +255,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 	
 	action void FireWeaponCheck()
 	{
-		if(countinv("BattleRifle_Upgraded") > 0) {a_FireBattleRifle();}
+		if(countinv("BattleRifle_Upgraded") > 0 || (pbxweapons_backpack_filter & DisablePBX_BattleRifleUpgrade)) {a_FireBattleRifle();}
 		else {
 			PB_FireBullets("PB_762x51mm", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
         	PB_SpawnCasing("PB_EmptyBrass",22,2,28,Frandom(-2, -1),Frandom(5,8),Frandom(3,4));
@@ -314,7 +314,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			BR45 B 1 {
 				PB_HandleCrosshair(42);
 				PB_CoolDownBarrel();
-				if(countinv("BattleRifle_Upgraded") > 0)
+				if(countinv("BattleRifle_Upgraded") > 0 || (pbxweapons_backpack_filter & DisablePBX_BattleRifleUpgrade))
 					BR_ReadyNormal();
 				return A_DoPBWeaponAction(WRF_ALLOWRELOAD);
 			}
@@ -329,7 +329,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
                 PB_HandleCrosshair(5);
 				PB_CoolDownBarrel();
                 A_SetInventory("PB_LockScreenTilt",0);
-				if(countinv("BattleRifle_Upgraded") > 0)
+				if(countinv("BattleRifle_Upgraded") > 0 || (pbxweapons_backpack_filter & DisablePBX_BattleRifleUpgrade))
 					BR_ReadyScope();
 				if(Cvar.GetCvar("pb_toggle_aim_hold",player).getint() == 1) 
 				{

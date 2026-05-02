@@ -162,11 +162,14 @@ class PBXUpgrades_Injector : PBInjector
 		{
 			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'ResonanceAmmo_Upgrade', 255, 1);
 			handler.InjectSpawn('PB_UpgradeSpawnerT4', 'ResonanceAmmo_Upgrade', 255, 1);
+			handler.InjectSpawn('PB_MGSpawnerT3', 'ResonanceAmmo_Upgrade', 255, 1);
+			handler.InjectSpawn('PB_MGSpawnerT4', 'ResonanceAmmo_Upgrade', 255, 1);
 		}
 
 		// BattleRifle Upgrades
 		if(!(pbxweapons_backpack_filter & DisablePBX_BattleRifleUpgrade))
 		{
+			handler.InjectSpawn('PB_MGSpawnerT2', 'BattleRifle_Upgrade', 255, 1);
 			handler.InjectSpawn('PB_UpgradeSpawnerT2', 'BattleRifle_Upgrade', 255, 1);
 			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'BattleRifle_Upgrade', 255, 1);
 		}

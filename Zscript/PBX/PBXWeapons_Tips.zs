@@ -88,6 +88,7 @@ class PBX_TipsManager : inventory
                 tips.Push("$PBX_BattleRifle_Tip1");
                 tips.Push("$PBX_BattleRifle_Tip2");
                 tips.Push("$PBX_BattleRifle_Tip3");
+                tips.Push("$PBX_DisableUpgrade");
                 SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_BATTLERIFLE);
             }
             break;
