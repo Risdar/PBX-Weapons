@@ -49,7 +49,7 @@ class ResonanceAmmo_Upgrade : PB_UpgradeItem
 		-COUNTITEM;
 		Inventory.Pickupsound "CLIPIN";
 		Inventory.PickupMessage "$PBX_MetalSniper_UpgradePickup";
-		Tag "Metal Sniper Upgrade";
+		Tag "$PBX_MetalSniper_UpgradeTag";
 		Scale 0.65;
 		FloatBobStrength 0.5;
 	}

@@ -110,7 +110,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
                     Wireframe.scale.Y = double(Bule.HitActor.Height) * Level.pixelstretch;
                     Wireframe.vel = Bule.HitActor.vel;
                 }
-                player.PSprites.frame = 1;
+                // player.PSprites.frame = 1;
                 PBXWeapons_Handler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData:"..Bule.HitActor.GetTag(), Bule.HitActor.health, Bule.HitActor.GetSpawnHealth(), Bule.HitActor.PainChance);
                 PBXWeapons_Handler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData2:", Distance3D(Bule.HitActor), 3.0);
             }
@@ -225,7 +225,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 				A_AlertMonsters();
 				//a_FireBattleRifle();
 				PB_DynamicTail("lmg", "lmg");
-				a_FireBattleRifle();
+				FireWeaponCheck();
 				PB_LowAmmoSoundWarning("default");
 				pb_takeammo(invoker.ammotype2,1,0);
 				A_StartSound("BR45FIRE", CHAN_WEAPON, 0, 1.0, pitch: 1.2);
@@ -253,7 +253,14 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 		}
 	}
 	
-	
+	action void FireWeaponCheck()
+	{
+		if(countinv("BattleRifle_Upgraded") > 0) {a_FireBattleRifle();}
+		else {
+			PB_FireBullets("PB_762x51mm", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
+        	PB_SpawnCasing("PB_EmptyBrass",22,2,28,Frandom(-2, -1),Frandom(5,8),Frandom(3,4));
+		}
+	}
 	
 	States
 	{
@@ -267,8 +274,10 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			goto Ready;
 
 		Deselect:
-			TNT1 A 0 A_Takeinventory("Zoomed",10);
-			TNT1 A 0 setADS();
+			TNT1 A 0 {
+				A_Takeinventory("Zoomed",10);
+				setADS();
+			}
 			BR4S ABCDE 1; 
 			TNT1 A 0 A_StopSound(1);
 			TNT1 A 0 A_StopSound(2);
@@ -305,7 +314,8 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			BR45 B 1 {
 				PB_HandleCrosshair(42);
 				PB_CoolDownBarrel();
-				BR_ReadyNormal();
+				if(countinv("BattleRifle_Upgraded") > 0)
+					BR_ReadyNormal();
 				return A_DoPBWeaponAction(WRF_ALLOWRELOAD);
 			}
 			Loop;
@@ -319,7 +329,8 @@ class PBX_BDPBattleRifle : PB_WeaponBase
                 PB_HandleCrosshair(5);
 				PB_CoolDownBarrel();
                 A_SetInventory("PB_LockScreenTilt",0);
-				BR_ReadyScope();
+				if(countinv("BattleRifle_Upgraded") > 0)
+					BR_ReadyScope();
 				if(Cvar.GetCvar("pb_toggle_aim_hold",player).getint() == 1) 
 				{
 					if(!PressingAltfire() || JustReleased(BT_ALTATTACK))

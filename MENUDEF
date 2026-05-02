@@ -95,8 +95,13 @@ AddOptionMenu "AddonWeaponSpawns" after "BFGT4"
 }
 
 // Backpacks /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+AddOptionMenu "AddonAmmoSpawns" after "PACKT2"
+{
+    FlagOption    "Battle Rifle Upgrade",    "PBXWeapons_backpack_filter",    "OffOn", 2
+}
+
 AddOptionMenu "AddonAmmoSpawns" after "PACKT3"
 {
-    FlagOption    "CSSG Upgrades",    "PBXWeapons_backpack_filter",    "OffOn", 0
-    FlagOption    "Metal Sniper Upgrades",    "PBXWeapons_backpack_filter",    "OffOn", 1
+    FlagOption    "CSSG Upgrades",           "PBXWeapons_backpack_filter",    "OffOn", 0
+    FlagOption    "Metal Sniper Upgrade",    "PBXWeapons_backpack_filter",    "OffOn", 1
 }

@@ -19,6 +19,10 @@ PBX_BattleRifle_Tip1 = "The Battle Rifle is a simple weapon that has two modes."
 PBX_BattleRifle_Tip2 = "You can switch between Burst fire and Semi-auto using the Weapon Special Key";
 PBX_BattleRifle_Tip3 = "The Battle Rifle Scope is equipped with the latest target scanner.";
 
+PBX_BattleRifle_Tip1 = "You just picked up the scope upgrade and the ricochet bullets.";
+PBX_BattleRifle_Tip2 = "The Scope will now show information on the highlighted enemies";
+PBX_BattleRifle_Tip3 = "Your every bullets will now ricochet.";
+
 // Metal Sniper
 PBX_MetalSniper_Tip1 = "The Metal Sniper is a high powered sniper rifle that has two altfire modes.";
 PBX_MetalSniper_Tip2 = "The Grenade altfire needs to be primed before firing by pressing alt and then fire.";

@@ -41,6 +41,9 @@ PBX_BattleRifle_Tag = "UAC M1 'BDP' Battle Rifle";
 PBX_BattleRifle_SemiAuto = "\cdSemi-Auto \c-Mode";
 PBX_BattleRifle_Burst = "\ciBurst Fire \c-Mode";
 
+PBX_BattleRifle_UpgradePickup = "Battle Rifle Ricochet and Scope Upgrade (Slot 4)";
+PBX_BattleRifle_UpgradeTag = "Battle Rifle Upgrade";
+
 // Metal Sniper
 PBX_MetalSniper_Pickup = "Metal Sniper (Slot 4)";
 PBX_MetalSniper_Tag = "UAC-45 Heavy 'Metal' Sniper";
@@ -51,6 +54,7 @@ PBX_MetalSniper_Resonance = "\cjResonance Ammo \c-Mode";
 PBX_MetalSniper_Standard = "\cd7.62x51mm Armor Piercing \c-Mode";
 
 PBX_MetalSniper_UpgradePickup = "Metal Sniper Resonance Ammo Type Upgrade (Slot 4)";
+PBX_MetalSniper_UpgradeTag = "Metal Sniper Upgrade";
 
 //////////////////////////// SLOT 5 ///////////////////////////////////////////////////////////////////////////////
 // HMG

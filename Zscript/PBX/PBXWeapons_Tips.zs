@@ -25,7 +25,8 @@ enum PBX_eWeaponTipFlags
 
 enum PBX_eWeaponUpgradeTipFlags
 {
-    PBX_TIP_METALSNIPER_UPGRADE = 1 << 0
+    PBX_TIP_METALSNIPER_UPGRADE = 1 << 0,
+    PBX_TIP_BATTLERIFLE_UPGRADE = 1 << 1
 }
 
 class PBX_TipsManager : inventory
@@ -133,6 +134,15 @@ class PBX_TipsManager : inventory
                 tips.Push("$PBX_MetalSniperUpgrade_Tip2");
                 tips.Push("$PBX_MetalSniperUpgrade_Tip3");
                 SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_METALSNIPER_UPGRADE);
+            }
+            break;
+            case 'BattleRifle_Upgrade':
+            {
+                Array<String> tips;
+                tips.Push("$PBX_BattleRifle_Tip1");
+                tips.Push("$PBX_BattleRifle_Tip2");
+                tips.Push("$PBX_BattleRifle_Tip3");
+                SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_BATTLERIFLE_UPGRADE);
             }
             break;
         }
