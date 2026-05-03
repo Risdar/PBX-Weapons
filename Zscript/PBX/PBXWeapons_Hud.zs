@@ -235,7 +235,7 @@ class PBX_Hud : PB_Hud_ZS
                     break;
 
                 case 'PBX_CyberdemonRL':
-                    adjustPos = (-30, 47); 
+                    adjustPos = (-15, 30); 
                     adjustScale = 1.5;
                     break;
                 case 'PBX_Excavator':
@@ -351,7 +351,7 @@ class PBX_Hud : PB_Hud_ZS
                 {
                     static const string cssgIcons[] = {
                         "buckhud", "slughud", "flcthud", "flakhud", "drgnhud", 
-                        "explhud", "phoshud", "doomhud", "dnmkhud"
+                        "explhud", "phoshud", "doomhud", "dnmkhud", "subzhud"
                     };
                     
                     // Show what Ammo type is selected
@@ -439,6 +439,20 @@ class PBX_Hud : PB_Hud_ZS
                     int m = clamp(sgl.GrenadeMode, 0, sglIcons.Size() - 1);
                     pbx_image2 = sglIcons[m];
                 }
+                break;
+
+            case 'PBX_CyberdemonRL':
+                // Show Durability
+                let crl = PBX_CyberdemonRL(pbWeap);
+                // Show Rocket Ammo if Grenade Secondary Mode is Selected
+                if (crl) 
+                {
+                    PBHud_DrawImage("BARBADD2", (-73, -49), flagsright, playerBoxAlpha);
+                    PBHud_DrawBar("ABAR10", "BGBARL", GetAmount("CyberRLDurability"), GetMaxAmount("CyberRLDurability"), (-111, -52), 0, 1, flagsright);
+                    PBHud_DrawString(mDefaultFont, Formatnumber(GetAmount("CyberRLDurability")), (-205, -68.75), DI_TEXT_ALIGN_RIGHT, Font.CR_DARKGRAY);
+                }
+                // Show what Mode is selected
+                // pbx_image2 = PBX_PlayerHasInventory("CDRocketHoming") ? "graphics/WeaponIcons/CD_HOMING.png" : "graphics/WeaponIcons/CD_STANDARD.png";
                 break;
 
 //////////////// SLOT 8 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

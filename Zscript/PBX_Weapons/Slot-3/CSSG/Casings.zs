@@ -10,6 +10,7 @@ Class ShellCasingBase : ShotgunCasing
 			TDS1 A 0;
 			DC0S A 0;
 			CAF8 A 0;
+			XFC1 A 0;
 			stop;
 
 	}
@@ -85,5 +86,13 @@ Class DanmakuCasing : ShellCasingBase
 	default
 	{
 		PB_CasingBase.CasingSprite 'DC0S';
+	}
+}
+
+Class SubZeroCasing : ShellCasingBase
+{
+	default
+	{
+		PB_CasingBase.CasingSprite 'XFC1';
 	}
 }

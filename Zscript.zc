@@ -25,6 +25,7 @@ Version 4.13
 #include "Zscript/PBX_Weapons/Slot-3/CSSG/CSSGEvent.zs"
 #include "Zscript/PBX_Weapons/Slot-3/CSSG/CSSG_Upgrades.zs"
 #include "Zscript/PBX_Weapons/Slot-3/CSSG/CSSG_Wheel.zs"
+#include "Zscript/PBX_Weapons/Slot-3/CSSG/CSSG_Projectiles.zs"
 
 // Slot 4
 // Battle Rifle

@@ -380,10 +380,11 @@ Class PBX_MetalSniper : PB_WeaponBase
         ReloadFromSpecial:
             TNT1 A 0
             {
+                MS_ToggleResonance();
                 MS_AmmoCapacity();
                 cleanmodetokens();
             }
-            MSR6 ABCDEFG 1 { if (!isResonance()) A_SetWeaponSprite("MSNR"); }
+            MSR6 ABCDEFG 1 { if (isResonance()) A_SetWeaponSprite("MSNR"); }
             TNT1 A 0 A_StartSound("MS/InsertMag", 20);
             MSNR HIJKL 1;
             TNT1 A 0
@@ -671,6 +672,12 @@ Class PBX_MetalSniper : PB_WeaponBase
     }
 
     // ── Ammo-type switch handler ──────────────────────────────────────────────
+    action void MS_ToggleResonance()
+    {
+        if(isResonance()){setResonance(false);}
+		else {setResonance(true);}
+    }
+
     action state MS_HandleAmmo()
     {
         if (FindInventory("MS_Select_NO"))
@@ -682,9 +689,7 @@ Class PBX_MetalSniper : PB_WeaponBase
 
         if (FindInventory("MS_Select_Resonance"))
         {
-            // invoker.resonanceAmmoLoaded = !invoker.resonanceAmmoLoaded;
-			if(isResonance()){setResonance(false);}
-			else if (!isResonance()){setResonance(true);}
+			// The actual weapon switch is at the end of the unload > reload > chamber sequence
             A_Print(isResonance() ? "$PBX_MetalSniper_Resonance" : "$PBX_MetalSniper_Standard");
             return PB_GetChamberEmpty() ? resolvestate("ReloadFromSpecial") : resolvestate("UnloadFromSpecial");
         }

@@ -10,6 +10,8 @@ Class CSSGUpgradetokens : inventory
 }
 
 //DragonBreathUpgrade
+Class SubZeroUpgrade : CSSGUpgradetokens
+{}
 
 Class WhitePhosphorusUpgrade : CSSGUpgradetokens
 {}
@@ -25,13 +27,36 @@ Class DanmakuUpgrade:CSSGUpgradetokens
 
 
 //the item that gives you the upgrades
+Class SubZeroShellsUpgrade : inventory
+{
+	default
+	{
+		+inventory.alwayspickup;
+		Inventory.Pickupsound "misc/shellbox_PickUp";
+		inventory.pickupmessage "$PBX_CM_SUBZRLD";
+	}
+	states
+	{
+		Spawn:
+			FHEL A -1 bright light("WeaponUpgradeSpawner");
+			stop;
+	}
+	
+	override bool trypickup(in out actor toucher)
+	{
+		if(toucher && toucher.player)
+			toucher.A_giveinventory("SubZeroUpgrade",1);
+		return super.trypickup(toucher);
+	}
+}
+
 Class ExplosiveShellsUpgrade : inventory
 {
 	default
 	{
 		+inventory.alwayspickup;
 		Inventory.Pickupsound "misc/shellbox_PickUp";
-		inventory.pickupmessage "PBX_PICKUP_EXPL";
+		inventory.pickupmessage "$PBX_PICKUP_EXPL";
 	}
 	states
 	{
@@ -121,6 +146,14 @@ Class DanmakuShellsUpgrade : inventory
 //
 //	wheel tokens
 //
+Class SelectCSG_SubZero : Inventory
+{
+	default
+	{
+		inventory.maxamount 1;
+	}
+}
+
 Class SelectCSG_No : Inventory
 {
 	default

@@ -9,6 +9,7 @@ class MetalSniperAmmo : PB_Ammo
 		Ammo.BackpackMaxAmount MetalSniperFullAmmo;
 	}
 }
+
 class PBX_ResoRound : PB_HighCalMag
 {
     Default
@@ -78,7 +79,7 @@ class MS_ResonanceAmmo : PB_Projectile
 	{
 		PB_Projectile.BaseDamage 300;
 		PB_Projectile.RipperCount 3;
-		PB_Projectile.PenetrationCount 0;
+		PB_Projectile.PenetrationCount 3;
         DamageType "Stun";
 		RipperLevel 1;
 		+PB_Projectile.WHIZCRACK;

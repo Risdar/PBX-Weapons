@@ -20,7 +20,7 @@ Class CSSGWeaponWheel : wheelinfocontainer
 		// 	sp++;
 		
 		// return sp;
-		return 9;
+		return 10;
 	}
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
@@ -175,6 +175,27 @@ Class CSSGWeaponWheel : wheelinfocontainer
 			CSSG_Danmaku_No.scaley = iconscale.y;
 			
 			spw.Push(CSSG_Danmaku_No);
+		}
+
+		if(requester.FindInventory("SubZeroUpgrade") || disabled) 
+		{
+			PB_SpecialWheel_Mode CSSG_SubZero = new ("PB_SpecialWheel_Mode");
+			CSSG_SubZero.img = "graphics/WeaponWheel/CSSG/SG_SubZ.png";
+			CSSG_SubZero.Alias = "$PBX_CM_SUBZRLD";
+			CSSG_SubZero.tokentogive = "SelectCSG_SubZero";
+			CSSG_SubZero.scalex = iconscale.x;
+			CSSG_SubZero.scaley = iconscale.y;
+			spw.Push(CSSG_SubZero);
+		} else 
+		{
+			PB_SpecialWheel_Mode CSSG_SubZero_No = new ("PB_SpecialWheel_Mode");
+			CSSG_SubZero_No.img = "graphics/pywheel/SG_NO.png";
+			CSSG_SubZero_No.Alias = "$PBX_AmmoNotAvailable";
+			CSSG_SubZero_No.tokentogive = "SelectCSG_No";
+			CSSG_SubZero_No.scalex = iconscale.x;
+			CSSG_SubZero_No.scaley = iconscale.y;
+			
+			spw.Push(CSSG_SubZero_No);
 		}
 		
 	}

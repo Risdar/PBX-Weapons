@@ -153,6 +153,7 @@ class PBXUpgrades_Injector : PBInjector
 		{
 			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'DanmakuShellsUpgrade', 255, 1);
 			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'WPShellsUpgrade', 255, 1);
+			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'SubZeroShellsUpgrade', 255, 1);
 			handler.InjectSpawn('PB_UpgradeSpawnerT4', 'ExplosiveShellsUpgrade', 255, 1);
 			handler.InjectSpawn('PB_UpgradeSpawnerT4', 'DoomShellsUpgrade', 255, 1);
 		}
@@ -171,7 +172,6 @@ class PBXUpgrades_Injector : PBInjector
 		{
 			handler.InjectSpawn('PB_MGSpawnerT2', 'BattleRifle_Upgrade', 255, 1);
 			handler.InjectSpawn('PB_UpgradeSpawnerT2', 'BattleRifle_Upgrade', 255, 1);
-			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'BattleRifle_Upgrade', 255, 1);
 		}
     }
 }

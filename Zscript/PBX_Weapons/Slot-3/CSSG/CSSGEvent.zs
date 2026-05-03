@@ -14,6 +14,7 @@ Class CSSGEvent : Eventhandler
 			pm.giveinventory("DoomShellsUpgrade",1);
 			pm.giveinventory("DragonBreathUpgrade",1);
 			pm.giveinventory("DanmakuUpgrade",1);
+			pm.giveinventory("SubZeroUpgrade",1);
 		}
 		
 	}

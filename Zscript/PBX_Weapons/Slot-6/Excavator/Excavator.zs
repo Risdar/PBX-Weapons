@@ -137,11 +137,11 @@ class PBX_Excavator : PB_WeaponBase
 		if (!owner || !owner.player)
         return;
 
-		Weapon rw = owner.player.ReadyWeapon;
+		let rw = PB_WeaponBase(owner.player.ReadyWeapon);
 		if (!rw)
         return;
 		
-		if( self.GetClass() is owner.player.readyweapon.GetClass() ){
+		if( self.GetClass() is rw.GetClass() ){
 			if( (owner.player.cmd.buttons & BT_ALTATTACK) && !owner.FindInventory("GrenadeDetonator") ){
 				owner.A_SetInventory("GrenadeDetonator",1);owner.A_PlaySound("excavator/detonate");
 			}

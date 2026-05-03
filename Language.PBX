@@ -27,6 +27,7 @@ PBX_CM_EXPLLD = "\cuExplosive \c-Shells";
 PBX_CM_WPLOAD = "\c[WPBronze]White Phosphorus\c- Shells";
 PBX_CM_DOOMLD = "\ctTriple Doom\c- Shells";
 PBX_CM_DNMKULD = "\c[DanmakuYellow]Danmaku \c-Shells";   
+PBX_CM_SUBZRLD = "\cnSub-Zero \c-Shells";   
 
 PBX_PICKUP_EXPL = "Got the Explosive shell upgrade!";
 PBX_PICKUP_WPSP = "Got the White phosphorus shell upgrade!";
@@ -78,6 +79,9 @@ PBX_Excavator_DropMode = "\ciDrop Charge \c-Mode";
 // CyberdemonRL
 PBX_CyberdemonRL_Pickup = "You got the Cyberdemon's missile launcher! Holy shit, that thing's heavy... (Slot 6)";
 PBX_CyberdemonRL_Tag = "Cyberdemon's Missile Launcher";
+
+PBX_CyberdemonRL_Pierce = "\cdPiercing Rockets \c-Mode";
+PBX_CyberdemonRL_Normal = "\cdExtreme Explosion \c-Mode";
 
 //////////////////////////// SLOT 7 ///////////////////////////////////////////////////////////////////////////////
 

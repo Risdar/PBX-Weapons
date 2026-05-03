@@ -1,15 +1,37 @@
+class CyberRLDurability : PB_Ammo
+{
+	default
+	{
+		Inventory.Amount 0;
+		inventory.maxamount CyberdemonRLDurability;
+		Ammo.BackpackAmount 0;
+		Ammo.BackpackMaxAmount CyberdemonRLDurability;
+	}
+}
 
-class CyberBallsPlayer : PB_ProjectileAlt
+class CRL_NormalRockets : CRL_PiercingRockets
 {
     Default
     {
-		PB_Projectile.RipperCount 0;
-        PB_Projectile.PenetrationCount 1;
+		PB_Projectile.BaseDamage 350;
+		PB_Projectile.RipperCount 1;
+        PB_Projectile.PenetrationCount 3;
+        Radius 25;
+        Scale 2.5;
+    }
+}
+
+class CRL_PiercingRockets : PB_ProjectileAlt
+{
+    Default
+    {
+		PB_Projectile.BaseDamage 230;
+		PB_Projectile.RipperCount 8;
+        PB_Projectile.PenetrationCount 3;
         Projectile;
         Radius 10;
         Height 8;
         Speed 90;
-        Damage 200;
         DamageType "ExplosiveImpact";
         Gravity 0.00;
         Decal "Scorch";

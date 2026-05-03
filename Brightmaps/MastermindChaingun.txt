@@ -1,0 +1,19 @@
+Brightmap Sprite RMNGA0 { Map "Brightmaps/Weapons/Slot-6/MastermindChaingun/RMNGA0.png" DisableFullBright }
+Brightmap Sprite RMNGB0 { Map "Brightmaps/Weapons/Slot-6/MastermindChaingun/RMNGB0.png" DisableFullBright }
+Brightmap Sprite RMNGC0 { Map "Brightmaps/Weapons/Slot-6/MastermindChaingun/RMNGC0.png" DisableFullBright }
+Brightmap Sprite RMNGD0 { Map "Brightmaps/Weapons/Slot-6/MastermindChaingun/RMNGD0.png" DisableFullBright }
+Brightmap Sprite RMNGE0 { Map "Brightmaps/Weapons/Slot-6/MastermindChaingun/RMNGE0.png" DisableFullBright }
+Brightmap Sprite RMNGF0 { Map "Brightmaps/Weapons/Slot-6/MastermindChaingun/RMNGF0.png" DisableFullBright }
+Brightmap Sprite RMNGG0 { Map "Brightmaps/Weapons/Slot-6/MastermindChaingun/RMNGG0.png" DisableFullBright }
+Brightmap Sprite RMNGH0 { Map "Brightmaps/Weapons/Slot-6/MastermindChaingun/RMNGH0.png" DisableFullBright }
+Brightmap Sprite RMNGI0 { Map "Brightmaps/Weapons/Slot-6/MastermindChaingun/RMNGI0.png" DisableFullBright }
+Brightmap Sprite RMNGJ0 { Map "Brightmaps/Weapons/Slot-6/MastermindChaingun/RMNGJ0.png" DisableFullBright }
+Brightmap Sprite RMNGK0 { Map "Brightmaps/Weapons/Slot-6/MastermindChaingun/RMNGK0.png" DisableFullBright }
+Brightmap Sprite RMNGL0 { Map "Brightmaps/Weapons/Slot-6/MastermindChaingun/RMNGL0.png" DisableFullBright }
+Brightmap Sprite RMNGO0 { Map "Brightmaps/Weapons/Slot-6/MastermindChaingun/RMNGO0.png" DisableFullBright }
+Brightmap Sprite RMNGP0 { Map "Brightmaps/Weapons/Slot-6/MastermindChaingun/RMNGP0.png" DisableFullBright }
+Brightmap Sprite RMNGQ0 { Map "Brightmaps/Weapons/Slot-6/MastermindChaingun/RMNGQ0.png" DisableFullBright }
+Brightmap Sprite RMNGR0 { Map "Brightmaps/Weapons/Slot-6/MastermindChaingun/RMNGR0.png" DisableFullBright }
+Brightmap Sprite RMNGS0 { Map "Brightmaps/Weapons/Slot-6/MastermindChaingun/RMNGS0.png" DisableFullBright }
+	
+
