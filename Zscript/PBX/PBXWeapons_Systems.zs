@@ -34,7 +34,9 @@ class PBXWeapons_Handler : EventHandler
 			Distance = ok / 32; //32 units should rougly be a meter i hope
 			ZoomScale = e.args[1];
         }
+	
     }
+
 	override void UItick()
 	{
 		CanDraw = false;
@@ -82,6 +84,7 @@ class PBXWeapons_Handler : EventHandler
         pm.giveinventory("HMGChamberAmmo", neohmgFullAmmo);
         // SLOT 6
         pm.giveinventory("ExcavatorRounds", excavatorFullAmmo);
+        pm.giveinventory("CyberRLDurability", CyberdemonRLDurability);
         // SLOT 9
         // OTHERS
         PB_HelpNotificationsHandler.PB_SendTip("$PBXWeapons_Version", "PBXWeapons_GeneralFlags", ePBX_Weapons_Version);
@@ -97,6 +100,44 @@ class PBXWeapons_Handler : EventHandler
     //     CVAR.FindCVar('FirstTimeLoadingPBX').SetBool(false);
     //     //destroy();
     // }
+}
+
+Class PBX_CheatsHandler : Eventhandler
+{	
+	//basically, just type in console "NetEvent CM_AllShells" and voila, you got all the upgrades of this
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let pm = players[e.player].mo;
+		if(!pm)
+			return;
+			
+		if (e.Name ~== "CM_AllShells")
+		{
+			pm.giveinventory("ExplosiveShellsUpgrade",1);
+			pm.giveinventory("WPShellsUpgrade",1);
+			pm.giveinventory("DoomShellsUpgrade",1);
+			pm.giveinventory("DragonBreathUpgrade",1);
+			pm.giveinventory("DanmakuUpgrade",1);
+			pm.giveinventory("SubZeroUpgrade",1);
+		}
+		if (e.Name ~== "PBX_AllUpgrades")
+		{
+			// CSSG
+			pm.giveinventory("ExplosiveShellsUpgrade",1);
+			pm.giveinventory("WPShellsUpgrade",1);
+			pm.giveinventory("DoomShellsUpgrade",1);
+			pm.giveinventory("DragonBreathUpgrade",1);
+			pm.giveinventory("DanmakuUpgrade",1);
+			pm.giveinventory("SubZeroUpgrade",1);
+
+			// Battle Rifle
+			pm.giveinventory("BattleRifle_Upgrade",1);
+
+			// Metal Sniper
+			pm.giveinventory("MetalSniper_Upgrade",1);
+		}
+		
+	}
 }
 
 Class PBX_CubeRadius : actor

@@ -246,7 +246,8 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 			Wait;
 		WeaponRespect:
 			TNT1 A 0 {
-				PB_HandleCrosshair(-1);
+                A_SetCrosshair(-1);
+				// PB_HandleCrosshair(-1);
 				A_Giveinventory("PB_LockScreenTilt",1);
                 A_Takeinventory("Zoomed",1);
 			}
@@ -346,7 +347,8 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 		ReadyZoom:
 			LVR3 Q 1 {
 				A_SetRoll(0);
-				PB_HandleCrosshair(-1);
+                A_SetCrosshair(-1);
+				// PB_HandleCrosshair(-1);
 				PB_CoolDownBarrel();
 				A_SetInventory("PB_LockScreenTilt",0);
 				if(Cvar.GetCvar("pb_toggle_aim_hold",player).getint() == 1) 
@@ -606,7 +608,8 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 		TNT1 A 0 {
 			A_ZoomFactor(1.0);
 			A_WeaponOffset(0,32);
-			PB_HandleCrosshair(-1);
+            A_SetCrosshair(-1);
+			// PB_HandleCrosshair(-1);
 		}
 		TNT1 A 0 A_JumpIf(invoker.ammo2.amount == 0, "finishunload");
 		goto Unload;

@@ -118,6 +118,16 @@ class PBX_TipsManager : inventory
             }
             break;
 
+            // SLOT 6
+            case 'PBX_CyberdemonRL':
+            {
+                Array<String> tips;
+                tips.Push("$PBX_MonsterWeapon1");
+                tips.Push("$PBX_MonsterWeapon2");
+                SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_CyberdemonRL);
+            }
+            break;
+
             // SLOT 9
             case 'PBX_DemonExt':
             {
@@ -141,9 +151,9 @@ class PBX_TipsManager : inventory
             case 'BattleRifle_Upgrade':
             {
                 Array<String> tips;
-                tips.Push("$PBX_BattleRifle_Tip1");
-                tips.Push("$PBX_BattleRifle_Tip2");
-                tips.Push("$PBX_BattleRifle_Tip3");
+                tips.Push("$PBX_BattleRifleUpgrade_Tip1");
+                tips.Push("$PBX_BattleRifleUpgrade_Tip2");
+                tips.Push("$PBX_BattleRifleUpgrade_Tip3");
                 SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_BATTLERIFLE_UPGRADE);
             }
             break;

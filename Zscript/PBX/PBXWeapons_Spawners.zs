@@ -161,10 +161,10 @@ class PBXUpgrades_Injector : PBInjector
 		// Metal Sniper Upgrade
 		if(!(pbxweapons_backpack_filter & DisablePBX_MetalSniperUpgrade))
 		{
-			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'ResonanceAmmo_Upgrade', 255, 1);
-			handler.InjectSpawn('PB_UpgradeSpawnerT4', 'ResonanceAmmo_Upgrade', 255, 1);
-			handler.InjectSpawn('PB_MGSpawnerT3', 'ResonanceAmmo_Upgrade', 255, 1);
-			handler.InjectSpawn('PB_MGSpawnerT4', 'ResonanceAmmo_Upgrade', 255, 1);
+			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'MetalSniper_Upgrade', 255, 1);
+			handler.InjectSpawn('PB_UpgradeSpawnerT4', 'MetalSniper_Upgrade', 255, 1);
+			handler.InjectSpawn('PB_MGSpawnerT3', 'MetalSniper_Upgrade', 255, 1);
+			handler.InjectSpawn('PB_MGSpawnerT4', 'MetalSniper_Upgrade', 255, 1);
 		}
 
 		// BattleRifle Upgrades

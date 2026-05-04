@@ -296,6 +296,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			goto WeaponReady;
 		
 		WeaponRespect:
+			TNT1 A 0 A_SetCrosshair(-1);
 			BR4S EDCBA 1 A_DoPBWeaponAction();
 			BR45 BBB 1 A_DoPBWeaponAction();
 			TNT1 A 0 A_startsound("BR45OPEN",3,CHANF_OVERLAP);
@@ -326,7 +327,8 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			BR4Z D 1 Bright 
             {
 				A_SetRoll(0);
-                PB_HandleCrosshair(5);
+                // PB_HandleCrosshair(5);
+                A_SetCrosshair(-1);
 				PB_CoolDownBarrel();
                 A_SetInventory("PB_LockScreenTilt",0);
 				if(countinv("BattleRifle_Upgraded") > 0 || (pbxweapons_backpack_filter & DisablePBX_BattleRifleUpgrade))
@@ -547,6 +549,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			TNT1 A 0 A_Takeinventory("GoWeaponSpecialAbility",1);
 			goto ActualModeChange;
 		Weaponspecial:
+			TNT1 A 0 A_SetCrosshair(-1);
 			TNT1 A 0 A_JumpIf(countinv("Zoomed") > 0 && getADS(),"SpecialFromADS");
 			TNT1 A 0 {
 				A_Takeinventory("GoWeaponSpecialAbility",1);

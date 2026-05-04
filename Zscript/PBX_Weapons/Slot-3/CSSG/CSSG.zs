@@ -88,7 +88,7 @@ Class PBX_CSSG : PB_WeaponBase
 				return A_DoPBWeaponAction();
 			}
 			TNT1 A 0 A_startsound("weapons/cssg/in",26);
-			TNT1 A 0 PB_AmmoIntoMag("CSSGShellsIn","PB_Shell",2,1);
+			// TNT1 A 0 PB_AmmoIntoMag("CSSGShellsIn","PB_Shell",2,1);
 			C0RB IJ 1 A_DoPBWeaponAction();
 			
 			TNT1 A 4 A_DoPBWeaponAction();
@@ -154,7 +154,7 @@ Class PBX_CSSG : PB_WeaponBase
 			goto reload;
 		
 		AltFire:
-			TNT1 A 0 PB_JumpIfNoAmmo("LeftFire",2,true,true,"");
+			TNT1 A 0 PB_JumpIfNoAmmo("LeftFire",2,true,true);
 			TNT1 A 0 CM_HandleCrosshair();
 		RightFire:
 			TNT1 A 0 CM_PlayAltFireSound();
@@ -267,7 +267,7 @@ Class PBX_CSSG : PB_WeaponBase
 			C0RB JI 1;
 			C0RB HGFEDCB 1 ChangeCSSGShellsLook('C0RB','C0RS','C0RN','C0RK','C0RD','C0RX','C0RW','C0RT','C0RM','C0RX');
 			TNT1 A 0 {
-				PB_UnloadMag("CSSGShellsIn","PB_Shell",1);
+				CM_HandleUnload();
 				PB_SetChamberEmpty(true);
 				PB_SetMagEmpty(true);
 			}
@@ -302,14 +302,21 @@ Class PBX_CSSG : PB_WeaponBase
 			TNT1 A 0 A_startsound("CSSGOPEN",25);
 			C0HO D 1;
 			TNT1 A 1;
-			TNT1 AA 0 A_spawnCSSGCasing(true);
+			TNT1 AA 0 {
+				A_spawnCSSGCasing(true);
+				CM_HandleUnload();
+				PB_SetChamberEmpty(true);
+				PB_SetMagEmpty(true);
+			}
 			C0RO NOP 1;
 			C0RB A 1;
 			C0RB BCDEFGH 1 ChangeCSSGShellsLook('C0RB','C0RS','C0RN','C0RK','C0RD','C0RX','C0RW','C0RT','C0RM','C0RX');
 			TNT1 A 0 A_startsound("weapons/cssg/in",24);
 			TNT1 A 0 {
-				if(countinv(invoker.ammotype2)<2 && countinv(invoker.ammotype1)>0)
-					PB_AmmoIntoMag("CSSGShellsIn","PB_Shell",2,1);
+				// if(countinv(invoker.ammotype2)<2 && countinv(invoker.ammotype1)>0)
+				PB_AmmoIntoMag("CSSGShellsIn","PB_Shell",2,1);
+				PB_SetMagEmpty(false);
+				PB_SetChamberEmpty(false);
 			}
 			C0RB IJ 1;
 			TNT1 A 3;
@@ -921,11 +928,56 @@ Class PBX_CSSG : PB_WeaponBase
 
 	}
 	
+	Action Void CM_HandleUnload()
+	{
+		int mode = invoker.shellsmode + 1;
+		name tounload;
+		switch(mode)
+		{
+			case Shell_Buck: 
+				tounload = 'PBX_CSSG_BuckShell';
+				break;
+			case Shell_Slug:
+				tounload = 'PBX_CSSG_SlugShell';
+				break;
+			case Shell_Flech: 
+				tounload = 'PBX_CSSG_FlechetteShell';
+				break;
+			case Shell_Flak: 
+				tounload = 'PBX_CSSG_FlakShell';
+				break;
+			case Shell_Drgn: 
+				tounload = 'PBX_CSSG_DragonsBreathShell';
+				break; 
+			case Shell_EXPL:
+				tounload = 'PBX_CSSG_ExplosiveShell';
+				break; 
+			case Shell_WPSP: 
+				tounload = 'PBX_CSSG_WPShell';
+				break;
+			case Shell_Doom:
+				tounload = 'PBX_CSSG_TDoomShell';
+				break;
+			case Shell_Damn:	
+				tounload = 'PBX_CSSG_DanmakuShell';
+				break;
+			case Shell_SubZ:	
+				tounload = 'PBX_CSSG_SubZeroShell';
+				break;
+		}
+		PB_UnloadMag(
+			invoker.ammo2.getClassName(),
+			invoker.ammo1.getClassName(),
+			1,1,0,0,tounload);
+		
+	}
+
 	Action state CSSG_HandleWheel()
 	{
 		int mode = invoker.shellsmode + 1;
-		int actmode = invoker.shellsmode;
+		int actmode = invoker.shellsmode; // actual mode
 		
+		// If you dont have an upgrade token, cancel wheel
 		if(countinv("SelectCSG_No") > 0)
 		{
 			A_TakeInventory("SelectCSG_No",1);
@@ -933,12 +985,14 @@ Class PBX_CSSG : PB_WeaponBase
 			return resolvestate("CancelWheel");
 		}
 
+		// If you've already selected the same shell type, cancel wheel
 		if(countinv(PBX_CSSG.CSSG_ShellsToken1[actmode]) > 0)
 		{
 			A_Print("Ammo type already selected: "..PBX_CSSG.CSSG_ShellsType[actmode]);
 			return resolvestate("CancelWheel");
 		}
 		
+		// Actual handling of the wheel
 		for(int i = 0; i < PBX_CSSG.CSSG_ShellsToken1.size(); i++)
 		{
 			if(countinv(PBX_CSSG.CSSG_ShellsToken1[i]) > 0)
@@ -950,7 +1004,8 @@ Class PBX_CSSG : PB_WeaponBase
 			}
 		}
 		 
-		 return resolvestate("EndSelection");
+		// End selection regardless
+		return resolvestate("EndSelection");
 	}
 	
 	action void clearcssgtokens()

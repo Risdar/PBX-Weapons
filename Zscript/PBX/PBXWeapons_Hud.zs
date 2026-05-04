@@ -181,7 +181,7 @@ class PBX_Hud : PB_Hud_ZS
                 case 'PBX_MetalSniper':
                     let sniper = PBX_MetalSniper(pbWeap);
                     if(sniper)
-                        adjustPos = sniper.AltMode ? (-3,-15) : (-3,14); 
+                        adjustPos = sniper.AltMode ? (0,-5) : (0,14); 
                     
                     // MODE
                     // adjustPos2 = (0, 0); 
@@ -370,6 +370,13 @@ class PBX_Hud : PB_Hud_ZS
                     PBHud_DrawBar("ABAR4", "BGBARL", GetAmount("PB_RocketAmmo"), GetMaxAmount("PB_RocketAmmo"), (-100, -72), 0, 1, flagsright);
                     PBHud_DrawString(mDefaultFont, Formatnumber(GetAmount("PB_RocketAmmo")), (-207, -90), DI_TEXT_ALIGN_RIGHT, Font.CR_RED);
                 }
+                if (sniper && sniper.enableScopeHUD)
+                {
+                    vector2 topOffsets1 = ((-24 - visorOffsets) + (-m32to0), -24 - visorOffsets - m32to0);
+                    vector2 topOffsets2 = ((24 + visorOffsets) + (m32to0), -24 - visorOffsets - m32to0);
+					PBHud_DrawImageManualAlpha("NIGHTVIS", (topOffsets1.x, 0), DI_ITEM_LEFT | DI_SCREEN_LEFT | DI_ITEM_VCENTER | DI_SCREEN_VCENTER, 0.5 + 0.5 * abs(sin(level.MapTime)), scale: (0.3, 0.3), parallax: 1.5, parallax2: 1.5);
+					PBHud_DrawImageManualAlpha("NIGHTVIS", (topOffsets2.x, 0), DI_ITEM_RIGHT | DI_SCREEN_RIGHT | DI_MIRROR | DI_ITEM_VCENTER | DI_SCREEN_VCENTER, 0.5 + 0.5 * abs(sin(level.MapTime)), scale: (0.3, 0.3), parallax: 1.5, parallax2: 1.5);
+                }
 
                 // Show what Ammo type is selected
                 pbx_image2 = sniper && sniper.resonanceAmmoLoaded ? "graphics/WeaponWheel/metalsniper/ResonanceAlt.png" : "graphics/WeaponWheel/metalsniper/StandardAlt.png";
@@ -452,7 +459,7 @@ class PBX_Hud : PB_Hud_ZS
                     PBHud_DrawString(mDefaultFont, Formatnumber(GetAmount("CyberRLDurability")), (-205, -68.75), DI_TEXT_ALIGN_RIGHT, Font.CR_DARKGRAY);
                 }
                 // Show what Mode is selected
-                // pbx_image2 = PBX_PlayerHasInventory("CDRocketHoming") ? "graphics/WeaponIcons/CD_HOMING.png" : "graphics/WeaponIcons/CD_STANDARD.png";
+                pbx_image2 = " "; //its empty for now
                 break;
 
 //////////////// SLOT 8 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

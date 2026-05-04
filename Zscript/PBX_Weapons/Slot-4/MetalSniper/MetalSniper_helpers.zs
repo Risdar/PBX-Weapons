@@ -36,7 +36,7 @@ class MS_Select_Resonance : inventory {default{inventory.maxamount 1;}}
 class MS_Select_NO : inventory {default{inventory.maxamount 1;}}
 class MetalSniperUpgraded : inventory {default{inventory.maxamount 1;}}
 
-class ResonanceAmmo_Upgrade : PB_UpgradeItem
+class MetalSniper_Upgrade : PB_UpgradeItem
 {
 	Default
 	{

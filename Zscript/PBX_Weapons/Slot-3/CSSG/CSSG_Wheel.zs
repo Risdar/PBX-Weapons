@@ -26,7 +26,7 @@ Class CSSGWeaponWheel : wheelinfocontainer
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
 	{
 		super.GetSpecials(spw,requester);
-		vector2 iconScale = (0.7, 0.7);
+		vector2 iconScale = (0.5, 0.5);
 		
 		PB_SpecialWheel_Mode CSSG_BuckShot = new ("PB_SpecialWheel_Mode");
 		CSSG_BuckShot.img = "graphics/WeaponWheel/CSSG/SG_Buck.png";

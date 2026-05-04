@@ -21,8 +21,8 @@ Version 4.13
 // Slot 3
 // CSSG
 #include "Zscript/PBX_Weapons/Slot-3/CSSG/CSSG.zs"
-#include "Zscript/PBX_Weapons/Slot-3/CSSG/Casings.zs"
-#include "Zscript/PBX_Weapons/Slot-3/CSSG/CSSGEvent.zs"
+#include "Zscript/PBX_Weapons/Slot-3/CSSG/CSSG_Casings.zs"
+#include "Zscript/PBX_Weapons/Slot-3/CSSG/CSSG_Shells.zs"
 #include "Zscript/PBX_Weapons/Slot-3/CSSG/CSSG_Upgrades.zs"
 #include "Zscript/PBX_Weapons/Slot-3/CSSG/CSSG_Wheel.zs"
 #include "Zscript/PBX_Weapons/Slot-3/CSSG/CSSG_Projectiles.zs"
