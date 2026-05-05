@@ -9,9 +9,11 @@ class PBX_Hud : PB_Hud_ZS
     int pbx_weapon_PosX, pbx_weapon_PosY, pbx_weaponmode_PosX, pbx_weaponmode_PosY;
     double pbx_weaponmode_hudscale, pbx_weapon_hudscale;
     double pbx_weapon_alpha, pbx_weaponmode_alpha;
-    Vector2 pbx_weapon_pos, pbx_weapon_truescale;
-    Vector2 pbx_weapon_pos2, pbx_weapon_truescale2;
-    Vector2 pbx_weapon_pos3, pbx_weapon_truescale3; // For specific cases
+    int pbx_weapon_boxW, pbx_weapon_boxH;
+    int pbx_weaponmode_boxW, pbx_weaponmode_boxH;
+    Vector2 pbx_weapon_pos, pbx_weapon_truescale, pbx_weapon_box1;
+    Vector2 pbx_weapon_pos2, pbx_weapon_truescale2, pbx_weapon_box2;
+    Vector2 pbx_weapon_pos3, pbx_weapon_truescale3, pbx_weapon_box3; // For specific cases
     int flagsleft, flagsright;
 
     string pbx_image, pbx_image2, pbx_image3;
@@ -44,22 +46,29 @@ class PBX_Hud : PB_Hud_ZS
         pbx_weapon_PosY = CVar.GetCVar("pbxweapons_Weaponhud_y", CPlayer).GetInt();
         pbx_weapon_hudscale = CVar.GetCVar("pbxweapons_Weaponhud_scale", CPlayer).GetFloat();
         pbx_weapon_alpha = CVar.GetCVar("pbxweapons_Weaponhud_alpha", CPlayer).GetFloat();
+        pbx_weapon_boxW = CVar.GetCVar("pbxweapons_Weaponhud_boxW", CPlayer).GetInt();
+        pbx_weapon_boxH = CVar.GetCVar("pbxweapons_Weaponhud_boxH", CPlayer).GetInt();
 
         pbx_weapon_pos = (pbx_weapon_PosX, pbx_weapon_PosY);
         pbx_weapon_truescale = (pbx_weapon_hudscale, pbx_weapon_hudscale);
+        pbx_weapon_box1 = (pbx_weapon_boxW, pbx_weapon_boxH);
 
         // Weapon Modes
         pbx_weaponmode_PosX = CVar.GetCVar("pbxweapons_WeaponModehud_x", CPlayer).GetInt();
         pbx_weaponmode_PosY = CVar.GetCVar("pbxweapons_WeaponModehud_y", CPlayer).GetInt();
         pbx_weaponmode_hudscale = CVar.GetCVar("pbxweapons_WeaponModehud_scale", CPlayer).GetFloat();
         pbx_weaponmode_alpha = CVar.GetCVar("pbxweapons_WeaponModehud_alpha", CPlayer).GetFloat();
+        pbx_weaponmode_boxW = CVar.GetCVar("pbxweapons_WeaponModehud_boxW", CPlayer).GetInt();
+        pbx_weaponmode_boxH = CVar.GetCVar("pbxweapons_WeaponModehud_boxH", CPlayer).GetInt();
 
         pbx_weapon_pos2 = (pbx_weaponmode_PosX, pbx_weaponmode_PosY);
         pbx_weapon_truescale2 = (pbx_weaponmode_hudscale, pbx_weaponmode_hudscale);
+        pbx_weapon_box2 = (pbx_weaponmode_boxW, pbx_weaponmode_boxH);
         
         // Special cases where weapons uses two modes at the same time
         pbx_weapon_pos3 = pbx_weapon_pos2 + (0,-10);
         pbx_weapon_truescale3 = pbx_weapon_truescale2;
+        pbx_weapon_box3 = (pbx_weaponmode_boxW, pbx_weaponmode_boxH);
 
         flagsleft = DI_SCREEN_LEFT_BOTTOM | DI_ITEM_LEFT_BOTTOM;
         flagsright = DI_SCREEN_RIGHT_BOTTOM | DI_ITEM_RIGHT_BOTTOM;
@@ -684,6 +693,7 @@ class PBX_Hud : PB_Hud_ZS
             string image;
             Vector2 pos;
             Vector2 scale;
+            Vector2 box;
             double transparency;
 
             // Weapon Pickup Sprite
@@ -693,6 +703,7 @@ class PBX_Hud : PB_Hud_ZS
                 pos = pbx_weapon_pos;
                 scale = pbx_weapon_truescale;
                 transparency = pbx_weapon_alpha;
+                box = pbx_weapon_box1;
                 break;
             // Weapon Mode Sprite
             case 2:
@@ -700,6 +711,7 @@ class PBX_Hud : PB_Hud_ZS
                 pos = pbx_weapon_pos2;
                 scale = pbx_weapon_truescale2;
                 transparency = pbx_weaponmode_alpha;
+                box = pbx_weapon_box2;
                 break;
             // Weapon Mode 2 Sprite
             case 3:
@@ -707,9 +719,10 @@ class PBX_Hud : PB_Hud_ZS
                 pos = pbx_weapon_pos3;
                 scale = pbx_weapon_truescale3;
                 transparency = pbx_weaponmode_alpha;
+                box = pbx_weapon_box3;
                 break;
         }
-        PBHud_DrawImage(image, pos, flagsright, transparency, scale: scale);
+        PBHud_DrawImage(image, pos, flagsright, transparency, box: box, scale: scale);
     }
 
     // Check if the player has an inventory item, returns true if yes
