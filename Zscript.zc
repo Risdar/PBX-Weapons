@@ -5,6 +5,7 @@ Version 4.13
 #include "Zscript/PBX/PBXWeapons_Systems.zs"
 #include "Zscript/PBX/PBXWeapons_Hud.zs"
 #include "Zscript/PBX/PBXWeapons_Tips.zs"
+#include "Zscript/PBX_Weapons/FunnyCacodemon.zs" // I assure you this file is critical to the mod
 
 // Big thanks to EmeraldCoastt and the BDP team for this
 #include "Zscript/Maths/Include.zsc"

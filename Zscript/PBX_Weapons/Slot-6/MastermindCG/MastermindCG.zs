@@ -1,6 +1,6 @@
 const CyberdemonRLDurability = 25;
 
-class PBX_CyberdemonRL : PB_WeaponBase
+class PBX_MastermindChaingun : PB_WeaponBase
 {
 	Default
 	{
@@ -14,7 +14,7 @@ class PBX_CyberdemonRL : PB_WeaponBase
         Inventory.AltHudIcon "HND7E0";
 		PB_WeaponBase.ReserveToMagAmmoFactor 3;
 		
-//////////////////////////// AMMO ////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////// AMMO ///-/////////////////////////////////////////////////////////////////////////////////
 		Weapon.AmmoType1 "PB_RocketAmmo";
 		// Weapon.AmmoType2 "CyberRLDurability";
 	    Weapon.AmmoGive1 30;

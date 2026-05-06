@@ -17,7 +17,6 @@ class CRL_NormalRockets : CRL_PiercingRockets
 		PB_Projectile.RipperCount 1;
         PB_Projectile.PenetrationCount 3;
         Radius 25;
-        Scale 2.5;
     }
 }
 
