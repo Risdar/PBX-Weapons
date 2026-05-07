@@ -1,86 +1,68 @@
 class CacoTimer : PB_Ammo {Default{Inventory.MaxAmount 48;}}
 
-class PBXWeapons_ExperimentalSpawner : PBInjector
+class CacoHandler : EventHandler
 {
-    override void Init(PB_EventHandler handler)
+    override void WorldTick()
     {
-		// Demon Ext
-		if(pbxweapons_experimental)
+		// For every player that exists
+		for (int pn = 0; pn < MAXPLAYERS; pn++) 
 		{
-		   handler.InjectSpawn("PB_RLSpawnerT3","RideableCaco",255,1);
+			// Is the player actually in the game?
+			if (!playerInGame[pn])
+				continue;
+
+			PlayerInfo player	= players[pn]; 	// The player info
+			PlayerPawn mo		= player.mo;	// The player inside the game
+
+			// Is the player pressing the use key
+			if (!(player.cmd.buttons & BT_USE)) return;
+
+			// If yes fire a linetrace
+			FLineTraceData traceData;
+			bool hit = mo.LineTrace(
+				mo.angle,          // Horizontal angle (facing direction)
+				128,               // Max range (units)
+				mo.pitch,          // Vertical angle (looking up/down)
+				0,   			   // Flags
+				mo.ViewHeight,     // Z offset from pawn origin (eye-level approximation)
+				0, 0,              // X/Y offsets
+				traceData          // Output struct
+			);
+
+			// Did the linetrace hit something?
+			if (!hit) return;
+
+			// If yes, is it the cacodemon?
+			if(	traceData.HitActor 
+				&& traceData.HitActor.bISMONSTER 
+				&& traceData.HitActor.bFRIENDLY == false 
+				&& traceData.HitActor is "PB_Cacodemon")
+			{
+				// Cast the cacodemon pointer to dacaco
+				let dacaco = traceData.HitActor;
+
+				// Is the Caco in its ready or spawn state?
+				if(	dacaco && 
+					actor.InStateSequence(dacaco.curstate,dacaco.ResolveState("See")) ||
+					actor.InStateSequence(dacaco.curstate,dacaco.ResolveState("Spawn")))
+				{
+					// Play the execute animation
+					// let weapon = PB_Weaponbase(player.ReadyWeapon);
+					// let playersprite = player.FindPSprite(PSP_WEAPON);
+					// if(!playersprite) return;
+					// if(!weapon) return;
+					// player.SetPSprite(PSP_WEAPON,weapon.FindState("Execution_Generic"));
+					
+					// Give the player the rideable caco
+					mo.A_GiveInventory("FunnyCaco",1);
+					// Destroy the original cacodemon
+					dacaco.Destroy();
+					return;
+				}
+			}
 		}
     }
 }
-
-class RideableCaco : custominventory
-{
-    Default
-    {
-        -INVENTORY.ALWAYSPICKUP;
-		-COUNTITEM;
-        +FLOAT;
-		FloatSpeed 4;
-        FloatBobStrength 0.25;
-		+NOGRAVITY;
-		Gravity 0;
-		Scale 0.3;
-    }
-
-
-    States
-    {
-        Spawn:
-            CPAR A -1;
-            stop;
-
-        Pickup:
-            CPAR A 0 {
-                A_TakeInventory("RideableCaco",1);
-                A_GiveInventory("FunnyCaco",1);
-            }
-            stop;
-    }
-}
-
-// class CacoBallPlayer : PB_Monster_Projectile
-// {
-//     Default
-//     {
-//         DamageType "Plasma";
-//         SeeSound "pb/monsters/caco/spit";
-//         DeathSound "CacoBallImpact";
-//         Radius 8;
-//         Height 8;
-//         Speed 12;
-//         FastSpeed 20;
-//         Damage 60;
-//         RenderStyle "Add";
-//         Alpha 0.99;
-//         +THRUGHOST;
-//         +RANDOMIZE;
-//         Projectile;
-//         Scale 0.58;
-//     }
-
-//     States 
-//     {
-//         Spawn:
-//             0DB0 A 1 BRIGHT {
-//                 A_StartSound("CacoBallLoop", CHAN_BODY , CHANF_LOOP, 1);
-//             }
-//         Fly:
-//             0DB0 BCDEFA 2 BRIGHT A_SpawnProjectile("RailGunTrailSpark", 0, 0, random(0, 360), CMF_AIMDIRECTION|CMF_ABSOLUTEPITCH|CMF_OFFSETPITCH|CMF_BADPITCH|CMF_SAVEPITCH, random(0, 360));
-//             Loop;
-//         Death:
-//             TNT1 A 0 {
-//                 A_StopSound(CHAN_BODY);
-//                 A_StartSound("CacoBallImpact", CHAN_AUTO);
-//                 A_SpawnItem("Plasma_Puff", 0);
-//             }
-//             TNT1 A 4;
-//             Stop;
-// 	}
-// }
 
 class FunnyCaco : PB_WeaponBase
 {
@@ -113,7 +95,7 @@ class FunnyCaco : PB_WeaponBase
            TNT1 A 0 {
 				A_WeaponOffset(0,32);
 				A_SetRoll(0);
-				PB_HandleCrosshair(-1);
+				A_SetCrosshair(-1);
 				A_TakeInventory("PB_LockScreenTilt",1);
 			}
 			TNT1 A 0 A_StopSound(6);
@@ -125,7 +107,38 @@ class FunnyCaco : PB_WeaponBase
             TNT1 A 0 A_GiveInventory("CacoTimer",48);
             TNT1 A 0 setplayerproperty (1, 1, 3);
             TNT1 A 0 A_SetInvulnerable();
-			TNT1 A 0 PB_WeaponRaise();
+			TNT1 A 0 {
+                // This is a modified PB_WeaponRaise
+                A_weaponoffset(0,32);
+                A_setroll(0);
+		        A_zoomfactor(1.0);
+
+                A_StopSound(1);
+                A_StopSound(CHAN_VOICE);
+                A_StopSound(5);
+                A_StopSound(6);
+                A_StopSound(7);
+                A_StopSOund(CHAN_AUTO);
+
+                A_SetInventory("Spin",0);
+                A_SetInventory("CantWeaponSpecial",0);		//Fixes bug with Weapon Special Key no longer working when changing SGL grenade type or RL missile mode
+                A_SetInventory("MG42Selected",0); 			//Take this token on every weapon that's not the MG42.
+                A_SetInventory("Grabbing_A_Ledge", 0);		//Fixed bug where movement is locked when vaulting after entering a level
+                A_SetInventory("RandomHeadExploder",0);
+                A_SetInventory("DualFireReload",0);
+                A_SetInventory("Kicking",0);
+                A_SetInventory("Zoomed",0);
+
+                A_ClearOverlays(-999, -999);
+                invoker.WeaponScaleX = 1.0;
+                invoker.WeaponScaleX = PB_PixelRenderingFix ? 1.2 : 1.0;
+		
+                PB_SetUsingKick(false);
+                PB_SetUsingMelee(false);
+                PB_SetUsingEquipment(false);
+                PB_SetExecutingEnemy(false);
+                PB_SetReloading(false);
+            }
 		SelectContinue:
 			TNT1 A 0;
 		SelectAnimation:
@@ -137,13 +150,13 @@ class FunnyCaco : PB_WeaponBase
             TNT1 A 0 A_JumpIfInventory("GoWeaponSpecialAbility", 1, "WeaponSpecial");
             TNT1 A 0 A_PlaySound ("caco/pain", 6);
             CAPL ABCDEEEE 4 {
-                A_WeaponReady(WRF_NOBOB | WRF_NOSWITCH);
+                A_WeaponReady(WRF_NOBOB | WRF_NOSWITCH | WRF_DISABLESWITCH);
                 A_SetRoll(roll-3);
                 A_CustomMissile ("Blue_FlyingBlood", 47, 0, random (0, 360), 2, random (30, 150));
             }
             TNT1 A 0 A_Recoil(+8);
             CAPL ABCDEEEE 4 {
-                A_WeaponReady(WRF_NOBOB | WRF_NOSWITCH);
+                A_WeaponReady(WRF_NOBOB | WRF_NOSWITCH | WRF_DISABLESWITCH);
                 A_SetRoll(roll+3);
                 A_CustomMissile ("Blue_FlyingBlood", 47, 0, random (0, 360), 2, random (30, 150));
             }
@@ -151,6 +164,7 @@ class FunnyCaco : PB_WeaponBase
             TNT1 A 0 A_Jump(90, "Fire");
             TNT1 A 0 A_TakeInventory("CacoTimer",1);
             Loop;
+        // This state will never actually be entered
         WeaponSpecial:
             TNT1 A 0 A_TakeInventory("GoWeaponSpecialAbility");
             CAPL JKLMNOOO 2;
@@ -178,8 +192,120 @@ class FunnyCaco : PB_WeaponBase
         TimeOut:
         AltFire:
             TNT1 A 0 A_SetRoll(0);
+            TNT1 A 0 SetPlayerProperty(1,0,3);
+            TNT1 A 0 PB_SetPlayerExecutionProperties();
+        Execution_Cacodemon1:
+            TNT1 A 0  {
+				A_SpawnItemEx("PB_Cacodemon_Execution_1", 32, 0,0,0,0,0,0,SXF_NOCHECKPOSITION);
+				A_SetPitch(0, SPF_INTERPOLATE);
+				A_ZoomFactor(0.8);
+			}
+			// Frame 1: 5 Ticks
+			TNT1 A 0 A_StartSound("weapons/ultrwhoosh", CHAN_AUTO);
+			PBFT A 1 {
+				A_ZoomFactor(1.25, ZOOM_INSTANT);
+				A_SetPitch(pitch+2);
+				A_SetAngle(angle+1);
+				A_SetRoll(roll-5);
+			}
+			PBFT B 1 {
+				A_ZoomFactor(1.35, ZOOM_INSTANT);
+				A_SetPitch(pitch+2);
+				A_SetAngle(angle+2);
+				A_SetRoll(roll-5);
+			}
+			PBFT C 1 {
+				A_ZoomFactor(1.45, ZOOM_INSTANT);
+				A_SetPitch(pitch+2);
+				A_SetAngle(angle+2);
+				A_SetRoll(roll-5);
+			}
+			PBFT D 1 {
+				A_ZoomFactor(1.55, ZOOM_INSTANT);
+				A_SetPitch(pitch+2);
+				A_SetAngle(angle+3);
+				A_SetRoll(roll-5);
+			}
+			PBFT E 1 {
+				A_ZoomFactor(1.65, ZOOM_INSTANT);
+				A_SetPitch(pitch+2);
+				A_SetAngle(angle-8);
+				A_SetRoll(roll-5);
+			}
+			TNT1 A 0 {
+				A_FireProjectile("ShakeYourAss");
+				A_StartSound("NECK_BRK", CHAN_AUTO);
+				A_StartSound("EYEPULL", CHAN_AUTO);
+			}
+			// Frame 2: 24 ticks
+			TNT1 A 0 A_StartSound("gore/tension", CHAN_BODY);
+			G004 FFGH 1 {
+				A_ZoomFactor(1.67, ZOOM_INSTANT);
+				A_SetPitch(pitch-2);
+				A_SetAngle(angle-1);
+				A_SetRoll(roll+2);
+			}
+			G004 FFGH 1 {
+				A_ZoomFactor(1.68, ZOOM_INSTANT);
+				A_SetPitch(pitch+2);
+				A_SetAngle(angle+1);
+				A_SetRoll(roll-2);
+			}
+			G004 IJKL 1 {
+				A_ZoomFactor(1.69, ZOOM_INSTANT);
+				A_SetPitch(pitch-2);
+				A_SetAngle(angle-1);
+				A_SetRoll(roll+2);
+				A_FireProjectile("ShakeYourAss");
+			}
+			G004 MNOP 1 {
+				A_ZoomFactor(1.70, ZOOM_INSTANT);
+				A_SetPitch(pitch+2);
+				A_SetAngle(angle+1);
+				A_SetRoll(roll-2);
+			}
+			G004 QRST 1 {
+				A_ZoomFactor(1.71, ZOOM_INSTANT);
+				A_SetPitch(pitch-2);
+				A_SetAngle(angle-1);
+				A_SetRoll(roll+2);
+			}
+			TNT1 A 0 A_StartSound("NeckSnap", CHAN_AUTO);
+			G004 UVWXY 1 {
+				A_ZoomFactor(1.72, ZOOM_INSTANT);
+				A_SetPitch(pitch+2);
+				A_SetAngle(angle+1);
+				A_SetRoll(roll-2);
+			}
+			G004 Z 1 {
+				A_FireProjectile("ShakeYourAss");
+				A_ZoomFactor(1.8, ZOOM_INSTANT);
+				A_StopSound(CHAN_BODY);
+				A_StartSound("misc/gibbed", CHAN_AUTO);
+			}
+			G004 A 1 {
+				A_SetPitch(pitch+6);
+				A_SetAngle(angle-8);
+				A_SetRoll(roll+10);
+			}
+			G004 BCD 1 {
+				A_SetPitch(pitch+3);
+				A_SetAngle(angle-2);
+				A_SetRoll(roll+8);
+			}
+			TNT1 A 0 A_ZoomFactor(1.2);
+			TNT1 AA 1 A_SetPitch(pitch+1);
+			TNT1 AA 1;
+			TNT1 AAAAA 1 {
+				A_SetPitch(pitch-4);
+				A_SetAngle(angle+1);
+				A_SetRoll(roll-9);
+			}
             TNT1 A 0 A_UnSetInvulnerable();
+			TNT1 A 0 PB_UnsetPlayerExecutionProperties();
             TNT1 A 0 {
+                NashGoreGibs.SpawnGibs(self);
+				NashGoreGibs.SpawnGibs(self);
 				A_SpawnProjectile("PB_CacoDemonGib2", 34, 0, random (160, 220), 2, random (-80, -150));
 				A_SpawnProjectile("PB_CacoDemonGib5", 46, 0, random (160, 220), 2, random (-30, -150));
 				A_SpawnProjectile("PB_CacoDemonGib6", 48, 0, random (160, 220), 2, random (-30, -150));
@@ -193,19 +319,18 @@ class FunnyCaco : PB_WeaponBase
 				A_SpawnProjectile("PB_CacodemonGib8", 30, 0, random (0, 360), 2, random (-30, -150));
 				
 				for(int i = 0; i < 16; i++) {
-					A_SpawnGoreProjectile("PB_FlyingBlood", 47, 0, random (0, 360), 2, random (65, 150));
-					A_SpawnGoreProjectile ("PB_BloodMistBig", 36, 0, random (0, 360), CMF_AIMDIRECTION|CMF_ABSOLUTEPITCH|CMF_OFFSETPITCH|CMF_BADPITCH|CMF_SAVEPITCH, random (0, 360));
+					A_SpawnProjectile("PB_FlyingBlood", 47, 0, random (0, 360), 2, random (65, 150));
+					A_SpawnProjectile("PB_BloodMistBig", 36, 0, random (0, 360), CMF_AIMDIRECTION|CMF_ABSOLUTEPITCH|CMF_OFFSETPITCH|CMF_BADPITCH|CMF_SAVEPITCH, random (0, 360));
 				}
 			}
-            TNT1 A 0 SetPlayerProperty(1,0,3);
-            //TNT1 A 0 A_SelectWeapon("Melee_Attacks")
+			TNT1 A 0 A_SetInventory("CantWeaponSpecial",0);
             TNT1 A 0 A_TakeInventory("FunnyCaco",1);
-            Stop;
+            stop;
                     
     }
 }
 
-class PB_PlayerCacodemonBall : PB_Monster_Projectile
+class CacoBallPlayer : PB_Monster_Projectile
 {
     const PI = 3.14159265;
     bool isAlive;
@@ -236,7 +361,7 @@ class PB_PlayerCacodemonBall : PB_Monster_Projectile
         Height 8;
         Speed 12;
         FastSpeed 20;
-        DamageFunction random(22, 40);
+        Damage 60;
         RenderStyle "Add";
         Alpha 0.99;
         +THRUGHOST;
@@ -257,7 +382,7 @@ class PB_PlayerCacodemonBall : PB_Monster_Projectile
         checkDistanceTimer = 5;
         launchStartTime = -1;
 
-        // Find the monster the player is looking at via LineTrace
+        // Find the monster the player is looking at using LineTrace
         // self.target here is the PlayerPawn who fired this projectile
         if (self.target)
         {

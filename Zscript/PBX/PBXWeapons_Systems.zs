@@ -140,68 +140,6 @@ Class PBX_CheatsHandler : Eventhandler
 	}
 }
 
-class CacoHandler : EventHandler
-{
-    override void WorldTick()
-    {
-		// For every player that exists
-		for (int pn = 0; pn < MAXPLAYERS; pn++) 
-		{
-			// Is the player actually in the game?
-			if (!playerInGame[pn])
-				continue;
-
-			PlayerInfo player	= players[pn]; 	// The player info
-			PlayerPawn mo		= player.mo;	// The player inside the game
-
-			// Is the player pressing the melee key
-			if (!(player.cmd.buttons & BT_USER2)) return;
-
-			console.printf("Melee key is being pressed, checking for cacodemon...");
-			// If yes fire a linetrace
-			FLineTraceData traceData;
-			bool hit = mo.LineTrace(
-				mo.angle,          // Horizontal angle (facing direction)
-				128,              // Max range (units)
-				mo.pitch,          // Vertical angle (looking up/down)
-				0,   			   // Flags
-				mo.ViewHeight,     // Z offset from pawn origin (eye-level approximation)
-				0, 0,              // X/Y offsets
-				traceData          // Output struct
-			);
-
-			// Did the linetrace hit something?
-			if (!hit) return;
-			console.printf("Linetrace fired, checking for cacodemon...");
-
-			// If yes, is it the cacodemon?
-			if(	traceData.HitActor 
-				&& traceData.HitActor.bISMONSTER 
-				&& traceData.HitActor.bFRIENDLY == false 
-				&& traceData.HitActor is "PB_Cacodemon")
-			{
-				// Cast the cacodemon pointer to dacaco
-				let dacaco = traceData.HitActor;
-				console.printf("Linetrace hit a caco");
-
-				// Is the Caco in its ready state?
-				if(	dacaco && 
-					actor.InStateSequence(dacaco.curstate,dacaco.ResolveState("See")) ||
-					actor.InStateSequence(dacaco.curstate,dacaco.ResolveState("Spawn")))
-				{
-					console.printf("Caco is its in see or spawn state");
-					// Give the player the rideable caco
-					console.printf("Rideable caco given to player");
-					// Destroy the original cacodemon
-					dacaco.Destroy();
-					mo.A_GiveInventory("FunnyCaco",1);
-					return;
-				}
-			}
-		}
-    }
-}
-
 Class PBX_CubeRadius : actor
 {
 	DEFAULT

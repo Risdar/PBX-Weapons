@@ -10,7 +10,7 @@ OptionMenu "PBXWeapons_Menu"
     StaticText " "
     Command "Reset PB Tool Tips", "set pb_helpflags 0"
     Command "Reset PBX Tool Tips", "set PBXWeapons_WeaponHelpFlags 0; set PBXWeapons_UpgradeHelpFlags 0"
-	Option "Enable Experimental Features",	"pbxweapons_experimental",	"YesNo"
+	/* Option "Enable Experimental Features",	"pbxweapons_experimental",	"YesNo" */
 
     StaticText " "
 
