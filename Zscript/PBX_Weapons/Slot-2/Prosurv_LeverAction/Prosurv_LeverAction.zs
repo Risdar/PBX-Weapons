@@ -500,7 +500,8 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 				A_WeaponOffset(0,32);
 				A_ZoomFactor(1.0);
 				A_SetInventory("PB_LockScreenTilt",1);
-				pb_handlecrosshair(76);
+				// pb_handlecrosshair(76);
+				A_SetCrosshair(-1);
 			}
 			TNT1 A 0 A_StartSound("weapons/leveraction/inspect");
 		BeginReloadLoop:

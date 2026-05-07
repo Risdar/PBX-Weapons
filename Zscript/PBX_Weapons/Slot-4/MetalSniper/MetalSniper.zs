@@ -216,7 +216,7 @@ Class PBX_MetalSniper : PB_WeaponBase
                 if(invoker.ScopeMode == 1 || invoker.ScopeMode == 2)
                 {
                     // A_SetBlend(0x00a100, 0.2, 99999);
-                    PB_HandleCrosshair(52);
+                    A_SetCrosshair(52);
                     A_ZoomFactor(5.0);
                     MS_ReadyScope();
                     A_SetRenderstyle(0.1, Style_Translucent);
@@ -286,32 +286,6 @@ Class PBX_MetalSniper : PB_WeaponBase
                 return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOFIRE);
             }
             goto Ready_ADS;
-
-        // FireADSInvisible:
-        //     TNT1 A 1 bright MetalSniperFireADS();
-        //     TNT1 A 1 bright;
-        //     TNT1 AAA 1;
-        //     TNT1 AAA 1;
-        //     TNT1 HIAAAAAAAAAA 1
-        //     {
-        //         A_SetInventory("CantDoAction", 0);
-
-        //         bool holdMode = CVar.GetCVar("pb_toggle_aim_hold", player).GetInt();
-
-        //         if (holdMode)
-        //         {
-        //             if (JustReleased(BT_ALTATTACK)) return resolvestate("ZoomOut");
-        //             if (JustPressed(BT_ATTACK) && PressingAltfire()) return resolvestate("Fire_ADS");
-        //         }
-        //         else
-        //         {
-        //             if (PressingAltfire())  return resolvestate("ZoomOut");
-        //             if (JustPressed(BT_ATTACK)) return resolvestate("Fire_ADS");
-        //             A_Refire("Fire_ADS");
-        //         }
-        //         return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOFIRE);
-        //     }
-        //     goto Ready_ADS;
 
         // ── Grenade mode ──────────────────────────────────────────────────
         AltFire_Grenade:
