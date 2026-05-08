@@ -4,6 +4,5 @@ Gameinfo
 	addeventhandlers = "PBX_CheatsHandler",
 	"PBXWeapons_WeaponSpawner", 
 	"PBXWeapons_Handler",
-	"CacoHandler",
 	"ExterminatorStuff"
 }

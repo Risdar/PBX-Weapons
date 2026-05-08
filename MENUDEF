@@ -82,8 +82,8 @@ AddOptionMenu "AddonWeaponSpawns" after "SSGT2"
         // SLOT 4
         FlagOption    "Metal Sniper",    "PBXWeapons_chaingun_filter",    "OffOn", 1
     }
-    // TIER 3
-    AddOptionMenu "AddonWeaponSpawns" after "CHNT3"
+    // TIER 4
+    AddOptionMenu "AddonWeaponSpawns" after "CHNT4"
     {
         // SLOT 4
         FlagOption    "Neo HMG",    "PBXWeapons_chaingun_filter",    "OffOn", 2

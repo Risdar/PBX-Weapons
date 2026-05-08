@@ -313,10 +313,11 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 		WeaponReady:
 			TNT1 A 0 A_jumpif(countinv("zoomed") > 0,"WeaponReadyADS");
 			BR45 B 1 {
+				A_zoomfactor(1.0);
 				PB_HandleCrosshair(42);
 				PB_CoolDownBarrel();
-				if(countinv("BattleRifle_Upgraded") > 0 || (pbxweapons_backpack_filter & DisablePBX_BattleRifleUpgrade))
-					BR_ReadyNormal();
+				// if(countinv("BattleRifle_Upgraded") > 0 || (pbxweapons_backpack_filter & DisablePBX_BattleRifleUpgrade))
+				// 	BR_ReadyNormal();
 				return A_DoPBWeaponAction(WRF_ALLOWRELOAD);
 			}
 			Loop;
@@ -326,6 +327,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			TNT1 A 0;
 			BR4Z D 1 Bright 
             {
+				A_zoomfactor(3.0);
 				A_SetRoll(0);
                 // PB_HandleCrosshair(5);
                 A_SetCrosshair(-1);

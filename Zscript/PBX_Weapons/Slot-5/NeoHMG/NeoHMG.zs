@@ -57,9 +57,9 @@ class PBX_NeoHMG : PB_WeaponBase
 	int shieldDrain;
 
 	// Shield Values
-	const shieldProtectionMultiplier = 1; // How many shield charges are consumed per point of damage (Multiplier)
-	const shieldRechargeSpeed = 1; // How many tics before giving the shield charge
-	const shieldRechargeRate = 5; // How many shield charges to give each tic
+	const shieldProtectionMultiplier = 2; // How many shield charges are consumed per point of damage (Multiplier)
+	const shieldRechargeSpeed = 5; // How many tics before giving the shield charge
+	const shieldRechargeRate = 1; // How many shield charges to give each tic
 	const shieldCooldown = 15; // How many tics before shield is available again
 
 	// Modes
@@ -282,7 +282,9 @@ class PBX_NeoHMG : PB_WeaponBase
 				If(countinv("HMGShield") < 1)
 				{
 					shieldbroken = true;
+					EventHandler.SendInterfaceEvent(PlayerNumber(), "PB_HUDInterference", 20);
 					owner.A_startsound("HMGSHLD1",HMG_SHIELDSOUNDLAYER);
+					owner.Player.SetPSprite(HMG_SHIELDLAYER,resolvestate("HMGShieldBroken"));
 				}
 				shieldwasactive = false;
 			}
@@ -345,6 +347,7 @@ class PBX_NeoHMG : PB_WeaponBase
 		Select:
 			TNT1 A 0 PB_WeaponRaise("weapon/HMG/Stop");
 			TNT1 A 0 PB_WeapTokenSwitch("CarbineSelected");
+			TNT1 A 0 A_GiveInventory("Zoomed",1);
 			TNT1 A 0 A_Overlay(3,"Cooling",true);
 			TNT1 A 0 PB_RespectIfNeeded();
 		SelectContinue:
@@ -374,6 +377,8 @@ class PBX_NeoHMG : PB_WeaponBase
 				if (invoker.ammo2.amount == 2 )	{A_SetWeaponSprite("XH02");}
 				if (invoker.ammo2.amount <= 1 )	{A_SetWeaponSprite("XH01");}
 				if (invoker.ammo2.amount == 0 )	{A_SetWeaponSprite("XH01");}
+				if (PressingFire() && PressingAltfire() && CountInv(invoker.ammotype2) > 0)
+					return resolvestate("Fire");
 				return A_DoPBWeaponAction(WRF_ALLOWRELOAD); 
 			}
 			loop;
@@ -382,6 +387,8 @@ class PBX_NeoHMG : PB_WeaponBase
 			HG0R R 1 {
 				PB_CoolDownBarrel(0, 0, 3);
 				PB_HandleCrosshair(52);
+				if (PressingFire() && PressingAltfire() && CountInv(invoker.ammotype2) > 0)
+					return resolvestate("Fire");
 				return A_DoPBWeaponAction(WRF_ALLOWRELOAD); 
 			}
 			loop;
@@ -439,8 +446,10 @@ class PBX_NeoHMG : PB_WeaponBase
 			TNT1 A 0 A_startsound("weapon/HMG/Stop",32);
 			goto Ready3;
 
-		AltFire:
-			goto Ready3;
+		// AltFire:
+		// 	TNT1 A 0;
+		// 	goto Ready3;
+
 		HMGShieldBash:
 			PSHL E 0 A_FireProjectile("KickAttack");
 		HMGShield:
@@ -488,6 +497,14 @@ class PBX_NeoHMG : PB_WeaponBase
 			PSHL H 1 BRIGHT {invoker.ShieldFrame = 0;}
 			stop;
 		HMGShieldBreak:
+			PSHL A 0 A_FireShieldParticles();
+			stop;
+		HMGShieldBroken:
+			TNT1 A 0 {
+				A_StartSound("PLSULT", CHAN_WEAPON);
+				A_SetBlend("Blue", 0.6, 12);	
+				A_FireProjectile("PB_StunGrenadeExplosion", 0, 0, 0, 0);
+			}
 			PSHL A 0 A_FireShieldParticles();
 			stop;
 		

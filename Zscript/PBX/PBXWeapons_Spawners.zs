@@ -104,7 +104,7 @@ class PBXChaingun_Injector : PBInjector
 		// Neo HMG
 		if(!(pbxweapons_chaingun_filter & DisablePBX_NeoHMG))
 		{
-			handler.InjectSpawn('PB_MGSpawnerT3', 'PBX_NeoHMG', 255, 1);
+			// handler.InjectSpawn('PB_MGSpawnerT3', 'PBX_NeoHMG', 255, 1);
 			handler.InjectSpawn('PB_MGSpawnerT4', 'PBX_NeoHMG', 255, 1);
 		}
 	}
