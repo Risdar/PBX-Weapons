@@ -244,8 +244,8 @@ class PBX_Hud : PB_Hud_ZS
                     break;
 
                 case 'PBX_CyberdemonRL':
-                    adjustPos = (-15, 30); 
-                    adjustScale = 1.5;
+                    adjustPos = (-15, 15); 
+                    adjustScale = 10.0;
                     break;
                 case 'PBX_Excavator':
                     adjustPos = (-10, 15); 
