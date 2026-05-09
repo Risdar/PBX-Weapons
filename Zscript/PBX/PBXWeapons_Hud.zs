@@ -251,6 +251,10 @@ class PBX_Hud : PB_Hud_ZS
                     adjustPos = (-10, 15); 
                     adjustScale = 1.1;
                     break;
+                case 'PBX_MastermindChaingun':
+                    adjustPos = (-17, 25); 
+                    adjustScale = 10.0;
+                    break;
 
 //////////////// SLOT 7 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 case 'PB_M1Plasma':
@@ -460,12 +464,26 @@ class PBX_Hud : PB_Hud_ZS
             case 'PBX_CyberdemonRL':
                 // Show Durability
                 let crl = PBX_CyberdemonRL(pbWeap);
-                // Show Rocket Ammo if Grenade Secondary Mode is Selected
+                // Show durability
                 if (crl) 
                 {
                     PBHud_DrawImage("BARBADD2", (-73, -49), flagsright, playerBoxAlpha);
                     PBHud_DrawBar("ABAR10", "BGBARL", GetAmount("CyberRLDurability"), GetMaxAmount("CyberRLDurability"), (-111, -52), 0, 1, flagsright);
                     PBHud_DrawString(mDefaultFont, Formatnumber(GetAmount("CyberRLDurability")), (-205, -68.75), DI_TEXT_ALIGN_RIGHT, Font.CR_DARKGRAY);
+                }
+                // Show what Mode is selected
+                pbx_image2 = " "; //its empty for now
+                break;
+            
+            case 'PBX_MastermindChaingun':
+                // Show Durability
+                let mcg = PBX_MastermindChaingun(pbWeap);
+                // Show durability
+                if (mcg) 
+                {
+                    PBHud_DrawImage("BARBADD2", (-73, -49), flagsright, playerBoxAlpha);
+                    PBHud_DrawBar("ABAR10", "BGBARL", GetAmount("MastermindCGDurability"), GetMaxAmount("MastermindCGDurability"), (-111, -52), 0, 1, flagsright);
+                    PBHud_DrawString(mDefaultFont, Formatnumber(GetAmount("MastermindCGDurability")), (-205, -68.75), DI_TEXT_ALIGN_RIGHT, Font.CR_DARKGRAY);
                 }
                 // Show what Mode is selected
                 pbx_image2 = " "; //its empty for now
@@ -518,9 +536,11 @@ class PBX_Hud : PB_Hud_ZS
             // Slot 7
             "PB_M1Plasma", "PB_M2Plasma",
             // Slot 8
-            "PB_Flamethrower"
+            "PB_Flamethrower",
             // Slot 9
              
+            // PBX Weapons
+            "PBX_MastermindChaingun"
         };
 
         // Handle exceptions
@@ -631,6 +651,11 @@ class PBX_Hud : PB_Hud_ZS
                 bool tripleBarrel = PBX_PlayerHasInventory("TripleBarrelMode");
                 // If the current mode is the triplebarrel
                 pbx_image = tripleBarrel ? "8GUNA0" : icon;
+                break;
+
+//////////////// SLOT 6 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            case 'PBX_MastermindChaingun':
+                pbx_image = "RMN1H0";
                 break;
 
 //////////////// SLOT 7 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,6 +1,7 @@
 // General
 /* server bool FirstTimeLoadingPBX = true; */
 /* server bool pbxweapons_experimental = false; */
+server bool pbxweapons_debug = false;
 
 // Tip Flags
 server int PBXWeapons_GeneralFlags = 0;

@@ -2,7 +2,8 @@ enum PBXWeapons_eWeaponSpecialSpawns
 {
 ////// Monster Drops /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// SLOT 6
-	DisablePBX_CyberdemonRL			        = 1 << 0
+	DisablePBX_CyberdemonRL			        = 1 << 0,
+	DisablePBX_MastermindCG			        = 1 << 1
 }
 
 enum PBXWeapons_eUpgradeSpawns
@@ -196,6 +197,14 @@ class PBXWeapons_WeaponSpawner : EventHandler
                 } 
                 break;
 
+			case 'XDeathSpiderPart6':
+                if(!(pbxweapons_specialdrop_filter & DisablePBX_MastermindCG))
+                { 
+                   	actor.spawn("PBX_MastermindChaingun", actor.pos);
+                    actor.destroy(); 
+                } 
+                break;
+
             // case 'PB_FlamethrowerMancubusGas':
             //     if(MancFLameCNDrop)
             //     { 
@@ -205,4 +214,6 @@ class PBXWeapons_WeaponSpawner : EventHandler
             //     break;
         }
     }
+
+	
 }

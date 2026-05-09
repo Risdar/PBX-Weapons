@@ -7,3 +7,25 @@ Model PBX_CubeRadius
 	AngleOffset 90
 	FrameIndex 0000 A 0 0
 }
+
+Model PBX_CubeRadiusLoop
+{
+	Path "models/RadiusDebug"
+	Model 0 "CubeRadius.md3"
+	Skin 0 "RadiusDebugRed"
+	Scale 0.01 0.01 0.01
+	ZOffset 0.01
+	AngleOffset 90
+	FrameIndex 0000 A 0 0
+}
+
+Model PBX_CubeRadiusCyan
+{
+	Path "models/RadiusDebug"
+	Model 0 "CubeRadius.md3"
+	Skin 0 "RadiusDebugCyan"
+	Scale 0.01 0.01 0.01
+	ZOffset 0.01
+	AngleOffset 90
+	FrameIndex 0001 A 0 0
+}

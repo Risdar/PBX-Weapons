@@ -52,6 +52,9 @@ Version 4.13
 // Cyberdemon RL
 #include "Zscript/PBX_Weapons/Slot-6/CyberdemonRL/CyberdemonRL.zs"
 #include "Zscript/PBX_Weapons/Slot-6/CyberdemonRL/CyberRL_helpers.zs"
+// Mastermind CG
+#include "Zscript/PBX_Weapons/Slot-6/MastermindCG/MastermindCG.zs"
+#include "Zscript/PBX_Weapons/Slot-6/MastermindCG/MastermindCG_helpers.zs"
 
 // Slot 7
 

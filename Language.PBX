@@ -83,6 +83,12 @@ PBX_CyberdemonRL_Tag = "Cyberdemon's Missile Launcher";
 PBX_CyberdemonRL_Pierce = "\cdPiercing Rockets \c-Mode";
 PBX_CyberdemonRL_Normal = "\cdExtreme Explosion \c-Mode";
 
+// Mastermind CG
+PBX_MastermindCG_Pickup = "You got the Mastermind's Chaingun! (Slot 6)";
+PBX_MastermindCG_Tag = "Spider Mastermind's Chaingun";
+
+PBX_MastermindCG_SoulSeeker = "\crSoul Seeker \c-Mode";
+PBX_MastermindCG_Normal = "\caExplosive Tracers \c-Mode";
 //////////////////////////// SLOT 7 ///////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////// SLOT 8 ///////////////////////////////////////////////////////////////////////////////

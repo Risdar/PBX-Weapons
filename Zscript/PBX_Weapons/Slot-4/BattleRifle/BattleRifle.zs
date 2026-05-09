@@ -111,8 +111,8 @@ class PBX_BDPBattleRifle : PB_WeaponBase
                     Wireframe.vel = Bule.HitActor.vel;
                 }
                 // player.PSprites.frame = 1;
-                PBXWeapons_Handler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData:"..Bule.HitActor.GetTag(), Bule.HitActor.health, Bule.HitActor.GetSpawnHealth(), Bule.HitActor.PainChance);
-                PBXWeapons_Handler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData2:", Distance3D(Bule.HitActor), 3.0);
+                PBXWeapons_ScopeHandler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData:"..Bule.HitActor.GetTag(), Bule.HitActor.health, Bule.HitActor.GetSpawnHealth(), Bule.HitActor.PainChance);
+                PBXWeapons_ScopeHandler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData2:", Distance3D(Bule.HitActor), 3.0);
             }
             else
             if(invoker.LockedOn)

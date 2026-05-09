@@ -134,7 +134,7 @@ class PBX_CyberdemonRL : PB_WeaponBase
 			TNT1 A 0 A_StopSound(6);
 			TNT1 A 0 A_ZoomFactor(1);
 			CYBF LMNO 1 BRIGHT;
-			TNT1 A 0 A_Lower;
+			TNT1 A 0 A_Lower();
 			Wait;
 		Select:
 			TNT1 A 0 PB_WeaponRaise("BFGREADY");
@@ -143,7 +143,7 @@ class PBX_CyberdemonRL : PB_WeaponBase
 			TNT1 A 0;
 		SelectAnimation:
 			TNT1 A 0 A_StartSound("RLCYCLE", CHAN_AUTO, CHANF_OVERLAP);
-			CYBF I 0 A_GunFlash;
+			CYBF I 0 A_GunFlash();
 			CYBF ONML 1 BRIGHT;
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
 		Ready:
@@ -151,7 +151,7 @@ class PBX_CyberdemonRL : PB_WeaponBase
 			TNT1 A 0 PB_HandleCrosshair(78);
 			TNT1 A 0 PB_CoolDownBarrel();
             TNT1 A 0 A_PlaySound("BFGHUM", 6,1,1);
-			CYBF IJ 1 BRIGHT A_DoPBWeaponAction;
+			CYBF IJ 1 BRIGHT A_DoPBWeaponAction();
 			Loop;
 		
 //////////////////////////// FIRE ////////////////////////////////////////////////////////////////////////////////////
@@ -167,7 +167,7 @@ class PBX_CyberdemonRL : PB_WeaponBase
 			CYBF HJ 1 BRIGHT;
 			//CYBF I 0 PB_ReFire;
 			// TNT1 A 0 A_FireCustomMissile("SmokeSpawner11",0,0,0,7);
-			TNT1 A 0 PB_ReFire;
+			TNT1 A 0 PB_ReFire();
 			goto Ready3;
 
 		Reload:
