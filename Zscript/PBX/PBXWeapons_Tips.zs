@@ -17,9 +17,10 @@ enum PBX_eWeaponTipFlags
     PBX_TIP_HGL                 = 1 << 9,
     PBX_TIP_EXCAVATOR           = 1 << 10,
     PBX_TIP_CYBERDEMONRL        = 1 << 11,
+    PBX_TIP_MASTERMINDCG        = 1 << 12,
     // SLOT 9
-    PBX_TIP_DEMONMINIGUN        = 1 << 12,
-    PBX_TIP_DEMONEXT            = 1 << 13
+    PBX_TIP_DEMONMINIGUN        = 1 << 13,
+    PBX_TIP_DEMONEXT            = 1 << 14
 
 }
 
@@ -119,12 +120,31 @@ class PBX_TipsManager : inventory
             break;
 
             // SLOT 6
+            case 'PBX_Excavator':
+            {
+                Array<String> tips;
+                tips.Push("$PBX_Excavator_Tip1");
+                tips.Push("$PBX_Excavator_Tip2");
+                tips.Push("$PBX_Excavator_Tip3");
+                SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_EXCAVATOR);
+            }
+            break;
             case 'PBX_CyberdemonRL':
             {
                 Array<String> tips;
                 tips.Push("$PBX_MonsterWeapon1");
                 tips.Push("$PBX_MonsterWeapon2");
-                SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_CyberdemonRL);
+                tips.Push("$PBX_CyberRL_Tip1");
+                SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_CYBERDEMONRL);
+            }
+            break;
+            case 'PBX_MastermindChaingun':
+            {
+                Array<String> tips;
+                tips.Push("$PBX_MonsterWeapon1");
+                tips.Push("$PBX_MonsterWeapon2");
+                tips.Push("$PBX_MastermindCG_Tip1");
+                SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_MASTERMINDCG);
             }
             break;
 

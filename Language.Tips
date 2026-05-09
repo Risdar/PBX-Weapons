@@ -24,8 +24,8 @@ PBX_BattleRifleUpgrade_Tip2 = "The Scope will now show information on the highli
 PBX_BattleRifleUpgrade_Tip3 = "Your every bullets will now ricochet.";
 
 // Metal Sniper
-PBX_MetalSniper_Tip1 = "The Metal Sniper two altfire modes and three scope modes.";
-PBX_MetalSniper_Tip2 = "The Grenade altfire needs to be primed before firing by pressing alt and then fire.";
+PBX_MetalSniper_Tip1 = "The Metal Sniper two AltFire modes and three scope modes.";
+PBX_MetalSniper_Tip2 = "The Grenade AltFire needs to be primed before firing by pressing alt and then fire.";
 PBX_MetalSniper_Tip3 = "The Scope mode can be switched between by pressing the weapon special key when scoped in";
 PBX_MetalSniper_Tip4 = "The standard 7.62x51mm Armor Piercing deals high piercing damage";
 PBX_MetalSniper_Tip5 = "You can get the alternate Resonance Ammo type by picking it's upgrade that spawn on backpacks.";
@@ -39,11 +39,19 @@ PBX_MetalSniperUpgrade_Tip3 = "Every shot has a high chance to stun the target."
 PBX_NeoHMG_Tip1 = "The HMG is an automatic heavy weapon that has an overheat system and a shield accumulator.";
 PBX_NeoHMG_Tip2 = "When the overheat system reaches 115° C, the weapon will modify the projectile to a more powerful version.";
 PBX_NeoHMG_Tip3 = "You can choose between heated rounds and charged rounds using the Weapon Special Key.";
-PBX_NeoHMG_Tip4 = "You can activate the shield by holding the Alt-Fire key, it will then block any damage and recharge when not in use";
+PBX_NeoHMG_Tip4 = "You can activate the shield by holding the AltFire key, it will then block any damage and recharge when not in use";
+
 //////////////////////////// SLOT 6 ///////////////////////////////////////////////////////////////////////////////
 // Excavator
+PBX_Excavator_Tip1 = "The Excavator is a specialized projectile launcher that has two modes";
+PBX_Excavator_Tip2 = "Drill mode launches a projectile that burrows into the ground and come to the surfoce upon contact with enemies while Drop mode launches a specialized rocket projectile that when detonated will drop into the ground.";
+PBX_Excavator_Tip3 = "Both modes deals high explosive damage, and can be manually detonated with the AltFire key.";
 
 // CyberdemonRL
+PBX_CyberRL_Tip1 = "The Cyberdemon's Rocket Launcher has two modes, extreme explosion and piercing rockets, they have high pierce but deal less damage."
+
+// MastermindCG
+PBX_MastermindCG_Tip1 = "The Mastermind's Chaingun has two modes, standard explosive tracers and soul seeker tracers, they home in on enemies but deal less damage."
 
 //////////////////////////// SLOT 7 ///////////////////////////////////////////////////////////////////////////////
 
