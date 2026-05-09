@@ -44,14 +44,15 @@ PBX_NeoHMG_Tip4 = "You can activate the shield by holding the AltFire key, it wi
 //////////////////////////// SLOT 6 ///////////////////////////////////////////////////////////////////////////////
 // Excavator
 PBX_Excavator_Tip1 = "The Excavator is a specialized projectile launcher that has two modes";
-PBX_Excavator_Tip2 = "Drill mode launches a projectile that burrows into the ground and come to the surfoce upon contact with enemies while Drop mode launches a specialized rocket projectile that when detonated will drop into the ground.";
-PBX_Excavator_Tip3 = "Both modes deals high explosive damage, and can be manually detonated with the AltFire key.";
+PBX_Excavator_Tip2 = "Drill mode launches a projectile that burrows into the ground and come to the surfoce upon contact with enemies.";
+PBX_Excavator_Tip3 = "Drop mode launches a specialized rocket projectile that when detonated will drop into the ground.";
+PBX_Excavator_Tip4 = "Both modes deals high explosive damage, and can be manually detonated with the AltFire key.";
 
 // CyberdemonRL
-PBX_CyberRL_Tip1 = "The Cyberdemon's Rocket Launcher has two modes, extreme explosion and piercing rockets, they have high pierce but deal less damage."
+PBX_CyberRL_Tip1 = "The Cyberdemon's Rocket Launcher has two modes, extreme explosion and piercing rockets, they have high pierce but deal less damage.";
 
 // MastermindCG
-PBX_MastermindCG_Tip1 = "The Mastermind's Chaingun has two modes, standard explosive tracers and soul seeker tracers, they home in on enemies but deal less damage."
+PBX_MastermindCG_Tip1 = "The Mastermind's Chaingun has two modes, standard explosive tracers and soul seeker tracers, they home in on enemies but deal less damage.";
 
 //////////////////////////// SLOT 7 ///////////////////////////////////////////////////////////////////////////////
 
