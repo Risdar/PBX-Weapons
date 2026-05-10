@@ -27,12 +27,26 @@ Class DanmakuUpgrade:CSSGUpgradetokens
 
 
 //the item that gives you the upgrades
-Class SubZeroShellsUpgrade : inventory
+class CSSGUpgradeBase : inventory
 {
 	default
 	{
 		+inventory.alwayspickup;
 		Inventory.Pickupsound "misc/shellbox_PickUp";
+	}
+
+	override bool trypickup(in out actor toucher)
+	{
+		if(toucher && toucher.player)
+			toucher.A_giveinventory("PB_Shell",10);
+		return super.trypickup(toucher);
+	}
+}
+
+Class SubZeroShellsUpgrade : CSSGUpgradeBase
+{
+	default
+	{
 		inventory.pickupmessage "$PBX_CM_SUBZRLD";
 	}
 	states
@@ -50,7 +64,7 @@ Class SubZeroShellsUpgrade : inventory
 	}
 }
 
-Class ExplosiveShellsUpgrade : inventory
+Class ExplosiveShellsUpgrade : CSSGUpgradeBase
 {
 	default
 	{
@@ -73,7 +87,7 @@ Class ExplosiveShellsUpgrade : inventory
 	}
 }
 
-Class WPShellsUpgrade : inventory
+Class WPShellsUpgrade : CSSGUpgradeBase
 {
 	default
 	{
@@ -96,7 +110,7 @@ Class WPShellsUpgrade : inventory
 	}
 }
 
-Class DoomShellsUpgrade : inventory
+Class DoomShellsUpgrade : CSSGUpgradeBase
 {
 	default
 	{
@@ -120,7 +134,7 @@ Class DoomShellsUpgrade : inventory
 }
 
 
-Class DanmakuShellsUpgrade : inventory
+Class DanmakuShellsUpgrade : CSSGUpgradeBase
 {
 	default
 	{

@@ -1,0 +1,18 @@
+// BDP Railgun
+PLSIDLE PLSIDLE 
+RAILMAG1 RAILMAG1 //pull out mag when gun is still on
+RAILMAG2 RAILMAG2 //pull out mag when gun is off
+RAILINSR RAILINSR //insert mag
+RAILRIP RAILRIP //gun turns off
+RAILON RAILON //railgun turns back on
+RAILSCP1 RAILSCP1 //oops I broke the scope
+RAILSCP2 RAILSCP2 //place scope back in
+
+Railgun/Insert RAILRLOD
+Railgun/Eject RAILEJCT
+
+RAILDRY RAILDRY
+RAILF01 RAILF01
+RAILF02 RAILF02
+RAILF03 RAILF03
+RAILF04 RAILF04

@@ -68,6 +68,7 @@ class MetalSniper_Upgrade : PB_UpgradeItem
 			A_SetInventory("MetalSniperUpgraded", 1);
 			A_GiveInventory("PBX_MetalSniper", 1);
 			A_SetWeaponTag("PBX_MetalSniper","$PBX_MetalSniper_Tag");
+            A_GiveInventory("PB_HighCalMag", 30);
 		}
 		Stop;
 	}
@@ -81,7 +82,6 @@ class MS_ResonanceAmmo : PB_Projectile
 		PB_Projectile.RipperCount 3;
 		PB_Projectile.PenetrationCount 3;
         DamageType "Stun";
-		RipperLevel 1;
 		+PB_Projectile.WHIZCRACK;
 		Obituary "%o was shredded by %k.";
 	}
@@ -92,11 +92,17 @@ class MS_ResonanceAmmo : PB_Projectile
 	{
 		if(!isShield) return;
 		// console.printf("Resonance Ammo Shot");
-		A_SpawnItemEx ("PBX_ResonanceExplosion",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
 		A_StopSound(CHAN_BODY);
 		A_StartSound("Explosion", CHAN_AUTO,CHANF_OVERLAP);
 		A_StartSound("FAREXPL", CHAN_AUTO,CHANF_OVERLAP);
 		Radius_Quake (3, 8, 0, 15, 0);
+		// Stun Grenade Explosion
+		let explosion = A_SpawnItemEx("PB_StunGrenadeExplosion",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0);
+		PB_StunGrenadeExplosion realexplosion = PB_StunGrenadeExplosion(explosion);
+		if(realexplosion) {
+			realexplosion.expDmg = 256;
+			realexplosion.expType = "Plasma";
+		}
 	}
 
 	override int SpecialMissileHit(Actor victim)
@@ -108,12 +114,4 @@ class MS_ResonanceAmmo : PB_Projectile
 		return super.SpecialMissileHit(victim);
 	}
 	
-}
-
-class PBX_ResonanceExplosion : PB_StunGrenadeExplosion
-{
-	Default
-	{
-		PB_StunGrenadeExplosion.props 150, 600, "Stun";
-	}
 }

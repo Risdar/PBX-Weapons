@@ -42,6 +42,7 @@ class BattleRifle_Upgrade : PB_UpgradeItem
 			A_SetInventory("BattleRifle_Upgraded", 1);
 			A_GiveInventory("PBX_BDPBattleRifle", 1);
 			A_SetWeaponTag("PBX_BDPBattleRifle","$PBX_BattleRifle_Tag");
+            A_GiveInventory("PB_HighCalMag", 30);
 		}
 		Stop;
 	}

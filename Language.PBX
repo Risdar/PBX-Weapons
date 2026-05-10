@@ -61,6 +61,13 @@ PBX_MetalSniper_Scope1 = "\cdSmart Scope \c-Off";
 PBX_MetalSniper_Scope2 = "\cdSmart Scope \c-Highlight Activated";
 PBX_MetalSniper_Scope3 = "\cdSmart Scope \c-Target Analysis Activated";
 
+// Crossbow Ballista
+PBX_CrossbowBallista_Pickup = "Metal Sniper (Slot 4)";
+PBX_CrossbowBallista_Tag = "UAC-45 Heavy 'Metal' Sniper";
+
+
+PBX_Prosurv_Ballista_UpgradeTag = "UAC-45 Heavy 'Metal' Sniper";
+
 //////////////////////////// SLOT 5 ///////////////////////////////////////////////////////////////////////////////
 // HMG
 PBX_NeoHMG_Pickup = "HMG (Slot 5)";
