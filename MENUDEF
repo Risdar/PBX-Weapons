@@ -81,12 +81,13 @@ AddOptionMenu "AddonWeaponSpawns" after "SSGT2"
     {
         // SLOT 4
         FlagOption    "Metal Sniper",    "PBXWeapons_chaingun_filter",    "OffOn", 1
+        FlagOption    "Crossbow Ballista",    "PBXWeapons_chaingun_filter",    "OffOn", 2
     }
     // TIER 4
     AddOptionMenu "AddonWeaponSpawns" after "CHNT4"
     {
         // SLOT 5
-        FlagOption    "Neo HMG",    "PBXWeapons_chaingun_filter",    "OffOn", 2
+        FlagOption    "Neo HMG",    "PBXWeapons_chaingun_filter",    "OffOn", 3
     }
 
 // ROCKET LAUNCHER /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -116,6 +117,7 @@ AddOptionMenu "AddonAmmoSpawns" after "PACKT2"
 
 AddOptionMenu "AddonAmmoSpawns" after "PACKT3"
 {
-    FlagOption    "CSSG Upgrades",           "PBXWeapons_backpack_filter",    "OffOn", 0
-    FlagOption    "Metal Sniper Upgrade",    "PBXWeapons_backpack_filter",    "OffOn", 1
+    FlagOption    "CSSG Upgrades",                  "PBXWeapons_backpack_filter",    "OffOn", 0
+    FlagOption    "Metal Sniper Upgrade",           "PBXWeapons_backpack_filter",    "OffOn", 1
+    FlagOption    "Crossbow Ballista Upgrade",      "PBXWeapons_backpack_filter",    "OffOn", 3
 }

@@ -37,7 +37,10 @@ Version 4.13
 #include "Zscript/PBX_Weapons/Slot-4/MetalSniper/MetalSniper.zs"
 #include "Zscript/PBX_Weapons/Slot-4/MetalSniper/MetalSniper_Wheel.zs"
 #include "Zscript/PBX_Weapons/Slot-4/MetalSniper/MetalSniper_helpers.zs"
-
+// Crossbow Ballista
+// #include "Zscript/PBX_Weapons/Slot-4/Prosurv_Ballista/Prosurv_Ballista.zs"
+// #include "Zscript/PBX_Weapons/Slot-4/Prosurv_Ballista/CrossbowBallista_Wheel.zs"
+// #include "Zscript/PBX_Weapons/Slot-4/Prosurv_Ballista/CrossbowBallista_helpers.zs"
 
 // Slot 5
 // NeoHMG

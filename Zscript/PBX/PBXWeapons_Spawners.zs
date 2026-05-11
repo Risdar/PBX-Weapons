@@ -11,7 +11,8 @@ enum PBXWeapons_eUpgradeSpawns
 ////// Upgrades /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	DisablePBX_CSSGUpgrades			        = 1 << 0,
 	DisablePBX_MetalSniperUpgrade			= 1 << 1,
-	DisablePBX_BattleRifleUpgrade			= 1 << 2
+	DisablePBX_BattleRifleUpgrade			= 1 << 2,
+	DisablePBX_CrossbowBallistaUpgrade		= 1 << 3
 }
 
 enum PBXWeapons_eShotgunSpawns
@@ -31,8 +32,9 @@ enum PBXWeapons_eChaingunSpawns
 ////// SLOT 4 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	DisablePBX_BattleRifle					= 1 << 0,
 	DisablePBX_MetalSniper			        = 1 << 1,
+	DisablePBX_CrossbowBallista				= 1 << 2,
 ////// SLOT 5 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	DisablePBX_NeoHMG			        	= 1 << 2
+	DisablePBX_NeoHMG			        	= 1 << 3
 }
 
 enum PBXWeapons_eRocketLauncherSpawns
@@ -100,6 +102,12 @@ class PBXChaingun_Injector : PBInjector
 			handler.InjectSpawn('PB_MGSpawnerT2', 'PBX_MetalSniper', 255, 1);
 			handler.InjectSpawn('PB_MGSpawnerT3', 'PBX_MetalSniper', 255, 1);
 			// handler.InjectSpawn('PB_UpgradeSpawnerT3', 'PBX_MetalSniper', 255, 1);
+		}
+		// Crossbow Ballista
+		if(!(pbxweapons_chaingun_filter & DisablePBX_CrossbowBallista))
+		{
+			handler.InjectSpawn('PB_MGSpawnerT2', 'PBX_Prosurv_Ballista', 255, 1);
+			handler.InjectSpawn('PB_MGSpawnerT3', 'PBX_Prosurv_Ballista', 255, 1);
 		}
 
 		// Neo HMG
@@ -173,6 +181,13 @@ class PBXUpgrades_Injector : PBInjector
 		{
 			handler.InjectSpawn('PB_MGSpawnerT2', 'BattleRifle_Upgrade', 255, 1);
 			handler.InjectSpawn('PB_UpgradeSpawnerT2', 'BattleRifle_Upgrade', 255, 1);
+		}
+
+		// Crossbow Ballista Upgrades
+		if(!(pbxweapons_backpack_filter & DisablePBX_CrossbowBallistaUpgrade))
+		{
+			handler.InjectSpawn('PB_MGSpawnerT3', 'PBX_DemonicBallistaUpgrade', 255, 1);
+			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'PBX_DemonicBallistaUpgrade', 255, 1);
 		}
     }
 }

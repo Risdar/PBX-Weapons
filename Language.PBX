@@ -65,8 +65,10 @@ PBX_MetalSniper_Scope3 = "\cdSmart Scope \c-Target Analysis Activated";
 PBX_CrossbowBallista_Pickup = "Metal Sniper (Slot 4)";
 PBX_CrossbowBallista_Tag = "UAC-45 Heavy 'Metal' Sniper";
 
+PBX_Crossbow_Standard = "\cdNormal Arrow \c-Loaded";
+PBX_Crossbow_Demonic = "\caDemonic Ballista \c-Mode";
 
-PBX_Prosurv_Ballista_UpgradeTag = "UAC-45 Heavy 'Metal' Sniper";
+PBX_Prosurv_Ballista_UpgradeTag = "Ballista Upgrade";
 
 //////////////////////////// SLOT 5 ///////////////////////////////////////////////////////////////////////////////
 // HMG
@@ -111,8 +113,9 @@ PBX_DemonExt_Lightning = "\cjSoul Lightning \c-Mode";
 //////////////////////////// OTHERS ///////////////////////////////////////////////////////////////////////////////
 // SHARED
 PBX_AlreadySelected = "Mode Already Selected";
+PBX_NoUpgrade = "You Don't Have the Upgrade for This Weapon";
 PBX_AmmoNotAvailable = "Ammo Type Not Available";
 PBX_ModeNotAvailable = "Mode Not Available";
 PBX_NoSpecial = "No Weapon Special Available";
-
+PBX_NotEnoughAmmo = "Not Enough Ammo";
 

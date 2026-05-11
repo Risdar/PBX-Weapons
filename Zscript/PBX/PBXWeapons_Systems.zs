@@ -17,6 +17,7 @@ class PBXWeapons_Handler : EventHandler
         // SLOT 4
         pm.giveinventory("BR_Ammo", BR_AmmoFull);
         pm.giveinventory("MetalSniperAmmo", MetalSniperFullAmmo-1);
+        // pm.giveinventory("CrossbowBallistaAmmo", crossbowBallistaFullAmmo);
         // SLOT 5
         pm.giveinventory("HMGChamberAmmo", neohmgFullAmmo);
         // SLOT 6
@@ -139,6 +140,9 @@ Class PBXWeapons_CheatsHandler : Eventhandler
 
 			// Metal Sniper
 			pm.giveinventory("MetalSniper_Upgrade",1);
+
+			// Metal Sniper
+			// pm.giveinventory("PBX_DemonicBallistaUpgrade",1);
 		}
 		
 	}
