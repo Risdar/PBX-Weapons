@@ -25,7 +25,7 @@ enum PBXWeapons_eShotgunSpawns
 enum PBXWeapons_eSSGSpawns
 {
 ////// SLOT 3 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	DisablePBX_CSSG			                = 1 << 0,
+	DisablePBX_CSSG			                = 1 << 0
 }
 
 enum PBXWeapons_eChaingunSpawns
