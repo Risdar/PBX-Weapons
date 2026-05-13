@@ -19,6 +19,7 @@ enum PBXWeapons_eShotgunSpawns
 {
 ////// SLOT 2  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	DisablePBX_LeverActionRifle				= 1 << 0,
+	DisablePBX_CrossbowBallista				= 1 << 1
 }
 
 enum PBXWeapons_eSSGSpawns
@@ -32,9 +33,8 @@ enum PBXWeapons_eChaingunSpawns
 ////// SLOT 4 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	DisablePBX_BattleRifle					= 1 << 0,
 	DisablePBX_MetalSniper			        = 1 << 1,
-	DisablePBX_CrossbowBallista				= 1 << 2,
 ////// SLOT 5 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	DisablePBX_NeoHMG			        	= 1 << 3
+	DisablePBX_NeoHMG			        	= 1 << 2
 }
 
 enum PBXWeapons_eRocketLauncherSpawns
@@ -66,6 +66,12 @@ class PBXShotgun_Injector : PBInjector
 			handler.InjectSpawn('PB_ShotSpawnerT2', 'PBX_Prosurv_LeverAction', 255, 1);
 
 			// handler.InjectSpawn('PB_MGSpawnerT1', 'PBX_Prosurv_LeverAction', 255, 1);
+		}
+		// Crossbow Ballista
+		if(!(pbxweapons_shotgun_filter & DisablePBX_CrossbowBallista))
+		{
+			handler.InjectSpawn('PB_ShotSpawnerT1', 'PBX_Prosurv_Ballista', 255, 1);
+			handler.InjectSpawn('PB_ShotSpawnerT2', 'PBX_Prosurv_Ballista', 255, 1);
 		}
 	}
 }
@@ -103,13 +109,6 @@ class PBXChaingun_Injector : PBInjector
 			handler.InjectSpawn('PB_MGSpawnerT3', 'PBX_MetalSniper', 255, 1);
 			// handler.InjectSpawn('PB_UpgradeSpawnerT3', 'PBX_MetalSniper', 255, 1);
 		}
-		// Crossbow Ballista
-		if(!(pbxweapons_chaingun_filter & DisablePBX_CrossbowBallista))
-		{
-			handler.InjectSpawn('PB_MGSpawnerT1', 'PBX_Prosurv_Ballista', 255, 1);
-			handler.InjectSpawn('PB_MGSpawnerT2', 'PBX_Prosurv_Ballista', 255, 1);
-		}
-
 		// Neo HMG
 		if(!(pbxweapons_chaingun_filter & DisablePBX_NeoHMG))
 		{
@@ -185,7 +184,7 @@ class PBXUpgrades_Injector : PBInjector
 		// Crossbow Ballista Upgrades
 		if(!(pbxweapons_backpack_filter & DisablePBX_CrossbowBallistaUpgrade))
 		{
-			handler.InjectSpawn('PB_MGSpawnerT2', 'PBX_DemonicBallistaUpgrade', 255, 1);
+			handler.InjectSpawn('PB_ShotSpawnerT2', 'PBX_DemonicBallistaUpgrade', 255, 1);
 			handler.InjectSpawn('PB_UpgradeSpawnerT2', 'PBX_DemonicBallistaUpgrade', 255, 1);
 		}
     }
