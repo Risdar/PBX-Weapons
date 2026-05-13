@@ -1,7 +1,13 @@
-class UMDE_Select_LaserMode : inventory{default{inventory.maxamount 1;}}
-class UMDE_Select_IncinerationMode : inventory{default{inventory.maxamount 1;}}
-class UMDE_Select_LightningMode : inventory{default{inventory.maxamount 1;}}
-Class SoulCharge: Ammo{Default{Inventory.MaxAmount 333;Ammo.BackpackMaxAmount 666;}}
+// Includes
+#include "./DemonicExtFunctions.zs"
+#include "./DemonicExtAttacks.zs"
+#include "./DemonicExtProj.zs"
+#include "./DemonicExtProj2.zs"
+#include "./DemonicExtProj3.zs"
+#include "./DemonicExtStuff.zs"
+#include "./DemonicExt_Wheel.zs"
+
+// The Actual Weapon
 Class PBX_DemonExt : PB_WeaponBase
 {
 	default

@@ -1,4 +1,12 @@
-//the main weapon, defined here before a thousand tokens
+// Includes
+#include "./CSSG_Functions.zs"
+#include "./CSSG_Casings.zs"
+#include "./CSSG_Shells.zs"
+#include "./CSSG_Upgrades.zs"
+#include "./CSSG_Wheel.zs"
+#include "./CSSG_Projectiles.zs"
+
+
 Class PBX_CSSG : PB_WeaponBase
 {
 	default
@@ -47,14 +55,12 @@ Class PBX_CSSG : PB_WeaponBase
 			Goto Ready;
 		
 		Select:
-			TNT1 A 0 A_weaponoffset(0,32);
-			goto SelectFirstPersonLegs;
-		SelectContinue:
-			TNT1 A 0 PB_WeapTokenSwitch("SSGSelected");
+			TNT1 A 0 PB_WeaponRaise("COMSSGUP");
 			TNT1 A 0 PB_RespectIfNeeded();
+		SelectContinue:
+			TNT1 A 0;
+			TNT1 A 0 PB_WeapTokenSwitch("SSGSelected");
 		SelectAnimation:
-			TNT1 A 0 A_zoomfactor(1.0);
-			TNT1 A 0 A_startsound("COMSSGUP",7);
 			TNT1 A 0 A_startsound("CLIPINSS",8);
 			C0SU ABCD 1;
 			goto Ready3;

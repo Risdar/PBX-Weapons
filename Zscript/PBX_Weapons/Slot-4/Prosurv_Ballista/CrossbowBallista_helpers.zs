@@ -13,6 +13,26 @@ Class CrossbowBallistaAmmo : PB_Ammo{
 	}
 }
 
+class BoltPickup : PB_HighCalMag
+{
+    Default
+    {
+        Inventory.Amount 1;
+        Inventory.PickupSound "Ammocase/Open";
+    }
+
+    override void PB_SetAmmoSprite()
+    {
+        sprite = GetSpriteIndex("CRBAA0");
+    }
+
+	States
+    {
+        CacheSprites:
+            CRBA A 0;
+    }
+}
+
 class PBX_DemonicBallistaUpgrade : PB_UpgradeItem
 {
     Default
@@ -45,7 +65,7 @@ class PBX_DemonicBallistaUpgrade : PB_UpgradeItem
 	}
 }
 
-class BallistaBolt : PB_ProjectileAlt
+class BallistaBolt : PB_MGNail 
 {
     Default
     {
@@ -53,12 +73,12 @@ class BallistaBolt : PB_ProjectileAlt
         Height 2;
         Projectile;
         Speed 150;
-        PB_Projectile.BaseDamage 55;
+        PB_Projectile.BaseDamage 60;
 		PB_Projectile.RipperCount 5;
 		PB_Projectile.PenetrationCount 3;
         Scale 1.0;
         Decal "Scorch";
-        Damagetype "Nailgun";
+        Damagetype "Nail";
         Projectile;
         +MISSILE;
         +NOGRAVITY;
@@ -66,30 +86,56 @@ class BallistaBolt : PB_ProjectileAlt
         +THRUSPECIES;
         +MTHRUSPECIES;
         SeeSound "";
-        DeathSound "Weapons/NailHit";
         Obituary "$OB_MPROCKET";
         Species "Marines";
     }
 
-    States 
-    {
-        Spawn:
-            CRBA A 1 A_PlaySound("Weapons/NailFlight", CHAN_BODY,1.0,True);
-        Fly:
-            CRBA A 2 A_SpawnItemEx("BoltTrail", 0, 0, 0, 1, 0, 0, 180, 128);
-            Loop;
-        Death:
-            TNT1 A 0 A_StopSound(CHAN_BODY);
-            TNT1 A 0 A_PlaySoundEx("Weapons/NailHit","Auto");
-            TNT1 A 0 A_SpawnItem("HitPuff");
-            TNT1 A 0 A_Stop;
-            // CRBA A 1 A_SpawnItemEx ("BoltPickup",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-            Stop;
-        XDeath:
-            TNT1 A 0 A_StopSound(CHAN_BODY);
-            CRBA A 0 A_PlaySound("Weapons/NailHitBleed");
-            Stop;
-    }
+    States
+	{
+		Spawn:
+			TNT1 A 0;
+			CRBA A 1 A_StartSound("Weapons/NailFlight", CHAN_BODY, CHANF_LOOP, 1.0 );
+			Goto Fly;
+		Bounce:
+			TNT1 A 0 A_SpawnItemEx("HitPuff");
+		Fly:
+			TNT1 A 0;
+			CRBA A 1;
+			Loop;
+		Crash:
+		Death:
+			TNT1 A 0 { 
+				LIFETIME = CVar.GetCVar("pb_naillifetime").GetInt(); 
+				A_StopSound(CHAN_BODY);
+				A_SpawnItemEx("HitPuff");
+				A_Stop();
+			}
+		Hanging:
+			CRBA A 35 A_JumpIf(LIFETIME <= 0, "Fade");
+			TNT1 A 0 {
+				LIFETIME--;
+				return A_CheckBlock("Hanging", 0, 0, (RADIUS / 2) + 1);
+			}
+		Drop:
+			TNT1 A 0 {
+				bNOINTERACTION = false;
+				bNOGRAVITY = false;
+				bTHRUACTORS = true;
+			}
+		Fade:
+            CRBA A 1 A_SpawnItemEx ("BoltPickup",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+			stop;
+		XDeath:
+			TNT1 A 0 { 
+				LIFETIME = CVar.GetCVar("pb_naillifetime").GetInt(); 
+				A_StopSound(CHAN_BODY);
+				A_StartSound("Weapons/NailHitBleed");
+			}
+		XDeathloop:
+			CRBA A 35 A_JumpIf(LIFETIME <= 0, "Fade");
+			TNT1 A 0 { LIFETIME--; }
+			Loop;
+	}
 }
 				
 class ExplosiveBolt : BallistaBolt
@@ -99,7 +145,8 @@ class ExplosiveBolt : BallistaBolt
 
     Default
     {
-        PB_Projectile.BaseDamage 0;
+        PB_Projectile.BaseDamage 70;
+		PB_Projectile.RipperCount 1;
         DamageType "Explosive";
         +DONTBOUNCEONSHOOTABLES;
         +USEBOUNCESTATE;

@@ -196,6 +196,10 @@ class PBX_Hud : PB_Hud_ZS
                     // adjustPos2 = (0, 0); 
                     adjustScale2 = 0.7;
                     break;
+                case 'PBX_Prosurv_Ballista':
+                    adjustPos = (-10, -8); 
+                    // adjustScale = 1.3;
+                    break;
 
 //////////////// SLOT 5 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 case 'PB_MG42':
@@ -393,6 +397,26 @@ class PBX_Hud : PB_Hud_ZS
 
                 // Show what Ammo type is selected
                 pbx_image2 = sniper && sniper.resonanceAmmoLoaded ? "graphics/WeaponWheel/metalsniper/ResonanceAlt.png" : "graphics/WeaponWheel/metalsniper/StandardAlt.png";
+                break;
+
+            case 'PBX_Prosurv_Ballista':
+                let crossbow = PBX_Prosurv_Ballista(pbWeap);
+                // Show Fuel if Demonic Mode, Show Rocket if Standard Mode
+                if (crossbow && crossbow.demonicBallistaMode) 
+                {
+                    PBHud_DrawImage("BARBACD3", (-90, -71), flagsright, playerBoxAlpha);
+                    PBHud_DrawBar("ABAR6", "BGBARL", GetAmount("PB_Fuel"), GetMaxAmount("PB_Fuel"), (-100, -72), 0, 1, flagsright);
+                    PBHud_DrawString(mDefaultFont, Formatnumber(GetAmount("PB_Fuel")), (-207, -90), DI_TEXT_ALIGN_RIGHT, Font.CR_RED);
+                }
+                else if (crossbow) 
+                {
+                    PBHud_DrawImage("BARBACR3", (-90, -71), flagsright, playerBoxAlpha);
+                    PBHud_DrawBar("ABAR4", "BGBARL", GetAmount("PB_RocketAmmo"), GetMaxAmount("PB_RocketAmmo"), (-100, -72), 0, 1, flagsright);
+                    PBHud_DrawString(mDefaultFont, Formatnumber(GetAmount("PB_RocketAmmo")), (-207, -90), DI_TEXT_ALIGN_RIGHT, Font.CR_RED);
+                }
+
+                // Show what Mode is selected
+                pbx_image2 = " "; //its empty for now
                 break;
 
 //////////////// SLOT 5 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

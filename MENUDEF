@@ -74,20 +74,26 @@ AddOptionMenu "AddonWeaponSpawns" after "SSGT2"
     AddOptionMenu "AddonWeaponSpawns" after "CHNT1"
     {
         // SLOT 4
-        FlagOption    "Battle Rifle",    "PBXWeapons_chaingun_filter",    "OffOn", 0
+        FlagOption    "Battle Rifle",           "PBXWeapons_chaingun_filter",    "OffOn", 0
+        FlagOption    "Crossbow Ballista",      "PBXWeapons_chaingun_filter",    "OffOn", 2
     }
     // TIER 2
     AddOptionMenu "AddonWeaponSpawns" after "CHNT2"
     {
         // SLOT 4
-        FlagOption    "Metal Sniper",    "PBXWeapons_chaingun_filter",    "OffOn", 1
-        FlagOption    "Crossbow Ballista",    "PBXWeapons_chaingun_filter",    "OffOn", 2
+        FlagOption    "Metal Sniper",           "PBXWeapons_chaingun_filter",    "OffOn", 1
     }
+    // TIER 3
+    /* AddOptionMenu "AddonWeaponSpawns" after "CHNT3"
+    {
+        // SLOT 4
+        FlagOption    "Metal Sniper",           "PBXWeapons_chaingun_filter",    "OffOn", 1
+    } */
     // TIER 4
     AddOptionMenu "AddonWeaponSpawns" after "CHNT4"
     {
         // SLOT 5
-        FlagOption    "Neo HMG",    "PBXWeapons_chaingun_filter",    "OffOn", 3
+        FlagOption    "Neo HMG",                "PBXWeapons_chaingun_filter",    "OffOn", 3
     }
 
 // ROCKET LAUNCHER /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,9 +101,9 @@ AddOptionMenu "AddonWeaponSpawns" after "SSGT2"
 AddOptionMenu "AddonWeaponSpawns" after "LAUT3"
 {
         // SLOT 6
-    FlagOption    "Excavator",    "PBXWeapons_rocketlauncher_filter",    "OffOn", 0
+    FlagOption    "Excavator",                              "PBXWeapons_rocketlauncher_filter",    "OffOn", 0
         // SPECIAL
-    FlagOption    "Cyberdemon drop their Weapon",    "PBXWeapons_specialdrop_filter",    "OffOn", 0
+    FlagOption    "Cyberdemon drop their Weapon",           "PBXWeapons_specialdrop_filter",    "OffOn", 0
     FlagOption    "Spider Mastermind drop their Weapon",    "PBXWeapons_specialdrop_filter",    "OffOn", 1
 }
 
@@ -112,12 +118,12 @@ AddOptionMenu "AddonWeaponSpawns" after "BFGT4"
 // Backpacks /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 AddOptionMenu "AddonAmmoSpawns" after "PACKT2"
 {
-    FlagOption    "Battle Rifle Upgrade",    "PBXWeapons_backpack_filter",    "OffOn", 2
+    FlagOption    "Battle Rifle Upgrade",           "PBXWeapons_backpack_filter",    "OffOn", 2
+    FlagOption    "CSSG Upgrades",                  "PBXWeapons_backpack_filter",    "OffOn", 0
+    FlagOption    "Crossbow Ballista Upgrade",      "PBXWeapons_backpack_filter",    "OffOn", 3
 }
 
 AddOptionMenu "AddonAmmoSpawns" after "PACKT3"
 {
-    FlagOption    "CSSG Upgrades",                  "PBXWeapons_backpack_filter",    "OffOn", 0
     FlagOption    "Metal Sniper Upgrade",           "PBXWeapons_backpack_filter",    "OffOn", 1
-    FlagOption    "Crossbow Ballista Upgrade",      "PBXWeapons_backpack_filter",    "OffOn", 3
 }

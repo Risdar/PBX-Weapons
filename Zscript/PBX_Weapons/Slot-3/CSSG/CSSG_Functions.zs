@@ -1,5 +1,14 @@
 extend class PBX_CSSG
 {
+//////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
+	override void postbeginplay()
+	{
+		shellsmode = 1;
+		oldshells = 0;
+		super.postbeginplay();
+	}
+
+//////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
     static const string CSSG_ShellsType[] = {
 		"\cgBuckshot\c- ","\cdSlug\c- ","\cjFlechette\c- ",
 		"\chFlak\c- ","\ciDragon Breath's\c- ","\cuExplosive\c- ",
@@ -446,6 +455,7 @@ extend class PBX_CSSG
 	Action Void CM_PlayFireSound()
 	{
 		int mode = invoker.shellsmode + 1;
+		A_AlertMonsters();
 		switch(mode)
 		{
 			case Shell_Buck: 
@@ -491,6 +501,7 @@ extend class PBX_CSSG
 	Action void CM_PlayAltFireSound()
 	{
 		int mode = invoker.shellsmode + 1;
+		A_AlertMonsters();
 		switch(mode)
 		{
 			case Shell_Buck: 

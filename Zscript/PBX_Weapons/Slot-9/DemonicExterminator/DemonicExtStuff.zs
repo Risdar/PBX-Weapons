@@ -1,3 +1,9 @@
+// Tokens
+class UMDE_Select_LaserMode : inventory{default{inventory.maxamount 1;}}
+class UMDE_Select_IncinerationMode : inventory{default{inventory.maxamount 1;}}
+class UMDE_Select_LightningMode : inventory{default{inventory.maxamount 1;}}
+Class SoulCharge: Ammo{Default{Inventory.MaxAmount 333;Ammo.BackpackMaxAmount 666;}}
+
 class ExterminatorStuff : EventHandler{
 	override void WorldThingDamaged(WorldEvent e)
 	{

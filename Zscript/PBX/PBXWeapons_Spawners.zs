@@ -106,8 +106,8 @@ class PBXChaingun_Injector : PBInjector
 		// Crossbow Ballista
 		if(!(pbxweapons_chaingun_filter & DisablePBX_CrossbowBallista))
 		{
+			handler.InjectSpawn('PB_MGSpawnerT1', 'PBX_Prosurv_Ballista', 255, 1);
 			handler.InjectSpawn('PB_MGSpawnerT2', 'PBX_Prosurv_Ballista', 255, 1);
-			handler.InjectSpawn('PB_MGSpawnerT3', 'PBX_Prosurv_Ballista', 255, 1);
 		}
 
 		// Neo HMG
@@ -161,9 +161,9 @@ class PBXUpgrades_Injector : PBInjector
 		if(!(pbxweapons_backpack_filter & DisablePBX_CSSGUpgrades))
 		{
 			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'DanmakuShellsUpgrade', 255, 1);
-			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'WPShellsUpgrade', 255, 1);
+			handler.InjectSpawn('PB_UpgradeSpawnerT2', 'WPShellsUpgrade', 255, 1);
 			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'SubZeroShellsUpgrade', 255, 1);
-			handler.InjectSpawn('PB_UpgradeSpawnerT4', 'ExplosiveShellsUpgrade', 255, 1);
+			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'ExplosiveShellsUpgrade', 255, 1);
 			handler.InjectSpawn('PB_UpgradeSpawnerT4', 'DoomShellsUpgrade', 255, 1);
 		}
 		
@@ -172,7 +172,6 @@ class PBXUpgrades_Injector : PBInjector
 		{
 			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'MetalSniper_Upgrade', 255, 1);
 			handler.InjectSpawn('PB_UpgradeSpawnerT4', 'MetalSniper_Upgrade', 255, 1);
-			handler.InjectSpawn('PB_MGSpawnerT3', 'MetalSniper_Upgrade', 255, 1);
 			handler.InjectSpawn('PB_MGSpawnerT4', 'MetalSniper_Upgrade', 255, 1);
 		}
 
@@ -186,8 +185,8 @@ class PBXUpgrades_Injector : PBInjector
 		// Crossbow Ballista Upgrades
 		if(!(pbxweapons_backpack_filter & DisablePBX_CrossbowBallistaUpgrade))
 		{
-			handler.InjectSpawn('PB_MGSpawnerT3', 'PBX_DemonicBallistaUpgrade', 255, 1);
-			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'PBX_DemonicBallistaUpgrade', 255, 1);
+			handler.InjectSpawn('PB_MGSpawnerT2', 'PBX_DemonicBallistaUpgrade', 255, 1);
+			handler.InjectSpawn('PB_UpgradeSpawnerT2', 'PBX_DemonicBallistaUpgrade', 255, 1);
 		}
     }
 }

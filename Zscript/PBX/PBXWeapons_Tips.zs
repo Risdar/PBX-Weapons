@@ -27,7 +27,9 @@ enum PBX_eWeaponTipFlags
 enum PBX_eWeaponUpgradeTipFlags
 {
     PBX_TIP_METALSNIPER_UPGRADE = 1 << 0,
-    PBX_TIP_BATTLERIFLE_UPGRADE = 1 << 1
+    PBX_TIP_BATTLERIFLE_UPGRADE = 1 << 1,
+    PBX_TIP_CROSSBOW_UPGRADE    = 1 << 2,
+    PBX_TIP_CSSG_UPGRADE        = 1 << 3
 }
 
 class PBX_TipsManager : inventory
@@ -77,6 +79,7 @@ class PBX_TipsManager : inventory
                 Array<String> tips;
                 tips.Push("$PBX_CSSG_Tip1");
                 tips.Push("$PBX_CSSG_Tip2");
+                tips.Push("$PBX_CSSG_Tip3");
                 tips.Push("$PBX_DisableUpgrade");
                 SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_CSSG);
             }
@@ -104,6 +107,18 @@ class PBX_TipsManager : inventory
                 tips.Push("$PBX_MetalSniper_Tip5");
                 tips.Push("$PBX_DisableUpgrade");
                 SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_METALSNIPER);
+            }
+            break;
+
+            case 'PBX_Prosurv_Ballista':
+            {
+                Array<String> tips;
+                tips.Push("$PBX_ProsurvBallista_Tip1");
+                tips.Push("$PBX_ProsurvBallista_Tip2");
+                tips.Push("$PBX_ProsurvBallista_Tip3");
+                tips.Push("$PBX_ProsurvBallista_Tip4");
+                tips.Push("$PBX_DisableUpgrade");
+                SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_CROSSBOW);
             }
             break;
 
@@ -175,6 +190,27 @@ class PBX_TipsManager : inventory
                 tips.Push("$PBX_BattleRifleUpgrade_Tip2");
                 tips.Push("$PBX_BattleRifleUpgrade_Tip3");
                 SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_BATTLERIFLE_UPGRADE);
+            }
+            break;
+            case 'PBX_DemonicBallistaUpgrade':
+            {
+                Array<String> tips;
+                tips.Push("$PBX_DemonicBallista_Tip1");
+                tips.Push("$PBX_DemonicBallista_Tip2");
+                tips.Push("$PBX_DemonicBallista_Tip3");
+                SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_CROSSBOW_UPGRADE);
+            }
+            break;
+            case 'SubZeroShellsUpgrade':
+            case 'ExplosiveShellsUpgrade':
+            case 'WPShellsUpgrade':
+            case 'DoomShellsUpgrade':
+            case 'DanmakuShellsUpgrade':
+            {
+                Array<String> tips;
+                tips.Push("$PBX_CSSGUpgrade_Tip1");
+                tips.Push("$PBX_CSSGUpgrade_Tip2");
+                SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_CSSG_UPGRADE);
             }
             break;
         }
