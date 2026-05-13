@@ -120,6 +120,9 @@ class PBX_TipsManager : inventory
                 tips.Push("$PBX_DisableUpgrade");
                 SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_CROSSBOW);
             }
+            if(owner.countinv("PB_DTech") < 0)
+				owner.A_giveinventory("PB_DTech", 5);
+            owner.A_GiveInventory("PB_DTech",5);
             break;
 
             // SLOT 5

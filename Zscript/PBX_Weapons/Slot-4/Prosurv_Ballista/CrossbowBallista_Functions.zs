@@ -7,6 +7,21 @@ extend class PBX_Prosurv_Ballista
 		super.postbeginplay();
 	}
 
+	// When you select the demonic mode when you dont have the dtech ammo (this can be done with the disable upgrade option)
+	// The game will crash and gives a read from zero
+	// This fixes that
+	override void attachtoowner(actor other)
+	{
+		if(other && other.player)
+		{
+			if(other.countinv("PB_DTech") < 0)
+			{
+				other.A_giveinventory("PB_DTech", 5);
+			}
+		}
+		super.attachtoowner(other);
+	}
+
 //////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
 	action int getCurrentAmmoTake()
 	{
@@ -33,55 +48,28 @@ extend class PBX_Prosurv_Ballista
 			return ResolveState(null);
 	}
 
-	// action state actualModeChange()
-	// {
-	// 	bool selectNormal = FindInventory("CB_Select_NormalMode");
-	// 	bool selectDemonic = FindInventory("CB_Select_DemonicMode");
-
-	// 	if(selectNormal && isDemonicBallistaMode())
-	// 	{
-	// 		setDemonicBallistaMode(false);
-	// 		invoker.currentTakeAmmo = ammoTakeNormal;
-	// 		invoker.ReserveToMagAmmoFactor = ammoTakeNormal;
-	// 		invoker.ammo1 = Ammo(FindInventory("PB_HighCalMag"));
-    //         cleanmodetokens();
-	// 		return resolvestate("StandardReload");
-	// 	}
-	// 	else if(selectDemonic && !isDemonicBallistaMode())
-	// 	{
-	// 		setDemonicBallistaMode(true);
-	// 		invoker.currentTakeAmmo = ammoTakeDemonic;
-	// 		invoker.ReserveToMagAmmoFactor = ammoTakeDemonic;
-	// 		invoker.ammo1 = Ammo(FindInventory("PB_DTech"));
-    //         cleanmodetokens();
-	// 		return resolvestate("ReloadDemonic");
-	// 	}
-
-	// 	return resolvestate(null);
-	// }
-
     action state actualModeChange()
     {
         // Check tokens
         bool selectNormal = FindInventory("CB_Select_NormalMode");
         bool selectDemonic = FindInventory("CB_Select_DemonicMode");
 
-        // SWITCH TO NORMAL: Must be in Demonic mode AND have the Normal token
+        // Switch to Normal
         if(selectNormal && invoker.demonicBallistaMode)
         {
-            invoker.demonicBallistaMode = false; // Toggle boolean FIRST
+            invoker.demonicBallistaMode = false;
             invoker.currentTakeAmmo = ammoTakeNormal;
             invoker.ReserveToMagAmmoFactor = ammoTakeNormal;
             invoker.ammo1 = Ammo(FindInventory("PB_HighCalMag"));
             
-            cleanmodetokens(); // Clear tokens so this block doesn't repeat
+            cleanmodetokens(); // Clear tokens
             return ResolveState("StandardReload"); // Jump to the specific reload
         }
         
-        // SWITCH TO DEMONIC: Must NOT be in Demonic mode AND have the Demonic token
+        // Switch to Demonic Mode
         else if(selectDemonic && !invoker.demonicBallistaMode)
         {
-            invoker.demonicBallistaMode = true; // Toggle boolean FIRST
+            invoker.demonicBallistaMode = true;
             invoker.currentTakeAmmo = ammoTakeDemonic;
             invoker.ReserveToMagAmmoFactor = ammoTakeDemonic;
             invoker.ammo1 = Ammo(FindInventory("PB_DTech"));
@@ -90,7 +78,7 @@ extend class PBX_Prosurv_Ballista
             return ResolveState("ReloadDemonic"); // Jump to the specific reload
         }
 
-        // If we are already in the mode we selected, just clean up and go back
+        // Fall through
         cleanmodetokens();
         return ResolveState("FinishUnload"); 
     }

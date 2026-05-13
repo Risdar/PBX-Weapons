@@ -1,8 +1,10 @@
 class HMG_Select_Heated : inventory {default{inventory.maxamount 1;}}
 class HMG_Select_Charged : inventory {default{inventory.maxamount 1;}}
 
-Class HMGChamberAmmo : PB_Ammo{
-	Default{
+Class HMGChamberAmmo : PB_Ammo
+{
+	Default
+	{
 		inventory.maxamount neohmgFullAmmo;
 		ammo.backpackamount 0;
 		ammo.backpackmaxamount neohmgFullAmmo;
