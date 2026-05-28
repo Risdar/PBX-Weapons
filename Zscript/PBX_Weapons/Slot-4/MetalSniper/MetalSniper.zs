@@ -54,10 +54,6 @@ Class PBX_MetalSniper : PB_WeaponBase
             stop;
 
         // ── Weapon Respect ──────────────────────
-        Steady:
-            TNT1 A 1;
-            goto Ready;
-
         WeaponRespect:
             TNT1 A 0 A_SetCrosshair(-1);
             MSNI ABCDEFGHIJKLMNOPQRSSSS 1 A_DoPBWeaponAction();
@@ -89,9 +85,8 @@ Class PBX_MetalSniper : PB_WeaponBase
             TNT1 A 0 {
                 invoker.enableScopeHUD = false;
                 A_SetRenderstyle(1.0, STYLE_Normal);
+                PB_RespectIfNeeded();
             }
-        SelectContinue:
-            TNT1 A 0 PB_RespectIfNeeded();
         SelectAnimation:
             MSNU ABCD 1;
             goto Ready3;
@@ -236,9 +231,7 @@ Class PBX_MetalSniper : PB_WeaponBase
                     A_ZoomFactor(4.0);
                 }
 
-                bool holdMode = (CVar.GetCVar("pb_toggle_aim_hold", player).GetInt() == 1);
-
-                if (holdMode)
+                if (PB_GetAimMode())
                 {
                     if (!PressingAltfire() || JustReleased(BT_ALTATTACK))
                         return resolvestate("ZoomOut");
@@ -276,9 +269,7 @@ Class PBX_MetalSniper : PB_WeaponBase
             {
                 A_SetInventory("CantDoAction", 0);
 
-                bool holdMode = CVar.GetCVar("pb_toggle_aim_hold", player).GetInt();
-
-                if (holdMode)
+                if (PB_GetAimMode())
                 {
                     if (JustReleased(BT_ALTATTACK)) return resolvestate("ZoomOut");
                     if (JustPressed(BT_ATTACK) && PressingAltfire()) return resolvestate("Fire_ADS");

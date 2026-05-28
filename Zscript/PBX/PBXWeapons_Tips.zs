@@ -1,4 +1,4 @@
-enum PBX_eWeaponTipFlags
+enum PBXWeapons_eWeaponTipFlags
 {
     // SLOT 2
     PBX_TIP_BLASTERPISTOL       = 1 << 0,
@@ -20,19 +20,15 @@ enum PBX_eWeaponTipFlags
     PBX_TIP_MASTERMINDCG        = 1 << 12,
     // SLOT 9
     PBX_TIP_DEMONMINIGUN        = 1 << 13,
-    PBX_TIP_DEMONEXT            = 1 << 14
-
-}
-
-enum PBX_eWeaponUpgradeTipFlags
-{
+    PBX_TIP_DEMONEXT            = 1 << 14,
+    // UPGRADES
     PBX_TIP_METALSNIPER_UPGRADE = 1 << 0,
     PBX_TIP_BATTLERIFLE_UPGRADE = 1 << 1,
     PBX_TIP_CROSSBOW_UPGRADE    = 1 << 2,
     PBX_TIP_CSSG_UPGRADE        = 1 << 3
 }
 
-class PBX_TipsManager : inventory
+class PBXWeapons_TipsManager : inventory
 {
 	Default
 	{
@@ -120,9 +116,6 @@ class PBX_TipsManager : inventory
                 tips.Push("$PBX_DisableUpgrade");
                 SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_CROSSBOW);
             }
-            if(owner.countinv("PB_DTech") < 0)
-				owner.A_giveinventory("PB_DTech", 5);
-            owner.A_GiveInventory("PB_DTech",5);
             break;
 
             // SLOT 5
@@ -204,11 +197,8 @@ class PBX_TipsManager : inventory
                 SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_CROSSBOW_UPGRADE);
             }
             break;
-            case 'SubZeroShellsUpgrade':
-            case 'ExplosiveShellsUpgrade':
-            case 'WPShellsUpgrade':
-            case 'DoomShellsUpgrade':
-            case 'DanmakuShellsUpgrade':
+            case 'SubZeroShellsUpgrade': case 'ExplosiveShellsUpgrade': case 'WPShellsUpgrade':
+            case 'DoomShellsUpgrade':    case 'DanmakuShellsUpgrade':
             {
                 Array<String> tips;
                 tips.Push("$PBX_CSSGUpgrade_Tip1");

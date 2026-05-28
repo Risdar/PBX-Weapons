@@ -20,7 +20,7 @@ Class DiggerTrail : Actor{
 	}
 	States{
 	Spawn:
-		TNT1 A 0 A_SetScale(ScaleX*frandom(0.85,1.35), ScaleY*frandom(0.9,1.25));
+		TNT1 A 0 A_SetScale(Scale.X*frandom(0.85,1.35), Scale.Y*frandom(0.9,1.25));
 		SPIK ABBCCBBA 2;
 		SPIK A 60;
 		SPIK AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_FadeOut(0.02);
@@ -51,28 +51,31 @@ Class ExcavatorExplode : Actor{
 		Stop;
 	}
 }
-Class ExcavatorExplosion : Actor{
-	Default{
-		Radius 2;
-		Height 2;
-		Damagetype "ExplosiveImpact";
-		+THRUSPECIES
-		+MTHRUSPECIES
-		Species "Marines";
-		+FORCERADIUSDMG
-		+NOBLOCKMAP
-		+MISSILE
-	}
-	States{
-	Spawn:
-		Goto Death;
-	Death:
-		TNT1 A 2 NODELAY A_SpawnItem("WhiteShockwaveBig");
-		TNT1 A 0 A_Explode(200, 100, xf_hurtsource, 0, 90,0,0,"None","Explosive");
-		TNT1 A 0 A_Explode(125,140, xf_hurtsource, 0, 100);
-		Stop;
-	}
-}
+// Seems like this class already exists in PB but I'll just leave this here
+// Just in case it is removed in the future
+// Class ExcavatorExplosion : Actor{
+// 	Default{
+// 		Radius 2;
+// 		Height 2;
+// 		Damagetype "ExplosiveImpact";
+// 		+THRUSPECIES
+// 		+MTHRUSPECIES
+// 		Species "Marines";
+// 		+FORCERADIUSDMG
+// 		+NOBLOCKMAP
+// 		+MISSILE
+// 	}
+// 	States{
+// 	Spawn:
+// 		Goto Death;
+// 	Death:
+// 		TNT1 A 2 NODELAY A_SpawnItem("WhiteShockwaveBig");
+// 		TNT1 A 0 A_Explode(200, 100, xf_hurtsource, 0, 90,0,0,"None","Explosive");
+// 		TNT1 A 0 A_Explode(125,140, xf_hurtsource, 0, 100);
+// 		Stop;
+// 	}
+// }
+
 Class DropShotExplode : ExcavatorExplode{
 	Default{
 		Radius 20;

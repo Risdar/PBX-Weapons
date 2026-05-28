@@ -252,7 +252,7 @@ class DemonicBolt : PB_ProjectileAlt
         Height 3;
         Projectile;
         Speed 100;
-        PB_Projectile.BaseDamage 18;
+        PB_Projectile.BaseDamage 100;
 		PB_Projectile.RipperCount 5;
 		PB_Projectile.PenetrationCount 3;
         DamageType "Railgun";

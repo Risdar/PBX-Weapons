@@ -56,13 +56,11 @@ class PBX_MastermindChaingun : PB_WeaponBase
 		Spawn:
             TRP6 A -1;
             Stop;
-        Steady:
-            TNT1 A 0;
-            Goto Ready;
+
         Deselect:
            TNT1 A 0 {
 				A_WeaponOffset(0,32);
-				A_SetRoll(0);
+				PB_SetRoll(0);
 				PB_HandleCrosshair(-1);
 				A_TakeInventory("PB_LockScreenTilt",1);
 			}
@@ -74,8 +72,6 @@ class PBX_MastermindChaingun : PB_WeaponBase
 		Select:
 			TNT1 A 0 PB_WeaponRaise("CBOXPKUP");
 			// TNT1 A 0 PB_RespectIfNeeded();
-		SelectContinue:
-			TNT1 A 0;
 		SelectAnimation:
 			RMNG NMLKJ 1 A_GunFlash();
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
@@ -90,14 +86,14 @@ class PBX_MastermindChaingun : PB_WeaponBase
 		Fire:
             TNT1 A 0 MastermindCG_HandleAmmo();
             TNT1 AAAA 0;
-			RMNG A 1 BRIGHT MastermindCG_FireWeapon(0,1);
-			RMNG G 1 BRIGHT MastermindCG_FireWeapon(0,2);
-			RMNG HI 1 BRIGHT MastermindCG_FireWeapon(0,3);
+			RMNG A 1 BRIGHT MastermindCG_FireWeapon(1);
+			RMNG G 1 BRIGHT MastermindCG_FireWeapon(2);
+			RMNG HI 1 BRIGHT MastermindCG_FireWeapon(3);
 		FireSecondShot:
             TNT1 A 0 MastermindCG_HandleAmmo();
-			RMNG B 1 BRIGHT MastermindCG_FireWeapon(0,1);
-			RMNG G 1 BRIGHT MastermindCG_FireWeapon(0,2);
-			RMNG HI 1 BRIGHT MastermindCG_FireWeapon(0,3);
+			RMNG B 1 BRIGHT MastermindCG_FireWeapon(1);
+			RMNG G 1 BRIGHT MastermindCG_FireWeapon(2);
+			RMNG HI 1 BRIGHT MastermindCG_FireWeapon(3);
 			TNT1 A 0 PB_ReFire();
 			RMNG FCDEF 1 A_DoPBWeaponAction();
 			RMNG CDEF 2 A_DoPBWeaponAction();

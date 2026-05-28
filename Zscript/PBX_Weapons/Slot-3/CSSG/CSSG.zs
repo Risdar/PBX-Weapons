@@ -50,15 +50,9 @@ Class PBX_CSSG : PB_WeaponBase
 			SG43 A -1;
 			stop;
 		
-		Steady:
-			TNT1 A 1;
-			Goto Ready;
-		
 		Select:
 			TNT1 A 0 PB_WeaponRaise("COMSSGUP");
 			TNT1 A 0 PB_RespectIfNeeded();
-		SelectContinue:
-			TNT1 A 0;
 			TNT1 A 0 PB_WeapTokenSwitch("SSGSelected");
 		SelectAnimation:
 			TNT1 A 0 A_startsound("CLIPINSS",8);

@@ -1,18 +1,14 @@
 enum PBXWeapons_eWeaponSpecialSpawns
 {
-////// Monster Drops /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// SLOT 6
-	DisablePBX_CyberdemonRL			        = 1 << 0,
-	DisablePBX_MastermindCG			        = 1 << 1
-}
-
-enum PBXWeapons_eUpgradeSpawns
-{
 ////// Upgrades /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	DisablePBX_CSSGUpgrades			        = 1 << 0,
 	DisablePBX_MetalSniperUpgrade			= 1 << 1,
 	DisablePBX_BattleRifleUpgrade			= 1 << 2,
-	DisablePBX_CrossbowBallistaUpgrade		= 1 << 3
+	DisablePBX_CrossbowBallistaUpgrade		= 1 << 3,
+////// Monster Drops /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// SLOT 6
+	DisablePBX_CyberdemonRL			        = 1 << 0,
+	DisablePBX_MastermindCG			        = 1 << 1
 }
 
 enum PBXWeapons_eShotgunSpawns
@@ -205,7 +201,7 @@ class PBXWeapons_WeaponSpawner : EventHandler
                 if(!(pbxweapons_specialdrop_filter & DisablePBX_CyberdemonRL))
                 { 
 					// console.printf("Spawning CyberdemonRL from %s", actor.GetClassName());
-                   	actor.spawn("PBX_CyberdemonRL", actor.pos);
+                   	actor.spawn("CyberRLPickup", actor.pos);
                     actor.destroy(); 
                 } 
                 break;
@@ -213,7 +209,7 @@ class PBXWeapons_WeaponSpawner : EventHandler
 			case 'XDeathSpiderPart6':
                 if(!(pbxweapons_specialdrop_filter & DisablePBX_MastermindCG))
                 { 
-                   	actor.spawn("PBX_MastermindChaingun", actor.pos);
+                   	actor.spawn("MastermindCGPickup", actor.pos);
                     actor.destroy(); 
                 } 
                 break;

@@ -77,8 +77,8 @@ Class UnmakerLaser64Spark : Actor{
 	}
 	States{
 	Spawn:
-	YHE5 A 0 NoDelay A_JumpIf(ScaleX <= 0, "NULL");
-	YHE5 A 0 A_SetScale(ScaleX-0.00075);
+	YHE5 A 0 NoDelay A_JumpIf(Scale.X <= 0, "NULL");
+	YHE5 A 0 A_SetScale(Scale.X-0.00075);
 	YHE5 A 0 A_ChangeVelocity (frandom(-0.03, 0.03), frandom(-0.03, 0.03), frandom(-0.03, 0.03), 0);
 	YHE5 A 1 A_FadeOut(0.05);
 	Loop;

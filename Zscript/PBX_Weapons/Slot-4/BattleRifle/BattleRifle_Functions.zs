@@ -3,10 +3,11 @@ extend class PBX_BDPBattleRifle
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
 	override void postbeginplay()
 	{
-		isADS = false;
-		LockedOn = false;
-		semiClear = false;
-		isSemiAuto = true;
+		isADS 	 	 = false;
+		LockedOn 	 = false;
+		semiClear 	 = false;
+		isSemiAuto 	 = true;
+		zoomstrength = LOWZOOM;
 		super.postbeginplay();
 	}
     
@@ -15,6 +16,17 @@ extend class PBX_BDPBattleRifle
 	{
 		A_SetInventory("BR_Select_Semi",0);
 		A_SetInventory("BR_Select_Burst",0);
+		A_SetInventory("BR_Select_Zoom",0);
+	}
+
+	action double getZoomStrength()
+	{
+		return invoker.zoomstrength;
+	}
+
+	action void setZoomStrength(double set)
+	{
+		invoker.zoomstrength = set;
 	}
 
 	action bool getSemiAuto()
@@ -27,36 +39,6 @@ extend class PBX_BDPBattleRifle
 		invoker.isSemiAuto = set;
 	}
 
-	action void BR_ReadyNormal()
-    {
-        FLineTraceData Bule;
-        bool hit = LineTrace(Angle, 6000, Pitch, 0, player.ViewHeight, 0, 0, Bule);
-        if(hit)
-        {
-            if(Bule.HitActor && Bule.HitActor.bISMONSTER && Bule.HitActor.bFRIENDLY == false && Bule.HitActor is "PB_Monster")
-            {				
-                if(!invoker.LockedOn)
-                {
-                    invoker.LockedOn = true;
-                    A_StartSound("IronSights", CHAN_WEAPON, volume:0.5, pitch:1.4);
-                }
-                // let damn = player.FindPSprite(1);
-                // if(damn)
-                // {
-                //     damn.frame = 3;
-                //     damn.sprite = GetSpriteIndex("SPRF");
-                // }
-            }
-            else
-            if(invoker.LockedOn)
-            {
-                invoker.LockedOn = false;
-                A_StartSound("IronSights", CHAN_WEAPON, volume:0.5, pitch:1.3);
-            }
-        }	
-        // return A_DoPBWeaponAction();
-    }
-    
     action void BR_ReadyScope()
     {
         FLineTraceData Bule;
@@ -81,7 +63,7 @@ extend class PBX_BDPBattleRifle
                 }
                 // player.PSprites.frame = 1;
                 PBXWeapons_ScopeHandler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData:"..Bule.HitActor.GetTag(), Bule.HitActor.health, Bule.HitActor.GetSpawnHealth(), Bule.HitActor.PainChance);
-                PBXWeapons_ScopeHandler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData2:", Distance3D(Bule.HitActor), 3.0);
+                PBXWeapons_ScopeHandler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData2:", Distance3D(Bule.HitActor), getZoomStrength());
             }
             else
             if(invoker.LockedOn)
@@ -118,6 +100,7 @@ extend class PBX_BDPBattleRifle
 		return false;
 	}
 
+	// Ricochet function from BDP
     Action void a_FireBattleRifle()
 	{
 		FLineTraceData ricochetdata;
@@ -184,50 +167,84 @@ extend class PBX_BDPBattleRifle
 	}
 
     // FIRE FUNCTION
-	action void FireWeapon(int weaponSide, int ticCount)
+	action void FireWeapon()
 	{
-		switch (ticCount)
-		{
-			//Tic 1
-			default:
-			case 1:
-				A_AlertMonsters();
-				//a_FireBattleRifle();
-				PB_DynamicTail("lmg", "lmg");
-				FireWeaponCheck();
-				PB_LowAmmoSoundWarning("default");
-				pb_takeammo(invoker.ammotype2,1,0);
-				A_StartSound("BR45FIRE", CHAN_WEAPON, 0, 1.0, pitch: 1.2);
-				invoker.burstcount++;
-				PB_IncrementHeat(4);
-				switch (weaponSide)
-				{
-					default:
-					case 0: // NORMAL FIRE
-	                	PB_WeaponRecoil(-3,frandom(-0.3,0.3));
-						PB_GunSmoke(0,0,-1);
-						A_ZoomFactor(1.0, SPF_INTERPOLATE);
-						break;
-                    case 1: // ADS FIRE
-	                	PB_WeaponRecoil(-1.5,frandom(-0.3,0.3));
-						PB_GunSmoke(0,0,-2);
-						A_SetInventory("CantDoAction",1);
-						A_ZoomFactor(3.0, SPF_INTERPOLATE);
-						break;
-				}
-				break;
-			//Tic 2
-			case 2:
-				break;
-		}
-	}
-	
-	action void FireWeaponCheck()
-	{
+		// Set up Variables
+		bool ads 	  = CountInv("Zoomed") > 0;
+		double recoil = ads ? -1.5 : -3;
+		double smoke  = ads ? -2   : -1;
+
+		A_AlertMonsters();
+		PB_DynamicTail("lmg", "lmg");
+
+		// Firing Logic, basically check if the player has the upgrade or not
 		if(countinv("BattleRifle_Upgraded") > 0 || (pbxweapons_backpack_filter & DisablePBX_BattleRifleUpgrade)) {a_FireBattleRifle();}
 		else {
 			PB_FireBullets("PB_762x51mm", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
         	PB_SpawnCasing("PB_EmptyBrass",22,2,28,Frandom(-2, -1),Frandom(5,8),Frandom(3,4));
 		}
+
+		// Everything Else
+		PB_LowAmmoSoundWarning("default");
+		pb_takeammo(invoker.ammotype2,1,0);
+		A_StartSound("BR45FIRE", CHAN_WEAPON, 0, 1.0, pitch: 1.2);
+		invoker.burstcount++;
+		PB_IncrementHeat(4);
+
+		// if(ads) A_SetInventory("CantDoAction",1);
+		
+		PB_GunSmoke(0,0,smoke);
+		PB_WeaponRecoil(recoil,frandom(-0.3,0.3));
+		A_ZoomFactor(getZoomStrength(), SPF_INTERPOLATE);
+	}
+
+	action state checkSpecial()
+	{
+		bool goSemi  	 = countinv("BR_Select_Semi")  > 0;
+		bool goBurst 	 = countinv("BR_Select_Burst") > 0;
+		bool toggleZoom  = countinv("BR_Select_Zoom")  > 0;
+
+		if(goSemi && getSemiAuto() || goBurst && !getSemiAuto())
+		{
+			A_print("$PBX_AlreadySelected");
+			cleanmodetokens();
+			return resolvestate("ready3");
+		}
+
+		if(goSemi)
+		{
+			setSemiAuto(true);
+			cleanmodetokens();
+			A_Print("$PBX_BattleRifle_SemiAuto");
+		}
+		if(goBurst)
+		{
+			setSemiAuto(false);
+			cleanmodetokens();
+			A_Print("$PBX_BattleRifle_Burst");
+		}
+
+		if(toggleZoom)
+		{
+			if(getZoomStrength() == HIGHZOOM) {
+				setZoomStrength(LOWZOOM);
+				A_Print("$PBX_BattleRifle_ZoomLow");
+			}
+			else {
+				setZoomStrength(HIGHZOOM);
+				A_Print("$PBX_BattleRifle_ZoomHigh");
+			}
+			cleanmodetokens();
+		}
+
+		// Play sound when opening the wheel in ADS
+		if(countinv("Zoomed") > 0 && getADS())
+		{
+			A_StartSound("MS/Button", 26);
+			return resolvestate("WeaponReadyADS");
+		}
+
+		// Fallthrough to Switch Animation
+		return resolvestate(null);
 	}
 }

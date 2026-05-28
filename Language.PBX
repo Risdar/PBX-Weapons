@@ -1,122 +1,125 @@
 [enu default]
 //////////////////////////// GENERAL ///////////////////////////////////////////////////////////////////////////////
-PBXWeapons_Settings = "\cj⟁\c- PBX - Weapons Settings";
-PBXWeapons_Version = "PBX - Weapons Version 2.0 Loaded";
+PBXWeapons_Settings                 = "\cj⟁\c- PBX - Weapons Settings";
+PBXWeapons_Version                  = "PBX - Weapons Version 2.0 Loaded";
 
 //////////////////////////// SLOT 1 ///////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////// SLOT 2 ///////////////////////////////////////////////////////////////////////////////
 // Lever Action
-PBX_LeverAction_Pickup = "Lever Action Rifle (Slot 2)";
-PBX_LeverAction_Tag = "UAC M1893 Mod 0 Lever Action";
+PBX_LeverAction_Pickup              = "Lever Action Rifle (Slot 2)";
+PBX_LeverAction_Tag                 = "UAC M1893 Mod 0 Lever Action";
 
-PBX_LeverAction_Marlin = "\cd.444 Marlin \c-Mode";
-PBX_LeverAction_Magnum = "\cd.357 Magnum \c-Mode";
+PBX_LeverAction_Marlin              = "\cd.444 Marlin \c-Mode";
+PBX_LeverAction_Magnum              = "\cd.357 Magnum \c-Mode";
 
 //////////////////////////// SLOT 3 ///////////////////////////////////////////////////////////////////////////////
 // CSSG 
-PBX_CSSG_PICKUP = "Commander Super Shotgun (Slot 3)";
-PBX_CSSG_TAG = "Commander Super Shotgun";
+PBX_CSSG_PICKUP                     = "Commander Super Shotgun (Slot 3)";
+PBX_CSSG_TAG                        = "Commander Super Shotgun";
 
-PBX_CM_BUCKLD = "\cgBuckshot \c- Shells";
-PBX_CM_SLUGLD = "\cdSlugs \c- Shells";
-PBX_CM_DGBTLD = "\ciDragon Breath \c- Shells";
-PBX_CM_FLAKLD = "\chFlak \c-Shells";
-PBX_CM_FLCHLD = "\cjFlechette \c-Shells";
-PBX_CM_EXPLLD = "\cuExplosive \c-Shells";
-PBX_CM_WPLOAD = "\c[WPBronze]White Phosphorus\c- Shells";
-PBX_CM_DOOMLD = "\ctTriple Doom\c- Shells";
-PBX_CM_DNMKULD = "\c[DanmakuYellow]Danmaku \c-Shells";   
-PBX_CM_SUBZRLD = "\cnSub-Zero \c-Shells";   
+PBX_CM_BUCKLD                       = "\cgBuckshot \c- Shells";
+PBX_CM_SLUGLD                       = "\cdSlugs \c- Shells";
+PBX_CM_DGBTLD                       = "\ciDragon Breath \c- Shells";
+PBX_CM_FLAKLD                       = "\chFlak \c-Shells";
+PBX_CM_FLCHLD                       = "\cjFlechette \c-Shells";
+PBX_CM_EXPLLD                       = "\cuExplosive \c-Shells";
+PBX_CM_WPLOAD                       = "\c[WPBronze]White Phosphorus\c- Shells";
+PBX_CM_DOOMLD                       = "\ctTriple Doom\c- Shells";
+PBX_CM_DNMKULD                      = "\c[DanmakuYellow]Danmaku \c-Shells";   
+PBX_CM_SUBZRLD                      = "\cnSub-Zero \c-Shells";   
 
-PBX_PICKUP_EXPL = "Got the Explosive shell upgrade!";
-PBX_PICKUP_WPSP = "Got the White phosphorus shell upgrade!";
-PBX_PICKUP_DOOM = "Got the Triple Doom shell upgrade!";
-PBX_PICKUP_DNMK = "You got the Danmaku Shell Upgrade!!!";
+PBX_PICKUP_EXPL                     = "Got the Explosive shell upgrade!";
+PBX_PICKUP_WPSP                     = "Got the White phosphorus shell upgrade!";
+PBX_PICKUP_DOOM                     = "Got the Triple Doom shell upgrade!";
+PBX_PICKUP_DNMK                     = "You got the Danmaku Shell Upgrade!!!";
 
 //////////////////////////// SLOT 4 ///////////////////////////////////////////////////////////////////////////////
 // BattleRifle 
-PBX_BattleRifle_Pickup = "Battle Rifle (Slot 4)";
-PBX_BattleRifle_Tag = "UAC M1 'BDP' Battle Rifle";
+PBX_BattleRifle_Pickup              = "Battle Rifle (Slot 4)";
+PBX_BattleRifle_Tag                 = "UAC M1 'BDP' Battle Rifle";
 
-PBX_BattleRifle_SemiAuto = "\cdSemi-Auto \c-Mode";
-PBX_BattleRifle_Burst = "\ciBurst Fire \c-Mode";
+PBX_BattleRifle_SemiAuto            = "\cdSemi-Auto \c-Mode";
+PBX_BattleRifle_Burst               = "\ciBurst Fire \c-Mode";
 
-PBX_BattleRifle_UpgradePickup = "Battle Rifle Ricochet and Scope Upgrade (Slot 4)";
-PBX_BattleRifle_UpgradeTag = "Battle Rifle Upgrade";
+PBX_BattleRifle_ZoomLow             = "2.0 Magnification";
+PBX_BattleRifle_ZoomHigh            = "4.0 Magnification";
+
+PBX_BattleRifle_UpgradePickup       = "Battle Rifle Ricochet and Scope Upgrade (Slot 4)";
+PBX_BattleRifle_UpgradeTag          = "Battle Rifle Upgrade";
 
 // Metal Sniper
-PBX_MetalSniper_Pickup = "Metal Sniper (Slot 4)";
-PBX_MetalSniper_Tag = "UAC-45 Heavy 'Metal' Sniper";
-PBX_MetalSniper_AimMode = "\cdAim Secondary \c-Mode";
-PBX_MetalSniper_GrenMode = "\ciGrenade Secondary \c-Mode";
+PBX_MetalSniper_Pickup              = "Metal Sniper (Slot 4)";
+PBX_MetalSniper_Tag                 = "UAC-45 Heavy 'Metal' Sniper";
+PBX_MetalSniper_AimMode             = "\cdAim Secondary \c-Mode";
+PBX_MetalSniper_GrenMode            = "\ciGrenade Secondary \c-Mode";
 
-PBX_MetalSniper_Resonance = "\cjResonance Ammo \c-Mode";
-PBX_MetalSniper_Standard = "\cd7.62x51mm Armor Piercing \c-Mode";
+PBX_MetalSniper_Resonance           = "\cjResonance Ammo \c-Mode";
+PBX_MetalSniper_Standard            = "\cd7.62x51mm Armor Piercing \c-Mode";
 
-PBX_MetalSniper_UpgradePickup = "Metal Sniper Resonance Ammo Type Upgrade (Slot 4)";
-PBX_MetalSniper_UpgradeTag = "Metal Sniper Upgrade";
+PBX_MetalSniper_UpgradePickup       = "Metal Sniper Resonance Ammo Type Upgrade (Slot 4)";
+PBX_MetalSniper_UpgradeTag          = "Metal Sniper Upgrade";
 
-PBX_MetalSniper_Scope1 = "\cdSmart Scope \c-Off";
-PBX_MetalSniper_Scope2 = "\cdSmart Scope \c-Highlight Activated";
-PBX_MetalSniper_Scope3 = "\cdSmart Scope \c-Target Analysis Activated";
+PBX_MetalSniper_Scope1              = "\cdSmart Scope \c-Off";
+PBX_MetalSniper_Scope2              = "\cdSmart Scope \c-Highlight Activated";
+PBX_MetalSniper_Scope3              = "\cdSmart Scope \c-Target Analysis Activated";
 
 // Crossbow Ballista
-PBX_CrossbowBallista_Pickup = "Metal Sniper (Slot 4)";
-PBX_CrossbowBallista_Tag = "UAC-45 Heavy 'Metal' Sniper";
+PBX_CrossbowBallista_Pickup         = "Ballista (Slot 4)";
+PBX_CrossbowBallista_Tag            = "Composite Crossbow";
 
-PBX_Crossbow_Standard = "\cdNormal Arrow \c-Loaded";
-PBX_Crossbow_Demonic = "\caDemonic Ballista \c-Mode";
+PBX_Crossbow_Standard               = "\cdNormal Arrow \c-Loaded";
+PBX_Crossbow_Demonic                = "\caDemonic Ballista \c-Mode";
 
-PBX_DemonicBallistaUpgrade_Pickup = "Demonic Ballista Upgrade (Slot 4)"
-PBX_Prosurv_Ballista_UpgradeTag = "Ballista Upgrade";
+PBX_DemonicBallistaUpgrade_Pickup   = "Demonic Ballista Upgrade (Slot 4)"
+PBX_Prosurv_Ballista_UpgradeTag     = "Ballista Upgrade";
 
 //////////////////////////// SLOT 5 ///////////////////////////////////////////////////////////////////////////////
 // HMG
-PBX_NeoHMG_Pickup = "HMG (Slot 5)";
-PBX_NeoHMG_Tag = "UAC PB-3 Heavy Machine Gun";
+PBX_NeoHMG_Pickup                   = "HMG (Slot 5)";
+PBX_NeoHMG_Tag                      = "UAC PB-3 Heavy Machine Gun";
 
-PBX_NeoHMG_Heated = "\caHeated \c-Rounds";
-PBX_NeoHMG_Charged = "\cnCharged \c-Rounds";
+PBX_NeoHMG_Heated                   = "\caHeated \c-Rounds";
+PBX_NeoHMG_Charged                  = "\cnCharged \c-Rounds";
 
 //////////////////////////// SLOT 6 ///////////////////////////////////////////////////////////////////////////////
 // Excavator
-PBX_Excavator_Pickup = "Excavator (Slot 6)";
-PBX_Excavator_Tag = "UAC-M2 Excavator Launcher";
-PBX_Excavator_DrillMode = "\cdDrill Charge \c-Mode";
-PBX_Excavator_DropMode = "\ciDrop Charge \c-Mode";
+PBX_Excavator_Pickup                = "Excavator (Slot 6)";
+PBX_Excavator_Tag                   = "UAC-M2 Excavator Launcher";
+PBX_Excavator_DrillMode             = "\cdDrill Charge \c-Mode";
+PBX_Excavator_DropMode              = "\ciDrop Charge \c-Mode";
 
 // CyberdemonRL
-PBX_CyberdemonRL_Pickup = "You got the Cyberdemon's missile launcher! Holy shit, that thing's heavy... (Slot 6)";
-PBX_CyberdemonRL_Tag = "Cyberdemon's Missile Launcher";
+PBX_CyberdemonRL_Pickup             = "You got the Cyberdemon's missile launcher! Holy shit, that thing's heavy... (Slot 6)";
+PBX_CyberdemonRL_Tag                = "Cyberdemon's Missile Launcher";
 
-PBX_CyberdemonRL_Pierce = "\cdPiercing Rockets \c-Mode";
-PBX_CyberdemonRL_Normal = "\cdExtreme Explosion \c-Mode";
+PBX_CyberdemonRL_Pierce             = "\cdPiercing Rockets \c-Mode";
+PBX_CyberdemonRL_Normal             = "\cdExtreme Explosion \c-Mode";
 
 // Mastermind CG
-PBX_MastermindCG_Pickup = "You got the Mastermind's Chaingun! (Slot 6)";
-PBX_MastermindCG_Tag = "Spider Mastermind's Chaingun";
+PBX_MastermindCG_Pickup             = "You got the Mastermind's Chaingun! (Slot 6)";
+PBX_MastermindCG_Tag                = "Spider Mastermind's Chaingun";
 
-PBX_MastermindCG_SoulSeeker = "\crSoul Seeker \c-Mode";
-PBX_MastermindCG_Normal = "\caExplosive Tracers \c-Mode";
+PBX_MastermindCG_SoulSeeker         = "\crSoul Seeker \c-Mode";
+PBX_MastermindCG_Normal             = "\caExplosive Tracers \c-Mode";
 //////////////////////////// SLOT 7 ///////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////// SLOT 8 ///////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////// SLOT 9 ///////////////////////////////////////////////////////////////////////////////
 // Demonic Exterminator
-PBX_DemonExt_Pickup = "You Have Found The UnMaker Extermination Type. (Slot 9)";
-PBX_DemonExt_Tag = "UnMaker Extermination Type";
-PBX_DemonExt_Laser = "\caLaser \c-Mode";
-PBX_DemonExt_Incin = "\crDark Incinerator \c-Mode";
-PBX_DemonExt_Lightning = "\cjSoul Lightning \c-Mode";
+PBX_DemonExt_Pickup                 = "You Have Found The UnMaker Extermination Type. (Slot 9)";
+PBX_DemonExt_Tag                    = "UnMaker Extermination Type";
+PBX_DemonExt_Laser                  = "\caLaser \c-Mode";
+PBX_DemonExt_Incin                  = "\crDark Incinerator \c-Mode";
+PBX_DemonExt_Lightning              = "\cjSoul Lightning \c-Mode";
 
 //////////////////////////// OTHERS ///////////////////////////////////////////////////////////////////////////////
 // SHARED
-PBX_AlreadySelected = "Mode Already Selected";
-PBX_NoUpgrade = "You Don't Have the Upgrade for This Weapon";
-PBX_AmmoNotAvailable = "Ammo Type Not Available";
-PBX_ModeNotAvailable = "Mode Not Available";
-PBX_NoSpecial = "No Weapon Special Available";
-PBX_NotEnoughAmmo = "Not Enough Ammo";
+PBX_AlreadySelected                 = "Mode Already Selected";
+PBX_NoUpgrade                       = "You Don't Have the Upgrade for This Weapon";
+PBX_AmmoNotAvailable                = "Ammo Type Not Available";
+PBX_ModeNotAvailable                = "Mode Not Available";
+PBX_NoSpecial                       = "No Weapon Special Available";
+PBX_NotEnoughAmmo                   = "Not Enough Ammo";
 

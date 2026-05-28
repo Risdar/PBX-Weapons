@@ -27,8 +27,8 @@ class PBXWeapons_Handler : EventHandler
         // SLOT 9
         // OTHERS
         PB_HelpNotificationsHandler.PB_SendTip("$PBXWeapons_Version", "PBXWeapons_GeneralFlags", ePBX_Weapons_Version);
-        if(!pm.findinventory("PBX_TipsManager"))
-            pm.giveinventory("PBX_TipsManager",1);
+        pm.giveinventory("PBXWeapons_TipsManager",1);
+        // pm.giveinventory("PBXWeapons_MonsterWeapons",1);
         return;
     }
 
@@ -40,6 +40,90 @@ class PBXWeapons_Handler : EventHandler
     //     //destroy();
     // }
 }
+
+// THIS IS SUCH A HACK LOL
+class CyberRLPickup : CustomInventory
+{
+    Default
+    {
+        Inventory.Amount 1;
+        Inventory.PickupMessage "$PBX_CyberdemonRL_Pickup";
+		Inventory.PickupSound "BFGREADY";
+		Tag "$PBX_CyberdemonRL_Tag";
+        +Inventory.AlwaysPickUp;
+        +FLOORCLIP;
+        +DONTGIB;
+    }
+
+    States
+    {
+        Spawn:
+            HND7 E -1;
+            Stop; 
+
+        Pickup:
+            TNT1 A 0 A_GiveInventory ("CyberRLDurability",CyberdemonRLDurability);
+            TNT1 A 0 A_GiveInventory ("PBX_CyberdemonRL",1);
+            Stop;
+    }
+}
+
+class MastermindCGPickup : CustomInventory
+{
+    Default
+    {
+        Inventory.Amount 1;
+		Inventory.Pickupmessage "$PBX_MastermindCG_Pickup";
+		Inventory.PickupSound "CBOXPKUP";
+		Tag "$PBX_MastermindCG_Tag";
+        +Inventory.AlwaysPickUp;
+        +FLOORCLIP;
+        +DONTGIB;
+    }
+
+    States
+    {
+        Spawn:
+            TRP6 A -1;
+            Stop;
+
+        Pickup:
+            TNT1 A 0 A_GiveInventory ("MastermindCGDurability",MastermindCGFullDurability);
+            TNT1 A 0 A_GiveInventory ("PBX_MastermindChaingun",1);
+            Stop;
+    }
+}
+
+// class PBXWeapons_MonsterWeapons : Inventory
+// {
+// 	Default
+// 	{
+// 		inventory.maxamount 1;
+// 		+INVENTORY.UNDROPPABLE
+// 		+INVENTORY.UNTOSSABLE
+// 		+INVENTORY.PERSISTENTPOWER
+// 	}
+
+// 	override bool HandlePickup(Inventory item)
+// 	{
+//         switch(item.getClassName())
+// 		{
+// 			default:
+//                 break;
+
+// 			case 'PBX_Prosurv_Ballista':
+// 				if(owner.countinv("PB_DTech") < 0)
+// 					owner.giveinventory("PB_DTech", 5);
+//             	break;
+
+//             case 'PBX_CyberdemonRL':
+// 				console.printf("called monster weapon");
+// 				owner.giveinventory("CyberRLDurability", CyberdemonRLDurability);
+//             	break;
+// 		}
+// 		return super.HandlePickup(item);
+// 	} 
+// }
 
 // This is from Doom Deluxe, all credits goes to Dox778 and the Doom Deluxe team
 class PBXWeapons_ScopeHandler : EventHandler

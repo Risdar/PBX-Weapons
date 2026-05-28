@@ -44,7 +44,11 @@ class PBX_BDPBattleRifle : PB_WeaponBase
     bool isSemiAuto;
 	bool semiclear;
 	bool LockedOn;
+	double zoomstrength;
 	int burstcount;
+	// Change these if you want to edit how strong the zoom modes are
+	const HIGHZOOM = 4.0;
+	const LOWZOOM  = 2.0;
 	
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
 	States
@@ -53,10 +57,6 @@ class PBX_BDPBattleRifle : PB_WeaponBase
         Spawn:
 			BR45 A -1;
 			stop;
-
-		Steady:
-			TNT1 A 1;
-			goto Ready;
 
 		Deselect:
 			TNT1 A 0 {
@@ -73,8 +73,6 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 		Select:
 			TNT1 A 0 PB_WeaponRaise("BR45PICK");
 			TNT1 A 0 PB_RespectIfNeeded();
-       	SelectContinue:
-			TNT1 A 0;
 		SelectAnimation:
 			TNT1 A 0 {invoker.burstcount = 0;}
 			BR4S EDCBA 1;
@@ -101,8 +99,6 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 				A_zoomfactor(1.0);
 				PB_HandleCrosshair(42);
 				PB_CoolDownBarrel();
-				// if(countinv("BattleRifle_Upgraded") > 0 || (pbxweapons_backpack_filter & DisablePBX_BattleRifleUpgrade))
-				// 	BR_ReadyNormal();
 				return A_DoPBWeaponAction(WRF_ALLOWRELOAD);
 			}
 			Loop;
@@ -112,16 +108,19 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			TNT1 A 0;
 			BR4Z D 1 Bright 
             {
-				A_zoomfactor(3.0);
+				A_zoomfactor(getZoomStrength());
 				A_SetRoll(0);
                 // PB_HandleCrosshair(5);
                 A_SetCrosshair(-1);
 				PB_CoolDownBarrel();
                 A_SetInventory("PB_LockScreenTilt",0);
+
+				// Enables the scope if the player has the upgrade
 				if(countinv("BattleRifle_Upgraded") > 0 || (pbxweapons_backpack_filter & DisablePBX_BattleRifleUpgrade))
 					BR_ReadyScope();
-				if(Cvar.GetCvar("pb_toggle_aim_hold",player).getint() == 1) 
-				{
+
+				// Boilerplate lol
+				if(PB_GetAimMode()) {
 					if(!PressingAltfire() || JustReleased(BT_ALTATTACK))
 						return resolvestate("ZoomOut");
 					
@@ -129,10 +128,8 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 							return resolvestate("FireADS");
 					
 					return A_DoPBWeaponAction(WRF_ALLOWRELOAD|WRF_NOSECONDARY);
-					
 				}
-				else 
-				{
+				else {
 					if (PressingFire() && invoker.ammo2.amount > 0)
 						return resolvestate("FireADS");
 					
@@ -156,15 +153,9 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			BR4F A 0 A_Jump(85, 3);
 			BR4F B 0 A_Jump(85, 2);
 			BR4F C 0;
-			BR4F "#" 1
-			{
-				FireWeapon(0, 1);
-				FireWeapon(0, 2);
-			}
-			BR45 D 1
-			{
-				if (getBRMag() < 1)
-					PB_SpawnCasing("RifleClipSpawn");
+			BR4F "#" 1 FireWeapon();
+			BR45 D 1 {
+				if (getBRMag() < 1) PB_SpawnCasing("RifleClipSpawn");
 			}
 			// Semi-auto: always go to BurstDone after 1 shot
 			// Burst: loop until burstcount hits 3
@@ -193,57 +184,49 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 
 		//[Pop] because different animations too
 		FireADS:
-		TNT1 A 0 A_ZoomFactor(3.0);
+		TNT1 A 0 A_ZoomFactor(getZoomStrength());
 		TNT1 A 0 PB_JumpIfNoAmmo("ReloadFromADS", 1, false);
-		BR4Z D 1 Bright
-		{
-			FireWeapon(1, 1);
-			FireWeapon(1, 2);
-		}
-		BR4Z D 1 Bright
-		{
-			if (getBRMag() < 1)
-				PB_SpawnCasing("RifleClipSpawn");
+		BR4Z D 1 Bright FireWeapon();
+		BR4Z D 1 Bright {
+			if (getBRMag() < 1) PB_SpawnCasing("RifleClipSpawn");
 		}
 		// Same logic as hipfire
 		TNT1 A 0 A_JumpIf(invoker.isSemiAuto, "BurstDoneADS");
 		TNT1 A 0 A_JumpIf(invoker.burstcount < 3, "BurstFireRecoilADS");
 		goto BurstDoneADS;
 
-	BurstDoneADS:
-		TNT1 A 0
-		{
-			invoker.burstcount = 0;
-			A_SetInventory("CantDoAction", 0);
-		}
-		BR4Z DDDDDDDDDDDD 1 Bright
-		{
-			// Track button release
-			if (!(player.cmd.buttons & BT_ATTACK))
-				invoker.semiclear = true;
-			// Refire only if button was released and repressed
-			if (invoker.semiclear && PlayerPressedOnce(BT_ATTACK))
-				return resolvestate("FireADS");
-
-			if (Cvar.GetCvar("pb_toggle_aim_hold", player).getint())
-			{
-				if (JustReleased(BT_ALTATTACK))
-					return resolvestate("ZoomOut");
+		BurstDoneADS:
+			TNT1 A 0 {
+				invoker.burstcount = 0;
+				A_SetInventory("CantDoAction", 0);
 			}
-			else
-			{
-				if (PressingAltfire())
-					return resolvestate("ZoomOut");
+			BR4Z DDDDDDDDDDDD 1 Bright {
+				// Track button release
+				if (!(player.cmd.buttons & BT_ATTACK))
+					invoker.semiclear = true;
+				// Refire only if button was released and repressed
+				if (invoker.semiclear && PlayerPressedOnce(BT_ATTACK))
+					return resolvestate("FireADS");
+
+				if (Cvar.GetCvar("pb_toggle_aim_hold", player).getint())
+				{
+					if (JustReleased(BT_ALTATTACK))
+						return resolvestate("ZoomOut");
+				}
+				else
+				{
+					if (PressingAltfire())
+						return resolvestate("ZoomOut");
+				}
+
+				return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOFIRE | WRF_NOPRIMARY);
 			}
+			TNT1 A 0 { invoker.semiclear = false; }
+			goto WeaponReadyADS;
 
-			return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOFIRE | WRF_NOPRIMARY);
-		}
-		TNT1 A 0 { invoker.semiclear = false; }
-		goto WeaponReadyADS;
-
-	BurstFireRecoilADS:
-		BR4Z DD 1 Bright;
-		goto FireADS;
+		BurstFireRecoilADS:
+			BR4Z DD 1 Bright;
+			goto FireADS;
 	
         // ALTFIRE
         AltFire:
@@ -255,13 +238,13 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			TNT1 A 0 A_startsound("IronSights",29);
             BR4Z A 1 A_zoomfactor(1.0);
 		    BR4Z B 1 A_zoomfactor(2.0);
-			BR4Z C 1 A_zoomfactor(3.0);
+			BR4Z C 1 A_zoomfactor(getZoomStrength());
             goto WeaponReadyADS;
         ZoomOut:
 			TNT1 A 0 A_takeinventory("Zoomed",1);
 			TNT1 A 0 setADS(true);
 			TNT1 A 0 A_startsound("IronSights",29);
-            BR4Z C 1 A_zoomfactor(3.0);
+            BR4Z C 1 A_zoomfactor(getZoomStrength());
 		    BR4Z B 1 A_zoomfactor(2.0);
 			BR4Z A 1 A_zoomfactor(1.0);
 			goto WeaponReady;
@@ -283,10 +266,10 @@ class PBX_BDPBattleRifle : PB_WeaponBase
                 PB_SetMagEmpty(true);
                 PB_SetChamberEmpty(true);
                 If(getBRMag() > 0)
-                    {
-						PB_SpawnCasing("RifleClipSpawn");
-                        A_fireprojectile("RifleClipSpawn",5,false,0,-14,0);
-                    }
+				{
+					PB_SpawnCasing("RifleClipSpawn");
+					A_fireprojectile("RifleClipSpawn",5,false,0,-14,0);
+				}
 			}
             BR4R FGGGGG 1;
         ContinueReload:
@@ -345,36 +328,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 				A_ZoomFactor(1.0);
 			}
 		ActualModeChange:
-			TNT1 A 0 {
-				if((findinventory("BR_Select_Semi") && getSemiAuto()) || 
-				(findinventory("BR_Select_Burst") && !getSemiAuto()))
-				{
-					A_print("$PBX_AlreadySelected");
-					cleanmodetokens();
-					return resolvestate("ready3");
-				}
-				
-				if(findinventory("BR_Select_Semi"))
-				{
-					setSemiAuto(true);
-					cleanmodetokens();
-					A_Print("$PBX_BattleRifle_SemiAuto");
-				}
-				if(findinventory("BR_Select_Burst"))
-				{
-					setSemiAuto(false);
-					cleanmodetokens();
-					A_Print("$PBX_BattleRifle_Burst");
-				}
-
-				if(countinv("Zoomed") > 0 && getADS())
-				{
-					A_StartSound("MS/Button", 26);
-				}
-
-				return resolvestate(null);
-			}
-			TNT1 A 0 A_JumpIf(countinv("Zoomed") > 0 && getADS(),"WeaponReadyADS");
+			TNT1 A 0 checkSpecial();
         SwitchAnimation:
             BR4R ABCDEFG 1;
             TNT1 A 0 A_StartSound("MS/Button", 26);

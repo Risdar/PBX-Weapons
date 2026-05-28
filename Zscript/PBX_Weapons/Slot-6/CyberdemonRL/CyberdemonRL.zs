@@ -52,9 +52,6 @@ class PBX_CyberdemonRL : PB_WeaponBase
 		Spawn:
             HND7 E -1;
             Stop;
-        Steady:
-            TNT1 A 0;
-            Goto Ready;
         Deselect:
            TNT1 A 0 {
 				A_WeaponOffset(0,32);
@@ -89,8 +86,8 @@ class PBX_CyberdemonRL : PB_WeaponBase
 		Fire:
             TNT1 A 0 CyberRL_HandleAmmo();
             TNT1 AAAA 0;
-			CYBF A 1 BRIGHT CyberRl_FireWeapon(0,1);
-			CYBF B 1 BRIGHT CyberRl_FireWeapon(0,2);
+			CYBF A 1 BRIGHT CyberRl_FireWeapon(1);
+			CYBF B 1 BRIGHT CyberRl_FireWeapon(2);
 			CYBF C 1 A_SetPitch(pitch-1, SPF_INTERPOLATE);
 			CYBF D 1 BRIGHT;
 			CYBF D 1 BRIGHT A_SetPitch(pitch+0.6, SPF_INTERPOLATE);
@@ -110,17 +107,15 @@ class PBX_CyberdemonRL : PB_WeaponBase
 			TNT1 A 0 { invoker.shotCount = 0; }
 		AltFireLoop:
 			TNT1 A 0 CyberRL_HandleAmmo();
-			CYBF A 1 Bright CyberRl_FireWeapon(0, 1);
-			CYBF B 1 Bright CyberRl_FireWeapon(0, 2);
-			CYBF C 1 A_SetPitch(pitch - 1, SPF_INTERPOLATE);
+			CYBF A 1 Bright CyberRl_FireWeapon(1);
+			CYBF B 1 Bright CyberRl_FireWeapon(2);
+			TNT1 A 0 A_JumpIf(invoker.shotCount == 4, "FinishLoop");
+			CYBF C 1 A_SetPitch(pitch-1, SPF_INTERPOLATE);
 			CYBF D 1 Bright A_SetPitch(pitch + 0.6, SPF_INTERPOLATE);
 			CYBF EFG 1 Bright A_SetPitch(pitch + 0.8, SPF_INTERPOLATE);
 			TNT1 A 0 { invoker.shotCount++; }
-			TNT1 A 0 A_JumpIf(invoker.shotCount < 3, "AltFireLoop");
-			// Shot 4
-			TNT1 A 0 CyberRL_HandleAmmo();
-			CYBF A 1 Bright CyberRl_FireWeapon(0, 1);
-			CYBF B 1 Bright CyberRl_FireWeapon(0, 2);
+			TNT1 A 0 A_JumpIf(invoker.shotCount < 4, "AltFireLoop");
+		FinishLoop:
 			CYBF C 1 A_SetPitch(pitch - 1, SPF_INTERPOLATE);
 			CYBF D 3 Bright;
 			CYBF D 1 Bright A_SetPitch(pitch + 0.6, SPF_INTERPOLATE);
@@ -148,7 +143,7 @@ class PBX_CyberdemonRL : PB_WeaponBase
 				A_TakeInventory("PBX_CyberdemonRL",1);
 				A_Startsound("meleeweapon/break");
 				A_ALertMonsters();
-				}
+			}
 			Stop;
 		
 //////////////////////////// WEAPON SPECIAL ////////////////////////////////////////////////////////////////////////////////////

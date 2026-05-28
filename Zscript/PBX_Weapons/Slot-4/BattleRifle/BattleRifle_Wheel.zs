@@ -7,6 +7,8 @@ Class BattleRifleWheel : wheelinfocontainer
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
 	{
+		let battleRifle = PBX_BDPBattleRifle(requester.player.readyweapon);
+
 		super.GetSpecials(spw,requester);
         
         vector2 scale = (1.0,1.0);
@@ -26,6 +28,15 @@ Class BattleRifleWheel : wheelinfocontainer
 		BR_Burst.scalex = scale.x;
 		BR_Burst.scaley = scale.y;
 		spw.push(BR_Burst);
+
+		PB_SpecialWheel_Mode BR_Zoom = new ("PB_SpecialWheel_Mode");
+		BR_Zoom.img = "graphics/WeaponWheel/BattleRifle/BR_Zoom.png";
+		if(battleRifle.zoomstrength == battleRifle.HIGHZOOM) BR_Zoom.Alias = "$PBX_BattleRifle_25";
+		else BR_Zoom.Alias = "$PBX_BattleRifle_40";
+		BR_Zoom.tokentogive = "BR_Select_Zoom";
+		BR_Zoom.scalex = scale.x;
+		BR_Zoom.scaley = scale.y;
+		spw.push(BR_Zoom);
 		
 	}
 }

@@ -530,6 +530,7 @@ class SubZ_Puff : FastProjectile
             A_SpawnProjectile("BlueFlareSpawn", 0, 0, 0, 0);
             A_SpawnProjectile("Icetracer", 0, 0, random(0, 360), 2, random(0, 360));
             A_SpawnItemEx("FreezerTrailSparksSmall", random(-5, 5), random(-5, 5), random(-5, 5), 0, 0, 0, 0, 128, 0);
+			A_FadeOut(0.1);
         }
         Loop;
 
@@ -605,8 +606,8 @@ class FreezerTrailSparksSmall : actor
     States
     {
         Spawn:
-        YA36 B 0 NoDelay A_JumpIf(ScaleX <= 0, "NULL");
-        YA36 B 0 A_SetScale(ScaleX-0.00075);
+        YA36 B 0 NoDelay A_JumpIf(Scale.X <= 0, "NULL");
+        YA36 B 0 A_SetScale(Scale.X-0.00075);
         YA36 B 3 bright A_ChangeVelocity (frandom(-0.8, 0.8), frandom(-0.8, 0.8), frandom(-0.8, 0.8), 0);
         YA36 B 1 bright A_FadeOut(0.05);
         Loop;
