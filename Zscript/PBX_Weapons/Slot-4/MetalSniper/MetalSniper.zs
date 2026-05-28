@@ -36,7 +36,6 @@ Class PBX_MetalSniper : PB_WeaponBase
     bool resonanceAmmoLoaded;
     bool grenadeloaded;
     bool AltMode;
-    bool isZooming;
     bool LockedOn;
     bool enableScopeHUD;
     int currentMaxAmmo;
@@ -93,13 +92,12 @@ Class PBX_MetalSniper : PB_WeaponBase
 
         Deselect:
             TNT1 A 0 A_ZoomFactor(1.0);
-            TNT1 A 0 A_TakeInventory("Zoomed", 10);
+            TNT1 A 0 PB_SetZoom(false);
             TNT1 A 0 {
                 invoker.enableScopeHUD = false;
                 A_SetRenderstyle(1.0, STYLE_Normal);
             }
             TNT1 A 0 PB_SetUsableWheel(true);
-            TNT1 A 0 setZoom(false);
             MSND ABCD 1;
             TNT1 A 0 A_Lower(120);
             wait;
@@ -123,7 +121,7 @@ Class PBX_MetalSniper : PB_WeaponBase
                 invoker.enableScopeHUD = false;
                 A_SetRenderstyle(1.0, STYLE_Normal);
             }
-            TNT1 A 0 A_JumpIf(CountInv("Zoomed") > 0, "Ready_ADS");
+            TNT1 A 0 A_JumpIf(PB_GetZoom(), "Ready_ADS");
             MSNF A 1
             {
                 PB_CoolDownBarrel(-4, 0, 6, 0,  1);
@@ -151,7 +149,7 @@ Class PBX_MetalSniper : PB_WeaponBase
                 PB_HandleCrosshair(42);
                 A_SetInventory("PB_LockScreenTilt", 0);
             }
-            TNT1 A 0 A_JumpIfInventory("Zoomed", 1, "Fire_ADS");
+            TNT1 A 0 A_JumpIf(PB_GetZoom(), "Fire_ADS");
             TNT1 A 0 PB_JumpIfNoAmmo("Reload", 1);
             TNT1 A 0 A_AlertMonsters();
             MSNF B 1 bright MetalSniperFire();
@@ -169,10 +167,9 @@ Class PBX_MetalSniper : PB_WeaponBase
             TNT1 A 0 {invoker.LockedOn = false;}
             TNT1 A 0 A_JumpIf(MS_getmode() == GrenadeMode, "AltFire_Grenade");
         AltFire_Zoom:
-            TNT1 A 0 A_JumpIf(CountInv("Zoomed") > 0 && iszoom(), "ZoomOut");
+            TNT1 A 0 A_JumpIf(PB_GetZoom(), "ZoomOut");
         ZoomIn:
-            TNT1 A 0 A_GiveInventory("Zoomed", 1);
-            TNT1 A 0 setZoom(true);
+            TNT1 A 0 PB_SetZoom(true);
             TNT1 A 0 PB_SetUsableWheel(false);
             TNT1 A 0 A_StartSound("IronSights", 29);
             MSNA A 1 A_ZoomFactor(1.5);
@@ -188,8 +185,7 @@ Class PBX_MetalSniper : PB_WeaponBase
                 invoker.enableScopeHUD = false;
                 A_SetRenderstyle(1.0, STYLE_Normal);
             }
-            TNT1 A 0 A_TakeInventory("Zoomed", 1);
-            TNT1 A 0 setZoom(false);
+            TNT1 A 0 PB_SetZoom(false);
             TNT1 A 0 PB_SetUsableWheel(true);
             TNT1 A 0 A_StartSound("IronSights", 29);
             MSNA F 1 A_ZoomFactor(3.5);
@@ -292,11 +288,9 @@ Class PBX_MetalSniper : PB_WeaponBase
                 invoker.enableScopeHUD = false;
                 A_SetRenderstyle(1.0, STYLE_Normal);
             }
-            TNT1 A 0
-            {
+            TNT1 A 0{
                 A_ZoomFactor(1.0);
-                A_TakeInventory("Zoomed", 10);
-                setZoom(false);
+                PB_SetZoom(false);
             }
             TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, "Start_Rechamber", "Ready3", "NoAmmo", invoker.currentMaxAmmo, invoker.usedAmmo);
         // ── Raise weapon  ──────────────────
@@ -474,10 +468,9 @@ Class PBX_MetalSniper : PB_WeaponBase
         WeaponSpecial:
             TNT1 A 0 A_SetCrosshair(-1);
             TNT1 A 0 A_TakeInventory("GoWeaponSpecialAbility", 1);
-            TNT1 A 0 A_JumpIf(CountInv("Zoomed") > 0, "WeaponSpecial_ToggleScope");
+            TNT1 A 0 A_JumpIf(PB_GetZoom(), "WeaponSpecial_ToggleScope");
             TNT1 A 0 {
-                A_TakeInventory("Zoomed", 1);
-                A_TakeInventory("ADSmode", 1);
+                PB_SetZoom(false);
                 A_ZoomFactor(1.0);
             }
             TNT1 A 0 MS_HandleAmmo();

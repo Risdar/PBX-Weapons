@@ -281,10 +281,6 @@ extend class PBX_MetalSniper
     action bool isResonance()           { return invoker.resonanceAmmoLoaded; }
     action void setResonance(bool set)  { invoker.resonanceAmmoLoaded = set;  }
 
-    // ── Zoom helpers ──────────────────────────────────────────────────────────
-    action bool iszoom()           { return invoker.isZooming; }
-    action void setZoom(bool set)  { invoker.isZooming = set;  }
-
     // ── Grenade helpers ───────────────────────────────────────────────────────
     action void MS_SetGrenadeQ(bool q) { invoker.grenadeloaded = q; }
     action int  getgrenqtty()          { return invoker.grenadeloaded; }

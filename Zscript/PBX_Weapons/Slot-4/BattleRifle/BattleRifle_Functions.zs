@@ -3,7 +3,6 @@ extend class PBX_BDPBattleRifle
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
 	override void postbeginplay()
 	{
-		isADS 	 	 = false;
 		LockedOn 	 = false;
 		semiClear 	 = false;
 		isSemiAuto 	 = true;
@@ -80,16 +79,6 @@ extend class PBX_BDPBattleRifle
     {
         return CountInv(invoker.ammotype2);
     }
-
-    action bool getADS()
-    {
-        return invoker.isADS;
-    }
-
-	action void setADS(bool set = false)
-	{
-		invoker.isADS = set;
-	}
 
 	action bool PlayerPressedOnce(int button)
 	{
@@ -170,7 +159,7 @@ extend class PBX_BDPBattleRifle
 	action void FireWeapon()
 	{
 		// Set up Variables
-		bool ads 	  = CountInv("Zoomed") > 0;
+		bool ads 	  = PB_GetZoom();
 		double recoil = ads ? -1.5 : -3;
 		double smoke  = ads ? -2   : -1;
 		double zoom	  = ads ? getZoomStrength() : 1.0;
@@ -239,7 +228,7 @@ extend class PBX_BDPBattleRifle
 		}
 
 		// Play sound when opening the wheel in ADS
-		if(countinv("Zoomed") > 0 && getADS())
+		if(PB_GetZoom())
 		{
 			A_StartSound("MS/Button", 26);
 			return resolvestate("WeaponReadyADS");

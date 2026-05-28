@@ -40,7 +40,6 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 	}
 	
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
-    bool isADS;
     bool isSemiAuto;
 	bool semiclear;
 	bool LockedOn;
@@ -59,10 +58,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			stop;
 
 		Deselect:
-			TNT1 A 0 {
-				A_Takeinventory("Zoomed",10);
-				setADS();
-			}
+			TNT1 A 0 PB_SetZoom(false);
 			BR4S ABCDE 1; 
 			TNT1 A 0 A_StopSound(1);
 			TNT1 A 0 A_StopSound(2);
@@ -94,7 +90,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
         Ready:
         Ready3:
 		WeaponReady:
-			TNT1 A 0 A_jumpif(countinv("zoomed") > 0,"WeaponReadyADS");
+			TNT1 A 0 A_jumpif(PB_GetZoom(),"WeaponReadyADS");
 			BR45 B 1 {
 				A_zoomfactor(1.0);
 				PB_HandleCrosshair(42);
@@ -133,7 +129,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 				A_SetInventory("PB_LockScreenTilt", 0);
 				A_ZoomFactor(1.0);
 			}
-			TNT1 A 0 A_JumpIfInventory("zoomed", 1, "FireADS");
+			TNT1 A 0 A_JumpIf(PB_GetZoom(), "FireADS");
 			TNT1 A 0 PB_JumpIfNoAmmo("Reload", 1, false);
 			BR4F A 0 A_Jump(85, 3);
 			BR4F B 0 A_Jump(85, 2);
@@ -217,18 +213,16 @@ class PBX_BDPBattleRifle : PB_WeaponBase
         // ALTFIRE
         AltFire:
             TNT1 A 0 {invoker.LockedOn = false;}
-			TNT1 A 0 A_Jumpif(countinv("Zoomed") > 0 && getADS(),"ZoomOut");
+			TNT1 A 0 A_Jumpif(PB_GetZoom(),"ZoomOut");
 		ZoomIn:
-            TNT1 A 0 A_giveinventory("Zoomed",1);
-			TNT1 A 0 setADS(true);
+            TNT1 A 0 PB_SetZoom(true);
 			TNT1 A 0 A_startsound("IronSights",29);
             BR4Z A 1 A_zoomfactor(1.0);
 		    BR4Z B 1 A_zoomfactor(2.0);
 			BR4Z C 1 A_zoomfactor(getZoomStrength());
             goto WeaponReadyADS;
         ZoomOut:
-			TNT1 A 0 A_takeinventory("Zoomed",1);
-			TNT1 A 0 setADS(true);
+			TNT1 A 0 PB_SetZoom(false);
 			TNT1 A 0 A_startsound("IronSights",29);
             BR4Z C 1 A_zoomfactor(getZoomStrength());
 		    BR4Z B 1 A_zoomfactor(2.0);
@@ -238,11 +232,10 @@ class PBX_BDPBattleRifle : PB_WeaponBase
         // RELOAD
 		ReloadFromADS:
 			TNT1 A 0 A_Zoomfactor(1.0);
-			TNT1 A 0 A_takeinventory("Zoomed",10);
+			TNT1 A 0 PB_SetZoom(false);
 		Reload:
 			TNT1 A 0 A_ZoomFactor(1.0);
-            TNT1 A 0 A_takeinventory("Zoomed",10);
-            TNT1 A 0 setADS(false);
+            TNT1 A 0 PB_SetZoom(false);
             TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, null, "WeaponReady", "NoAmmo", BR_AmmoFull, 1);
 			TNT1 A 0 A_startsound("BR45OPEN",3,CHANF_OVERLAP);
             BR4R ABCDE 1;
@@ -306,11 +299,10 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			goto ActualModeChange;
 		Weaponspecial:
 			TNT1 A 0 A_SetCrosshair(-1);
-			TNT1 A 0 A_JumpIf(countinv("Zoomed") > 0 && getADS(),"SpecialFromADS");
+			TNT1 A 0 A_JumpIf(PB_GetZoom(),"SpecialFromADS");
 			TNT1 A 0 {
 				A_Takeinventory("GoWeaponSpecialAbility",1);
-				A_Takeinventory("Zoomed",1);
-				A_Takeinventory("ADSmode",1);
+				PB_SetZoom(false);
 				A_ZoomFactor(1.0);
 			}
 		ActualModeChange:
