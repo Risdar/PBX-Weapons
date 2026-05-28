@@ -15,36 +15,81 @@ extend class PBX_MetalSniper
     // ACTION FUNCTIONS
     // ═════════════════════════════════════════════════════════════════════════
 
-    // ── Scope Function ────────────────────────────────────────────────────────
-    action void MS_ReadyNormal()
+    action state MS_ReadyZoom()
     {
-        FLineTraceData Bule;
-        bool hit = LineTrace(Angle, 6000, Pitch, 0, player.ViewHeight, 0, 0, Bule);
-        if(hit)
+        A_SetRoll(0);
+        // PB_HandleCrosshair(-1);
+        A_SetCrosshair(-1);
+        PB_CoolDownBarrel(-5, 0, 7, 0,  1);
+        PB_CoolDownBarrel( 5, 0, 7, 0, -1);
+        A_SetInventory("PB_LockScreenTilt", 0);
+        if(invoker.ScopeMode == 1 || invoker.ScopeMode == 2)
         {
-            if(Bule.HitActor && Bule.HitActor.bISMONSTER && Bule.HitActor.bFRIENDLY == false && Bule.HitActor is "PB_Monster")
-            {				
-                if(!invoker.LockedOn)
-                {
-                    invoker.LockedOn = true;
-                    A_StartSound("IronSights", CHAN_WEAPON, volume:0.5, pitch:1.4);
-                }
-                // let damn = player.FindPSprite(1);
-                // if(damn)
-                // {
-                //     damn.frame = 3;
-                //     damn.sprite = GetSpriteIndex("SPRF");
-                // }
-            }
-            else
-            if(invoker.LockedOn)
-            {
-                invoker.LockedOn = false;
-                A_StartSound("IronSights", CHAN_WEAPON, volume:0.5, pitch:1.3);
-            }
-        }	
-        // return A_DoPBWeaponAction();
+            // A_SetBlend(0x00a100, 0.2, 99999);
+            A_SetCrosshair(52);
+            A_ZoomFactor(5.0);
+            MS_ReadyScope();
+            A_SetRenderstyle(0.1, Style_Translucent);
+            invoker.enableScopeHUD = true;
+        }
+        else
+        {
+            // EndBlend("DarkGreen");
+            invoker.enableScopeHUD = false;
+            A_SetRenderstyle(1.0, STYLE_Normal);
+            A_ZoomFactor(4.0);
+        }
+
+        if (PB_GetAimMode())
+        {
+            if (!PressingAltfire() || JustReleased(BT_ALTATTACK))
+                return resolvestate("ZoomOut");
+
+            if (PressingFire() && PressingAltfire() && CountInv(invoker.ammotype2) > 0)
+                return resolvestate("Fire_ADS");
+
+            return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOSECONDARY);
+        }
+        else
+        {
+            if (PressingFire() && CountInv(invoker.ammotype2) > 0)
+                return resolvestate("Fire_ADS");
+
+            return A_DoPBWeaponAction(WRF_ALLOWRELOAD);
+        }
+        return ResolveState(null);
     }
+
+    // ── Scope Function ────────────────────────────────────────────────────────
+    // action void MS_ReadyNormal()
+    // {
+    //     FLineTraceData Bule;
+    //     bool hit = LineTrace(Angle, 6000, Pitch, 0, player.ViewHeight, 0, 0, Bule);
+    //     if(hit)
+    //     {
+    //         if(Bule.HitActor && Bule.HitActor.bISMONSTER && Bule.HitActor.bFRIENDLY == false && Bule.HitActor is "PB_Monster")
+    //         {				
+    //             if(!invoker.LockedOn)
+    //             {
+    //                 invoker.LockedOn = true;
+    //                 A_StartSound("IronSights", CHAN_WEAPON, volume:0.5, pitch:1.4);
+    //             }
+    //             // let damn = player.FindPSprite(1);
+    //             // if(damn)
+    //             // {
+    //             //     damn.frame = 3;
+    //             //     damn.sprite = GetSpriteIndex("SPRF");
+    //             // }
+    //         }
+    //         else
+    //         if(invoker.LockedOn)
+    //         {
+    //             invoker.LockedOn = false;
+    //             A_StartSound("IronSights", CHAN_WEAPON, volume:0.5, pitch:1.3);
+    //         }
+    //     }	
+    //     // return A_DoPBWeaponAction();
+    // }
     
     action void MS_ReadyScope()
     {
@@ -205,7 +250,7 @@ extend class PBX_MetalSniper
         A_Overlay(muzzlelayer, "MuzzleFlash_ADS");
         MS_FireActual();
         PB_TakeAmmo(invoker.ammotype2, 1);
-        A_SetInventory("CantDoAction", 1);
+        // A_SetInventory("CantDoAction", 1);
         PB_IncrementHeat(4);
         PB_IncrementHeat(4, true);
         PB_FireOffset();

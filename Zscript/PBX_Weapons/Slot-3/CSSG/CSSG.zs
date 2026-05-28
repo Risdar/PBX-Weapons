@@ -125,7 +125,7 @@ Class PBX_CSSG : PB_WeaponBase
 			//TNT1 A 0 PB_CheckAmmoFire();
 			TNT1 A 0 {
 				A_WeaponOffset(0,32);
-				A_SetRoll(0);
+				PB_SetRoll(0);
 				A_SetInventory("PB_LockScreenTilt",0);
 				CM_HandleCrosshair();
 			}

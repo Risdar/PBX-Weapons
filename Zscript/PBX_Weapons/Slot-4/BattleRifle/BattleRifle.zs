@@ -109,7 +109,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			BR4Z D 1 Bright 
             {
 				A_zoomfactor(getZoomStrength());
-				A_SetRoll(0);
+				PB_SetRoll(0);
                 // PB_HandleCrosshair(5);
                 A_SetCrosshair(-1);
 				PB_CoolDownBarrel();
@@ -119,23 +119,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 				if(countinv("BattleRifle_Upgraded") > 0 || (pbxweapons_backpack_filter & DisablePBX_BattleRifleUpgrade))
 					BR_ReadyScope();
 
-				// Boilerplate lol
-				if(PB_GetAimMode()) {
-					if(!PressingAltfire() || JustReleased(BT_ALTATTACK))
-						return resolvestate("ZoomOut");
-					
-					if (PressingFire() && PressingAltfire() && invoker.ammo2.amount > 0)
-							return resolvestate("FireADS");
-					
-					return A_DoPBWeaponAction(WRF_ALLOWRELOAD|WRF_NOSECONDARY);
-				}
-				else {
-					if (PressingFire() && invoker.ammo2.amount > 0)
-						return resolvestate("FireADS");
-					
-					return A_DoPBWeaponAction(WRF_ALLOWRELOAD);
-				}
-				return resolvestate(null);
+				return PB_ReadyFire(ads:true);
             }
 			Loop;
 		
@@ -144,9 +128,10 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			TNT1 A 0
 			{
 				A_WeaponOffset(0, 32);
-				A_SetRoll(0);
+				PB_SetRoll(0);
 				PB_HandleCrosshair(42);
 				A_SetInventory("PB_LockScreenTilt", 0);
+				A_ZoomFactor(1.0);
 			}
 			TNT1 A 0 A_JumpIfInventory("zoomed", 1, "FireADS");
 			TNT1 A 0 PB_JumpIfNoAmmo("Reload", 1, false);
@@ -183,22 +168,23 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			goto Fire;
 
 		//[Pop] because different animations too
+		Fire2:
 		FireADS:
-		TNT1 A 0 A_ZoomFactor(getZoomStrength());
-		TNT1 A 0 PB_JumpIfNoAmmo("ReloadFromADS", 1, false);
-		BR4Z D 1 Bright FireWeapon();
-		BR4Z D 1 Bright {
-			if (getBRMag() < 1) PB_SpawnCasing("RifleClipSpawn");
-		}
-		// Same logic as hipfire
-		TNT1 A 0 A_JumpIf(invoker.isSemiAuto, "BurstDoneADS");
-		TNT1 A 0 A_JumpIf(invoker.burstcount < 3, "BurstFireRecoilADS");
-		goto BurstDoneADS;
+			TNT1 A 0 A_ZoomFactor(getZoomStrength());
+			TNT1 A 0 PB_JumpIfNoAmmo("ReloadFromADS", 1, false);
+			BR4Z D 1 Bright FireWeapon();
+			BR4Z D 1 Bright {
+				if (getBRMag() < 1) PB_SpawnCasing("RifleClipSpawn");
+			}
+			// Same logic as hipfire
+			TNT1 A 0 A_JumpIf(invoker.isSemiAuto, "BurstDoneADS");
+			TNT1 A 0 A_JumpIf(invoker.burstcount < 3, "BurstFireRecoilADS");
+			goto BurstDoneADS;
 
 		BurstDoneADS:
 			TNT1 A 0 {
 				invoker.burstcount = 0;
-				A_SetInventory("CantDoAction", 0);
+				// A_SetInventory("CantDoAction", 0);
 			}
 			BR4Z DDDDDDDDDDDD 1 Bright {
 				// Track button release
@@ -208,7 +194,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 				if (invoker.semiclear && PlayerPressedOnce(BT_ATTACK))
 					return resolvestate("FireADS");
 
-				if (Cvar.GetCvar("pb_toggle_aim_hold", player).getint())
+				if (PB_GetAimMode())
 				{
 					if (JustReleased(BT_ALTATTACK))
 						return resolvestate("ZoomOut");

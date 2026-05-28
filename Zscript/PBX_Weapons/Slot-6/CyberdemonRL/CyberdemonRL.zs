@@ -55,7 +55,7 @@ class PBX_CyberdemonRL : PB_WeaponBase
         Deselect:
            TNT1 A 0 {
 				A_WeaponOffset(0,32);
-				A_SetRoll(0);
+				PB_SetRoll(0);
 				PB_HandleCrosshair(-1);
 				A_TakeInventory("PB_LockScreenTilt",1);
 			}

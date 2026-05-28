@@ -145,10 +145,9 @@ Class PBX_MetalSniper : PB_WeaponBase
 
         // ── Fire ────────────────────────────────────────────────────
         Fire:
-            TNT1 A 0
-            {
+            TNT1 A 0 {
                 A_WeaponOffset(0, 32);
-                A_SetRoll(0);
+                PB_SetRoll(0);
                 PB_HandleCrosshair(42);
                 A_SetInventory("PB_LockScreenTilt", 0);
             }
@@ -158,8 +157,7 @@ Class PBX_MetalSniper : PB_WeaponBase
             MSNF B 1 bright MetalSniperFire();
             MSNF C 1 bright;
             MSNF DDDEF 1;
-            MSNF GHAAAAAAAAAA 1
-            {
+            MSNF GHAAAAAAAAAA 1 {
                 if (PlayerPressedOnce(BT_ATTACK)) return resolvestate("Fire");
                 return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOFIRE);
             }
@@ -205,53 +203,11 @@ Class PBX_MetalSniper : PB_WeaponBase
         // ── Ready (ADS) ───────────────────────────────────────────────────
         Ready2:     // fallthrough alias
         Ready_ADS:
-            TNT1 A 0;
-            MSNS A 1
-            {
-                A_SetRoll(0);
-                // PB_HandleCrosshair(-1);
-                A_SetCrosshair(-1);
-                PB_CoolDownBarrel(-5, 0, 7, 0,  1);
-                PB_CoolDownBarrel( 5, 0, 7, 0, -1);
-                A_SetInventory("PB_LockScreenTilt", 0);
-                if(invoker.ScopeMode == 1 || invoker.ScopeMode == 2)
-                {
-                    // A_SetBlend(0x00a100, 0.2, 99999);
-                    A_SetCrosshair(52);
-                    A_ZoomFactor(5.0);
-                    MS_ReadyScope();
-                    A_SetRenderstyle(0.1, Style_Translucent);
-                    invoker.enableScopeHUD = true;
-                }
-                else
-                {
-		            // EndBlend("DarkGreen");
-                    invoker.enableScopeHUD = false;
-                    A_SetRenderstyle(1.0, STYLE_Normal);
-                    A_ZoomFactor(4.0);
-                }
-
-                if (PB_GetAimMode())
-                {
-                    if (!PressingAltfire() || JustReleased(BT_ALTATTACK))
-                        return resolvestate("ZoomOut");
-
-                    if (PressingFire() && PressingAltfire() && CountInv(invoker.ammotype2) > 0)
-                        return resolvestate("Fire_ADS");
-
-                    return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOSECONDARY);
-                }
-                else
-                {
-                    if (PressingFire() && CountInv(invoker.ammotype2) > 0)
-                        return resolvestate("Fire_ADS");
-
-                    return A_DoPBWeaponAction(WRF_ALLOWRELOAD);
-                }
-            }
+            MSNS A 1 MS_ReadyZoom();
             loop;
 
         // ── Fire (ADS) ────────────────────────────────────────────────────
+		Fire2:
         Fire_ADS:
             TNT1 A 0 PB_JumpIfNoAmmo("ReloadFromADS", 1);
             // TNT1 A 0 {
@@ -265,9 +221,8 @@ Class PBX_MetalSniper : PB_WeaponBase
             MSNS C 1 bright;
             MSNS DDD 1;
             MSNS EFG 1;
-            MSNS HIAAAAAAAAAA 1
-            {
-                A_SetInventory("CantDoAction", 0);
+            MSNS HIAAAAAAAAAA 1 {
+                // A_SetInventory("CantDoAction", 0);
 
                 if (PB_GetAimMode())
                 {
@@ -286,8 +241,7 @@ Class PBX_MetalSniper : PB_WeaponBase
 
         // ── Grenade mode ──────────────────────────────────────────────────
         AltFire_Grenade:
-            MSNG A 1
-            {
+            MSNG A 1 {
                 PB_CoolDownBarrel(-4, 0, 6,  0,  1);
                 PB_CoolDownBarrel( 4, 0, 6,  0, -1); 
                 if (PlayerPressedOnce(BT_ATTACK))
@@ -318,8 +272,7 @@ Class PBX_MetalSniper : PB_WeaponBase
             MSNL G 1;
             TNT1 A 0 PB_SpawnCasing("EmptyGrenadeBrass", 30, -2, 34, frandom(1.0, 2.0), frandom(-4.0, -2.0), 1.0);
             MSNL HIJKLMN 1;
-            TNT1 A 0
-            {
+            TNT1 A 0 {
                 if (CountInv("PB_RocketAmmo") > 0)
                 {
                     MS_SetGrenadeQ(1);
@@ -369,8 +322,7 @@ Class PBX_MetalSniper : PB_WeaponBase
             MST3 ABCD 1 { if (PB_GetMagEmpty()) A_SetWeaponSprite("MST0"); }
             TNT1 A 0 A_StartSound("MS/Button", 22);
             MST3 E    1 { if (PB_GetMagEmpty()) A_SetWeaponSprite("MST0"); }
-            TNT1 A 0
-            {
+            TNT1 A 0 {
                 A_StartSound("MS/TakeMag", 23);
                 PB_SetMagUnloaded(true);
             }
@@ -380,8 +332,7 @@ Class PBX_MetalSniper : PB_WeaponBase
             MSNR ABCDEFG 1 { if (isResonance()) A_SetWeaponSprite("MSR6"); }
             TNT1 A 0 A_StartSound("MS/InsertMag", 20);
             MSNR HIJKL 1 ;
-            TNT1 A 0
-            {
+            TNT1 A 0 {
                 MS_ReloadMag();
                 PB_SetMagUnloaded(false);
                 PB_SetMagEmpty(false);
@@ -416,8 +367,7 @@ Class PBX_MetalSniper : PB_WeaponBase
 
         // ── Reload from special ─────────────
         ReloadFromSpecial:
-            TNT1 A 0
-            {
+            TNT1 A 0 {
                 MS_ToggleResonance();
                 MS_AmmoCapacity();
                 cleanmodetokens();
@@ -425,8 +375,7 @@ Class PBX_MetalSniper : PB_WeaponBase
             MSR6 ABCDEFG 1 { if (!isResonance()) A_SetWeaponSprite("MSNR"); }
             TNT1 A 0 A_StartSound("MS/InsertMag", 20);
             MSNR HIJKL 1;
-            TNT1 A 0
-            {
+            TNT1 A 0 {
                 MS_ReloadMag();
                 PB_SetMagUnloaded(false);
                 PB_SetMagEmpty(false);
@@ -457,8 +406,7 @@ Class PBX_MetalSniper : PB_WeaponBase
             MST1 E 1;
             TNT1 A 0 A_StartSound("MS/TakeMag", 23);
             MST1 FGH 1;
-            TNT1 A 0
-            {
+            TNT1 A 0 {
                 MS_UnloadMag();
                 PB_SetMagUnloaded(true);
                 PB_SetMagEmpty(true);
@@ -472,8 +420,7 @@ Class PBX_MetalSniper : PB_WeaponBase
             MST0 ABCD 1;
             TNT1 A 0 A_StartSound("MS/Button", 22);
             MST0 E 1;
-            TNT1 A 0
-            {
+            TNT1 A 0 {
                 MS_UnloadMag();
                 PB_SetMagUnloaded(true);
                 PB_SetMagEmpty(true);
@@ -488,8 +435,7 @@ Class PBX_MetalSniper : PB_WeaponBase
             MST3 ABCD 1;
             TNT1 A 0 A_StartSound("MS/Button", 22);
             MST3 E 1;
-            TNT1 A 0
-            {
+            TNT1 A 0 {
                 MS_UnloadMag();
                 PB_SetMagUnloaded(true);
                 PB_SetMagEmpty(true);
@@ -504,8 +450,7 @@ Class PBX_MetalSniper : PB_WeaponBase
             M3NC ABCDEFGHI 1;
             TNT1 A 0 A_StartSound("MS/BoltDown", 24);
             M3NC JKL 1;
-            TNT1 A 0
-            {
+            TNT1 A 0 {
                 MS_UnloadMag(true);     // UnloadChamber = true
                 PB_SetChamberEmpty(true);
             }
@@ -530,8 +475,7 @@ Class PBX_MetalSniper : PB_WeaponBase
             TNT1 A 0 A_SetCrosshair(-1);
             TNT1 A 0 A_TakeInventory("GoWeaponSpecialAbility", 1);
             TNT1 A 0 A_JumpIf(CountInv("Zoomed") > 0, "WeaponSpecial_ToggleScope");
-            TNT1 A 0
-            {
+            TNT1 A 0 {
                 A_TakeInventory("Zoomed", 1);
                 A_TakeInventory("ADSmode", 1);
                 A_ZoomFactor(1.0);

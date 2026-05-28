@@ -57,7 +57,7 @@ Class PBX_DemonExt : PB_WeaponBase
 			TNT1 A 0 PB_WeapTokenSwitch("UnmakerSelected");
 		SelectAnimation:
 			TNT1 A 0 A_zoomfactor(1.0);
-			TNT1 A 0 A_setroll(0);
+			TNT1 A 0 PB_setroll(0);
 			TNT1 A 0 A_startsound("UNMAKSEL",20);
 			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == 2,"SelectSoul");
 			UNMS ABCDE 1; 
@@ -153,8 +153,8 @@ Class PBX_DemonExt : PB_WeaponBase
 			// TNT1 A 0 PB_CheckBarrelThrow1();
 			TNT1 A 0 {
 				A_WeaponOffset(0,32);
-				A_SetRoll(0);
-			DemonExtCrosshair();
+				PB_SetRoll(0);
+				DemonExtCrosshair();
 				A_SetInventory("PB_LockScreenTilt",0);
 			}
 			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == 1,"Fire.Incineration");

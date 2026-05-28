@@ -80,30 +80,30 @@ class PBX_Excavator : PB_WeaponBase
 			5DKF IHGF 1 A_DoPBWeaponAction();
 			5DKF E 15 A_DoPBWeaponAction();
 			6DKF A 1 A_PlaySound("Ironsights", 15);
-            TNT1 A 0 A_SetRoll(roll-0.6,SPF_INTERPOLATE);
+            TNT1 A 0 PB_SetRoll(roll-0.6);
             6DKF BCDEF 1 A_DoPBWeaponAction();
             TNT1 A 0 A_PlaySound("weapons/sgl/cycle", 14);
             //TNT1 A 0 A_FireCustomMissile("RocketCaseSpawn",-30,0,-4,-4);
-            TNT1 A 0 A_SetRoll(roll+0.6,SPF_INTERPOLATE);
+            TNT1 A 0 PB_SetRoll(roll+0.6);
             6DKF GHIJK 1 A_DoPBWeaponAction();
             TNT1 A 0 A_PlaySound("RLCYCLE2", 13);
-            TNT1 A 0 A_SetRoll(0,SPF_INTERPOLATE);
+            TNT1 A 0 PB_SetRoll(0);
             6DKF KKKKK 1 A_DoPBWeaponAction();
             TNT1 A 0 A_PlaySound("weapons/minigun/respect1", 13);
-            TNT1 A 0 A_SetRoll(roll-0.5,SPF_INTERPOLATE);
+            TNT1 A 0 PB_SetRoll(roll-0.5);
             6DKF LMNOPQRS 1 A_DoPBWeaponAction();
             TNT1 A 0 A_PlaySound("weapons/nailgun/up", 10);
-            TNT1 A 0 A_SetRoll(roll-0.5,SPF_INTERPOLATE);
+            TNT1 A 0 PB_SetRoll(roll-0.5);
             6DKF TUVWWWWW 1 A_DoPBWeaponAction();
-            TNT1 A 0 A_SetRoll(0,SPF_INTERPOLATE);
+            TNT1 A 0 PB_SetRoll(0);
             TNT1 A 0 A_PlaySound("Ironsights", 15);
-            TNT1 A 0 A_SetRoll(roll+1.0,SPF_INTERPOLATE);
+            TNT1 A 0 PB_SetRoll(roll+1.0);
             6DKF XYZ 1 A_DoPBWeaponAction();
             TNT1 A 0 A_PlaySound("weapons/sgl/inspect1", 15);
             7DKF A 1 A_DoPBWeaponAction();
-            TNT1 A 0 A_SetRoll(roll-1.0,SPF_INTERPOLATE);
+            TNT1 A 0 PB_SetRoll(roll-1.0);
             7DKF BCD 1 A_DoPBWeaponAction();
-            TNT1 A 0 A_SetRoll(0,SPF_INTERPOLATE);
+            TNT1 A 0 PB_SetRoll(0);
             7DKF EFGHIJK 1 A_DoPBWeaponAction();
             TNT1 A 0 A_PlaySound("excavator/detonate");
             5DKF CCDDCCDDCCDCDCD 1 A_DoPBWeaponAction();
@@ -137,7 +137,7 @@ class PBX_Excavator : PB_WeaponBase
 		Fire:
             TNT1 A 0 {
 				A_WeaponOffset(0,32);
-				A_SetRoll(0);
+				PB_SetRoll(0);
 				A_SetInventory("PB_LockScreenTilt",0);
 			}
 			TNT1 A 0 PB_JumpIfNoAmmo("Reload",1,false);
@@ -158,7 +158,7 @@ class PBX_Excavator : PB_WeaponBase
 		Reload:
             TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, null, "ReadyDrillChargaMode", "ReadyDrillChargaMode", excavatorFullAmmo, 2);
 			6DKF A 1 A_PlaySound("Ironsights", 15);
-            TNT1 A 0 A_SetRoll(roll-0.6,SPF_INTERPOLATE);
+            TNT1 A 0 PB_SetRoll(roll-0.6);
             6DKF BCDEF 1 ;
             TNT1 A 0 A_PlaySound("weapons/sgl/cycle", 14);
             TNT1 A 0 {
@@ -168,21 +168,21 @@ class PBX_Excavator : PB_WeaponBase
                 PB_SetMagEmpty(true);
             }
             //TNT1 A 0 A_FireCustomMissile("RocketCaseSpawn",-30,0,-4,-4);
-            TNT1 A 0 A_SetRoll(roll+0.6,SPF_INTERPOLATE);
+            TNT1 A 0 PB_SetRoll(roll+0.6);
             6DKF GHIJK 1 ;
             TNT1 A 0 A_PlaySound("RLCYCLE2", 13);
-            TNT1 A 0 A_SetRoll(0,SPF_INTERPOLATE);
+            TNT1 A 0 PB_SetRoll(0);
             6DKF KKKKK 1 ;
             TNT1 A 0 A_PlaySound("weapons/minigun/respect1", 13);
-            TNT1 A 0 A_SetRoll(roll-0.5,SPF_INTERPOLATE);
+            TNT1 A 0 PB_SetRoll(roll-0.5);
         ContinueReload:
             6DKF LMNOPQRS 1 ;
             TNT1 A 0 A_PlaySound("weapons/nailgun/up", 10);
-            TNT1 A 0 A_SetRoll(roll-0.5,SPF_INTERPOLATE);
+            TNT1 A 0 PB_SetRoll(roll-0.5);
             6DKF TUVWWWWW 1 ;
-            TNT1 A 0 A_SetRoll(0,SPF_INTERPOLATE);
+            TNT1 A 0 PB_SetRoll(0);
             TNT1 A 0 A_PlaySound("Ironsights", 15);
-            TNT1 A 0 A_SetRoll(roll+1.0,SPF_INTERPOLATE);
+            TNT1 A 0 PB_SetRoll(roll+1.0);
             6DKF XYZ 1 ;
             TNT1 A 0 A_PlaySound("weapons/sgl/inspect1", 15);
             7DKF A 1 ;
@@ -192,9 +192,9 @@ class PBX_Excavator : PB_WeaponBase
                 PB_SetChamberEmpty(false);
                 PB_SetMagEmpty(false);
             }
-            TNT1 A 0 A_SetRoll(roll-1.0,SPF_INTERPOLATE);
+            TNT1 A 0 PB_SetRoll(roll-1.0);
             7DKF BCD 1 ;
-            TNT1 A 0 A_SetRoll(0,SPF_INTERPOLATE);
+            TNT1 A 0 PB_SetRoll(0);
             7DKF EFGHIJK 1 ;
             TNT1 A 0 A_PlaySound("excavator/detonate");
             5DKF CCDDCCDDCCDCDCD 1 ;
@@ -209,11 +209,11 @@ class PBX_Excavator : PB_WeaponBase
 		Unload:
 			TNT1 A 0 A_Jumpif(pb_getmagunloaded(),"NoAmmo");
 			6DKF A 1 A_PlaySound("Ironsights", 15);
-            TNT1 A 0 A_SetRoll(roll-0.6,SPF_INTERPOLATE);
+            TNT1 A 0 PB_SetRoll(roll-0.6);
             6DKF BCDEF 1;
             TNT1 A 0 A_PlaySound("weapons/sgl/cycle", 14);
             //TNT1 A 0 A_FireCustomMissile("RocketCaseSpawn",-30,0,-4,-4);
-            TNT1 A 0 A_SetRoll(roll+0.6,SPF_INTERPOLATE);
+            TNT1 A 0 PB_SetRoll(roll+0.6);
             6DKF GHI 1;
 		    6DKF J 1;
 			TNT1 A 0 {

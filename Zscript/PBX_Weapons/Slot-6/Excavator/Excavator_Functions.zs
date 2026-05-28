@@ -78,7 +78,7 @@ extend class PBX_Excavator
 					case 0:
                         // SETUP
 						A_WeaponOffset(0,32);
-                        A_SetRoll(0);
+                        PB_SetRoll(0);
                         A_TakeInventory("PB_LockScreenTilt",1);
                         // ACTUAL FIRING
 						A_FireCustomMissile("ShotgunParticles", random(-16,16), 0, -1, random(-9,9));

@@ -173,6 +173,7 @@ extend class PBX_BDPBattleRifle
 		bool ads 	  = CountInv("Zoomed") > 0;
 		double recoil = ads ? -1.5 : -3;
 		double smoke  = ads ? -2   : -1;
+		double zoom	  = ads ? getZoomStrength() : 1.0;
 
 		A_AlertMonsters();
 		PB_DynamicTail("lmg", "lmg");
@@ -195,7 +196,7 @@ extend class PBX_BDPBattleRifle
 		
 		PB_GunSmoke(0,0,smoke);
 		PB_WeaponRecoil(recoil,frandom(-0.3,0.3));
-		A_ZoomFactor(getZoomStrength(), SPF_INTERPOLATE);
+		A_ZoomFactor(zoom, SPF_INTERPOLATE);
 	}
 
 	action state checkSpecial()

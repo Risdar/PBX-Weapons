@@ -78,7 +78,7 @@ class PBX_Prosurv_Ballista : PB_WeaponBase
 			CRBW A 5 A_DoPBWeaponAction();
 			TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
 			CBWR ABCDEF 1 {
-				A_SetRoll(roll-.4, SPF_INTERPOLATE);
+				PB_SetRoll(roll-.4);
 				A_DoPBWeaponAction;
 			}
 			CBWR GGGGGGGGG 1 A_DoPBWeaponAction();
@@ -91,20 +91,20 @@ class PBX_Prosurv_Ballista : PB_WeaponBase
 			TNT1 A 0 A_PlaySoundEx("weapons/ballista/boltin","Auto");
 			CBOR CDE 1 A_DoPBWeaponAction();
 			CBOR FG 1 {
-				A_SetRoll(roll-.3, SPF_INTERPOLATE);
+				PB_SetRoll(roll-.3);
 				A_DoPBWeaponAction();
 			}
 			CBOR H 1 {
-				A_SetRoll(roll+.3, SPF_INTERPOLATE);
+				PB_SetRoll(roll+.3);
 				A_DoPBWeaponAction();
 			}
 			CBOR IJ 1 {
-				A_SetRoll(roll+.4, SPF_INTERPOLATE);
+				PB_SetRoll(roll+.4);
 				A_DoPBWeaponAction();
 			}
 			TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
 			CBOR KLMN 1 {
-				A_SetRoll(roll+.4, SPF_INTERPOLATE);
+				PB_SetRoll(roll+.4);
 				A_DoPBWeaponAction();
 			}
 			Goto Ready3;
@@ -189,7 +189,7 @@ class PBX_Prosurv_Ballista : PB_WeaponBase
             TNT1 A 0 PB_CheckReload(null, null, null, "Ready3", "ReadyEmpty", 1, getCurrentAmmoTake());
 			// Raise
 			TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
-			CBWR ABCDEF 1 A_SetRoll(roll-.4, SPF_INTERPOLATE);
+			CBWR ABCDEF 1 PB_SetRoll(roll-.4);
 			CBWR GGGGGGGGG 1 ;
 			TNT1 A 0 A_PlaySoundEx("Ironsights","Auto");
 			// Pulll the bowstring
@@ -209,16 +209,16 @@ class PBX_Prosurv_Ballista : PB_WeaponBase
 			}
 			TNT1 A 0 A_PlaySoundEx("weapons/ballista/boltin","Auto");
 			CBOR CDE 1;
-			CBOR FG 1 A_SetRoll(roll-.3, SPF_INTERPOLATE);
-			CBOR H 1 A_SetRoll(roll+.3, SPF_INTERPOLATE);
-			CBOR IJ 1 A_SetRoll(roll+.4, SPF_INTERPOLATE);
+			CBOR FG 1 PB_SetRoll(roll-.3);
+			CBOR H 1 PB_SetRoll(roll+.3);
+			CBOR IJ 1 PB_SetRoll(roll+.4);
 			TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
 			// Lower
-			CBOR KLMN 1 A_SetRoll(roll+.4, SPF_INTERPOLATE);
+			CBOR KLMN 1 PB_SetRoll(roll+.4);
 			TNT1 A 0 PB_SetReloading(false);
 			goto Ready3;
 		ReloadDemonic:
-			CBOR OPQ 1 A_SetRoll(roll+.3, SPF_INTERPOLATE);
+			CBOR OPQ 1 PB_SetRoll(roll+.3);
 			TNT1 A 0 {
 				A_SetInventory("CrossbowBallistaAmmo",1);
 				A_TakeInventory("PB_DTech",3,TIF_NOTAKEINFINITE);
@@ -227,11 +227,11 @@ class PBX_Prosurv_Ballista : PB_WeaponBase
 				PB_SetChamberEmpty(false);
 			}
 			TNT1 A 0 A_PlaySoundEx("weapons/ballista/boltinoutdemonic","Auto");
-			CBOR RST 1 A_SetRoll(roll-.3, SPF_INTERPOLATE);
+			CBOR RST 1 PB_SetRoll(roll-.3);
 			CBOR UU 1;
-			CBOR UU 1 A_SetRoll(roll+.4, SPF_INTERPOLATE);
+			CBOR UU 1 PB_SetRoll(roll+.4);
 			TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
-			CBOR VWXY 1 A_SetRoll(roll+.4, SPF_INTERPOLATE);
+			CBOR VWXY 1 PB_SetRoll(roll+.4);
 			goto Ready3;
 
 
@@ -239,12 +239,12 @@ class PBX_Prosurv_Ballista : PB_WeaponBase
 		Unload:
 			TNT1 A 0 genericChecker("ReadyEmpty","UnloadDemonic");
 			// Raise
-			CBOR NMLK 1 A_SetRoll(roll+.4, SPF_INTERPOLATE);
+			CBOR NMLK 1 PB_SetRoll(roll+.4);
 			// Put the Arrow out
 			TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
-			CBOR JI 1 A_SetRoll(roll+.4, SPF_INTERPOLATE);
-			CBOR H 1 A_SetRoll(roll+.3, SPF_INTERPOLATE);
-			CBOR GF 1 A_SetRoll(roll-.3, SPF_INTERPOLATE);
+			CBOR JI 1 PB_SetRoll(roll+.4);
+			CBOR H 1 PB_SetRoll(roll+.3);
+			CBOR GF 1 PB_SetRoll(roll-.3);
 			CBOR EDC 1;
 			TNT1 A 0 A_PlaySoundEx("weapons/ballista/boltout","Auto");
 			TNT1 A 0 {
@@ -264,16 +264,16 @@ class PBX_Prosurv_Ballista : PB_WeaponBase
 			// Loewr
 			TNT1 A 0 A_PlaySoundEx("Ironsights","Auto");
 			CBWR GGGGGGGGG 1 ;
-			CBWR FEDCBA 1 A_SetRoll(roll-.4, SPF_INTERPOLATE);
+			CBWR FEDCBA 1 PB_SetRoll(roll-.4);
 			TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
 			goto Ready3;
 
 		UnloadDemonic:
-			CBOR YXWV 1 A_SetRoll(roll+.4, SPF_INTERPOLATE);
+			CBOR YXWV 1 PB_SetRoll(roll+.4);
 			TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
-			CBOR UU 1 A_SetRoll(roll+.4, SPF_INTERPOLATE);
+			CBOR UU 1 PB_SetRoll(roll+.4);
 			CBOR UU 1;
-			CBOR TSR 1 A_SetRoll(roll-.3, SPF_INTERPOLATE);
+			CBOR TSR 1 PB_SetRoll(roll-.3);
 			TNT1 A 0 A_PlaySoundEx("weapons/ballista/boltinoutdemonic","Auto");
 			TNT1 A 0 {
 				PB_UnloadMag("CrossbowBallistaAmmo","PB_DTech",getCurrentAmmoTake());
@@ -281,7 +281,7 @@ class PBX_Prosurv_Ballista : PB_WeaponBase
 				PB_SetMagEmpty(true);
 				PB_SetChamberEmpty(true);
 			}
-			CBOR QPO 1 A_SetRoll(roll+.3, SPF_INTERPOLATE);
+			CBOR QPO 1 PB_SetRoll(roll+.3);
 			TNT1 A 0 actualModeChange();
 			goto FinishUnload;
 		

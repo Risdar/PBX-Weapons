@@ -193,7 +193,7 @@ extend class PBX_NeoHMG
 					case 0:
                         // SETUP
 						A_WeaponOffset(0,32);
-                        A_SetRoll(0);
+                        PB_SetRoll(0);
                         A_TakeInventory("PB_LockScreenTilt",1);
                         // ACTUAL FIRING
 						HMG_fireBullet();

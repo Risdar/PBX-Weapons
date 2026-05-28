@@ -107,13 +107,17 @@ class PBX_Hud : PB_Hud_ZS
                     adjustScale = 0.7;
                     break;
                 case 'PB_SMG':
-                    bool smgSilenced = PBX_PlayerHasInventory("SilencedSMG");
+                    let smg = PB_SMG(pbWeap);
+                    if(!smg) return;
+                    bool smgSilenced = smg.hasSilencer;
                     adjustPos = isAkimbo ?  (smgSilenced ? (-10,-7) : (13,-5)) : // Akimbo ? Silenced : Not Silenced
                                             (smgSilenced ?  (-13,14) : (10,14)); // Single ? Silenced : Not Silenced
                     adjustScale = 0.9;
                     break;
                 case 'PB_Pistol':
-                    bool pistolSilenced = PBX_PlayerHasInventory("SilencerEquipped");
+                    let pistol = PB_Pistol(pbWeap);
+                    if(!pistol) return;
+                    bool pistolSilenced = pistol.hasSilencer;
                     adjustPos = isAkimbo ?  (pistolSilenced ? (-5,-9) : (20,-9)) : // Akimbo ? Silenced : Not Silenced
                                             (pistolSilenced ?  (-2,18) : (18,18)); // Single ? Silenced : Not Silenced
                     adjustScale = 1.1;
@@ -282,9 +286,9 @@ class PBX_Hud : PB_Hud_ZS
                     // adjustScale = 0.9;
 
                     // MODE
-                    adjustPos2 = (0,-60);
+                    adjustPos2   = (0,-60);
                     adjustScale2 = 0.3;
-                    adjustPos3 = (0,-10);
+                    adjustPos3   = (0,-10);
                     adjustScale3 = 0.3;
                     break;
 
@@ -515,12 +519,11 @@ class PBX_Hud : PB_Hud_ZS
 
 //////////////// SLOT 8 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             case 'PB_CryoRifle':
+                let cryorifle = PB_CryoRifle(pbWeap);
+                if(!cryorifle) return;
                 // Shows the current primary and secondary mode
-                bool cryoMissile = PBX_PlayerHasInventory("FireModeCryoRifleMissile");
-                // bool cryoBeam = PBX_PlayerHasInventory("FireModeCryoRifleBeam");
-                
-                bool cryoSpear = PBX_PlayerHasInventory("FireModeCryoRifleSpear");
-                // bool cryoFlak = PBX_PlayerHasInventory("FireModeCryoRifleFlak");
+                bool cryoMissile = cryorifle.cryoPrimary   == cryorifle.PRIM_MISSILE;
+                bool cryoSpear   = cryorifle.cryoSecondary == cryorifle.SEC_SPEAR;
                 
                 pbx_image3 = cryoMissile ? "graphics/pywheel/CryoRifle_Missile.png" : "graphics/pywheel/CryoRifle_Beam.png";
                 pbx_image2 = cryoSpear ? "graphics/pywheel/CryoRifle_Spear.png" : "graphics/pywheel/CryoRifle_Flak.png";

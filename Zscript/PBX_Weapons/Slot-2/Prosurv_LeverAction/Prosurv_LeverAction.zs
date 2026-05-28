@@ -85,58 +85,58 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
                 A_Takeinventory("Zoomed",1);
 			}
 			TNT1 AAAAAA 1 {
-				A_SetRoll(roll-0.3,SPF_INTERPOLATE);
+				PB_SetRoll(roll-0.3);
 				A_DoPBWeaponAction();
 			}
 			TNT1 A 0 A_PlaysoundEx("weapons/leveraction/inspect", "Auto");
 			LVRA ZYXWV 1 {
-				A_SetRoll(roll+0.3,SPF_INTERPOLATE);
+				PB_SetRoll(roll+0.3);
 				A_DoPBWeaponAction();
 			}
 			TNT1 A 0 A_StartSound("weapons/leveraction/flip");
 			LVR4 F 1 {
-				A_SetRoll(roll+0.3,SPF_INTERPOLATE);
+				PB_SetRoll(roll+0.3);
 				A_DoPBWeaponAction();
 			}
 			LVRA FGIKM 1 {
-				A_SetRoll(roll+0.3,SPF_INTERPOLATE);
+				PB_SetRoll(roll+0.3);
 				A_DoPBWeaponAction();
 			}
 			TNT1 A 0 A_StartSound("weapons/leveraction/rechamber");
 			LVRA NNNNNOPQR 1 {
-				A_SetRoll(roll-0.3,SPF_INTERPOLATE);
+				PB_SetRoll(roll-0.3);
 				A_DoPBWeaponAction();
 			}
 			LVRA SUT 1 {
-				A_SetRoll(roll-0.3,SPF_INTERPOLATE);
+				PB_SetRoll(roll-0.3);
 				A_DoPBWeaponAction();
 			}
 			LVR4 G 1 {
-				A_SetRoll(roll-0.3,SPF_INTERPOLATE);
+				PB_SetRoll(roll-0.3);
 				A_DoPBWeaponAction();
 			}
 			LVRA AA 1 {
-				A_SetRoll(roll-0.3,SPF_INTERPOLATE);
+				PB_SetRoll(roll-0.3);
 				A_DoPBWeaponAction();
 			}
 			TNT1 A 0 A_StartSound("weapons/leveraction/openchamber");
 			LVR2 RSTUVVVV 1 {
-				A_SetRoll(roll+1.0,SPF_INTERPOLATE);
+				PB_SetRoll(roll+1.0);
 				A_DoPBWeaponAction();
 			}
 			LVR2 V 3 A_DoPBWeaponAction();
 			LVR3 AB 1 A_DoPBWeaponAction();
 			LVR3 C 1 { 
 				A_StartSound("insertshell");
-				A_SetPitch(pitch-0.2,SPF_INTERPOLATE);
+				A_SetPitch(pitch-0.2);
 				A_SetAngle(angle+0.2, SPF_INTERPOLATE);
-				A_SetRoll(roll-0.4,SPF_INTERPOLATE);
+				PB_SetRoll(roll-0.4);
 				A_DoPBWeaponAction();
 			}
 			LVR3 D 1 {
-				A_SetPitch(pitch+0.2,SPF_INTERPOLATE);
+				A_SetPitch(pitch+0.2);
 				A_SetAngle(angle-0.2, SPF_INTERPOLATE);
-				A_SetRoll(roll+0.4,SPF_INTERPOLATE);
+				PB_SetRoll(roll+0.4);
 				A_DoPBWeaponAction();
 			}
 			LVR3 EFG 1 A_DoPBWeaponAction();
@@ -144,15 +144,15 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 			TNT1 A 0 A_StartSound("weapons/leveraction/openchamber");
 			LVR2 VUTSRQ 1 {
 				A_DoPBWeaponAction();
-				A_SetRoll(roll-1.0,SPF_INTERPOLATE);
+				PB_SetRoll(roll-1.0);
 			}
 			LVR2 PONM 1 {
 				A_DoPBWeaponAction();
-				A_SetRoll(roll+1.0,SPF_INTERPOLATE);
+				PB_SetRoll(roll+1.0);
 			}
 			LVRA AA 1 {
 				A_DoPBWeaponAction();
-				A_SetRoll(roll+1.0,SPF_INTERPOLATE);
+				PB_SetRoll(roll+1.0);
 			}
 			TNT1 A 0 A_Takeinventory("PB_LockScreenTilt",1);
 			Goto Ready3;
@@ -179,7 +179,7 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 		Ready2:
 		ReadyZoom:
 			LVR3 Q 1 {
-				A_SetRoll(0);
+				PB_SetRoll(0);
                 A_SetCrosshair(-1);
 				// PB_HandleCrosshair(-1);
 				PB_CoolDownBarrel();
@@ -206,7 +206,7 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 		Fire:
 			TNT1 A 0 {
 				A_WeaponOffset(0,32);
-				A_SetRoll(0);
+				PB_SetRoll(0);
 				PB_HandleCrosshair(76);
 				A_SetInventory("PB_LockScreenTilt",0);
 			}
@@ -273,18 +273,18 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 				A_TakeInventory("Zoomed",1);
 				A_PlaySoundEx("Ironsights", "Auto");
 			}
-			LVR4 F 1 A_SetRoll(roll+0.3,SPF_INTERPOLATE);
-			LVRA FGIKM 1 A_SetRoll(roll+0.3,SPF_INTERPOLATE);
+			LVR4 F 1 PB_SetRoll(roll+0.3);
+			LVRA FGIKM 1 PB_SetRoll(roll+0.3);
 			TNT1 A 0 A_PlaysoundEx("weapons/leveraction/rechamber", "Auto");
 			LVRA NNNNNOPQR 1 ;
 			TNT1 A 0 PB_SpawnCasing("EmptyBrassPistol");
 			// TNT1 A 0 A_FireCustomMissile("EmptyBrassPistol",0,0,-2,-18)
-			LVRA SUT 1 A_SetRoll(roll-0.3,SPF_INTERPOLATE);
-			LVR4 G 1 A_SetRoll(roll-0.3,SPF_INTERPOLATE);
+			LVRA SUT 1 PB_SetRoll(roll-0.3);
+			LVR4 G 1 PB_SetRoll(roll-0.3);
 			TNT1 A 0 pb_setchamberempty(false);
 			LVRA AA 1 {
 				A_DoPBWeaponAction();
-				A_SetRoll(roll-0.3,SPF_INTERPOLATE);
+				PB_SetRoll(roll-0.3);
 			}
 			TNT1 A 0 PB_Refire("Fire");
 			Goto Ready3;
@@ -338,10 +338,10 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 			}
 			TNT1 A 0 A_StartSound("weapons/leveraction/inspect");
 		BeginReloadLoop:
-			LVR2 MNOP 1 A_SetRoll(roll+1.0,SPF_INTERPOLATE);
+			LVR2 MNOP 1 PB_SetRoll(roll+1.0);
 			TNT1 A 0 A_StartSound("weapons/leveraction/openchamber");
-			LVR2 QQ 1 A_SetRoll(roll-2.0,SPF_INTERPOLATE);
-			LVR2 RSTUVV 1 A_SetRoll(roll-0.6,SPF_INTERPOLATE);
+			LVR2 QQ 1 PB_SetRoll(roll-2.0);
+			LVR2 RSTUVV 1 PB_SetRoll(roll-0.6);
 		ReloadLoop:
 			TNT1 A 0 A_JumpIf(invoker.ammo1.amount == 0 || invoker.ammo2.amount == invoker.currentMaxAmmo,"ReloadFinished");
 			LVR2 V 2 A_DoPBWeaponAction(WRF_NOBOB);
@@ -360,16 +360,16 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 				}
 				// PB_SetMagUnloaded(false);
 				PB_SetMagEmpty(false);
-				A_SetPitch(pitch-0.2,SPF_INTERPOLATE);
+				A_SetPitch(pitch-0.2);
 				A_SetAngle(angle+0.2, SPF_INTERPOLATE);
-				A_SetRoll(roll-0.4,SPF_INTERPOLATE);
+				PB_SetRoll(roll-0.4);
 				if(pb_getchamberempty()) {PB_Setchamberempty(false);}
 			}
 			LVR3 D 1 {
 				A_DoPBWeaponAction(WRF_NOBOB);
-				A_SetPitch(pitch+0.2,SPF_INTERPOLATE);
+				A_SetPitch(pitch+0.2);
 				A_SetAngle(angle-0.2, SPF_INTERPOLATE);
-				A_SetRoll(roll+0.4,SPF_INTERPOLATE);
+				PB_SetRoll(roll+0.4);
 			}
 			LVR3 EFG 1 A_DoPBWeaponAction(WRF_NOBOB);
 			LVR2 V 1 A_DoPBWeaponAction(WRF_NOBOB);
@@ -384,7 +384,7 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 			}
 			LVR2 VUTSRQ 1 {
 				A_DoPBWeaponAction(WRF_NOBOB);
-				A_SetRoll(roll+0.6,SPF_INTERPOLATE);
+				PB_SetRoll(roll+0.6);
 			}
 			LVR2 PONM 1 A_DoPBWeaponAction(WRF_NOBOB);
 			Goto Ready3;
