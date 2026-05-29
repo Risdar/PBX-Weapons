@@ -56,7 +56,6 @@ class PBX_MastermindChaingun : PB_WeaponBase
 		Spawn:
             TRP6 A -1;
             Stop;
-
         Deselect:
            TNT1 A 0 {
 				A_WeaponOffset(0,32);

@@ -16,7 +16,6 @@ class CRL_NormalRockets : CRL_PiercingRockets
 		PB_Projectile.BaseDamage 350;
 		PB_Projectile.RipperCount 1;
         PB_Projectile.PenetrationCount 3;
-        Radius 25;
     }
 }
 
@@ -43,7 +42,7 @@ class CRL_PiercingRockets : PB_ProjectileAlt
         +MTHRUSPECIES
         +RANDOMIZE
         Species "Marines";
-        Scale 1.7;
+        Scale 1.0;
         SeeSound "DSCANFIR";
         DeathSound "Explosion";
         Obituary "%o was blown up by %k's Cyberdemon missile launcher. Ouch!";
@@ -64,7 +63,6 @@ class CRL_PiercingRockets : PB_ProjectileAlt
             TNT1 A 0;
             WYVB A 1 Bright A_SpawnItem("RedFlareSmall22",0,0);
             Loop;
-        
         
         SpawnUnderwater:
             WYVB A 1 Bright A_SpawnItem("YellowFlareSmall",0,0);

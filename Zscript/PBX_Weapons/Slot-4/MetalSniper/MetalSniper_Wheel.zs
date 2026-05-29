@@ -9,7 +9,6 @@ Class MetalSniperWheel : wheelinfocontainer
 	{
 		super.GetSpecials(spw,requester);
 
-		let weap = PBX_MetalSniper(requester.player.readyweapon);
 		vector2 iconScale = (0.7, 0.7);
 
 		PB_SpecialWheel_Mode MS_AimMode = new ("PB_SpecialWheel_Mode");
@@ -33,6 +32,8 @@ Class MetalSniperWheel : wheelinfocontainer
 		if(disableUpgrade)
 			disabled = disableUpgrade.getint() & DisablePBX_MetalSniperUpgrade;
 
+		let weap = PBX_MetalSniper(requester.player.readyweapon);
+		
 		if(requester.FindInventory("MetalSniperUpgraded") || disabled) 
 		{
 			iconScale = (1.0, 1.0);

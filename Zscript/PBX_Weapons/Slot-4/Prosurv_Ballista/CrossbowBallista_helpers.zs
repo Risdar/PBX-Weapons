@@ -55,9 +55,9 @@ class PBX_DemonicBallistaUpgrade : PB_UpgradeItem
             TNT1 A 0 A_JumpIf(!FindInventory("PBX_Prosurv_Ballista") || !FindInventory("Crossbow_Upgraded") || CountInv("PB_DTech") < GetAmmoCapacity("PB_DTech"),1);
             fail;
             TNT1 A 0 {
+                // A_GiveInventory("CB_Select_DemonicMode", 1);
                 A_SetInventory("Crossbow_Upgraded", 1);
                 A_GiveInventory("PBX_Prosurv_Ballista", 1);
-                // A_GiveInventory("CB_Select_DemonicMode", 1);
                 A_SetWeaponTag("PBX_Prosurv_Ballista","$PBX_CrossbowBallista_Tag");
                 A_GiveInventory("PB_DTech", 60);
             }

@@ -71,7 +71,7 @@ PBX_CrossbowBallista_Tag            = "Composite Crossbow";
 PBX_Crossbow_Standard               = "\cdNormal Arrow \c-Loaded";
 PBX_Crossbow_Demonic                = "\caDemonic Ballista \c-Mode";
 
-PBX_DemonicBallistaUpgrade_Pickup   = "Demonic Ballista Upgrade (Slot 4)"
+PBX_DemonicBallistaUpgrade_Pickup   = "Demonic Ballista Upgrade (Slot 4)";
 PBX_Prosurv_Ballista_UpgradeTag     = "Ballista Upgrade";
 
 //////////////////////////// SLOT 5 ///////////////////////////////////////////////////////////////////////////////

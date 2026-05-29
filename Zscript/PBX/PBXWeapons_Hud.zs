@@ -32,7 +32,7 @@ class PBX_Hud : PB_Hud_ZS
         if(menuactive || consolestate == c_up) 
             gatherPBXCVARs();
 
-        if(hudState != HUD_None)
+        if(hudState != HUD_None && !PlayerWasDead)
 		{
             DrawPBXHud();
 		}

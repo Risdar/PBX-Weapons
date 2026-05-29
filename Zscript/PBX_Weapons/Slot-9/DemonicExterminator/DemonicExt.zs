@@ -45,11 +45,6 @@ Class PBX_DemonExt : PB_WeaponBase
 		Spawn:
 			UNMX A -1 bright;
 			Loop;
-			
-		Steady:
-			TNT1 A 1;
-			Goto Ready;
-		
 		Select:
 			TNT1 A 0 A_weaponoffset(0,32); 
 			goto SelectFirstPersonLegs;

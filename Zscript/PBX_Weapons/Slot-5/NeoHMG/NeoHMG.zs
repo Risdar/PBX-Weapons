@@ -83,9 +83,6 @@ class PBX_NeoHMG : PB_WeaponBase
 		Spawn:
             HG0W A -1;
             Stop;
-        Steady:
-            TNT1 A 0;
-            Goto Ready;
         Deselect:
             HG0D ABCD 1;
 			TNT1 A 0 A_lower(120);	

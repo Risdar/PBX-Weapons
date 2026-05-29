@@ -63,9 +63,6 @@ class PBX_Prosurv_Ballista : PB_WeaponBase
 		Spawn:
 			CBOW S -1;
             Stop;
-        Steady:
-            TNT1 A 0;
-            Goto Ready;
         Deselect:
 		    CRBW LMNO 1;
 			CBOW P 1;

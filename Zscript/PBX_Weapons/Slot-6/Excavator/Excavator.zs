@@ -68,9 +68,6 @@ class PBX_Excavator : PB_WeaponBase
 		Spawn:
             5DUN A -1;
             Stop;
-        Steady:
-            TNT1 A 0;
-            Goto Ready;
         Deselect:
             // TNT1 A 0 setExcavatorMode();
 		    5DKF EFGHI 1;

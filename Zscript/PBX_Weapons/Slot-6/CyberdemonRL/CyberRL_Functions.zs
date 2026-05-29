@@ -7,6 +7,18 @@ extend class PBX_CyberdemonRL
         shotCount = 0;
         Super.PostBeginPlay();
     }
+
+	// override bool Use(bool pickup)
+	// {
+	// 	// if(owner.CountInv("CyberRLDurability") < CyberdemonRLDurability)
+	// 	console.printf("Use Overide Initiated");
+	// 	if(owner)
+	// 	{
+	// 		owner.mo.A_SetInventory("CyberRLDurability",25);
+	// 		console.printf("Durability Given");
+	// 	}
+	// 	return false;
+	// }
     
 //////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
 

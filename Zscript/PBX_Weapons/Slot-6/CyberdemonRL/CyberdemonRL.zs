@@ -32,12 +32,14 @@ class PBX_CyberdemonRL : PB_WeaponBase
 		Tag "$PBX_CyberdemonRL_Tag";
         
 //////////////////////////// WEAPON FLAGS ////////////////////////////////////////////////////////////////////////////////////
-        +WEAPON.NOAUTOAIM
-        +WEAPON.EXPLOSIVE
-        +WEAPON.NOAUTOFIRE
-        +FORCEXYBILLBOARD
-        +FLOORCLIP
-        +DONTGIB
+        +WEAPON.NOAUTOAIM;
+        +WEAPON.EXPLOSIVE;
+        +WEAPON.NOAUTOFIRE;
+		+Inventory.AUTOACTIVATE;
+        +Inventory.AlwaysPickUp;
+        +FORCEXYBILLBOARD;
+        +FLOORCLIP;
+        +DONTGIB;
 	}
 
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
@@ -91,10 +93,15 @@ class PBX_CyberdemonRL : PB_WeaponBase
 			CYBF C 1 A_SetPitch(pitch-1, SPF_INTERPOLATE);
 			CYBF D 1 BRIGHT;
 			CYBF D 1 BRIGHT A_SetPitch(pitch+0.6, SPF_INTERPOLATE);
-			CYBF EFG 1 BRIGHT A_SetPitch(pitch+0.8, SPF_INTERPOLATE);
-			CYBF HJ 1 BRIGHT;
-			//CYBF I 0 PB_ReFire;
-			// TNT1 A 0 A_FireCustomMissile("SmokeSpawner11",0,0,0,7);
+			CYBF EFG 1 BRIGHT {
+				A_SetPitch(pitch+0.8, SPF_INTERPOLATE);
+				if(JustPressed(BT_ATTACK)) return ResolveState("Fire");
+                return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOPRIMARY);
+			}
+			CYBF HJ 1 BRIGHT {
+				if(JustPressed(BT_ATTACK)) return ResolveState("Fire");
+                return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOPRIMARY);
+			}
 			TNT1 A 0 PB_ReFire();
 			goto Ready3;
 

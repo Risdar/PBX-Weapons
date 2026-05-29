@@ -67,9 +67,6 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 		Spawn:
             LVR4 E -1;
             Stop;
-        Steady:
-            TNT1 A 0;
-            Goto Ready;
         Deselect:
             TNT1 A 0 LA_Deselect();
 		    LVRA AA 1; 
