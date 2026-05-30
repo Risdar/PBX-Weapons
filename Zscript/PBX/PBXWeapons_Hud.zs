@@ -252,16 +252,16 @@ class PBX_Hud : PB_Hud_ZS
                     break;
 
                 case 'PBX_CyberdemonRL':
-                    adjustPos = (-15, 15); 
-                    adjustScale = 10.0;
+                    adjustPos = (-15, 28); 
+                    adjustScale = 1.5;
                     break;
                 case 'PBX_Excavator':
                     adjustPos = (-10, 15); 
                     adjustScale = 1.1;
                     break;
                 case 'PBX_MastermindChaingun':
-                    adjustPos = (-17, 25); 
-                    adjustScale = 10.0;
+                    adjustPos = (-17, 35); 
+                    adjustScale = 1.5;
                     break;
 
 //////////////// SLOT 7 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -606,7 +606,9 @@ class PBX_Hud : PB_Hud_ZS
         {
 //////////////// SLOT 2 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             case 'PB_SMG':
-                bool smgSilenced = PBX_PlayerHasInventory("SilencedSMG");
+                let smg = PB_SMG(pbWeap);
+                if(!smg) return;
+                bool smgSilenced = smg.hasSilencer;
                 pbx_image = isAkimbo ? 
                     // If Akimbo ? Suppressed : Non Suppressed
                     (smgSilenced ? "graphics/pywheel/SMG/SMG_DUAL_SUPPRESSED.png" : "graphics/pywheel/SMG/SMG_DUAL.png") :
@@ -614,7 +616,9 @@ class PBX_Hud : PB_Hud_ZS
                     (smgSilenced ? "ATFLA0" : "ATFLB0");
                 break;
             case 'PB_Pistol':
-                bool pistolSilenced = PBX_PlayerHasInventory("SilencerEquipped");
+                let pistol = PB_Pistol(pbWeap);
+                if(!pistol) return;
+                bool pistolSilenced = pistol.hasSilencer;
                 pbx_image = isAkimbo ? 
                     // If Akimbo ? Suppressed : Non Suppressed
                     (pistolSilenced ? "graphics/pywheel/PISTOL_7.png" : "graphics/pywheel/PISTOL_4.png") :
@@ -774,7 +778,8 @@ class PBX_Hud : PB_Hud_ZS
                 box = pbx_weapon_box3;
                 break;
         }
-        PBHud_DrawImage(image, pos, flagsright, transparency, box: box, scale: scale);
+        // PBHud_DrawImage(image, pos, flagsright, transparency, box: box, scale: scale);
+        PBHud_DrawImage(image, pos, flagsright, transparency, scale: scale);
     }
 
     // Check if the player has an inventory item, returns true if yes

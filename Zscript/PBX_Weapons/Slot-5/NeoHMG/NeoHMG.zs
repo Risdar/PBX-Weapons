@@ -65,7 +65,7 @@ class PBX_NeoHMG : PB_WeaponBase
 	// Shield Values
 	const shieldProtectionMultiplier = 2; // How many shield charges are consumed per point of damage (Multiplier)
 	const shieldRechargeSpeed = 5; // How many tics before giving the shield charge
-	const shieldRechargeRate = 1; // How many shield charges to give each tic
+	const shieldRechargeRate = 5; // How many shield charges to give each tic
 	const shieldCooldown = 15; // How many tics before shield is available again
 
 	// Modes
