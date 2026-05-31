@@ -14,33 +14,25 @@ OptionMenu "PBXWeapons_Menu"
 
     StaticText " "
 
-    StaticText "HUD Settings", grey
-    StaticText " "
-    StaticText "Weapon Position"
+    StaticText "PBX HUD Settings", grey
     StaticText " "
     FlagOption "Weapon HUD",            "PBXWeapons_hudsetting_filter",    "OffOn", 0
     Slider     "Horizontal (X)",        "PBXWeapons_Weaponhud_x",          -700, 700, 1
     Slider     "Vertical (Y)",          "PBXWeapons_Weaponhud_y",          -700, 700, 1
-    StaticText " "
     Slider     "Scale",                 "PBXWeapons_Weaponhud_scale",      0.1, 10, 0.1
-    /* Slider     "Scale Cut-Off (X)",     "PBXWeapons_Weaponhud_boxW",       1, 250, 1
-    Slider     "Scale Cut-Off (Y)",     "PBXWeapons_Weaponhud_boxH",       1, 250, 1 */
-    StaticText " "
     Slider     "Transparency",	        "PBXWeapons_Weaponhud_alpha",      0, 1, 0.02, 2
-
     StaticText " "
-
-    StaticText "Weapon Mode Position", grey
-    StaticText " "
-    FlagOption "Weapon Mode HUD",       "PBXWeapons_hudsetting_filter",    "OffOn", 1
+    StaticText "Weapon Mode HUD"
     Slider     "Horizontal (X)",        "PBXWeapons_WeaponModehud_x",      -700, 700, 1
     Slider     "Vertical (Y)",          "PBXWeapons_WeaponModehud_y",      -700, 700, 1
-    StaticText " "
     Slider     "Scale",                 "PBXWeapons_WeaponModehud_scale",  0.1, 10, 0.1
+    Slider     "Transparency",	        "PBXWeapons_WeaponModehud_alpha",  0, 1, 0.02, 2
+    /* StaticText " " */
+    /* Slider     "Scale Cut-Off (X)",     "PBXWeapons_Weaponhud_boxW",       1, 250, 1
+    Slider     "Scale Cut-Off (Y)",     "PBXWeapons_Weaponhud_boxH",       1, 250, 1 */
     /* Slider     "Scale Cut-Off (X)",     "PBXWeapons_WeaponModehud_boxW",   1, 250, 1
     Slider     "Scale Cut-Off (Y)",     "PBXWeapons_WeaponModehud_boxH",   1, 250, 1 */
-    StaticText " "
-    Slider     "Transparency",	        "PBXWeapons_WeaponModehud_alpha",  0, 1, 0.02, 2
+    /* StaticText " " */
     
     StaticText " "
     
