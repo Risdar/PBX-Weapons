@@ -138,8 +138,8 @@ class PBX_Excavator : PB_WeaponBase
 				A_SetInventory("PB_LockScreenTilt",0);
 			}
 			TNT1 A 0 PB_JumpIfNoAmmo("Reload",1,false);
-            6DKF A 1 BRIGHT FireWeapon(0,1);
-			6DKF A 1 BRIGHT FireWeapon(0,2);
+            6DKF A 1 BRIGHT FireWeapon();
+			6DKF A 1 BRIGHT;
             5DKF L 1 BRIGHT A_ZoomFactor(0.97);
             5DKF M 1 BRIGHT A_ZoomFactor(0.98);
             5DKF N 1 BRIGHT A_ZoomFactor(0.99);
@@ -147,7 +147,7 @@ class PBX_Excavator : PB_WeaponBase
             5DKF OPQRDDD 1 A_WeaponReady(WRF_NOPRIMARY);
             TNT1 A 0 A_PlaySound("RLCYCLE2", 5);
             5DKF DDDD 1 A_WeaponReady(WRF_NOPRIMARY);
-            5DKF D 0 A_ReFire;
+            5DKF D 0 PB_ReFire();
 			Goto ReadyDrillChargaMode;
 
 		

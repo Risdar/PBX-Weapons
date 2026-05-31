@@ -1,7 +1,7 @@
 enum PBXWeapons_eWeaponTipFlags
 {
     // SLOT 2
-    PBX_TIP_BLASTERPISTOL       = 1 << 0,
+    PBX_TIP_PLASMABLASTER       = 1 << 0,
     PBX_TIP_LEVERACTION         = 1 << 1,
     // SLOT 3
     PBX_TIP_CSSG                = 1 << 2,
@@ -59,6 +59,15 @@ class PBXWeapons_TipsManager : inventory
                 break;
 
             // SLOT 2
+            case 'PBX_PlasmaBlaster':
+            {
+                Array<String> tips;
+                tips.Push("$PBX_PlasmaBlaster_Tip1");
+                tips.Push("$PBX_PlasmaBlaster_Tip2");
+                SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_PLASMABLASTER);
+            }
+            break;
+
             case 'PBX_Prosurv_LeverAction':
             {
                 Array<String> tips;
@@ -68,7 +77,7 @@ class PBXWeapons_TipsManager : inventory
                 SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_LEVERACTION);
             }
             break;
-
+            
             // SLOT 3
             case 'PBX_CSSG':
             {

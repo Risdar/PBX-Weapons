@@ -15,7 +15,9 @@ enum PBXWeapons_eShotgunSpawns
 {
 ////// SLOT 2  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	DisablePBX_LeverActionRifle				= 1 << 0,
-	DisablePBX_CrossbowBallista				= 1 << 1
+	DisablePBX_PlasmaBlaster				= 1 << 1,
+////// SLOT 4  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	DisablePBX_CrossbowBallista				= 1 << 2
 }
 
 enum PBXWeapons_eSSGSpawns
@@ -55,6 +57,12 @@ class PBXShotgun_Injector : PBInjector
 {
 	override void Init(PB_EventHandler handler)
 	{
+		// Plasma Blaster
+		if(!(pbxweapons_shotgun_filter & DisablePBX_PlasmaBlaster))
+		{
+			handler.InjectSpawn('PB_ShotSpawnerT2', 'PBX_PlasmaBlaster', 255, 1);
+			handler.InjectSpawn('PB_ShotSpawnerT3', 'PBX_PlasmaBlaster', 255, 1);
+		}
 		// Lever Action
 		if(!(pbxweapons_shotgun_filter & DisablePBX_LeverActionRifle))
 		{

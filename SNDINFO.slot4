@@ -33,16 +33,6 @@ MS/GrenOpen 		"Sounds/Weapons/Slot-4/MetalSniper/msGrenOpen.ogg"
 MS/GrenClose 		"Sounds/Weapons/Slot-4/MetalSniper/msGrenClose.ogg"
 MS/Up 				"Sounds/Weapons/Slot-4/MetalSniper/msRaise.ogg"
 
-// ProSurv Lever Action
-weapons/leveraction/raise "sounds/Weapons/Slot-2/ProSurv - LeverAction/lever_action_raise.ogg"
-weapons/leveraction/inspect "sounds/Weapons/Slot-2/ProSurv - LeverAction/lever_action_inspect.ogg"
-weapons/leveraction/flip "sounds/Weapons/Slot-2/ProSurv - LeverAction/lever_action_flip.ogg"
-weapons/leveraction/openchamber "sounds/Weapons/Slot-2/ProSurv - LeverAction/lever_action_openchamber.ogg"
-weapons/leveraction/rechamber "sounds/Weapons/Slot-2/ProSurv - LeverAction/lever_action_rechamber.ogg"
-weapons/leveraction/loadshell "sounds/Weapons/Slot-2/ProSurv - LeverAction/lever_action_loadshell.ogg"
-weapons/leveraction/fire "sounds/Weapons/Slot-2/ProSurv - LeverAction/lever_action_fire.ogg"
-weapons/leveraction/magfire "sounds/Weapons/Slot-2/ProSurv - LeverAction/lever_action_magfire.ogg"
-
 // ProSurv Ballista
 // Ballista
 weapons/ballista/raise "sounds/Weapons/Slot-4/ProSurv - Ballista/ballista_raise.ogg"

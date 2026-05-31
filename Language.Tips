@@ -3,6 +3,11 @@
 //////////////////////////// SLOT 1 ///////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////// SLOT 2 ///////////////////////////////////////////////////////////////////////////////
+// Plasma Blaster
+PBX_PlasmaBlaster_Tip1 = "The Plasma Blaster has 4 modes, two for each primary and secondary.";
+PBX_PlasmaBlaster_Tip2 = "You can switch between the modes using the Weapon Special Key.";
+
+
 // Lever Action
 PBX_LeverAction_Tip1 = "The Lever Action Rifle can use two types of ammo.";
 PBX_LeverAction_Tip2 = "The .444 Marlin rounds deal high damage but only has 6 shots.";

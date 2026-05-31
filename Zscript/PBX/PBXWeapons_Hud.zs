@@ -188,6 +188,11 @@ class PBX_Hud : PB_Hud_ZS
                 adjustScale = 0.7;
                 break;
 
+            case 'PBX_PlasmaBlaster':
+                adjustPos = (-22, 12); 
+                adjustScale = 2.0;
+                break;
+
 //////////////// SLOT 3 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             case 'PB_Shotgun':
                 adjustPos = (-5, 10); 
@@ -206,7 +211,7 @@ class PBX_Hud : PB_Hud_ZS
                 bool demonBreath = PBX_PlayerHasInventory("BreathMode");
                 adjustPos = isAkimbo ? (demonBreath ? (1, -5) // DUAL QSG DEMON BREATH
                                     : (3, -2))                // DUAL QSG BUCKSHOT
-                        : (demonBreath ? (1,12)                  // SINGLE QSG DEMON BREATH
+                        : (demonBreath ? (1,12)               // SINGLE QSG DEMON BREATH
                                     : (0,10));                // SINGLE QSG BUCKSHOT
                 // MODE
                 adjustPos2 = (0,-20);
@@ -324,8 +329,8 @@ class PBX_Hud : PB_Hud_ZS
                 break;
 
             case 'PBX_MastermindChaingun':
-                adjustPos = (-17, 35); 
-                adjustScale = 1.5;
+                adjustPos = (-10, 40); 
+                adjustScale = 1.6   ;
                 break;
 
 //////////////// SLOT 7 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

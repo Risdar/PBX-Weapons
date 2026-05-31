@@ -50,8 +50,10 @@ OptionMenu "PBXWeapons_Menu"
 AddOptionMenu "AddonWeaponSpawns" after "SHOT1"
 {
         // SLOT 2
+    FlagOption    "Plasma BLaster",         "PBXWeapons_shotgun_filter",    "OffOn", 1
     FlagOption    "Lever Action Rifle",     "PBXWeapons_shotgun_filter",    "OffOn", 0
-    FlagOption    "Crossbow Ballista",      "PBXWeapons_shotgun_filter",    "OffOn", 1
+        // SLOT 4
+    FlagOption    "Crossbow Ballista",      "PBXWeapons_shotgun_filter",    "OffOn", 2
 }
 
 // SSG /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

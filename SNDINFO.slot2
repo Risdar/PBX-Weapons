@@ -1,0 +1,15 @@
+// Plasma Blaster
+HRFire HRFRE
+CELLOUT2 CELLOUT2
+CELLIN2 CELLIN2
+weapons/smg_magfly1 DSRAICU
+
+// ProSurv Lever Action
+weapons/leveraction/raise "sounds/Weapons/Slot-2/ProSurv - LeverAction/lever_action_raise.ogg"
+weapons/leveraction/inspect "sounds/Weapons/Slot-2/ProSurv - LeverAction/lever_action_inspect.ogg"
+weapons/leveraction/flip "sounds/Weapons/Slot-2/ProSurv - LeverAction/lever_action_flip.ogg"
+weapons/leveraction/openchamber "sounds/Weapons/Slot-2/ProSurv - LeverAction/lever_action_openchamber.ogg"
+weapons/leveraction/rechamber "sounds/Weapons/Slot-2/ProSurv - LeverAction/lever_action_rechamber.ogg"
+weapons/leveraction/loadshell "sounds/Weapons/Slot-2/ProSurv - LeverAction/lever_action_loadshell.ogg"
+weapons/leveraction/fire "sounds/Weapons/Slot-2/ProSurv - LeverAction/lever_action_fire.ogg"
+weapons/leveraction/magfire "sounds/Weapons/Slot-2/ProSurv - LeverAction/lever_action_magfire.ogg"
