@@ -39,6 +39,8 @@ Class PBX_DemonExt : PB_WeaponBase
 	
 	const primammo2use3 = 12;
 	const secammo2use3 = 30;
+
+	const LASER_DAMAGE = 80;
 	int ExterminatorMode;
 	bool ExterminatorWeaponSpecial;
 	states{

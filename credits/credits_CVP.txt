@@ -1,0 +1,40 @@
+The Prosurv PSG sprites are taken from CVP
+
+Sprite credits:
+
+Iamcarrotmaster (creator) (all sprites + code edits)
+Typical Sonic Fan (bases for most weapon sprites, and arms, and pickups, alternate pistol)
+Eriance (parts included in many weapons)
+Metalman (casings, and pickups)
+Cascade (Rocket box sprite, Chainsaw/Buzzsaw)
+Da Werecat (part of pump shotgun sprite)
+source for chainsword:
+wolchy
+https://sketchfab.com/3d-models/space-wolves-chainsword-677f053e97114599b0497d8f35493b77
+Motoshturman
+https://sketchfab.com/3d-models/chainsword-mod-92eec2b210a440afacfb68ecf3a93346
+Quake Champions (rocket launcher sounds and source model, though I drew over it entirely)
+
+Sound Credits:
+
+Quake 2 (Rocket Launcher Sounds)
+QCDE (Rocket Launcher Sounds)
+Quake 3 (Rocket Launcher Sounds)
+Sound Caulking
+MW2 2022
+Battlefield 1
+Cyberpunk 2077
+007 Nightfire PS2
+Titanfall 2
+Gears of War
+
+Smoothdoom relative credits:
+
+SidDoyle (mega coding help)
+Almonds (code help)
+Turbo (shell casing sprites)
+Chickenlegz (pinky gib sprites)
+OnslaughtSix (general helpfulness)
+Sergeant Mark IV (original proof-of-concept)
+Blue Shadow (lots of coding help)
+Perkristian (original smooth weapons)

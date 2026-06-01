@@ -19,6 +19,7 @@ Version 4.13
 
 // Slot 3
 #include "Zscript/PBX_Weapons/Slot-3/CSSG/CSSG.zs" // CSSG
+#include "Zscript/PBX_Weapons/Slot-3/Prosurv_PumpShotgun/prosurv_psg.zs" // CSSG
 
 // Slot 4
 #include "Zscript/PBX_Weapons/Slot-4/BattleRifle/BattleRifle.zs" // Battle Rifle

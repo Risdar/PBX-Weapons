@@ -51,7 +51,6 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 	}
 	
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
-	bool isZooming;
 	int currentMaxAmmo;
 	int LAMode;
 	enum eLAMode
@@ -79,7 +78,7 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
                 A_SetCrosshair(-1);
 				// PB_HandleCrosshair(-1);
 				A_Giveinventory("PB_LockScreenTilt",1);
-                A_Takeinventory("Zoomed",1);
+                PB_SetZoom(false);
 			}
 			TNT1 AAAAAA 1 {
 				PB_SetRoll(roll-0.3);
@@ -125,14 +124,12 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 			LVR3 AB 1 A_DoPBWeaponAction();
 			LVR3 C 1 { 
 				A_StartSound("insertshell");
-				A_SetPitch(pitch-0.2);
-				A_SetAngle(angle+0.2, SPF_INTERPOLATE);
+				PB_WeaponRecoil(-0.2,+0.2);
 				PB_SetRoll(roll-0.4);
 				A_DoPBWeaponAction();
 			}
 			LVR3 D 1 {
-				A_SetPitch(pitch+0.2);
-				A_SetAngle(angle-0.2, SPF_INTERPOLATE);
+				PB_WeaponRecoil(+0.2,-0.2);
 				PB_SetRoll(roll+0.4);
 				A_DoPBWeaponAction();
 			}
@@ -163,40 +160,32 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
             LVRA EDCB 1;  
 			LVR4 A 1;
 			LVRA AA 1;
-            goto Ready3 ;
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
 		Ready3:
-        ReadyNormal:
-			TNT1 A 0 PB_HandleCrosshair(76);
-			TNT1 A 0 PB_CoolDownBarrel();
-			TNT1 A 0 A_jumpif(countinv("zoomed") > 0,"Ready2");
-			LVRA A 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD);
+			TNT1 A 0 {
+				A_SetInventory("PB_LockScreenTilt",0);
+				A_SetInventory("CantDoAction", 0);
+			}
+        ReadytoFire:
+			TNT1 A 0 A_jumpif(PB_GetZoom(),"Ready2");
+			LVRA A 1{
+				PB_CoolDownBarrel();
+				PB_HandleCrosshair(76);
+                return PB_ReadyFire();
+			} 
 			Loop;
             
 		Ready2:
-		ReadyZoom:
-			LVR3 Q 1 {
+			TNT1 A 0 {
 				PB_SetRoll(0);
-                A_SetCrosshair(-1);
-				// PB_HandleCrosshair(-1);
-				PB_CoolDownBarrel();
 				A_SetInventory("PB_LockScreenTilt",0);
-				if(Cvar.GetCvar("pb_toggle_aim_hold",player).getint() == 1) 
-				{
-					if(!PressingAltfire() || JustReleased(BT_ALTATTACK))
-						return resolvestate("Zoomout");
-					
-					if (PressingFire() && PressingAltfire() && CountInv(invoker.ammotype2) > 0)
-							return resolvestate("Fire2");
-					return A_DoPBWeaponAction(WRF_ALLOWRELOAD|WRF_NOSECONDARY);
-				}
-				else 
-				{
-					if (PressingFire() && CountInv(invoker.ammotype2) > 0)
-						return resolvestate("Fire2");
-					return A_DoPBWeaponAction(WRF_ALLOWRELOAD);
-				}
-				return resolvestate(null);
+				A_SetInventory("CantDoAction", 0);
+			}
+		ReadytoFire2:
+			LVR3 Q 1 {
+                A_SetCrosshair(-1);
+				PB_CoolDownBarrel();
+				return PB_ReadyFire(ads:true);
 			}
 			Loop;
 //////////////////////////// FIRE ////////////////////////////////////////////////////////////////////////////////////
@@ -207,134 +196,103 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 				PB_HandleCrosshair(76);
 				A_SetInventory("PB_LockScreenTilt",0);
 			}
-			TNT1 A 0 A_jumpifinventory("zoomed",1,"Fire2");
+			TNT1 A 0 A_jumpif(PB_GetZoom(),"Fire2");
+		Fire1Actual:
             TNT1 A 0 PB_JumpIfNoAmmo();
-			TNT1 A 0 A_JumpIf(pb_getchamberempty(), "Pump");
-            LVR2 F 1 BRIGHT LA_FireWeapon(0,1);
-			LVR2 G 1 BRIGHT LA_FireWeapon(0,2);
-			LVR2 H 1 LA_FireWeapon(0,3);
+			// TNT1 A 0 A_JumpIf(pb_getchamberempty(), "Pump");
+            LVR2 F 1 BRIGHT LA_FireWeapon(1);
+			LVR2 G 1 BRIGHT LA_FireWeapon(2);
+			LVR2 H 1 		LA_FireWeapon(3);
 			LVR2 IJKL 1; 
 			LVRA A 1; 
-			Goto Pump;
+		Pump:
+			TNT1 A 0 {
+				A_PlaysoundEx("weapons/leveraction/flip", "Auto");
+				A_ZoomFactor(1.0);
+				PB_SetZoom(false);
+				A_PlaySoundEx("Ironsights", "Auto");
+			}
+			LVR4 F 1 PB_SetRoll(roll+0.3);
+		PumpBegin:
+			LVRA FGHIJKLM 1 PB_SetRoll(roll+0.3);
+			TNT1 A 0 {
+				A_PlaysoundEx("weapons/leveraction/rechamber", "Auto");
+				if(!PB_GetMagEmpty()) PB_SetChamberEmpty(false);
+			}
+			LVRA NNNNNOPQR 1 ;
+			TNT1 A 0 PB_SpawnCasing("EmptyBrassPistol");
+		PumpEnd:
+			LVRA SUT 1 PB_SetRoll(roll-0.3);
+			LVR4 G 1 PB_SetRoll(roll-0.3);
+			LVRA AA 1 PB_SetRoll(roll-0.3);
+			TNT1 A 0 {
+				A_SetInventory("CantDoAction",0);
+				PB_SetReloading(false);
+				PB_Refire();
+			}
+			Goto Ready3;
 
 		Fire2:
+			TNT1 A 0 {
+				PB_SetRoll(0);
+				A_SetCrosshair(-1);
+				A_TakeInventory("PB_LockScreenTilt",1);
+			}
+		Fire2Actual:
             TNT1 A 0 PB_JumpIfNoAmmo();
-			TNT1 A 0 A_JumpIf(pb_getchamberempty(), "Pump");
-			LVR3 R 1 BRIGHT LA_FireWeapon(1,1);
-			LVR3 S 1 BRIGHT LA_FireWeapon(1,2);
+			// TNT1 A 0 A_JumpIf(pb_getchamberempty(), "Pump");
+			LVR3 R 1 BRIGHT LA_FireWeapon(1);
+			LVR3 S 1 BRIGHT LA_FireWeapon(2);
 			LVR3 TU 1;
 			LVR3 VWX 1; 
+		Pump2:
 			TNT1 A 0 {
-				if(Cvar.GetCvar("pb_toggle_aim_hold",player).getint() == 1) 
-				{
-					if(!PressingAltfire() || JustReleased(BT_ALTATTACK)){
-						return resolvestate("Pump");
-					}
-					if (PressingFire() && PressingAltfire() && CountInv(invoker.ammotype2) > 0){
-							return resolvestate("Pump2");
-					}
-					return A_DoPBWeaponAction(WRF_ALLOWRELOAD|WRF_NOFIRE);
-				}
-				else 
-				{
-					if (PressingFire() && CountInv(invoker.ammotype2) > 0){
-						return resolvestate("Pump2");
-					}
-					return A_DoPBWeaponAction(WRF_ALLOWRELOAD);
-				}
-				return resolvestate(null);
+				A_ZoomFactor(1.5);
+				A_Giveinventory("PB_LockScreenTilt",1);
 			}
-			Goto Pump2;
+			TNT1 A 0 {
+				A_StartSound("weapons/leveraction/rechamber");
+				if(!PB_GetMagEmpty()) PB_SetChamberEmpty(false);
+			} 
+			LVR4 ABCD 1;
+			TNT1 A 0 PB_SpawnCasing("EmptyBrassPistol");
+			LVR4 DDDDC 1;
+			LVR4 BAAA 1 {
+				if(JustPressed(BT_ATTACK) && invoker.ammo2.amount > 0) return ResolveState("Fire2");
+                return ResolveState(null);
+			}
+			TNT1 A 0 {
+				A_SetInventory("CantDoAction",0);
+				return PB_ReadyFire(ads:true);
+			}
+			// TNT1 A 0 PB_JumpIfNoAmmo();
+			Goto Ready2;
 
 		AltFire:
-			TNT1 A 0 A_Jumpif(countinv("Zoomed") > 0 && getZoom(),"ZoomOut");
+			TNT1 A 0 A_Jumpif(PB_GetZoom(),"ZoomOut");
 		ZoomIn:
-			TNT1 A 0 A_giveinventory("Zoomed",1);
-			TNT1 A 0 setZoom();
+			TNT1 A 0 PB_SetZoom(true);
 			TNT1 A 0 A_StartSound("IronSights");
 			TNT1 A 0 A_ZoomFactor(1.5);
 			LVR3 MNOP 1;
 			Goto Ready2;
 		Zoomout:
-			TNT1 A 0 A_takeinventory("Zoomed",1);
-			TNT1 A 0 setZoom(false);
+			TNT1 A 0 PB_SetZoom(false);
 			TNT1 A 0 A_startsound("IronSights");
 			TNT1 A 0 A_ZoomFactor(1.0);
 			LVR3 PONM 1;
 			Goto Ready3;
 //////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
-		Pump:
-			TNT1 A 0 {
-				A_PlaysoundEx("weapons/leveraction/flip", "Auto");
-				A_ZoomFactor(1.0);
-				A_TakeInventory("Zoomed",1);
-				A_PlaySoundEx("Ironsights", "Auto");
-			}
-			LVR4 F 1 PB_SetRoll(roll+0.3);
-			LVRA FGIKM 1 PB_SetRoll(roll+0.3);
-			TNT1 A 0 A_PlaysoundEx("weapons/leveraction/rechamber", "Auto");
-			LVRA NNNNNOPQR 1 ;
-			TNT1 A 0 PB_SpawnCasing("EmptyBrassPistol");
-			// TNT1 A 0 A_FireCustomMissile("EmptyBrassPistol",0,0,-2,-18)
-			LVRA SUT 1 PB_SetRoll(roll-0.3);
-			LVR4 G 1 PB_SetRoll(roll-0.3);
-			TNT1 A 0 pb_setchamberempty(false);
-			LVRA AA 1 {
-				A_DoPBWeaponAction();
-				PB_SetRoll(roll-0.3);
-			}
-			TNT1 A 0 PB_Refire("Fire");
-			Goto Ready3;
-		Pump2:
-		TNT1 A 0 {
-			A_ZoomFactor(1.5);
-			A_Giveinventory("PB_LockScreenTilt",1);
-			}
-	    TNT1 A 0 A_StartSound("weapons/leveraction/rechamber");
-		LVR4 ABCD 1;
-		TNT1 A 0 PB_SpawnCasing("EmptyBrassPistol");
-		// TNT1 A 0 A_FireCustomMissile("EmptyBrassPistol",0,0,4,-7)	 
-		LVR4 DDDDCBA 1 ;
-		LVR4 A 2;
-		TNT1 A 0 pb_setchamberempty(false);
-		TNT1 A 0 {
-			if(Cvar.GetCvar("pb_toggle_aim_hold",player).getint() == 1) 
-			{
-				if(JustReleased(BT_ALTATTACK)){
-					return resolvestate("Zoomout");
-				}
-				if (JustPressed(BT_ATTACK) && PressingAltfire()){
-						return resolvestate("Fire2");
-				}
-			}
-			else 
-			{
-				if(PressingAltfire()){
-					return resolvestate("Zoomout");
-				}
-				if (JustPressed(BT_ATTACK)){
-						return resolvestate("Fire2");
-				}
-				PB_Refire("Fire2");
-			}
-			return A_DoPBWeaponAction(WRF_ALLOWRELOAD|WRF_NOFIRE);
-		}
-        TNT1 A 0 PB_JumpIfNoAmmo();
-		Goto Ready2;
-
 		Reload:
             TNT1 A 0 PB_CheckReload( null, null, "Pump", "Ready3", "Ready3", invoker.currentMaxAmmo);
-		ContinueReload:
 			TNT1 A 0 {
-				A_SetInventory("Zoomed",0);
+				PB_SetZoom(false);
 				A_WeaponOffset(0,32);
 				A_ZoomFactor(1.0);
 				A_SetInventory("PB_LockScreenTilt",1);
-				// pb_handlecrosshair(76);
 				A_SetCrosshair(-1);
 			}
 			TNT1 A 0 A_StartSound("weapons/leveraction/inspect");
-		BeginReloadLoop:
 			LVR2 MNOP 1 PB_SetRoll(roll+1.0);
 			TNT1 A 0 A_StartSound("weapons/leveraction/openchamber");
 			LVR2 QQ 1 PB_SetRoll(roll-2.0);
@@ -346,44 +304,31 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 			LVR3 C 1 { 
 				A_StartSound("weapons/leveraction/loadshell");
 				A_Giveinventory(invoker.ammotype2,1);
-				switch(getLAMode())
-				{
-					case LA_444Marlin:
-						A_Takeinventory(invoker.ammotype1,2,TIF_NOTAKEINFINITE);
-						break;
-					case LA_357Magnum:
-						A_Takeinventory(invoker.ammotype1,1,TIF_NOTAKEINFINITE);
-						break;
-				}
+				A_Takeinventory(invoker.ammotype1,invoker.ReserveToMagAmmoFactor,TIF_NOTAKEINFINITE);
 				// PB_SetMagUnloaded(false);
 				PB_SetMagEmpty(false);
-				A_SetPitch(pitch-0.2);
-				A_SetAngle(angle+0.2, SPF_INTERPOLATE);
+				PB_WeaponRecoil(-0.2,+0.2);
 				PB_SetRoll(roll-0.4);
 				if(pb_getchamberempty()) {PB_Setchamberempty(false);}
 			}
 			LVR3 D 1 {
-				A_DoPBWeaponAction(WRF_NOBOB);
-				A_SetPitch(pitch+0.2);
-				A_SetAngle(angle-0.2, SPF_INTERPOLATE);
+				PB_WeaponRecoil(+0.2,-0.2);
 				PB_SetRoll(roll+0.4);
+				return A_DoPBWeaponAction(WRF_NOBOB);
 			}
 			LVR3 EFG 1 A_DoPBWeaponAction(WRF_NOBOB);
 			LVR2 V 1 A_DoPBWeaponAction(WRF_NOBOB);
-			goto ReloadLoop;
+			loop;
+
 		ReloadFinished:
 			TNT1 A 0 {
 				A_Takeinventory("PB_LockScreenTilt",1);
 				A_StartSound("weapons/leveraction/openchamber");
 			}
-			LVR2 VVVV 1 {
-				A_DoPBWeaponAction(WRF_NOBOB);
-			}
-			LVR2 VUTSRQ 1 {
-				A_DoPBWeaponAction(WRF_NOBOB);
-				PB_SetRoll(roll+0.6);
-			}
-			LVR2 PONM 1 A_DoPBWeaponAction(WRF_NOBOB);
+			LVR2 VVVV 1 ;
+			LVR2 VUTSRQ 1 PB_SetRoll(roll+0.6);
+			LVR2 PONM 1 ;
+			TNT1 A 0 PB_SetReloading(false);
 			Goto Ready3;
 
 //////////////////////////// UNLOAD ////////////////////////////////////////////////////////////////////////////////////
@@ -394,37 +339,24 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 				A_StartSound("weapons/leveraction/inspect");
 				A_ZoomFactor(1.0);
 			}
-			TNT1 A 0 A_JumpIfInventory(invoker.ammotype2,1,1);
-			Goto Ready3;
+            TNT1 A 0 A_JumpIf(PB_GetMagEmpty(),"Ready3");
 			LVR2 MNOPQ 1;
 		RemoveBullets:
-			TNT1 A 0 A_JumpIfInventory(invoker.ammotype2,1,1);
-			Goto FinishUnload;
+            TNT1 A 0 A_JumpIf(invoker.ammo2.amount <= 0,"FinishUnload");
 			TNT1 A 0 {
-				if (getLAMode() == LA_444Marlin) {
-					PB_UnloadMag(invoker.ammotype2,invoker.ammotype1,2,1,1,CountInv(invoker.ammotype2) - 1,"PBX_MarlinRound");
-					if(invoker.ammo2.amount < 1) 
-					{
-						PB_SetMagEmpty(true);
-						PB_SetChamberEmpty(true);
-						// PB_SetMagUnloaded(true);
-					}
-				}
-				else { 
-					PB_UnloadMag(invoker.ammotype2,invoker.ammotype1,1,1,1,CountInv(invoker.ammotype2) - 1,"PBX_MagnumRound");
-					if(invoker.ammo2.amount < 1) 
-					{
-						PB_SetMagEmpty(true);
-						PB_SetChamberEmpty(true);
-						// PB_SetMagUnloaded(true);
-					}
-				}
+				if (getLAMode() == LA_444Marlin) PB_UnloadMag(invoker.ammotype2,invoker.ammotype1,2,1,1,invoker.ammo2.amount - 1,"PBX_MarlinRound");
+				else PB_UnloadMag(invoker.ammotype2,invoker.ammotype1,1,1,1,invoker.ammo2.amount - 1,"PBX_MagnumRound");
 				A_StartSound("weapons/leveraction/rechamber");
 			}
 			LVR2 POPQQQQ 1;
 			Goto RemoveBullets;
 		FinishUnload:
-			TNT1 A 0 PB_HandleWheel();
+			TNT1 A 0 {
+				PB_SetMagEmpty(true);
+				PB_SetChamberEmpty(true);
+				PB_SetReloading(false);
+				return PB_HandleWheel();
+			}
 			LVR2 QPONM 1;
 			Goto Ready3;
 //////////////////////////// WEAPON SPECIAL ////////////////////////////////////////////////////////////////////////////////////
@@ -432,7 +364,7 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 		TNT1 A 0 {
 			A_SetInventory("CantWeaponSpecial",1);
 			A_Takeinventory("GoWeaponSpecialAbility",1);
-			A_Takeinventory("Zoomed",1);
+			PB_SetZoom(false);
 		}
 		TNT1 A 0 PB_PreHandleLAWheel();
 		TNT1 A 0 PrintLAMode();

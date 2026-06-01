@@ -19,15 +19,6 @@ extend class PBX_Prosurv_LeverAction
 		return invoker.LAMode;
 	}
 
-	action void setZoom(bool set = true)
-	{
-		invoker.isZooming = set;
-	}
-	action bool getZoom()
-	{
-		return invoker.isZooming;
-	}
-
 	action void clearLAModeTokens()
 	{
 		A_SetInventory("CantWeaponSpecial" ,0);
@@ -43,65 +34,48 @@ extend class PBX_Prosurv_LeverAction
 		A_ZoomFactor(1.0);
 	}
 
-	action void PB_FireLA()
+	action void LA_FireWeapon(int ticCount)
 	{
-		switch(getLAMode())
-		{
-			case LA_444Marlin: 	
-				A_StartSound("weapons/leveraction/magfire", CHAN_WEAPON, CHANF_OVERLAP, 1.0);
-				PB_FireBullets("PB_444Marlin",1, 0, 0, 0, 0);
-				PB_DynamicTail("sniper", "sniper");
-				PB_LowAmmoSoundWarning("revolver");
-				break;
-			case LA_357Magnum: 
-				A_StartSound("weapons/leveraction/fire", CHAN_WEAPON, CHANF_OVERLAP, 1.0);
-				PB_FireBullets("PB_357Magnum",1, 0, 0, 0, 0);
-				PB_LowAmmoSoundWarning();
-				break;
-		}
-	}
+		bool ads = PB_GetZoom();
+		bool mode = getLAMode();
+		double zoomA = ads ? 1.48 : 0.98;
+		double zoomB = ads ? 1.49 : 0.99;
+		double recoilX = ads ? -1.75 : -1.83;
+		double recoilY = ads ? +0.50 : +0.75;
+		string projectile = mode == LA_444Marlin ? "PB_444Marlin" : "PB_357Magnum";
+		string sound = mode == LA_444Marlin ? "weapons/leveraction/magfire" : "weapons/leveraction/fire";
 
-	action void LA_FireWeapon(int weaponSide, int ticCount)
-	{
 		switch (ticCount)
 		{
 			//Tic 1
 			default:
 			case 1:
 				A_AlertMonsters();
-				PB_FireLA();
+				// Firing
+				A_StartSound(sound, CHAN_WEAPON, CHANF_OVERLAP, 1.0);
+				PB_FireBullets(projectile,1, 0, 0, 0, 0);
+				if(mode == LA_357Magnum) {
+					PB_DynamicTail("sniper", "sniper");
+					PB_LowAmmoSoundWarning("revolver");
+				}
+				else PB_LowAmmoSoundWarning();
+				// Effects
 				PB_GunSmoke(0,0,0);
 				A_FireCustomMissile("YellowFlareSpawn",0,0,0,0);
 				PB_IncrementHeat(4);
 				A_GunFlash();
-				switch (weaponSide)
-				{
-					default:
-					case 0:
-						A_ZoomFactor(0.98);
-						PB_WeaponRecoil(-1.83,+0.75);
-						break;
-					case 1:
-						A_ZoomFactor(1.48);
-						PB_WeaponRecoil(-1.75,+0.50);
-						break;
-				}
-				pb_takeammo(invoker.ammotype2,1);
+				A_ZoomFactor(zoomA);
+				PB_WeaponRecoil(recoilX, recoilY);
+				pb_takeammo(invoker.ammotype2,1,0);
 				PB_SpawnCasing("EmptyBrassPistol");
+				A_SetInventory("CantDoAction", 1);
+				PB_SetReloading(true);
 				PB_SetChamberEmpty(true);
 				break;
 			//Tic 2
 			case 2:
-				if(getZoom())
-				{
-					A_ZoomFactor(1.49);
-					PB_WeaponRecoil(-1.75,+0.50);
-				}
-				else
-				{
-					A_ZoomFactor(0.99);
-					PB_WeaponRecoil(-1.83,+0.75);
-				}
+				A_ZoomFactor(zoomB);
+				PB_WeaponRecoil(recoilX, recoilY);
 				break;
 			//Tic 3
 			case 3:

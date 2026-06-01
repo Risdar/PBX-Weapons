@@ -49,11 +49,11 @@ class PBX_PlasmaBlaster : PB_WeaponBase
             Stop;
 
         WeaponRespect:
-            AMGR ABCD 1;
-            AMGZ ABC 1;
-            AMGR QRSTUV 1;
+            AMGR ABCD 1 A_DoPBWeaponAction();
+            AMGZ ABC 1 A_DoPBWeaponAction();
+            AMGR QRSTUV 1 A_DoPBWeaponAction();
             TNT1 A 0 A_PlaySound("CELLIN2", 6);
-            AMGR WXY 1;
+            AMGR WXY 1 A_DoPBWeaponAction();
             Goto Ready3;
 
         Deselect:

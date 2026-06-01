@@ -1,0 +1,13 @@
+The plasma blaster is taken from Insanity's Nightmare
+
+Project Brutality 3.0: Insanity Nightmare's Weapons Packs.
+
+Sprites And Script & Coder: Killer-Frosty/Daller-Faust (And The Others. Including CreditsBD_IN,DetailedCredits)
+Respect Sprites (LiTRifle,LMG): Farhan(LiTDoom)
+Weapons Sprites (HAR,M1X,Fallen Hawk, etc): MetalMan
+Project Brutality Coder: AresFallen //HAVE YOU LOST YOUR MIND!!!?
+
++ Lightning Gun Merged.
+Sprites: TheBarge, Eriance, 3D Realms, PillowBlaster
+GLDefs: Xim
+Sounds: Monolith Productions, IWan Sounds and DIY, TheBarge, iD Software, Daedalus, PillowBlaster

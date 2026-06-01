@@ -10,7 +10,7 @@ Class PlasmaBlasterWheel : wheelinfocontainer
 		if(!spw || !requester)
 			return;
 			
-		vector2 iconScale = (1.0, 1.0);
+		vector2 iconScale = (1.2, 1.2);
 			
 		PB_SpecialWheel_Mode plasmablaster_semi = new ("PB_SpecialWheel_Mode");
 		plasmablaster_semi.img = "graphics/WeaponWheel/PlasmaBlaster/semi.png";
