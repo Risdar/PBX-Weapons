@@ -123,6 +123,8 @@ PBX_MastermindCG_Tag                = "Spider Mastermind's Chaingun";
 PBX_MastermindCG_SoulSeeker         = "\crSoul Seeker \c-Mode";
 PBX_MastermindCG_Normal             = "\caExplosive Tracers \c-Mode";
 //////////////////////////// SLOT 7 ///////////////////////////////////////////////////////////////////////////////
+PBX_BDPRailgun_Pickup               = "Platinum Railgun (Slot 7)";
+PBX_BDPRailgun_Tag                  = "UAC MK-1 'Platinum' Railgun";
 
 //////////////////////////// SLOT 8 ///////////////////////////////////////////////////////////////////////////////
 

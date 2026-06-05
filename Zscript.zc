@@ -22,10 +22,10 @@ Version 4.13
 #include "Zscript/PBX_Weapons/Slot-3/Prosurv_PumpShotgun/prosurv_psg.zs" // CSSG
 
 // Slot 4
+#include "Zscript/PBX_Weapons/Slot-4/NormalRifle/NormalRifle.zs" // Normal Rifle
 #include "Zscript/PBX_Weapons/Slot-4/BattleRifle/BattleRifle.zs" // Battle Rifle
 #include "Zscript/PBX_Weapons/Slot-4/MetalSniper/MetalSniper.zs" // Metal Sniper
 #include "Zscript/PBX_Weapons/Slot-4/Prosurv_Ballista/Prosurv_Ballista.zs" // Crossbow Ballista
-#include "Zscript/PBX_Weapons/Slot-4/NormalRifle/NormalRifle.zs" // Crossbow Ballista
 
 // Slot 5
 #include "Zscript/PBX_Weapons/Slot-5/NeoHMG/NeoHMG.zs" // NeoHMG
@@ -36,6 +36,7 @@ Version 4.13
 #include "Zscript/PBX_Weapons/Slot-6/MastermindCG/MastermindCG.zs" // Mastermind Chaingun
 
 // Slot 7
+#include "Zscript/PBX_Weapons/Slot-7/BDP_Railgun/bdprailgun_helpers.zs" // BDP Railgun
 
 // Slot 8
 
