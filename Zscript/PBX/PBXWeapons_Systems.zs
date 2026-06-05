@@ -17,6 +17,7 @@ class PBXWeapons_Handler : EventHandler
         pm.giveinventory("PumpShotgunAmmo",psgFullAmmo);
         pm.giveinventory("CSSGShellsIn",2);
         // SLOT 4
+        pm.giveinventory("NormalRifleAmmo", NormalRifleFullAmmo);
         pm.giveinventory("BR_Ammo", BR_AmmoFull);
         pm.giveinventory("MetalSniperAmmo", MetalSniperFullAmmo-1); // This is because of the weapon respect animation
         pm.giveinventory("CrossbowBallistaAmmo", crossbowBallistaFullAmmo);
@@ -41,59 +42,6 @@ class PBXWeapons_Handler : EventHandler
     //     CVAR.FindCVar('FirstTimeLoadingPBX').SetBool(false);
     //     //destroy();
     // }
-}
-
-// THIS IS SUCH A HACK LOL
-class CyberRLPickup : CustomInventory
-{
-    Default
-    {
-        Inventory.Amount 1;
-        Inventory.PickupMessage "$PBX_CyberdemonRL_Pickup";
-		Inventory.PickupSound "BFGREADY";
-		Tag "$PBX_CyberdemonRL_Tag";
-        +Inventory.AlwaysPickUp;
-        +FLOORCLIP;
-        +DONTGIB;
-    }
-
-    States
-    {
-        Spawn:
-            HND7 E -1;
-            Stop; 
-
-        Pickup:
-            TNT1 A 0 A_GiveInventory ("CyberRLDurability",CyberdemonRLDurability);
-            TNT1 A 0 A_GiveInventory ("PBX_CyberdemonRL",1);
-            Stop;
-    }
-}
-
-class MastermindCGPickup : CustomInventory
-{
-    Default
-    {
-        Inventory.Amount 1;
-		Inventory.Pickupmessage "$PBX_MastermindCG_Pickup";
-		Inventory.PickupSound "CBOXPKUP";
-		Tag "$PBX_MastermindCG_Tag";
-        +Inventory.AlwaysPickUp;
-        +FLOORCLIP;
-        +DONTGIB;
-    }
-
-    States
-    {
-        Spawn:
-            TRP6 A -1;
-            Stop;
-
-        Pickup:
-            TNT1 A 0 A_GiveInventory ("MastermindCGDurability",MastermindCGFullDurability);
-            TNT1 A 0 A_GiveInventory ("PBX_MastermindChaingun",1);
-            Stop;
-    }
 }
 
 // class PBXWeapons_MonsterWeapons : Inventory

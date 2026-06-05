@@ -135,6 +135,10 @@ PBX_DemonExt_Incin                  = "\crDark Incinerator \c-Mode";
 PBX_DemonExt_Lightning              = "\cjSoul Lightning \c-Mode";
 
 //////////////////////////// OTHERS ///////////////////////////////////////////////////////////////////////////////
+// PBX Command Pack
+PBX_CommandPack_Pickup              = "You found the UAC Command Pack! You got the standard issue UAC Rifle and Pump Shotgun!";
+PBX_CommandPack_Tag                 = "UAC Command Pack";
+
 // SHARED
 PBX_AlreadySelected                 = "Mode Already Selected";
 PBX_NoUpgrade                       = "You Don't Have the Upgrade for This Weapon";

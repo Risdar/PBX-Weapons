@@ -5,6 +5,7 @@ enum PBXWeapons_eWeaponSpecialSpawns
 	DisablePBX_MetalSniperUpgrade			= 1 << 1,
 	DisablePBX_BattleRifleUpgrade			= 1 << 2,
 	DisablePBX_CrossbowBallistaUpgrade		= 1 << 3,
+	DisablePBX_UACBackpack					= 1 << 4,
 ////// Monster Drops /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// SLOT 6
 	DisablePBX_CyberdemonRL			        = 1 << 0,
@@ -160,6 +161,12 @@ class PBXUpgrades_Injector : PBInjector
 {
     override void Init(PB_EventHandler handler)
     {
+		// UAC Backpack
+		if(!(pbxweapons_backpack_filter & DisablePBX_UACBackpack))
+		{
+			handler.InjectSpawn('PB_PackSpawnerT1', 'PBX_CommandPack', 255, 1);
+		}
+
 		// CSSG Upgrades
 		if(!(pbxweapons_backpack_filter & DisablePBX_CSSGUpgrades))
 		{
@@ -233,4 +240,84 @@ class PBXWeapons_WeaponSpawner : EventHandler
     }
 
 	
+}
+
+class PBX_CommandPack : CustomInventory
+{
+    Default
+    {
+        Inventory.Amount 1;
+        Inventory.PickupMessage "$PBX_CommandPack_Pickup";
+		Inventory.PickupSound "CLIPIN";
+		Tag "$PBX_CommandPack_Tag";
+        +Inventory.AlwaysPickUp;
+        +FLOORCLIP;
+        +DONTGIB;
+    }
+
+    States
+    {
+        Spawn:
+            XPCK A -1;
+            Stop; 
+
+        Pickup:
+            TNT1 A 0 A_GiveInventory("PB_Backpack",1);
+            TNT1 A 0 A_GiveInventory("PBX_NormalRifle",1);
+            TNT1 A 0 A_GiveInventory("PBX_ProSurvPSG",1);
+            Stop;
+    }
+}
+
+// THIS IS SUCH A HACK LOL
+class CyberRLPickup : CustomInventory
+{
+    Default
+    {
+        Inventory.Amount 1;
+        Inventory.PickupMessage "$PBX_CyberdemonRL_Pickup";
+		Inventory.PickupSound "BFGREADY";
+		Tag "$PBX_CyberdemonRL_Tag";
+        +Inventory.AlwaysPickUp;
+        +FLOORCLIP;
+        +DONTGIB;
+    }
+
+    States
+    {
+        Spawn:
+            HND7 E -1;
+            Stop; 
+
+        Pickup:
+            TNT1 A 0 A_GiveInventory ("CyberRLDurability",CyberdemonRLDurability);
+            TNT1 A 0 A_GiveInventory ("PBX_CyberdemonRL",1);
+            Stop;
+    }
+}
+
+class MastermindCGPickup : CustomInventory
+{
+    Default
+    {
+        Inventory.Amount 1;
+		Inventory.Pickupmessage "$PBX_MastermindCG_Pickup";
+		Inventory.PickupSound "CBOXPKUP";
+		Tag "$PBX_MastermindCG_Tag";
+        +Inventory.AlwaysPickUp;
+        +FLOORCLIP;
+        +DONTGIB;
+    }
+
+    States
+    {
+        Spawn:
+            TRP6 A -1;
+            Stop;
+
+        Pickup:
+            TNT1 A 0 A_GiveInventory ("MastermindCGDurability",MastermindCGFullDurability);
+            TNT1 A 0 A_GiveInventory ("PBX_MastermindChaingun",1);
+            Stop;
+    }
 }

@@ -227,6 +227,7 @@ class PBX_Hud : PB_Hud_ZS
                 adjustPos = (-5, 15); 
                 adjustScale = 1.3;
                 break;
+                
 
 //////////////// SLOT 4 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             case 'PB_DMR':
@@ -254,6 +255,11 @@ class PBX_Hud : PB_Hud_ZS
             case 'PB_ChexRifle':
                 adjustPos = (-10, 13);
                 adjustScale = 0.9;
+                break;
+
+            case 'PBX_NormalRifle':
+                adjustPos = (-5,12);
+                // adjustScale = 1.3;
                 break;
 
             case 'PBX_BDPBattleRifle':

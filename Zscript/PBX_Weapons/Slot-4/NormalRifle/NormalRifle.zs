@@ -18,7 +18,6 @@ class NormalRifleAmmo : Ammo
     }
 }
 
-
 Class PBX_NormalRifle : PB_WeaponBase
 {
     Default
