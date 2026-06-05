@@ -385,7 +385,7 @@ Class DanmakuProjectile : Actor
 	{
 		projectile;
 		speed 80;
-		+doombounce;
+		BounceType "Doom";
 		bouncecount 3;
 		radius 5;
 		height 5;

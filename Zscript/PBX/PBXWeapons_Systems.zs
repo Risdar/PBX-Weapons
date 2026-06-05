@@ -11,12 +11,14 @@ class PBXWeapons_Handler : EventHandler
         let pm = players[e.PlayerNumber].mo;
 		if(!pm) return;
         // SLOT 2
+        pm.giveinventory("HellPistolerAmmo", plasmaBlasterFullAmmo);
         pm.giveinventory("LeverActionAmmo", leveractionFullAmmo);
         // SLOT 3
+        pm.giveinventory("PumpShotgunAmmo",psgFullAmmo);
         pm.giveinventory("CSSGShellsIn",2);
         // SLOT 4
         pm.giveinventory("BR_Ammo", BR_AmmoFull);
-        pm.giveinventory("MetalSniperAmmo", MetalSniperFullAmmo-1);
+        pm.giveinventory("MetalSniperAmmo", MetalSniperFullAmmo-1); // This is because of the weapon respect animation
         pm.giveinventory("CrossbowBallistaAmmo", crossbowBallistaFullAmmo);
         // SLOT 5
         pm.giveinventory("HMGChamberAmmo", neohmgFullAmmo);

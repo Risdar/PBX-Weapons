@@ -219,7 +219,7 @@ class PBX_Hud : PB_Hud_ZS
                 break;
 
             case 'PBX_CSSG':
-                adjustPos = (-5, 12); 
+                adjustPos = (-5, 12);
                 // adjustScale = 0.7;
                 break;
 

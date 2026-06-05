@@ -157,14 +157,8 @@ class PBX_CyberdemonRL : PB_WeaponBase
 		Weaponspecial:
 			TNT1 A 0 A_Takeinventory("GoWeaponSpecialAbility",1);
 			TNT1 A 0 {
-				if(invoker.PiercingRockets){
-					invoker.PiercingRockets = false;
-					// A_Print("$PBX_CyberdemonRL_Normal");
-				}
-				else {
-					invoker.PiercingRockets = true;
-					// A_Print("$PBX_CyberdemonRL_Pierce");
-				}
+				if(invoker.PiercingRockets) invoker.PiercingRockets = false;
+				else invoker.PiercingRockets = true;
             	A_StartSound("MS/Button", CHAN_AUTO, CHANF_OVERLAP);
 				A_Print(invoker.PiercingRockets ? "$PBX_CyberdemonRL_Pierce" : "$PBX_CyberdemonRL_Normal");
 			}

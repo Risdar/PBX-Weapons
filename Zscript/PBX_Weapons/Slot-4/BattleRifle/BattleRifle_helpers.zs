@@ -141,7 +141,6 @@ class EmptyRifleClip: BaseMagActor
 		DeathSound "BR45BOUNCE";
 		BounceSound "BR45BOUNCE";
 		WallBounceSound "BR45BOUNCE";
-		-doombounce;
 		bouncetype "doom";
 		+thruactors;
 	}
@@ -177,7 +176,7 @@ class BaseMagActor : actor
 {
 	Default
 	{
-		+DOOMBOUNCE;
+		bouncetype "Doom";
 		- NOGRAVITY;
 		+WINDTHRUST;
 		+CLIENTSIDEONLY;

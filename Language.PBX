@@ -27,7 +27,6 @@ PBX_LeverAction_Magnum              = "\cd.357 Magnum \c-Mode";
 PBX_PSG_PICKUP                      = "Pump Shotgun (Slot 3)";
 PBX_PSG_TAG                         = "Pump Shotgun";
 
-
 // CSSG 
 PBX_CSSG_PICKUP                     = "Commander Super Shotgun (Slot 3)";
 PBX_CSSG_TAG                        = "Commander Super Shotgun";
@@ -61,6 +60,13 @@ PBX_BattleRifle_ZoomHigh            = "4.0 Magnification";
 
 PBX_BattleRifle_UpgradePickup       = "Battle Rifle Ricochet and Scope Upgrade (Slot 4)";
 PBX_BattleRifle_UpgradeTag          = "Battle Rifle Upgrade";
+
+// Normal RIfle
+PBX_NormalRifle_Pickup              = "Normal Rifle (Slot 4)";
+PBX_NormalRifle_Tag                 = "UAC M4 Assault Rifle";
+
+PBX_NormalRifle_Burst               = "\ciBurst Fire \c-Mode";
+PBX_NormalRifle_Auto                = "\caFull-Auto \c-Mode";
 
 // Metal Sniper
 PBX_MetalSniper_Pickup              = "Metal Sniper (Slot 4)";

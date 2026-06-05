@@ -102,8 +102,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 		Ready2:
 		WeaponReadyADS:
 			TNT1 A 0;
-			BR4Z D 1 Bright 
-            {
+			BR4Z D 1 Bright  {
 				A_zoomfactor(getZoomStrength());
 				PB_SetRoll(0);
                 // PB_HandleCrosshair(5);
@@ -121,8 +120,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 		
 		//[Pop] Firing states
 		Fire:
-			TNT1 A 0
-			{
+			TNT1 A 0 {
 				A_WeaponOffset(0, 32);
 				PB_SetRoll(0);
 				PB_HandleCrosshair(42);
@@ -146,8 +144,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 
 		BurstDone:
 			TNT1 A 0 { invoker.burstcount = 0; }
-			BR45 DEFGH 1
-			{
+			BR45 DEFGH 1 {
 				// Track button release
 				if (!(player.cmd.buttons & BT_ATTACK))
 					invoker.semiclear = true;

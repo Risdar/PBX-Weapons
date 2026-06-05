@@ -13,7 +13,7 @@ Class DiggerTrail : Actor{
 		Scale 1.1;
 		+noteleport
 		+NOINTERACTION
-		+DOOMBOUNCE
+		bouncetype "Doom";
 		+RANDOMIZE
 		height 1;
 		radius 1;

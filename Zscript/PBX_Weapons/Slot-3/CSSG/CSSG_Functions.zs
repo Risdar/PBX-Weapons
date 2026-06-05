@@ -54,16 +54,16 @@ extend class PBX_CSSG
 		wich++;
 		switch(wich)
 		{
-			case Shell_Buck: PB_ChangePsPrite(buck); break;
-			case Shell_Slug: PB_ChangePsPrite(slug); break;
-			case Shell_Flech: PB_ChangePsPrite(flech); break;
-			case Shell_Flak: PB_ChangePsPrite(flak); break;
-			case Shell_Drgn: PB_ChangePsPrite(dragons); break;
-			case Shell_EXPL: PB_ChangePsPrite(explo); break;
-			case Shell_WPSP: PB_ChangePsPrite(wp); break; 
-			case Shell_Doom: PB_ChangePsPrite(tds); break;
-			case Shell_Damn: PB_ChangePsPrite(dnm); break;
-			case Shell_SubZ: PB_ChangePsPrite(subz); break;
+			case Shell_Buck: 	PB_ChangePsPrite(buck); 	break;
+			case Shell_Slug: 	PB_ChangePsPrite(slug); 	break;
+			case Shell_Flech: 	PB_ChangePsPrite(flech); 	break;
+			case Shell_Flak: 	PB_ChangePsPrite(flak); 	break;
+			case Shell_Drgn: 	PB_ChangePsPrite(dragons); 	break;
+			case Shell_EXPL: 	PB_ChangePsPrite(explo); 	break;
+			case Shell_WPSP: 	PB_ChangePsPrite(wp); 		break; 
+			case Shell_Doom: 	PB_ChangePsPrite(tds); 		break;
+			case Shell_Damn: 	PB_ChangePsPrite(dnm); 		break;
+			case Shell_SubZ: 	PB_ChangePsPrite(subz); 	break;
 		}
 		
 	}
@@ -72,7 +72,7 @@ extend class PBX_CSSG
 	// 0-buckshot 1-slug 2-flechette
 	// 3-flak 4-dragon breath
 	// 5-explosive 6-white phosphorous 7-Doom shells
-	// 8-danmaku
+	// 8-danmaku 9-subzero
 	
 	//to cycle shells ->
 	Action Void CycleShellFw()
@@ -205,16 +205,16 @@ extend class PBX_CSSG
 			wich = invoker.oldshells + 1;
 		switch(wich)
 		{
-			case Shell_Buck: shelltype = "BuckShellCasing"; break;
-			case Shell_Slug: shelltype = "SlugShellCasing"; break;
-			case Shell_Flech: shelltype = "FlechetShellCasing"; break;
-			case Shell_Flak: shelltype = "FlakShellCasing"; break;
-			case Shell_Drgn: shelltype = "DragonShellCasing"; break;
-			case Shell_EXPL: shelltype = "ExplosiveShellCasing"; break;
-			case Shell_WPSP: shelltype = "WhitePShellCasing"; break;
-			case Shell_Doom: shelltype = "TDoomCasing"; break;
-			case Shell_Damn: shelltype = "DanmakuCasing"; break;
-			case Shell_SubZ: shelltype = "SubZeroCasing"; break;
+			case Shell_Buck: 	shelltype = "BuckShellCasing"; 			break;
+			case Shell_Slug: 	shelltype = "SlugShellCasing"; 			break;
+			case Shell_Flech: 	shelltype = "FlechetShellCasing"; 		break;
+			case Shell_Flak: 	shelltype = "FlakShellCasing"; 			break;
+			case Shell_Drgn: 	shelltype = "DragonShellCasing"; 		break;
+			case Shell_EXPL: 	shelltype = "ExplosiveShellCasing"; 	break;
+			case Shell_WPSP: 	shelltype = "WhitePShellCasing"; 		break;
+			case Shell_Doom: 	shelltype = "TDoomCasing"; 				break;
+			case Shell_Damn: 	shelltype = "DanmakuCasing"; 			break;
+			case Shell_SubZ: 	shelltype = "SubZeroCasing"; 			break;
 		}
 		
 		

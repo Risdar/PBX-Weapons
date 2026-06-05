@@ -76,11 +76,12 @@ class PBX_ProSurvPSG : PB_Weapon
 				if (ads) A_SetCrosshair(-1);
 
 				PB_FireBullets("PB_12GAPellet", 9, 1.5, 0, 0, 1.5);
+
 				A_FireProjectile("ShotgunWad", random(-2,2), 0, random(-2,2), wadOfsY, FPF_NOAUTOAIM, random(-2,2));
 				PB_LowAmmoSoundWarning("shotgun");
 				PB_TakeAmmo(invoker.ammo2.getClassName(), 1, 0);
 				A_AlertMonsters();
-				A_PlaySoundEx("Weapons/Autoshotgun", "Weapon");
+				A_PlaySoundEx("FLAKFIRE", "Weapon");
 				PB_IncrementHeat();
 				A_FireCustomMissile("YellowFlareSpawn", 0, 0, 0, 0);
 				_SpawnMuzzleSparksSG(0, 0, -4);
