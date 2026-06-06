@@ -18,9 +18,11 @@ enum PBXWeapons_eWeaponTipFlags
     PBX_TIP_EXCAVATOR           = 1 << 10,
     PBX_TIP_CYBERDEMONRL        = 1 << 11,
     PBX_TIP_MASTERMINDCG        = 1 << 12,
+    // SLOT 7
+    PBX_TIP_BDPRAILGUN          = 1 << 13,
     // SLOT 9
-    PBX_TIP_DEMONMINIGUN        = 1 << 13,
-    PBX_TIP_DEMONEXT            = 1 << 14,
+    PBX_TIP_DEMONMINIGUN        = 1 << 14,
+    PBX_TIP_DEMONEXT            = 1 << 15,
     // UPGRADES
     PBX_TIP_METALSNIPER_UPGRADE = 1 << 0,
     PBX_TIP_BATTLERIFLE_UPGRADE = 1 << 1,
@@ -165,6 +167,17 @@ class PBXWeapons_TipsManager : inventory
                 tips.Push("$PBX_MonsterWeapon2");
                 tips.Push("$PBX_MastermindCG_Tip1");
                 SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_MASTERMINDCG);
+            }
+            break;
+
+            // SLOT 7
+            case 'PBX_BDPRailgun':
+            {
+                Array<String> tips;
+                tips.Push("$PBX_BDPRailgun_Tip1");
+                tips.Push("$PBX_BDPRailgun_Tip2");
+                tips.Push("$PBX_BDPRailgun_Tip3");
+                SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_BDPRAILGUN);
             }
             break;
 

@@ -72,7 +72,6 @@ class PBX_PlasmaBlaster : PB_WeaponBase
             TNT1 A 0 {
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
-                PB_ClearDualWield();
 			    PB_HandleCrosshair(39);
 				A_SetInventory("PB_LockScreenTilt",0);
                 PB_WeaponRaise("weapons/smg_magfly1");

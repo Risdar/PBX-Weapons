@@ -371,6 +371,7 @@ class PBX_ProSurvPSG : PB_Weapon
 				A_Takeinventory(invoker.ammo1.getClassName(),1,TIF_NOTAKEINFINITE);
 				PB_WeaponRecoil(-0.2,+0.2);
 				PB_SetRoll(roll-0.4);
+				return A_DoPBWeaponAction(WRF_NOBOB);
 			}
 			XG30 PQ 1 {
 				PB_WeaponRecoil(+0.1,-0.1);
@@ -385,7 +386,8 @@ class PBX_ProSurvPSG : PB_Weapon
 				A_PlaysoundEx("Ironsights", "Auto");
 			}
 			XG30 LKJIHG 1 PB_SetRoll(roll+1.0);
-			XG30 FEDCBA 1 PB_SetReloading(false);
+			XG30 FEDCBA 1; 
+			TNT1 A 0 PB_SetReloading(false);
 			Goto Ready3;
             
 		ChamberInsertShell:
@@ -393,10 +395,19 @@ class PBX_ProSurvPSG : PB_Weapon
 				A_Giveinventory("PB_LockScreenTilt",1);
 				A_PlaysoundEx("Ironsights", "Auto");
 			}
-			XG31 ABCD 1 PB_SetRoll(roll+1.0);
+			XG31 ABCD 1 {
+				PB_SetRoll(roll+1.0);
+				return A_DoPBWeaponAction(WRF_NOBOB|WRF_NOFIRE);
+			}
 			TNT1 A 0 A_PlaySoundEx("weapons/sgmvpump","Auto");
-			XG31 EF 1 PB_SetRoll(roll-2.0);
-			XG31 GHIJKL 1 PB_SetRoll(roll-1.0);
+			XG31 EF 1 {
+				PB_SetRoll(roll-2.0);
+				return A_DoPBWeaponAction(WRF_NOBOB|WRF_NOFIRE);
+			}
+			XG31 GHIJKL 1 {
+				PB_SetRoll(roll-1.0);
+				return A_DoPBWeaponAction(WRF_NOBOB|WRF_NOFIRE);
+			}
 			XG31 M 1 A_DoPBWeaponAction(WRF_NOBOB|WRF_NOFIRE);
 			XG31 N 1 {
 				A_PlaySoundEx("insertshell","Auto");

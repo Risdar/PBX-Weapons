@@ -74,6 +74,9 @@ PBX_CyberRL_Tip1 = "The Cyberdemon's Rocket Launcher has two modes, extreme expl
 PBX_MastermindCG_Tip1 = "The Mastermind's Chaingun has two modes, standard explosive tracers and soul seeker tracers, they home in on enemies but deal less damage.";
 
 //////////////////////////// SLOT 7 ///////////////////////////////////////////////////////////////////////////////
+PBX_BDPRailgun_Tip1 = "The Platinum Railgun is a branch of the experimental MK-III Railgun.";
+PBX_BDPRailgun_Tip2 = "Though it doesn't have the contact laser mode, this variant can project holograms that can be used as a decoy";
+PBX_BDPRailgun_Tip3 = "You can project the holograms using the Weapon Special Key";
 
 //////////////////////////// SLOT 8 ///////////////////////////////////////////////////////////////////////////////
 

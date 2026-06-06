@@ -5,9 +5,12 @@ AddOptionMenu "PB_AddonOptions"
 OptionMenu "PBXWeapons_Menu"
 {
     Title "$PBXWeapons_Settings"
+	Class "PB_OptionMenu"
 
     /* StaticText "PBX - Weapon Settings", gold */
     StaticText " "
+    Option "Start with the BDP Rifle", "pbxweapons_normalriflereplace", "OnOff"
+    Command "Enable All PBX Spawners", "set PBXWeapons_chainsaw_filter 0; set PBXWeapons_pistol_filter 0; set PBXWeapons_shotgun_filter 0; set PBXWeapons_ssg_filter 0; set PBXWeapons_chaingun_filter 0; set PBXWeapons_rocketlauncher_filter 0; set PBXWeapons_plasmarifle_filter 0; set PBXWeapons_bfg_filter 0"
     Command "Reset PB Tool Tips", "set pb_helpflags 0"
     Command "Reset PBX Tool Tips", "set PBXWeapons_WeaponHelpFlags 0; set PBXWeapons_UpgradeHelpFlags 0"
 	/* Option "Enable Experimental Features",	"pbxweapons_experimental",	"YesNo" */
@@ -99,6 +102,13 @@ AddOptionMenu "AddonWeaponSpawns" after "LAUT3"
         // SPECIAL
     FlagOption    "Cyberdemon drop their Weapon",           "PBXWeapons_specialdrop_filter",    "OffOn", 0
     FlagOption    "Spider Mastermind drop their Weapon",    "PBXWeapons_specialdrop_filter",    "OffOn", 1
+}
+// PLASMA /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // TIER 3
+AddOptionMenu "AddonWeaponSpawns" after "LAUT3"
+{
+        // SLOT 7
+    FlagOption    "Platinum Railgun",                        "PBXWeapons_plasmarifle_filter",    "OffOn", 0
 }
 
 // BFG /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

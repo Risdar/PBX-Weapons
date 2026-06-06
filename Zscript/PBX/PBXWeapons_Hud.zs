@@ -359,6 +359,11 @@ class PBX_Hud : PB_Hud_ZS
                 adjustScale = 0.9;
                 break;
 
+            case 'PBX_BDPRailgun':
+                adjustPos = (-5, 12);
+                adjustScale = 1.4;
+                break;
+
 //////////////// SLOT 8 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             case 'PB_Flamethrower':
                 adjustPos = PBX_PlayerHasInventory("FlamerUpgraded") ? (-15, 40) : (-10,15); 

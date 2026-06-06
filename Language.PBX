@@ -1,7 +1,8 @@
 [enu default]
 //////////////////////////// GENERAL ///////////////////////////////////////////////////////////////////////////////
 PBXWeapons_Settings                 = "\cj⟁\c- PBX - Weapons Settings";
-PBXWeapons_Version                  = "PBX - Weapons Version 2.0 Loaded";
+PBXWeapons_Version                  = "PBX - Weapons Version 2.2 Loaded";
+TIP_pbxweapons_normalriflereplace   = "Replaces the starting rifle with BDP's Rifle (CAUTION: VERY BUGGY)";
 
 //////////////////////////// SLOT 1 ///////////////////////////////////////////////////////////////////////////////
 

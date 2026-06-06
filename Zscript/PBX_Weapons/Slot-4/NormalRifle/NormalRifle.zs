@@ -33,7 +33,7 @@ Class PBX_NormalRifle : PB_WeaponBase
         // PB_WeaponBase.WheelInfo "MetalSniperWheel";
 		PB_WeaponBase.ReserveToMagAmmoFactor 1;
         Tag "$PBX_NormalRifle_Tag";
-        scale 0.8;
+        scale 0.5;
         +weapon.noalert;
         +weapon.noautofire;
     }
@@ -47,6 +47,45 @@ Class PBX_NormalRifle : PB_WeaponBase
         burstcount = 0;
         Super.PostBeginPlay();
     }
+
+    // Replace the DMR if the replace cvar is enabled
+    override void AttachToOwner(Actor other)
+    {
+        Super.AttachToOwner(other);
+        if (level.MapName ~== "TITLEMAP") return;       // If its the titlemap, return
+        if(!pbxweapons_normalriflereplace) return;      // If the CVAR is disabled, return
+        if(owner.findinventory("DMRUpgraded")) return;  // If the player has the HDMR, return (though this is probably not needed since this function is only called once)
+
+        // Force switch
+        owner.TakeInventory("PB_DMR",1);
+        if (Owner.player != null) Owner.player.PendingWeapon = self;
+    }
+    // Give the player ammo instead of picking up the weapon if the replace cvar is enabled
+    override bool HandlePickup(Inventory item)
+	{
+        bool hasUpgrade = owner.findinventory("DMRUpgraded");
+        bool isTitlemap = level.MapName ~== "TITLEMAP";
+
+        // This is so you dont need to pick up the upgrade twice
+        if (item is "PB_HDMRUpgrade")
+        {
+            console.printf("success");
+            owner.GiveInventory("PB_DMR",1);
+            owner.GiveInventory("DMRUpgraded",1);
+            return super.HandlePickup(item);
+        }
+
+		if (item.GetClassName() == "PB_DMR" 
+            && !isTitlemap                              // If its the titlemap, return
+            && pbxweapons_normalriflereplace            // If the CVAR is disabled, return
+            && !hasUpgrade)                             // If the player has the HDMR, return
+		{
+			item.bPickupgood = true;
+			owner.GiveInventory("PB_HighCalMag", 15); // Give the replacement
+			return true; // Do not process Fist further
+		}
+		return super.HandlePickup(item);
+	}
 
     action bool getBurst()
     {
@@ -141,7 +180,6 @@ Class PBX_NormalRifle : PB_WeaponBase
             TNT1 A 0 {
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
-                PB_ClearDualWield();
 			    PB_HandleCrosshair(55);
 				A_SetInventory("PB_LockScreenTilt",0);
                 PB_WeaponRaise("CLIPIN");

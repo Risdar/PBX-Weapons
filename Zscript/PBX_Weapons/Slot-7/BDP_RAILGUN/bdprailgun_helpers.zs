@@ -1,5 +1,118 @@
 class killhologram : inventory {default{inventory.maxamount 1;}}
-class pissedarmor : inventory {default{inventory.maxamount 1;}}
+
+Class BDPRailgunAmmo : PB_Ammo
+{
+	Default
+	{
+		inventory.amount 0;
+		inventory.maxamount BDPRailgunFullAmmo;
+		ammo.backpackamount 0;
+		ammo.backpackmaxamount BDPRailgunFullAmmo;
+	    Inventory.Icon "ARMZA0";
+        +INVENTORY.IGNORESKILL;
+	}
+}
+
+class BDP_GunLight : DynamicLight 
+{
+	default 
+	{
+		DynamicLight.Type "Point";
+		+DYNAMICLIGHT.ATTENUATE;
+		+DYNAMICLIGHT.SPOT
+		self.alivetime 2;
+	}
+
+	int alivetime; 
+	property alivetime : alivetime;
+
+	override void Tick() 
+	{
+		super.Tick();
+		alivetime--;
+		If(alivetime <= 0) Destroy();
+	}
+}
+
+class BluePlasmaParticleWeapon : actor
+{
+	Default
+	{
+		Height 0;
+		Radius 0;
+		Mass 0;
+		+Missile;
+		+NoBlockMap;
+		-NoGravity;
+		+DontSplash;
+		+DoomBounce;
+		+FORCEXYBILLBOARD;
+		RenderStyle "Add";
+		BounceFactor 0.2;
+		Gravity 0.8;
+		Scale 0.02;
+		Speed 9;
+	}
+
+	States
+	{
+		Spawn:
+		Death:
+			SPKB A 2 Bright A_FadeOut(0.04);
+			Loop;
+	}
+}
+
+class RailCaseSpawn : actor
+{
+	Default
+	{
+		Speed 20;
+		PROJECTILE;
+		+NOCLIP;
+		+CLIENTSIDEONLY;
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 0;
+			TNT1 A 1 A_CustomMissile("RailCasing",-9,20,random(-38,-48),2,random(10,20));
+			Stop;
+	}
+} 
+
+class RailCasing: BaseMagActor
+{
+	Default
+	{
+		Speed 7;
+		BounceFactor 0.7;
+		Scale 0.3;
+	}
+	States
+	{
+		Spawn:
+			ECLI H 4;
+		Spawn2:
+			ECLI HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH 4 A_SetRoll(roll-45);
+			LOOP;
+
+		Death:
+			"####" "#" 0;
+			"####" "#" 0 A_Jump(128,"Die2");
+			"####" "#" 0 A_SetRoll(-90);
+			"####" "#" 0;
+		StayDead:
+			"####" "#" 350;
+			Goto Fadeout;
+
+		Die2:
+			"####" "#" 0 A_SetRoll(90);
+			"####" "#" 0 A_ChangeFlag("XFLIP",1);
+			Goto staydead;
+	}
+}
 
 class RailgunTrail : VisualThinker
 {
@@ -37,17 +150,15 @@ CLASS RailgunRail : Actor
 		{
 			Spawn:
 				TNT1 AAA 0 A_SpawnItemEX("WhiteShockwave");
-
-		TNT1 AAAA 0 A_spawnprojectile ("FireworkSFXType2", 2, 0, random (0, 360), 2, random (-10, -80));
-		RAIL A 0 A_SpawnItemEx ("DetectFloorCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-		RAIL A 0 A_SpawnItemEx ("DetectCeilCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-		//RAIL A 0 A_spawnprojectile ("BluePlasmaFire", 0, 0, random (0, 360), 2, random (0, 360));
-		TNT1 AAAAAAAAAA 0 A_spawnprojectile ("ExplosionParticleVeryFast", 0, 0, random (0, 360), 2, random (0, 360));
-		 TNT1 AAAAAAAA 0 A_spawnprojectile ("ExplosionParticleHeavy", 5, 0, random (0, 360), 2, random (0, -180));
-		TNT1 AAAAAAAAAA 0 A_spawnprojectile ("ExplosionParticleHeavy", 5, 0, random (0, 360), 2, random (0, 360));
-		TNT1 AAAAAAAAA 0 A_spawnprojectile ("ExplosionParticleVeryFast", 5, 0, random (0, 360), 2, random (0, 360));
-				MODL A 1 BRIGHT
-				{
+				TNT1 AAAA 0 A_spawnprojectile ("FireworkSFXType2", 2, 0, random (0, 360), 2, random (-10, -80));
+				RAIL A 0 A_SpawnItemEx ("DetectFloorCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+				RAIL A 0 A_SpawnItemEx ("DetectCeilCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+				//RAIL A 0 A_spawnprojectile ("BluePlasmaFire", 0, 0, random (0, 360), 2, random (0, 360));
+				TNT1 AAAAAAAAAA 0 A_spawnprojectile ("ExplosionParticleVeryFast", 0, 0, random (0, 360), 2, random (0, 360));
+				TNT1 AAAAAAAA 0 A_spawnprojectile ("ExplosionParticleHeavy", 5, 0, random (0, 360), 2, random (0, -180));
+				TNT1 AAAAAAAAAA 0 A_spawnprojectile ("ExplosionParticleHeavy", 5, 0, random (0, 360), 2, random (0, 360));
+				TNT1 AAAAAAAAA 0 A_spawnprojectile ("ExplosionParticleVeryFast", 5, 0, random (0, 360), 2, random (0, 360));
+				MODL A 1 BRIGHT{
 					Radius_Quake(3, 8, 0, 15, 0);
 					A_startsound("BONECRACK",1);
 					A_startsound("RICMET",2);
@@ -56,48 +167,40 @@ CLASS RailgunRail : Actor
 					core.angle = angle;
 					core.pitch = pitch;
 				}
-				MODL A 35 BRIGHT
-				{
-					
-				}
+				MODL A 35 BRIGHT;
 			TimeToFade:
-				MODL A 1 BRIGHT
-				{
+				MODL A 1 BRIGHT {
 					A_fadeout(0.01);
 				}
 				LOOP;
 		}
 	}
 
-		CLASS RailgunRail2 : Actor
-	{
+CLASS RailgunRail2 : Actor
+{
 	Default
-		{
+	{
 		Radius 1; 
 		Height 1;
 		+nogravity;
 		+noclip;
-		}
-	States
-		{
-			Spawn:
-
-				MODL A 225 NODELAY;
-			Death:
-				TNT1 AAAAAAAA 0
-				{
-				A_startsound("BONECRACK",1);
-				//A_SpawnProjectile("NailgunGib1", random(-1,1), random(1,-1), random(135,225), 2, random (-50, 50));
-				A_spawnitemex("Nailgungib1",frandom(-1,1),frandom(-3,-20),frandom(-1,1),frandom(-7,-3),frandom(-1,1),frandom(-10,10));
-				A_spawnitemex("Nailgungib2",frandom(-1,1),frandom(-3,-20),frandom(-1,1),frandom(-7,-3),frandom(-1,1),frandom(-10,10));
-				A_spawnitemex("Nailgungib3",frandom(-1,1),frandom(-3,-20),frandom(-1,1),frandom(-7,-3),frandom(-1,1),frandom(-10,10));
-				//A_SpawnProjectile("NailgunGib2", random(-1,1), random(1,-1), random(135,225), 2, random (-50, 50));
-				//A_SpawnProjectile("NailgunGib3", random(-1,1), random(1,-1), random(135,225), 2, random (-50, 50));
-				}
-				Stop;
-				
-		}
 	}
+
+	States
+	{
+		Spawn:
+			MODL A 225 NODELAY;
+		Death:
+			TNT1 AAAAAAAA 0 {
+			A_startsound("BONECRACK",1);
+			// A_spawnitemex("Nailgungib1",frandom(-1,1),frandom(-3,-20),frandom(-1,1),frandom(-7,-3),frandom(-1,1),frandom(-10,10));
+			// A_spawnitemex("Nailgungib2",frandom(-1,1),frandom(-3,-20),frandom(-1,1),frandom(-7,-3),frandom(-1,1),frandom(-10,10));
+			// A_spawnitemex("Nailgungib3",frandom(-1,1),frandom(-3,-20),frandom(-1,1),frandom(-7,-3),frandom(-1,1),frandom(-10,10));
+			}
+			Stop;
+			
+	}
+}
 	
 CLASS HoloLaser: FastProjectile
 { 
@@ -203,20 +306,19 @@ class HoloPlayer : PB_Monster
 						
 			//If the actor is a monster, has none of the specified item, the caller has a line of sight to the actor, and the actor is within 512 MU, then jump to the see state.
 			//Itemname obviously has to be whatever item you want the actor to check that the possible target has none of, and the 512 map unit sight range can be changed to anything else.
-			If (CurrentActor && CurrentActor.bismonster && currentactor.health > 0 && !currentactor.bfriendly && CheckSight(CurrentActor,SF_IGNOREWATERBOUNDARY) && currentactor.target && currentactor.target is "playerpawn" && !currentactor.findinventory("PissedArmor"))
+			If (CurrentActor && CurrentActor.bismonster && currentactor.health > 0 && !currentactor.bfriendly && CheckSight(CurrentActor,SF_IGNOREWATERBOUNDARY) && currentactor.target && currentactor.target is "playerpawn")
 			{
 				Currentactor.target = self;
 			}
 			
 		}
-		
 		A_alertmonsters(0,AMF_TARGETEMITTER);
 	}
+
 	States
 	{
 	Spawn:
-		MARN AAABBBCCCBBB 1
-		{
+		MARN AAABBBCCCBBB 1 {
 			A_facetracer();
 			vector3 movepos = Vec3Angle(6,angle,0);
 			If (checkmove(Vec2Angle(6,angle),PCM_NOACTORS))
@@ -326,7 +428,7 @@ class RailgunProjectile : Actor
 		DeathSound "weapons/plasmax";
 		SeeSound "None";
 		Obituary "$OB_MPPLASMARIFLE";
-		BounceCOunt 3;
+		BounceCount 3;
 	}
 	States
 	{
@@ -340,7 +442,7 @@ class RailgunProjectile : Actor
 		RAIL A 0 A_FaceTarget;
 		RAIL A 0 {user_railangle = angle;}
 		RAIL A 0 A_SpawnItem("WhiteShockwave");
-		RAIL A 0 ACS_NamedExecuteAlways("CheckIfDM", 0, 0, 0, 0);//Check if Coop
+		// RAIL A 0 ACS_NamedExecuteAlways("CheckIfDM", 0, 0, 0, 0);//Check if Coop
 		TNT1 C 1 BRIGHT A_SpawnItem("WhiteShockwave");
 	Spawn1:
 		TNT1 C 1 BRIGHT A_SpawnItem("WhiteShockwave");
@@ -374,14 +476,6 @@ class RailgunProjectile : Actor
 
 class NailgunGib1 : Actor
 {
-	int lifetime;
-	
-	override void PostBeginPlay()
-	{
-		lifetime = 140;
-		super.PostBeginPlay();
-	}
-	
 	Default
 	{
 		Projectile;
@@ -402,16 +496,23 @@ class NailgunGib1 : Actor
 		+ROLLSPRITE
 		+ROLLCENTER
 	}
+
+	int lifetime;
+	
+	override void PostBeginPlay()
+	{
+		lifetime = 140;
+		super.PostBeginPlay();
+	}
+
 	States
 	{
 	Spawn:
 		NAIL B 1 {
 			A_SetRoll(roll + 6, SPF_INTERPOLATE);
 			lifetime--;
-			if(lifetime <= 0)
-				return resolvestate("Death");
-			else
-				return resolvestate(null);
+			if(lifetime <= 0) return resolvestate("Death");
+			else return resolvestate(null);
 		}
 		Loop;
 	Death:
@@ -430,21 +531,20 @@ class NailgunGib2 : NailgunGib1
 	{
 		Speed 4;
 	}
+
 	States
 	{
-	Spawn:
-		NAIL C 1 {
-			A_SetRoll(roll + 6, SPF_INTERPOLATE);
-			lifetime--;
-			if(lifetime <= 0)
-				return resolvestate("Death");
-			else
-				return resolvestate(null);
-		}
-	Death:
-		NAIL C 70;
-		NAIL CCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.05);
-		stop;
+		Spawn:
+			NAIL C 1 {
+				A_SetRoll(roll + 6, SPF_INTERPOLATE);
+				lifetime--;
+				if(lifetime <= 0) return resolvestate("Death");
+				else return resolvestate(null);
+			}
+		Death:
+			NAIL C 70;
+			NAIL CCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.05);
+			stop;
 	}
 }
 
@@ -454,20 +554,19 @@ class NailgunGib3: NailgunGib1
 	{
 		Speed 7;
 	}
+
 	States
 	{
-	Spawn:
-		NAIL D 1 {
-			A_SetRoll(roll + 6, SPF_INTERPOLATE);
-			lifetime--;
-			if(lifetime <= 0)
-				return resolvestate("Death");
-			else
-				return resolvestate(null);
-		}
-	Death:
-		NAIL D 70;
-		NAIL DDDDDDDDDDDDDDDDDDDD 1 A_FadeOut(0.05);
-		stop;
+		Spawn:
+			NAIL D 1 {
+				A_SetRoll(roll + 6, SPF_INTERPOLATE);
+				lifetime--;
+				if(lifetime <= 0) return resolvestate("Death");
+				else return resolvestate(null);
+			}
+		Death:
+			NAIL D 70;
+			NAIL DDDDDDDDDDDDDDDDDDDD 1 A_FadeOut(0.05);
+			stop;
 	}
 }

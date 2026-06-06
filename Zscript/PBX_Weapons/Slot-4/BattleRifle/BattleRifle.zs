@@ -342,7 +342,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			goto WeaponReady;
 			
 		FlashSlideKickingStop:
-			BR4K EDCBAAA 7; //7 frames 
+			BR4K EDCBAAA 1; //7 frames 
 			goto WeaponReady;
 	}
 	

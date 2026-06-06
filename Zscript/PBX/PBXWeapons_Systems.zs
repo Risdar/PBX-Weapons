@@ -10,6 +10,7 @@ class PBXWeapons_Handler : EventHandler
     {
         let pm = players[e.PlayerNumber].mo;
 		if(!pm) return;
+        if (level.MapName ~== "TITLEMAP") return;
         // SLOT 2
         pm.giveinventory("HellPistolerAmmo", plasmaBlasterFullAmmo);
         pm.giveinventory("LeverActionAmmo", leveractionFullAmmo);
@@ -27,10 +28,13 @@ class PBXWeapons_Handler : EventHandler
         pm.giveinventory("ExcavatorRounds", excavatorFullAmmo);
         pm.giveinventory("CyberRLDurability", CyberdemonRLDurability);
         pm.giveinventory("MastermindCGDurability", MastermindCGFullDurability);
+        // SLOT 7
+        pm.giveinventory("BDPRailgunAmmo", BDPRailgunFullAmmo);
         // SLOT 9
         // OTHERS
         PB_HelpNotificationsHandler.PB_SendTip("$PBXWeapons_Version", "PBXWeapons_GeneralFlags", ePBX_Weapons_Version);
         pm.giveinventory("PBXWeapons_TipsManager",1);
+        if(pbxweapons_normalriflereplace) pm.giveinventory("PBX_NormalRifle",1);
         // pm.giveinventory("PBXWeapons_MonsterWeapons",1);
         return;
     }
@@ -43,37 +47,6 @@ class PBXWeapons_Handler : EventHandler
     //     //destroy();
     // }
 }
-
-// class PBXWeapons_MonsterWeapons : Inventory
-// {
-// 	Default
-// 	{
-// 		inventory.maxamount 1;
-// 		+INVENTORY.UNDROPPABLE
-// 		+INVENTORY.UNTOSSABLE
-// 		+INVENTORY.PERSISTENTPOWER
-// 	}
-
-// 	override bool HandlePickup(Inventory item)
-// 	{
-//         switch(item.getClassName())
-// 		{
-// 			default:
-//                 break;
-
-// 			case 'PBX_Prosurv_Ballista':
-// 				if(owner.countinv("PB_DTech") < 0)
-// 					owner.giveinventory("PB_DTech", 5);
-//             	break;
-
-//             case 'PBX_CyberdemonRL':
-// 				console.printf("called monster weapon");
-// 				owner.giveinventory("CyberRLDurability", CyberdemonRLDurability);
-//             	break;
-// 		}
-// 		return super.HandlePickup(item);
-// 	} 
-// }
 
 // This is from Doom Deluxe, all credits goes to Dox778 and the Doom Deluxe team
 class PBXWeapons_ScopeHandler : EventHandler
