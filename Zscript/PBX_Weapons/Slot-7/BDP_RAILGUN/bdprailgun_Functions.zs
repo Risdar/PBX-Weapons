@@ -2,8 +2,51 @@ extend class PBX_BDPRailgun
 {
     override void PostBeginPlay()
     {
+        LockedOn = false;
         scopeZoom = false;
         Super.PostBeginPlay();
+    }
+
+    action void doScope()
+    {
+        FLineTraceData Bule;
+        bool hit = LineTrace(Angle, 6000, Pitch, 0, player.ViewHeight, 0, 0, Bule); //Line to kick enemy or wall
+        if(hit)
+        {
+            if(Bule.HitActor && Bule.HitActor.bISMONSTER && Bule.HitActor.bFRIENDLY == false && Bule.HitActor is "PB_Monster")
+            {	
+                if(!invoker.LockedOn)
+                {
+                    // A_SetBlend(0x00a100, 0.2, 3);
+                    invoker.LockedOn = true;
+                    A_StartSound("IronSights", CHAN_WEAPON, pitch:1.4);
+                }
+                //show the actor's wireframe
+                let Wireframe = Spawn("PBX_CubeRadiusCyan", Bule.HitActor.pos);
+                if(Wireframe)
+                {
+                    Wireframe.scale.x = double(Bule.HitActor.Radius) * 2;
+                    Wireframe.scale.Y = double(Bule.HitActor.Height) * Level.pixelstretch;
+                    Wireframe.vel = Bule.HitActor.vel;
+                }
+                // player.PSprites.frame = 1;
+                PBXWeapons_ScopeHandler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData_Blue:"..Bule.HitActor.GetTag(), Bule.HitActor.health, Bule.HitActor.GetSpawnHealth(), Bule.HitActor.PainChance);
+                PBXWeapons_ScopeHandler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData2:", Distance3D(Bule.HitActor), getZoomStrength());
+            }
+            else
+            if(invoker.LockedOn)
+            {
+                // A_SetBlend(0xa19900, 0.2, 3);
+                invoker.LockedOn = false;
+                A_StartSound("IronSights", CHAN_WEAPON, pitch:1.3);
+            }
+        }
+        // return A_DoPBWeaponAction();
+    }
+
+    action double getZoomStrength()
+    {
+        return invoker.scopeZoom ? highfactor : lowfactor;
     }
 
     action void A_GunLight(int intensity = 500, int alivetime = 2, int lightr = 255, int lightg = 237, int lightb = 162)
@@ -46,7 +89,7 @@ extend class PBX_BDPRailgun
 			A_StartSound("BEPBEP");
 			invoker.scopeZoom = false;
 		}
-		A_ZoomFactor(invoker.scopeZoom ? highfactor : lowfactor);
+		A_ZoomFactor(getZoomStrength());
 	}
 
     Action void a_spawnhologram()

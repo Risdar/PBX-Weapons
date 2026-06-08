@@ -35,6 +35,7 @@ class PBXWeapons_Handler : EventHandler
         PB_HelpNotificationsHandler.PB_SendTip("$PBXWeapons_Version", "PBXWeapons_GeneralFlags", ePBX_Weapons_Version);
         pm.giveinventory("PBXWeapons_TipsManager",1);
         if(pbxweapons_normalriflereplace) pm.giveinventory("PBX_NormalRifle",1);
+        if(pbxweapons_startwithblaster) pm.giveinventory("PBX_ProsurvBlaster",1);
         // pm.giveinventory("PBXWeapons_MonsterWeapons",1);
         return;
     }
@@ -55,11 +56,16 @@ class PBXWeapons_ScopeHandler : EventHandler
 	ui int MaxHealth, Health, ZoomScale, PainChance;
 	ui string ActorName;
 	ui double Distance;
+	ui bool IsBlue;
     
     override void InterfaceProcess(ConsoleEvent e)
     {
-		if(e.name.IndexOf("PrintScopeData:") >= 0 && !e.IsManual)
+		bool blue = e.name.IndexOf("PrintScopeData_Blue:") >= 0;
+    	bool green = e.name.IndexOf("PrintScopeData:") >= 0;
+
+		if((blue || green) && !e.IsManual)
         {
+			IsBlue = blue;
             Health = e.args[0];
 			MaxHealth = e.args[1];
 			double fuck = e.args[2];
@@ -94,20 +100,21 @@ class PBXWeapons_ScopeHandler : EventHandler
 		{
 			vector2 hud_origin;
 			vector2 hud_size;
+			int color = IsBlue ? Font.CR_CYAN : Font.CR_GREEN;
 			[hud_origin.x, hud_origin.y, hud_size.x, hud_size.y] =
 			Screen.GetViewWindow();
 			
-			Screen.DrawText(BigFont, Font.CR_GREEN, 190, 86, ActorName,
+			Screen.DrawText(BigFont, color, 190, 86, ActorName,
 			DTA_Clean, true
 			);
 		
 			string Wow = string.format("Max. HP: %u\nHP: %u\nPain chance: %u%%", MaxHealth, Health, PainChance);
-			Screen.DrawText(SmallFont, Font.CR_GREEN, 190, 104, Wow,
+			Screen.DrawText(SmallFont, color, 190, 104, Wow,
 			DTA_Clean, true
 			);
 			
 			string DistanceInMeters = string.format("Distance: %.1f m.", Distance);
-			Screen.DrawText(SmallFont, Font.CR_GREEN, 190, 74, DistanceInMeters,
+			Screen.DrawText(SmallFont, color, 190, 74, DistanceInMeters,
 			DTA_Clean, true
 			);
 		}

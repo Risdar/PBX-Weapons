@@ -4,6 +4,11 @@ CELLOUT2 CELLOUT2
 CELLIN2 CELLIN2
 weapons/smg_magfly1 DSRAICU
 
+// Prosruv Blaster
+weapons/blasterpistol/ready "sounds/Weapons/Slot-2/ProSurv - BlasterPistol/blaster_pistol_ready.ogg"
+weapons/blasterpistol/recharge "sounds/Weapons/Slot-2/ProSurv - BlasterPistol/blaster_pistol_recharge.ogg"
+weapons/blasterpistol/fire "sounds/Weapons/Slot-2/ProSurv - BlasterPistol/blaster_pistol_fire.ogg"
+
 // ProSurv Lever Action
 weapons/leveraction/raise "sounds/Weapons/Slot-2/ProSurv - LeverAction/lever_action_raise.ogg"
 weapons/leveraction/inspect "sounds/Weapons/Slot-2/ProSurv - LeverAction/lever_action_inspect.ogg"

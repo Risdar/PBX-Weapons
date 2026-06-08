@@ -1,0 +1,6 @@
+//Excavator
+brightmap sprite 5DKGA { map "Brightmaps/Weapons/Slot-6/Excavator/5DKGA.png" }
+brightmap sprite 6DKGA { map "Brightmaps/Weapons/Slot-6/Excavator/6DKGA.png" }
+brightmap sprite 7DKGA { map "Brightmaps/Weapons/Slot-6/Excavator/7DKGA.png" }
+brightmap sprite 7DKGB { map "Brightmaps/Weapons/Slot-6/Excavator/7DKGB.png" }
+brightmap sprite 7DKGC { map "Brightmaps/Weapons/Slot-6/Excavator/7DKGC.png" }

@@ -3,6 +3,7 @@
 PBXWeapons_Settings                 = "\cj⟁\c- PBX - Weapons Settings";
 PBXWeapons_Version                  = "PBX - Weapons Version 2.2 Loaded";
 TIP_pbxweapons_normalriflereplace   = "Replaces the starting rifle with BDP's Rifle (CAUTION: VERY BUGGY)";
+TIP_pbxweapons_startwithblaster     = "Start the game with the Pistol Blaster, a very weak pistol that has infinite ammo";
 
 //////////////////////////// SLOT 1 ///////////////////////////////////////////////////////////////////////////////
 
@@ -14,6 +15,10 @@ PBX_PlasmaBlaster_Semi             = "\ca Fire: Semi-Auto";
 PBX_PlasmaBlaster_Auto             = "\cx Fire: Full-Auto";
 PBX_PlasmaBlaster_Burst            = "\ct AltFire: Burst-Fire";
 PBX_PlasmaBlaster_Charge           = "\cv AltFire: Charge-Fire";
+
+// Prosurv Blaster
+PBX_ProsurvBlaster_Pickup          = "Blaster Pistol (Slot 2)";
+PBX_ProsurvBlaster_Tag             = "UAC MK-I Plasma Pistol";
 
 
 // Lever Action
@@ -81,9 +86,9 @@ PBX_MetalSniper_Standard            = "\cd7.62x51mm Armor Piercing \c-Mode";
 PBX_MetalSniper_UpgradePickup       = "Metal Sniper Resonance Ammo Type Upgrade (Slot 4)";
 PBX_MetalSniper_UpgradeTag          = "Metal Sniper Upgrade";
 
-PBX_MetalSniper_Scope1              = "\cdSmart Scope \c-Off";
-PBX_MetalSniper_Scope2              = "\cdSmart Scope \c-Highlight Activated";
-PBX_MetalSniper_Scope3              = "\cdSmart Scope \c-Target Analysis Activated";
+PBX_MetalSniper_Scope1              = "\cdTarget Analysis \c-Disabled";
+PBX_MetalSniper_Scope2              = "\cdTarget Analysis \c-Minimal";
+PBX_MetalSniper_Scope3              = "\cdTarget Analysis \c-Full";
 
 // Crossbow Ballista
 PBX_CrossbowBallista_Pickup         = "Ballista (Slot 4)";
@@ -125,7 +130,7 @@ PBX_MastermindCG_SoulSeeker         = "\crSoul Seeker \c-Mode";
 PBX_MastermindCG_Normal             = "\caExplosive Tracers \c-Mode";
 //////////////////////////// SLOT 7 ///////////////////////////////////////////////////////////////////////////////
 PBX_BDPRailgun_Pickup               = "Platinum Railgun (Slot 7)";
-PBX_BDPRailgun_Tag                  = "UAC MK-1 'Platinum' Railgun";
+PBX_BDPRailgun_Tag                  = "UAC MK-III 'Platinum' Railgun";
 
 //////////////////////////// SLOT 8 ///////////////////////////////////////////////////////////////////////////////
 

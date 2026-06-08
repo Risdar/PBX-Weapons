@@ -45,7 +45,7 @@ class BluePlasmaParticleWeapon : actor
 		+NoBlockMap;
 		-NoGravity;
 		+DontSplash;
-		+DoomBounce;
+		BounceType "Doom";
 		+FORCEXYBILLBOARD;
 		RenderStyle "Add";
 		BounceFactor 0.2;

@@ -35,7 +35,7 @@ PBX_BattleRifleUpgrade_Tip3 = "Your every bullets will now ricochet.";
 // Metal Sniper
 PBX_MetalSniper_Tip1 = "The Metal Sniper two AltFire modes and three scope modes.";
 PBX_MetalSniper_Tip2 = "The Grenade AltFire needs to be primed before firing by pressing alt and then fire.";
-PBX_MetalSniper_Tip3 = "The Scope mode can be switched between by pressing the weapon special key when scoped in";
+PBX_MetalSniper_Tip3 = "You can switch Target Analysis Mode by pressing the weapon special key when scoped in";
 PBX_MetalSniper_Tip4 = "The standard 7.62x51mm Armor Piercing deals high piercing damage";
 PBX_MetalSniper_Tip5 = "You can get the alternate Resonance Ammo type by picking it's upgrade that spawn on Tier 3 backpacks.";
 

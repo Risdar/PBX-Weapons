@@ -14,7 +14,8 @@ Version 4.13
 
 
 // Slot 2
-#include "Zscript/PBX_Weapons/Slot-2/Plasma_Blaster/PlasmaBlaster.zs" // PLlasma Blaster 
+#include "Zscript/PBX_Weapons/Slot-2/Plasma_Blaster/PlasmaBlaster.zs" // PLasma Blaster 
+#include "Zscript/PBX_Weapons/Slot-2/Prosurv_Blaster/prosurv_blaster.zs" // Prosurv Blaster 
 #include "Zscript/PBX_Weapons/Slot-2/Prosurv_LeverAction/Prosurv_LeverAction.zs" // Lever Action 
 
 // Slot 3

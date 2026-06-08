@@ -40,24 +40,7 @@ extend class PBX_MetalSniper
             A_ZoomFactor(4.0);
         }
 
-        if (PB_GetAimMode())
-        {
-            if (!PressingAltfire() || JustReleased(BT_ALTATTACK))
-                return resolvestate("ZoomOut");
-
-            if (PressingFire() && PressingAltfire() && CountInv(invoker.ammotype2) > 0)
-                return resolvestate("Fire_ADS");
-
-            return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOSECONDARY);
-        }
-        else
-        {
-            if (PressingFire() && CountInv(invoker.ammotype2) > 0)
-                return resolvestate("Fire_ADS");
-
-            return A_DoPBWeaponAction(WRF_ALLOWRELOAD);
-        }
-        return ResolveState(null);
+        return PB_ReadyFire(ads:true);
     }
 
     // ── Scope Function ────────────────────────────────────────────────────────

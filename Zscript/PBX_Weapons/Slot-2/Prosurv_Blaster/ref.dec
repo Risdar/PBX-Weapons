@@ -1,0 +1,500 @@
+Actor BlasterPistolFireAnimation1: Inventory
+{Inventory.maxamount 1}
+
+Actor BlasterPistolFireAnimation2: Inventory
+{Inventory.maxamount 1}
+
+ACTOR RespectBlasterPistol : Inventory
+{Inventory.MaxAmount 1}
+
+ACTOR BlasterPistolHeatLevel : PB_Ammo {
+	Inventory.Amount 0
+	Inventory.MaxAmount 100
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 100
+	+INVENTORY.IGNORESKILL
+	Inventory.Icon "TNT1A0"
+}
+
+ACTOR ProSurv_BlasterPistol : PB_WeaponBase 
+{
+	Weapon.BobRangeX 0.3
+	Weapon.BobRangeY 0.5
+	Weapon.BobStyle InverseSmooth
+	Weapon.BobSpeed 2.4
+	Game Doom
+	// Weapon.SlotNumber 2
+	Weapon.SlotPriority 0
+	Weapon.SelectionOrder 1300
+	Weapon.AmmoUse1 0
+	Weapon.AmmoGive1 0
+	Weapon.AmmoUse2 0
+	Weapon.AmmoGive2 0
+	Weapon.AmmoType1 "BlasterPistolHeatLevel"
+	Inventory.MaxAmount 3
+	Inventory.Amount 1
+	+FLOORCLIP
+	+DONTGIB
+	Obituary "%k Zapped %o with a Blaster Pistol"
+    AttackSound "None"
+	Tag "Project Survival Blaster Pistol"
+	Inventory.Icon "BRPIA0"
+	DamageType Plasma
+    Inventory.PickupSound "weapons/pistolup"
+	Inventory.Pickupmessage "Blaster Pistol (Slot 2)"
+	+WEAPON.WIMPY_WEAPON
+    +WEAPON.NOAUTOAIM
+    +WEAPON.NOAUTOFIRE
+	+WEAPON.NOALERT
+    Scale 0.44
+	Inventory.AltHUDIcon "BRPIA0"
+	PB_WeaponBase.RespectItem "RespectBlasterPistol"
+	FloatBobStrength 0.5
+	States
+	{
+	Spawn:
+	See:
+		BRPI A -1
+		Stop
+	Steady:
+		TNT1 A 1 
+	Ready:
+		TNT1 A 0 A_JumpIfInventory("WearingHelmet", 1, "HelmetAnimation")
+		TNT1 A 0 A_TakeInventory("BlasterPistolHeatLevel",100)
+        TNT1 A 0 PB_RespectIfNeeded()
+	WeaponRespect:
+		TNT1 A 0 {
+			A_Giveinventory("PB_LockScreenTilt",1);
+			A_SetCrosshair(5);
+			}
+		TNT1 A 10 A_DoPBWeaponAction
+		TNT1 A 0 A_PlaySoundEx("weapons/blasterpistol/ready", "Auto")
+        BRGT EDCBAAAAA 1 A_DoPBWeaponAction
+		BRGC CDEF 1 {
+			A_Setroll(roll+.2, SPF_INTERPOLATE);
+			A_DoPBWeaponAction;
+		}
+		TNT1 A 0 A_PlaySoundEx("weapons/blasterpistol/recharge","Weapon")
+		BRGC GHIJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJK 1 A_DoPBWeaponAction
+		TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto")
+		BRGC LM 1 A_DoPBWeaponAction
+		BRGC NOPQ 1 {
+			A_Setroll(roll-.2, SPF_INTERPOLATE);
+			A_DoPBWeaponAction;
+		}
+		Goto Ready3
+	SelectAnimation:
+		BRGT E 1 A_PlaySoundEx("weapons/blasterpistol/ready", "Auto")
+        BRGT DCB 1 A_JumpIfInventory("GoFatality", 1, "Steady")
+	Ready3:
+		TNT1 A 0 A_SetCrosshair(65)
+		TNT1 A 0 {
+			A_SetRoll(0);
+			A_TakeInventory("PB_LockScreenTilt",1);
+			}
+		TNT1 A 0 A_JumpIfInventory("Zoomed",1,"ReadyToFire2")
+	ReadyToFire:
+		TNT1 A 0 A_SetCrosshair(65)
+		BRGT A 4 A_DoPBWeaponAction
+		BRGT A 1 {
+			if (PressingFire() && PressingAltfire() && CountInv("BlasterPistolHeatLevel") < 100){
+					return state("Fire");
+			}
+			if (PressingFire() && CountInv("BlasterPistolHeatLevel") < 100){
+					return state("Fire");
+			}
+			return A_DoPBWeaponAction(WRF_ALLOWRELOAD);
+		}
+		TNT1 A 0 A_TakeInventory("BlasterPistolHeatLevel",1)
+		Goto ReadyToFire
+	ReadyToFire2:
+		BRGG F 1 {
+			if(GetCvar("pb_toggle_aim_hold")) {
+				if(!PressingAltfire() || JustReleased(BT_ALTATTACK)){
+					return state("Zoomout");
+				}
+				if (PressingFire() && PressingAltfire() && CountInv("BlasterPistolHeatLevel") < 100){
+						return state("Fire2");
+				}
+				return A_DoPBWeaponAction(WRF_ALLOWRELOAD|WRF_NOSECONDARY);
+			}
+			else {
+				if (PressingFire() && CountInv("BlasterPistolHeatLevel") < 100 ){
+					return state("Fire2");
+				}
+				return A_DoPBWeaponAction(WRF_ALLOWRELOAD);
+			}
+			return state("");
+		}
+		Loop
+
+	GunFlash:
+		TNT1 A 0 A_Jump(256, "Flash1", "Flash2", "Flash3", "Flash4", "Flash5", "Flash6", "Flash7", "Flash8")
+		TNT1 A 1
+		Stop
+	Flash1:
+		BRGM A 1 Bright
+		STOP
+	Flash2:
+		BRGM B 1 Bright
+		STOP
+	Flash3:
+		BRGM C 1 Bright
+		STOP
+	Flash4:
+		BRGM D 1 Bright
+		STOP
+	Flash5:
+		BRGM E 1 Bright
+		STOP
+	Flash6:
+		BRGM F 1 Bright
+		STOP
+	Flash7:
+		BRGM G 1 Bright
+		STOP
+	Flash8:
+		BRGM H 1 Bright
+		STOP
+	
+		
+	WeaponSpecial:
+		TNT1 A 0 PB_CheckBarrelIdle1()
+		TNT1 A 0 A_SetCrosshair(65)
+		TNT1 A 0 A_Takeinventory("GoWeaponSpecialAbility",1)
+		Goto Ready3
+
+		
+	Deselect:
+		TNT1 A 0 PB_CheckBarrelPlace1()
+		TNT1 A 0 A_SetCrosshair(65)
+		TNT1 A 0 {
+			A_WeaponOffset(0,32);
+			A_SetRoll(0);
+			A_TakeInventory("PB_LockScreenTilt",1);
+			A_ClearOverlays(10,11);
+			A_ZoomFactor(1.0); //Force out of ADS when deselecting weapon while on ADS
+		}	    
+		TNT1 A 0 A_Takeinventory("Unloading",1)
+		TNT1 A 0 A_TakeInventory("ADSMode",1)
+		TNT1 A 0 A_TakeInventory("Zoomed",1)
+        BRGT BCDE 1	
+		TNT1 AAAAAAAAAAAAAAAAAA 0 A_Lower
+		Wait	
+		
+	Select:
+		TNT1 A 0 A_SetCrosshair(65)
+		TNT1 A 0 {
+			A_WeaponOffset(0,32);
+			A_SetRoll(0);
+			A_TakeInventory("PB_LockScreenTilt",1);
+			A_ClearOverlays(10,11);
+		}
+		Goto SelectFirstPersonLegs
+		SelectContinue:
+			TNT1 AAAAAAAAAAAAAAAAAA 0 A_Raise
+			TNT1 AAAAAAAA 1 A_Raise
+			Wait
+		
+	Fire:
+		TNT1 A 0 PB_CheckBarrelThrow1()
+		"####" "#" 0 A_SetCrosshair(65)
+		"####" "#" 0 {
+			A_WeaponOffset(0,32);
+			A_SetRoll(0);
+			A_TakeInventory("PB_LockScreenTilt",1);			
+			if(CountInv("NoFatality") == 0 && GetCVAR ("ttwcfbex") == 1) {
+				return PB_Execute();
+			}
+			return state("");
+		}
+		"####" "#" 0 A_JumpIfInventory("Zoomed", 1, "Fire2")
+        "####" "#" 0 A_JumpIfInventory("BlasterPistolHeatLevel",100,"Reload")
+		"####" "#" 0 A_Giveinventory("HitboxPlasmaDamage",1)
+		BRGF A 1 BRIGHT { 
+			A_GunFlash;
+			A_Overlay(-5, "GunFlash", true);
+			A_ZoomFactor(0.985);
+			A_AlertMonsters;
+			A_FireCustomMissile("ShakeYourAssMinor", 0, 0, 0, 0);
+			A_Giveinventory("BlasterPistolHeatLevel",5);
+			A_PlaySoundEx("weapons/blasterpistol/fire","Weapon");
+			PB_WeaponRecoil(-0.18,-0.08);
+			A_FireCustomMissile("BlueFlareSpawn", 0, 0, 0, 0, 0, 0);
+			A_FireCustomMissile("2016PistolplasmaTracer", 0,0,0,1,0,0);
+            if (CountInv("PowerStrength") >= 1 ) {
+				A_SetPitch(pitch-0.18, SPF_INTERPOLATE);
+				A_SetAngle(angle+0.8, SPF_INTERPOLATE);
+				}
+			else {
+				A_SetPitch(pitch-0.9, SPF_INTERPOLATE);
+				A_SetAngle(angle+0.4, SPF_INTERPOLATE);
+				}
+			}
+        BRGF B 1 {
+				A_ZoomFactor(0.99);
+                if (CountInv("PowerStrength") >= 1 ) {
+					A_SetPitch(pitch-0.18, SPF_INTERPOLATE);
+					A_SetAngle(angle+0.8, SPF_INTERPOLATE);
+					}
+				else {
+					A_SetPitch(pitch-0.9, SPF_INTERPOLATE);
+					A_SetAngle(angle+0.4, SPF_INTERPOLATE);
+					}
+			}
+        BRGF C 1 {
+				
+				A_ZoomFactor(1.0);
+				if (CountInv("PowerStrength") >= 1 ) {
+					A_SetPitch(pitch-0.18, SPF_INTERPOLATE);
+					A_SetAngle(angle+0.8, SPF_INTERPOLATE);
+					}
+				else {
+					A_SetPitch(pitch-0.9, SPF_INTERPOLATE);
+					A_SetAngle(angle+0.4, SPF_INTERPOLATE);
+					}
+		}
+		BRGF DC 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD|WRF_NOPRIMARY)
+		BRGT AAAAAAA 1 {
+			if (JustPressed(BT_ATTACK)){
+					return state("Fire");
+			}
+			return A_DoPBWeaponAction(WRF_ALLOWRELOAD|WRF_NOPRIMARY);
+	
+		}
+		Goto ReadyToFire
+		
+	Fire2:
+		"####" "#" 0 {
+			A_WeaponOffset(0,32);
+			A_SetCrosshair(5);
+		}
+		"####" "#" 0 A_JumpIfInventory("BlasterPistolHeatLevel",100,"Reload")
+		"####" "#" 0 A_Giveinventory("HitboxPlasmaDamage",1)
+		BRGG G 1 BRIGHT { 
+			A_GunFlash;
+			A_Overlay(-5, "GunFlash", true);
+			A_ZoomFactor(1.24);
+			A_AlertMonsters;
+			A_FireCustomMissile("ShakeYourAssMinor", 0, 0, 0, 0);
+			A_Giveinventory("BlasterPistolHeatLevel",5);
+			A_PlaySoundEx("weapons/blasterpistol/fire","Weapon");
+			PB_WeaponRecoil(-0.18,-0.08);
+			A_FireCustomMissile("BlueFlareSpawn", 0, 0, 0, 0, 0, 0);
+			A_FireCustomMissile("2016PistolplasmaTracer", 0,0,0,1,0,0);
+			}
+        BRGG H 1 {
+			A_ZoomFactor(1.245);
+		}
+        BRGG I 1 {
+			A_ZoomFactor(1.25);
+		}
+		BRGG J 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD|WRF_NOFIRE)
+		BRGG KLFFFFFF 1 {
+			if(GetCvar("pb_toggle_aim_hold")) {
+				if(JustReleased(BT_ALTATTACK)){
+					return state("Zoomout");
+				}
+		
+				if (JustPressed(BT_ATTACK) && PressingAltfire()){
+						return state("Fire2");
+				}
+			}
+			else {
+				if(PressingAltfire()){
+					return state("Zoomout");
+				}
+				
+				if (JustPressed(BT_ATTACK)){
+						return state("Fire2");
+				}
+				A_Refire("Fire2");
+				
+			}
+			return A_DoPBWeaponAction(WRF_ALLOWRELOAD|WRF_NOFIRE);
+		}
+		Goto ReadyToFire2
+		
+
+	AltFire:
+		TNT1 A 0 PB_CheckBarrelPlace1()
+		TNT1 A 0 {
+			A_GunFlash("LightDone",GFF_NOEXTCHANGE);
+			A_WeaponOffset(0,32);
+			A_SetRoll(0);
+			PB_HandleCrosshair(65);
+			A_TakeInventory("PB_LockScreenTilt",1);
+		}
+		TNT1 A 0 A_StartSound("IronSights", 0)
+		TNT1 A 0 A_JumpIfInventory("Zoomed",1,"Zoomout")
+		TNT1 A 0 A_ZoomFactor(1.2)
+        BRGG BC 1 
+        BRGG DEF 1
+		TNT1 A 0 {
+			A_Giveinventory("Zoomed",1);
+			A_Giveinventory("ADSmode",1);
+			A_SetCrosshair(5);
+			A_WeaponReady(WRF_NOSECONDARY);
+			}
+        Goto ReadyToFire2
+	Zoomout:
+		TNT1 A 0 {	
+			A_GunFlash("LightDone",GFF_NOEXTCHANGE);
+			A_Takeinventory("Zoomed",1);
+			A_Takeinventory("ADSmode",1);
+			PB_HandleCrosshair(65);
+			A_ZoomFactor(1.0);
+			}
+        BRGG FED 1 
+		BRGG CB 1 
+		TNT1 A 0 A_WeaponReady(WRF_NOSECONDARY)
+        Goto Ready3
+		
+	Reload:
+		TNT1 A 0 PB_CheckBarrelIdle1()
+		"####" "#" 0 A_JumpIfInventory("BlasterPistolHeatLevel",1,"Recharge")
+		Goto Ready3
+	Recharge:
+		TNT1 A 0 {
+			A_SetCrosshair(5);
+			A_Takeinventory("Zoomed",1);
+			A_Takeinventory("ADSmode",1);
+			A_ZoomFactor(1.0);
+			A_Giveinventory("PB_LockScreenTilt",1);
+			A_PlaySoundEx("Ironsights", "Auto");
+			}
+		BRGC CDEF 1 A_Setroll(roll+.2, SPF_INTERPOLATE)
+		TNT1 A 0 A_PlaySoundEx("weapons/blasterpistol/recharge","Weapon")
+		BRGC GH 1
+		BRGC I 1
+		BRGC JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ 1 A_TakeInventory("BlasterPistolHeatLevel", 3)
+		BRGC JJJ 1
+		BRGC K 1
+		TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto")
+		BRGC LM 1
+		BRGC NOPQ 1 A_Setroll(roll-.2, SPF_INTERPOLATE)
+		Goto Ready3
+		
+	Unload:
+		TNT1 A 0 A_Takeinventory("Unloading",1)
+		Goto ReadyToFire
+		
+	FlashKicking:
+		BRGY ABCDEFGFEDCBAA 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD)
+		Goto ReadyToFire	
+		
+	FlashAirKicking:
+		BRGY ABCDEFGGFEDCBAAA 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD)
+		Goto ReadyToFire
+		
+	FlashSlideKicking:
+		BRGY ABCDEFGGGGGGGGGGGGGGGGGG 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD)
+		Goto ReadyToFire
+	
+	FlashSlideKickingStop:
+		BRGY FEDCBAA 1 A_DoPBWeaponAction
+		Goto ReadyToFire
+		
+	FlashPunching:
+		BRGS ABCCCCCCCCCCMN 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD)
+		Stop
+	}
+}
+
+Actor 2016PistolplasmaTracer: FastProjectile
+{
++BLOODSPLATTER 
+-DONTSPLASH
+speed 200
+damage 3
+scale 0.3
+RenderStyle Add
+Alpha 0.2
+radius 2
+height 2
+damagetype Plasma
+Decal "BulletPuff"
+States
+{
+
+	Spawn:
+		TNT1 A 1 BRIGHT A_SpawnItemEx("2016PistolplasmaTracerTrail", 0,               0,              2)
+        TNT1 A 0 A_SpawnItemEx("2016PistolplasmaTracerTrail2", (2 *momx)/-35.0, -(2 *momy)/-35.0, 2+(2 *momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("2016PistolplasmaTracerTrail3", (4 *momx)/-35.0, -(4 *momy)/-35.0, 2+(4 *momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("2016PistolplasmaTracerTrail4", (6 *momx)/-35.0, -(6 *momy)/-35.0, 2+(6 *momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("2016PistolplasmaTracerTrail5", (8 *momx)/-35.0, -(8 *momy)/-35.0, 2+(8 *momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("2016PistolplasmaTracerTrail6", (10*momx)/-35.0, -(10*momy)/-35.0, 2+(10*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("2016PistolplasmaTracerTrail7", (12*momx)/-35.0, -(12*momy)/-35.0, 2+(12*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("2016PistolplasmaTracerTrail8", (14*momx)/-35.0, -(14*momy)/-35.0, 2+(14*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("2016PistolplasmaTracerTrail9", (16*momx)/-35.0, -(16*momy)/-35.0, 2+(16*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("2016PistolplasmaTracerTrail10", (18*momx)/-35.0, -(18*momy)/-35.0, 2+(18*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("2016PistolplasmaTracerTrail11", (20*momx)/-35.0, -(20*momy)/-35.0, 2+(20*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("2016PistolplasmaTracerTrail12", (22*momx)/-35.0, -(22*momy)/-35.0, 2+(22*momz)/-35.0, 0,0,0, 0, SXF_ABSOLUTEANGLE)
+		Loop
+	Death:
+		TNT1 AAAAA 0 A_SpawnItem("BlueFlareSmall")
+		TNT1 AAAAA 0 A_CustomMissile ("BluePlasmaParticle", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 B 1 A_Explode(2,50,1)
+		BL1I ABCD 1 BRIGHT A_SpawnItem("BlueFlareSmall")
+		TNT2 AA 3 A_CustomMissile ("PlasmaSmoke", 1, 0, random (0, 360), 2, random (0, 160))
+		Stop
+}
+}
+
+actor 2016PistolplasmaTracerTrail
+{
+    Scale 0.04
+    RenderStyle Add
+    Alpha 0.9
+    +NOINTERACTION
+    +CLIENTSIDEONLY
+    States
+    {
+    Spawn:
+        SPKB A 2 BRIGHT
+        stop
+    }
+}
+
+Actor 2016PistolplasmaTracerMonster: 2016PistolplasmaTracer { damage 1 }
+
+
+actor 2016PistolplasmaTracerTrail2: 2016PistolplasmaTracerTrail {    Alpha 0.85 }
+actor 2016PistolplasmaTracerTrail3: 2016PistolplasmaTracerTrail {    Alpha 0.80 }
+actor 2016PistolplasmaTracerTrail4: 2016PistolplasmaTracerTrail {    Alpha 0.75 }
+actor 2016PistolplasmaTracerTrail5: 2016PistolplasmaTracerTrail {    Alpha 0.70 }
+actor 2016PistolplasmaTracerTrail6: 2016PistolplasmaTracerTrail {    Alpha 0.65 }
+actor 2016PistolplasmaTracerTrail7: 2016PistolplasmaTracerTrail {    Alpha 0.60 }
+actor 2016PistolplasmaTracerTrail8: 2016PistolplasmaTracerTrail {    Alpha 0.55 }
+actor 2016PistolplasmaTracerTrail9: 2016PistolplasmaTracerTrail {    Alpha 0.50 }
+actor 2016PistolplasmaTracerTrail10: 2016PistolplasmaTracerTrail {    Alpha 0.45 }
+actor 2016PistolplasmaTracerTrail11: 2016PistolplasmaTracerTrail {    Alpha 0.40 }
+actor 2016PistolplasmaTracerTrail12: 2016PistolplasmaTracerTrail {    Alpha 0.35 }
+actor 2016PistolplasmaTracerTrail13: 2016PistolplasmaTracerTrail {    Alpha 0.30 }
+actor 2016PistolplasmaTracerTrail14: 2016PistolplasmaTracerTrail {    Alpha 0.25 }
+actor 2016PistolplasmaTracerTrail15: 2016PistolplasmaTracerTrail {    Alpha 0.20 }
+actor 2016PistolplasmaTracerTrail16: 2016PistolplasmaTracerTrail {    Alpha 0.15 }
+actor 2016PistolplasmaTracerTrail17: 2016PistolplasmaTracerTrail {    Alpha 0.10 }
+actor 2016PistolplasmaTracerTrail18: 2016PistolplasmaTracerTrail {    Alpha 0.05 }
+
+Actor MonsterHandgunTracer: 2016PistolplasmaTracer { 
+	Damage 1
+	+BLOODSPLATTER 
+	+THRUGHOST
+	-DONTSPLASH
+	-MTHRUSPECIES
+	+MISSILE
+	speed 60
+	}
+	
+Actor SoulReaperTracer: 2016PistolplasmaTracer { 
+	Damage 1
+	+BLOODSPLATTER 
+	+THRUGHOST
+	-DONTSPLASH
+	-MTHRUSPECIES
+	+LOOKALLAROUND
+	+MISSILE
+	speed 60
+	SeeSound "weapons/blasterpistol/fire"
+	}

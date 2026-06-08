@@ -193,6 +193,11 @@ class PBX_Hud : PB_Hud_ZS
                 adjustScale = 2.0;
                 break;
 
+            case 'PBX_ProsurvBlaster':
+                adjustPos = (-20, 35); 
+                adjustScale = 0.8;
+                break;
+
 //////////////// SLOT 3 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             case 'PB_Shotgun':
                 adjustPos = (-5, 10); 

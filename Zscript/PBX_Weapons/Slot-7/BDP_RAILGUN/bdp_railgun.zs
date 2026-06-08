@@ -22,10 +22,12 @@ Class PBX_BDPRailgun : PB_WeaponBase
 		Weapon.SelectionOrder 1550;
 		Inventory.AltHUDIcon "XBDRA0";
 		Tag "$PBX_BDPRailgun_Tag";
+        scale 0.7;
     }
 
 	// bool steam;
 	bool scopeZoom; // this is for the variable scope
+	bool lockedOn;
     const bdpraildamage = 500;
     const highfactor = 9.0;
     const lowfactor = 3.0;
@@ -110,6 +112,7 @@ Class PBX_BDPRailgun : PB_WeaponBase
             SNIP C 1 Bright {
 				PB_CoolDownBarrel();
                 A_SetCrosshair(-1);
+                doScope();
 				return PB_ReadyFire(ads:true);
             }
             loop;
@@ -223,6 +226,7 @@ Class PBX_BDPRailgun : PB_WeaponBase
             Goto Ready2;
 
         AltFire:
+            TNT1 A 0 {invoker.LockedOn = false;}
 			TNT1 A 0 A_Jumpif(PB_GetZoom(),"ZoomOut");
         ZoomIn:
             TNT1 A 0 {
