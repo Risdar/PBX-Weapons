@@ -46,14 +46,14 @@ class ProsurvBlasterProjectile : PB_ProjectileAlt
     }
 }
 
-Class BlasterPistolHeatLevel : PB_Ammo
+Class BlasterPistolCharge : PB_Ammo
 {
 	Default
 	{
 		inventory.amount 0;
-		inventory.maxamount prosurvblasterMaxHeat;
+		inventory.maxamount prosurvblasterMaxCharge;
 		ammo.backpackamount 0;
-		ammo.backpackmaxamount prosurvblasterMaxHeat;
+		ammo.backpackmaxamount prosurvblasterMaxCharge;
 	    Inventory.Icon "ARMZA0";
         +INVENTORY.IGNORESKILL;
 	}

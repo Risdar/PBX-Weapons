@@ -154,4 +154,6 @@ PBX_AmmoNotAvailable                = "Ammo Type Not Available";
 PBX_ModeNotAvailable                = "Mode Not Available";
 PBX_NoSpecial                       = "No Weapon Special Available";
 PBX_NotEnoughAmmo                   = "Not Enough Ammo";
+PBX_LaserOn                         = "\cdLaser Sight \c-Activated";
+PBX_LaserOff                        = "\ciLaser Sight \c-Deactivated";
 

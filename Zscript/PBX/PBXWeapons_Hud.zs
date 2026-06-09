@@ -194,8 +194,8 @@ class PBX_Hud : PB_Hud_ZS
                 break;
 
             case 'PBX_ProsurvBlaster':
-                adjustPos = (-20, 35); 
-                adjustScale = 0.8;
+                adjustPos = (-30, 30); 
+                adjustScale = 1.0;
                 break;
 
 //////////////// SLOT 3 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

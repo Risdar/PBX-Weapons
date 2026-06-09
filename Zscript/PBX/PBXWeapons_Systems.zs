@@ -162,6 +162,56 @@ Class PBXWeapons_CheatsHandler : Eventhandler
 	}
 }
 
+CLASS PBX_BlueDot : FastProjectile
+{ 
+	Default
+	{
+		Decal "None";
+		Mass 0;
+		Scale 0.2;
+		Radius 1;
+		Height 2;
+		+NOBLOCKMAP;
+		+NOGRAVITY;
+		+BLOODLESSIMPACT;
+		+ALWAYSPUFF;
+		+PUFFONACTORS;
+		+DONTSPLASH;
+		+FORCEXYBILLBOARD;
+		Renderstyle "Add";
+		Alpha 0.8;
+	}
+	States
+	{
+	Spawn:
+		LEYS RR 0;
+		LEYS B 1 BRIGHT;
+		Stop;
+	}
+}
+
+class PBX_RedDot : PBX_BlueDot
+{
+    States
+	{
+	Spawn:
+		LEYS RR 0 BRIGHT;
+		LEYS R 1 BRIGHT;
+		Stop;
+	}
+}
+
+class PBX_GreenDot : PBX_BlueDot
+{
+    States
+	{
+	Spawn:
+		LEYS RR 0 BRIGHT;
+		LEYS G 1 BRIGHT;
+		Stop;
+	}
+}
+
 Class PBX_CubeRadius : actor
 {
 	DEFAULT
@@ -267,3 +317,26 @@ class PBX_RadiusVisualizer : Inventory
         Super.OnDestroy();
     }
 }
+
+// vector3 targetpos = lasersight.HitLocation;
+// switch (lasersight.HitType)
+// {
+// 	case TRACE_HitWall:
+// 	{
+// 		vector2 wallnormal = (-lasersight.HitLine.delta.y, lasersight.HitLine.delta.x).unit();
+// 		if (!lasersight.LineSide) wallnormal *= -1;
+// 		targetpos += (wallnormal.x, wallnormal.y, 0) * 2;
+// 		break;
+// 	}
+// 	case TRACE_HitFloor:
+// 		targetpos.z += 2;
+// 		break;
+// 	case TRACE_HitCeiling:
+// 		targetpos.z -= 2;
+// 		break;
+// 	case TRACE_HitActor:
+// 		// push back along trace direction so it sits on the actor surface
+// 		vector3 traceDir = (cos(pitch) * cos(angle), cos(pitch) * sin(angle), -sin(pitch));
+// 		targetpos -= traceDir * 2;
+// 		break;
+// }

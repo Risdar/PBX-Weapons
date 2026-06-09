@@ -201,34 +201,6 @@ CLASS RailgunRail2 : Actor
 			
 	}
 }
-	
-CLASS HoloLaser: FastProjectile
-{ 
-	Default
-	{
-		Decal "None";
-		Mass 0;
-		Scale 0.2;
-		Radius 1;
-		Height 2;
-		+NOBLOCKMAP;
-		+NOGRAVITY;
-		+BLOODLESSIMPACT;
-		+ALWAYSPUFF;
-		+PUFFONACTORS;
-		+DONTSPLASH;
-		+FORCEXYBILLBOARD;
-		Renderstyle "Add";
-		Alpha 0.8;
-	}
-	States
-	{
-	Spawn:
-		LEYS RR 0;
-		LEYS B 1 BRIGHT;
-		Stop;
-	}
-}
 
 class HoloTarget : FastProjectile
 { 
