@@ -5,10 +5,57 @@ extend class PBX_BDPBattleRifle
 	{
 		LockedOn 	 = false;
 		semiClear 	 = false;
+		laserActive  = false;
 		isSemiAuto 	 = true;
 		zoomstrength = PBX_BDPBattleRifle.LOWZOOM;
 		super.postbeginplay();
 	}
+
+	override void DoEffect() 
+	{
+		super.DoEffect();
+
+        if (level.frozen) return;
+        
+        // Check if the player exists and if the current weapon they're using is the blaster
+		If(	owner.player && owner.player.readyweapon.GetClass() is self.GetClass())
+        {
+            // Get a pointer to it
+            let weap = PBX_BDPBattleRifle(owner.player.readyweapon);
+            if(!weap) return;
+
+			// Get a pointer to PSprite
+			let psp = owner.player.FindPSprite(PSP_WEAPON);
+			if(!psp) return;
+
+            if(!weap.laserActive) return;
+
+            // Dont spawn the laser sight if the weapon is in one of these states
+            static const StateLabel blockedStates[] = {
+                "Reload", "ReloadFromADS", "ContinueReload", "RaiseFromEmpty",
+                "Unload", "SwitchAnimation",
+                "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
+            };
+
+            for (int i = 0; i < blockedStates.Size(); i++)
+            {
+                if (InStateSequence(psp.curstate, ResolveState(blockedStates[i]))) return;
+            }
+
+            // Spawn the laser sight
+            double pz = owner.height * 0.5 - owner.floorclip + owner.player.mo.AttackZOffset*owner.player.crouchFactor;
+            FLineTraceData lasersight;
+            owner.LineTrace(owner.angle, 
+                4096, 
+                owner.pitch, 
+                TRF_SOLIDACTORS|TRF_THRUHITSCAN, 
+                offsetz: pz, 
+                data: lasersight
+            );
+
+            Spawn("PBX_GreenDot", lasersight.HitLocation);
+		}
+    }
     
 //////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
 	action void cleanmodetokens()
@@ -16,6 +63,7 @@ extend class PBX_BDPBattleRifle
 		A_SetInventory("BR_Select_Semi",0);
 		A_SetInventory("BR_Select_Burst",0);
 		A_SetInventory("BR_Select_Zoom",0);
+		A_SetInventory("BR_Select_Laser",0);
 	}
 
 	action double getZoomStrength()
@@ -193,6 +241,7 @@ extend class PBX_BDPBattleRifle
 		bool goSemi  	 = countinv("BR_Select_Semi")  > 0;
 		bool goBurst 	 = countinv("BR_Select_Burst") > 0;
 		bool toggleZoom  = countinv("BR_Select_Zoom")  > 0;
+		bool toggleLaser = countinv("BR_Select_Laser")  > 0;
 
 		if(goSemi && getSemiAuto() || goBurst && !getSemiAuto())
 		{
@@ -204,13 +253,11 @@ extend class PBX_BDPBattleRifle
 		if(goSemi)
 		{
 			setSemiAuto(true);
-			cleanmodetokens();
 			A_Print("$PBX_BattleRifle_SemiAuto");
 		}
 		if(goBurst)
 		{
 			setSemiAuto(false);
-			cleanmodetokens();
 			A_Print("$PBX_BattleRifle_Burst");
 		}
 
@@ -224,9 +271,16 @@ extend class PBX_BDPBattleRifle
 				setZoomStrength(HIGHZOOM);
 				A_Print("$PBX_BattleRifle_ZoomHigh");
 			}
-			cleanmodetokens();
 		}
 
+		if (toggleLaser)
+        {
+            if(invoker.laserActive) invoker.laserActive = false;
+            else invoker.laserActive = true;
+            A_Print(invoker.laserActive ? "$PBX_LaserOn" : "$PBX_LaserOff");
+        }
+
+		cleanmodetokens();
 		// Play sound when opening the wheel in ADS
 		if(PB_GetZoom())
 		{

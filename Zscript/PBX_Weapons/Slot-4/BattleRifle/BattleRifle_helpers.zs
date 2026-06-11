@@ -1,6 +1,7 @@
 class BR_Select_Semi : inventory {default{inventory.maxamount 1;}}
 class BR_Select_Burst : inventory {default{inventory.maxamount 1;}}
 class BR_Select_Zoom : inventory {default{inventory.maxamount 1;}}
+class BR_Select_Laser : inventory {default{inventory.maxamount 1;}}
 class BattleRifle_Upgraded : inventory {default{inventory.maxamount 1;}}
 
 class BR_Ammo : PB_Ammo

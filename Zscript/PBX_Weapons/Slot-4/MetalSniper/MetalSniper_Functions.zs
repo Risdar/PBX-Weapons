@@ -6,6 +6,7 @@ extend class PBX_MetalSniper
         grenadeloaded  = true;
         currentMaxAmmo = MetalSniperFullAmmo;
         zoomstrength = LOWZOOM;
+		laserActive  = false;
         LockedOn = false;
         ScopeMode = 0;
         enableScopeHUD = false;

@@ -43,6 +43,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
     bool isSemiAuto;
 	bool semiclear;
 	bool LockedOn;
+	bool laserActive;
 	double zoomstrength;
 	int burstcount;
 	// Change these if you want to edit how strong the zoom modes are

@@ -100,7 +100,8 @@ class PBX_Hud : PB_Hud_ZS
             // Slot 9
              
             // PBX Weapons
-            "PBX_MastermindChaingun","PBX_MetalSniper"
+            "PBX_MastermindChaingun","PBX_MetalSniper","PBX_ProSurvPSG",
+            "PBX_BDPBattleRifle"
         };
 
         // Handle exceptions
@@ -226,8 +227,10 @@ class PBX_Hud : PB_Hud_ZS
                 break;
 
             case 'PBX_ProSurvPSG':
-                adjustPos = (-5, 15); 
-                adjustScale = 1.3;
+                let psg = PBX_ProSurvPSG(pbWeap);
+                if(!psg) return;
+                adjustPos = psg.laserActive ? (13,13) : (-5, 15); 
+                adjustScale = psg.laserActive ? 0.8 : 1.1;
                 break;
                 
 
@@ -265,8 +268,10 @@ class PBX_Hud : PB_Hud_ZS
                 break;
 
             case 'PBX_BDPBattleRifle':
-                adjustPos = (-7, 12); 
-                adjustScale = 1.3;
+                let br = PBX_BDPBattleRifle(pbWeap);
+                if(!br) return;
+                adjustPos = br.laserActive ? (0,12) : (-7, 12); 
+                adjustScale = br.laserActive ? 0.7 : 1.3;
                 break;
 
             case 'PBX_MetalSniper':
@@ -551,6 +556,15 @@ class PBX_Hud : PB_Hud_ZS
                 pbx_image3 = " "; //its empty for now
                 break;
 
+            case 'PBX_ProSurvPSG':
+                let psg = PBX_ProSurvPSG(pbWeap);
+                if(!psg) return;
+                pbx_image  = psg.laserActive ? "graphics/WeaponWheel/ProsurvPSG/LaserOn.png" : icon;
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+            
+
 //////////////// SLOT 4 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Shows dual wield
             case 'PB_Carbine':
@@ -570,6 +584,14 @@ class PBX_Hud : PB_Hud_ZS
                                                     : "graphics/pywheel/hdmr_dual.png")
                 : hdmrSniperMode  ? "graphics/WeaponPickups/HDMR_SNIPER_SINGLE.png"
                 : "HIFLA0";
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
+            case 'PBX_BDPBattleRifle':
+                let br = PBX_BDPBattleRifle(pbWeap);
+                if(!br) return;
+                pbx_image  = br.laserActive ? "graphics/WeaponWheel/BattleRifle/BR_LaserOn.png" : icon;
                 pbx_image2 = " "; //its empty for now
                 pbx_image3 = " "; //its empty for now
                 break;

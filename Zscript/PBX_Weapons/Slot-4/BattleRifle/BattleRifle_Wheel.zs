@@ -2,7 +2,7 @@ Class BattleRifleWheel : wheelinfocontainer
 {
 	override int GetSPCount(actor requester)
 	{
-		return 2;
+		return 4;
 	}
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
@@ -11,7 +11,7 @@ Class BattleRifleWheel : wheelinfocontainer
 
 		super.GetSpecials(spw,requester);
         
-        vector2 scale = (1.0,1.0);
+        vector2 scale = (0.9,0.9);
 		
 		PB_SpecialWheel_Mode BR_Semi = new ("PB_SpecialWheel_Mode");
 		BR_Semi.img = "graphics/WeaponWheel/BattleRifle/BR_Semi.png";
@@ -31,12 +31,26 @@ Class BattleRifleWheel : wheelinfocontainer
 
 		PB_SpecialWheel_Mode BR_Zoom = new ("PB_SpecialWheel_Mode");
 		BR_Zoom.img = "graphics/WeaponWheel/BattleRifle/BR_Zoom.png";
-		if(battleRifle.zoomstrength == battleRifle.HIGHZOOM) BR_Zoom.Alias = "$PBX_BattleRifle_25";
-		else BR_Zoom.Alias = "$PBX_BattleRifle_40";
+		if(battleRifle.zoomstrength == battleRifle.HIGHZOOM) BR_Zoom.Alias = "$PBX_BattleRifle_ZoomLow";
+		else BR_Zoom.Alias = "$PBX_BattleRifle_ZoomHigh";
 		BR_Zoom.tokentogive = "BR_Select_Zoom";
 		BR_Zoom.scalex = scale.x;
 		BR_Zoom.scaley = scale.y;
 		spw.push(BR_Zoom);
+
+		PB_SpecialWheel_Mode BR_Laser = new ("PB_SpecialWheel_Mode");
+		if(battleRifle.laserActive) {
+			BR_Laser.Alias = "$PBX_LaserOff";
+			BR_Laser.img = "graphics/WeaponWheel/BattleRifle/BR_LaserOff.png";
+		}
+		else {
+			BR_Laser.Alias = "$PBX_LaserON";
+			BR_Laser.img = "graphics/WeaponWheel/BattleRifle/BR_LaserOn.png";
+		}
+		BR_Laser.tokentogive = "BR_Select_Laser";
+		BR_Laser.scalex = scale.x;
+		BR_Laser.scaley = scale.y;
+		spw.push(BR_Laser);
 		
 	}
 }
