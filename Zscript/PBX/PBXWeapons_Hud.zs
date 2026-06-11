@@ -101,7 +101,7 @@ class PBX_Hud : PB_Hud_ZS
              
             // PBX Weapons
             "PBX_MastermindChaingun","PBX_MetalSniper","PBX_ProSurvPSG",
-            "PBX_BDPBattleRifle"
+            "PBX_BDPBattleRifle","PBX_Prosurv_LeverAction"
         };
 
         // Handle exceptions
@@ -182,8 +182,10 @@ class PBX_Hud : PB_Hud_ZS
                 break;
 
             case 'PBX_Prosurv_LeverAction':
-                adjustPos = (-10, 18); 
-                adjustScale = 0.7;
+                let lar = PBX_Prosurv_LeverAction(pbWeap);
+                if(!lar) return;
+                adjustPos = lar.laserActive ? (0,18) : (-10, 18);
+                adjustScale = lar.laserActive ? 0.6 : 0.7;
                 break;
 
             case 'PBX_PlasmaBlaster':
@@ -236,15 +238,18 @@ class PBX_Hud : PB_Hud_ZS
 
 //////////////// SLOT 4 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             case 'PB_DMR':
-                bool dmrUpgraded   = PBX_PlayerHasInventory("DMRUpgraded");
+                bool dmrUpgraded    = PBX_PlayerHasInventory("DMRUpgraded");
                 bool hdmrSniperMode = PBX_PlayerHasInventory("HDMRSniperMode");
-                bool hdmrGrenadeMode = PBX_PlayerHasInventory("HDMRGrenadeMode");
+                bool hdmrGrenMode   = PBX_PlayerHasInventory("HDMRGrenadeMode");
 
-                adjustPos = !dmrUpgraded  ? (isAkimbo ? (-5,-8) : (-5,12))                                   // Unupgraded Akimbo : Unupgraded Single
-                // Upgraded
-                : hdmrGrenadeMode         ? (isAkimbo ? (-5,-14) : (hdmrSniperMode ? (2,-8) : (4,-8)))       // Akimbo Grenade Mode : Grenade Mode Single Sniper : Grenade Mode Single Normal
-                : isAkimbo                ? (hdmrSniperMode ? (-5,-14) : (5,2))                              // Akimbo Sniper Mode : Akimbo Normal Mode
-                : hdmrSniperMode          ? (-6,10) : (-4,10);                                               // Single Sniper Mode : Single Normal Mode
+                adjustPos   = !dmrUpgraded    ? (isAkimbo ? (-5,-8) : (-5,12))      // Unupgraded: Akimbo : Single
+                            : isAkimbo        ? (hdmrSniperMode ? (-5,-14) : (5,2)) // Upgraded Akimbo: Sniper : Normal
+                            : hdmrSniperMode  ? (-6,10) : (-4,10);                  // Upgraded Single: Sniper : Normal
+
+                adjustScale = dmrUpgraded ? 0.9 : 1.0;
+
+                if (hdmrGrenMode && !isAkimbo)
+                    adjustPos.y -= 19;                                  
                 break;
 
             case 'PB_Carbine':
@@ -484,6 +489,14 @@ class PBX_Hud : PB_Hud_ZS
                 break;
             case 'PB_Deagle':
                 pbx_image = isAkimbo ? "graphics/WeaponPickups/DEAGLE_DUAL.png" : icon;
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
+            case 'PBX_Prosurv_LeverAction':
+                let lar = PBX_Prosurv_LeverAction(pbWeap);
+                if(!lar) return;
+                pbx_image  = lar.laserActive ? "graphics/WeaponWheel/LeverAction/LaserOn.png" : icon;
                 pbx_image2 = " "; //its empty for now
                 pbx_image3 = " "; //its empty for now
                 break;

@@ -26,7 +26,7 @@ extend class PBX_ProsurvBlaster
     {
         // Dont spawn the laser sight if the weapon is in one of these states
         static const StateLabel blockedStates[] = {
-            "Reload", "Recharge",
+            "Reload", "Recharge","WeaponRespect",
             "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
         };
 

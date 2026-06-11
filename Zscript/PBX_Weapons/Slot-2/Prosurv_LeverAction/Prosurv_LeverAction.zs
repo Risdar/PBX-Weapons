@@ -53,6 +53,7 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
 	int currentMaxAmmo;
 	int LAMode;
+	bool laserActive;
 	enum eLAMode
 	{
 		LA_444Marlin,
@@ -364,10 +365,9 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 		TNT1 A 0 {
 			A_SetInventory("CantWeaponSpecial",1);
 			A_Takeinventory("GoWeaponSpecialAbility",1);
-			PB_SetZoom(false);
 		}
-		TNT1 A 0 PB_PreHandleLAWheel();
-		TNT1 A 0 PrintLAMode();
+		TNT1 A 0 PB_PreHandleLAWheel(); // Jump to Ready states if its only the toggle laser token
+		TNT1 A 0 PB_SetZoom(false);
 		TNT1 A 0 {
 			A_ZoomFactor(1.0);
 			A_WeaponOffset(0,32);

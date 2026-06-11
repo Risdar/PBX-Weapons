@@ -1,5 +1,6 @@
 class LA_Select_Marlin : inventory {default{inventory.maxamount 1;}}
 class LA_Select_Magnum : inventory {default{inventory.maxamount 1;}}
+class LA_Select_Laser : inventory {default{inventory.maxamount 1;}}
 class LeverActionAmmo : PB_Ammo {default{inventory.maxamount leveractionFullAmmo;}}
 
 class PBX_MarlinRound : PB_LowCalMag // What the PB_Unload uses

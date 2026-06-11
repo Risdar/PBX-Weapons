@@ -3,10 +3,57 @@ extend class PBX_Prosurv_LeverAction
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////  
 	override void postbeginplay()
 	{
+		laserActive = false;
 		LAMode = LA_357Magnum;
 		currentMaxAmmo = leveractionFullAmmo;
 		super.postbeginplay();
 	}
+
+	override void DoEffect() 
+	{
+		super.DoEffect();
+
+        if (level.frozen) return;
+        
+        // Check if the player exists and if the current weapon they're using is the blaster
+		If(	owner.player && owner.player.readyweapon.GetClass() is self.GetClass())
+        {
+            // Get a pointer to it
+            let weap = PBX_Prosurv_LeverAction(owner.player.readyweapon);
+            if(!weap) return;
+
+			// Get a pointer to PSprite
+			let psp = owner.player.FindPSprite(PSP_WEAPON);
+			if(!psp) return;
+
+            if(!weap.laserActive) return;
+
+            // Dont spawn the laser sight if the weapon is in one of these states
+            static const StateLabel blockedStates[] = {
+                "Pump", "PumpBegin", "PumpEnd", "Reload","FinishUnload",
+                "ReloadLoop", "ReloadFinished","Unload","RemoveBullets", "WeaponRespect",
+                "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
+            };
+
+            for (int i = 0; i < blockedStates.Size(); i++)
+            {
+                if (InStateSequence(psp.curstate, ResolveState(blockedStates[i]))) return;
+            }
+
+            // Spawn the laser sight
+            double pz = owner.height * 0.5 - owner.floorclip + owner.player.mo.AttackZOffset*owner.player.crouchFactor;
+            FLineTraceData lasersight;
+            owner.LineTrace(owner.angle, 
+                4096, 
+                owner.pitch, 
+                TRF_SOLIDACTORS|TRF_THRUHITSCAN, 
+                offsetz: pz, 
+                data: lasersight
+            );
+
+            Spawn("PBX_RedDot", lasersight.HitLocation);
+		}
+    }
 
 //////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
 
@@ -21,9 +68,10 @@ extend class PBX_Prosurv_LeverAction
 
 	action void clearLAModeTokens()
 	{
-		A_SetInventory("CantWeaponSpecial" ,0);
+		A_SetInventory("CantWeaponSpecial", 0);
 		A_SetInventory("LA_Select_Marlin", 0);
 		A_SetInventory("LA_Select_Magnum", 0);
+		A_SetInventory("LA_Select_Laser" ,0);
 	}
 	
 	action void LA_Deselect()
@@ -105,14 +153,31 @@ extend class PBX_Prosurv_LeverAction
 
 	action state PB_PreHandleLAWheel()
 	{
-		if(
-		findinventory("LA_Select_Marlin") && getLAMode() == LA_444Marlin ||
-		findinventory("LA_Select_Magnum") && getLAMode() == LA_357Magnum)
+		bool goMarlin 	 = findinventory("LA_Select_Marlin");
+		bool goMagnum 	 = findinventory("LA_Select_Magnum");
+		bool toggleLaser = findinventory("LA_Select_Laser");
+
+		if(goMarlin && getLAMode() == LA_444Marlin || goMagnum && getLAMode() == LA_357Magnum)
 		{
 			A_Print("$PB_ALREADYSELECTED");
 			clearLAModeTokens();
-			return resolvestate("ready");
+			return resolvestate("Ready3");
 		}
+
+		if(toggleLaser)
+		{
+            if(invoker.laserActive) invoker.laserActive = false;
+            else invoker.laserActive = true;
+            A_Print(invoker.laserActive ? "$PBX_LaserOn" : "$PBX_LaserOff");
+			A_StartSound("MS/Button", 26);
+			clearLAModeTokens();
+			if(PB_GetZoom()) return resolvestate("Ready2");
+			else return resolvestate("Ready3");
+        }
+
+		if(goMarlin) A_Print("$PBX_LeverAction_Marlin", 2);
+		if(goMagnum) A_Print("$PBX_LeverAction_Magnum", 2);
+
 		return resolvestate(null);
 	}
 
@@ -140,12 +205,5 @@ extend class PBX_Prosurv_LeverAction
 			return ResolveState("Reload");
 		}
 		return resolvestate(null);
-	}
-	
-	action void PrintLAMode()
-	{
-		if(findinventory("LA_Select_Marlin")) A_Print("$PBX_LeverAction_Marlin", 2);
-		if(findinventory("LA_Select_Magnum")) A_Print("$PBX_LeverAction_Magnum", 2);
-	}
-    
+	}    
 }

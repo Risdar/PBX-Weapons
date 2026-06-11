@@ -33,7 +33,7 @@ extend class PBX_BDPBattleRifle
             // Dont spawn the laser sight if the weapon is in one of these states
             static const StateLabel blockedStates[] = {
                 "Reload", "ReloadFromADS", "ContinueReload", "RaiseFromEmpty",
-                "Unload", "SwitchAnimation",
+                "Unload", "SwitchAnimation","WeaponRespect",
                 "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
             };
 

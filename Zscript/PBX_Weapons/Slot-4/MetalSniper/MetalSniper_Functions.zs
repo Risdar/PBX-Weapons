@@ -34,7 +34,7 @@ extend class PBX_MetalSniper
 
             // Dont spawn the laser sight if the weapon is in one of these states
             static const StateLabel blockedStates[] = {
-                "Reload", "Reload_Grenade", "ReloadFromADS", "StandardReload",
+                "Reload", "Reload_Grenade", "ReloadFromADS", "StandardReload", "WeaponRespect",
                 "TakeMagStandard", "TakeMagResonance", "InsertMag", "ReloadFromSpecial",
                 "FinishReload", "RaiseFromEmpty", "Start_Rechamber", "Rechamber", "ChangeAnim",
                 "UnloadFromSpecial","Unload","UnloadRaise","UnloadMagStandard", "UnloadMagEmpty",
