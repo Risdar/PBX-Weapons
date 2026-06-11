@@ -381,7 +381,7 @@ class PBX_ProSurvPSG : PB_Weapon
 			XG40 MN 1 A_DoPBWeaponAction();
 			loop;
 
-		FInishUnload:
+		FinishUnload:
 			XG40 IHGFEDCBA 1 A_DoPBWeaponAction();
 			TNT1 A 0 {
                 PB_SetMagEmpty(true);

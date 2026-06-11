@@ -340,3 +340,33 @@ class PBX_RadiusVisualizer : Inventory
 // 		targetpos -= traceDir * 2;
 // 		break;
 // }
+
+// action void MS_ReadyNormal()
+    // {
+    //     FLineTraceData Bule;
+    //     bool hit = LineTrace(Angle, 6000, Pitch, 0, player.ViewHeight, 0, 0, Bule);
+    //     if(hit)
+    //     {
+    //         if(Bule.HitActor && Bule.HitActor.bISMONSTER && Bule.HitActor.bFRIENDLY == false && Bule.HitActor is "PB_Monster")
+    //         {				
+    //             if(!invoker.LockedOn)
+    //             {
+    //                 invoker.LockedOn = true;
+    //                 A_StartSound("IronSights", CHAN_WEAPON, volume:0.5, pitch:1.4);
+    //             }
+    //             // let damn = player.FindPSprite(1);
+    //             // if(damn)
+    //             // {
+    //             //     damn.frame = 3;
+    //             //     damn.sprite = GetSpriteIndex("SPRF");
+    //             // }
+    //         }
+    //         else
+    //         if(invoker.LockedOn)
+    //         {
+    //             invoker.LockedOn = false;
+    //             A_StartSound("IronSights", CHAN_WEAPON, volume:0.5, pitch:1.3);
+    //         }
+    //     }	
+    //     // return A_DoPBWeaponAction();
+    // }

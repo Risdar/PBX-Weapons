@@ -6,7 +6,7 @@ extend class PBX_BDPBattleRifle
 		LockedOn 	 = false;
 		semiClear 	 = false;
 		isSemiAuto 	 = true;
-		zoomstrength = LOWZOOM;
+		zoomstrength = PBX_BDPBattleRifle.LOWZOOM;
 		super.postbeginplay();
 	}
     

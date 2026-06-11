@@ -30,10 +30,19 @@ class PBX_ResoRound : PB_HighCalMag
     }
 }
 
+class MS_Infrared : PB_PowerLightAmp  {default{Powerup.Duration -1800;}}
+
+// Normal Wheel
 class MS_Select_AimMode : inventory {default{inventory.maxamount 1;}}
 class MS_Select_GrenMode : inventory {default{inventory.maxamount 1;}}
 class MS_Select_Resonance : inventory {default{inventory.maxamount 1;}}
+class MS_Select_Laser : inventory {default{inventory.maxamount 1;}}
 class MS_Select_NO : inventory {default{inventory.maxamount 1;}}
+// ADS Wheel
+class MS_Select_ToggleZoom : inventory {default{inventory.maxamount 1;}}
+class MS_Select_ToggleScope : inventory {default{inventory.maxamount 1;}}
+class MS_Select_ToggleNVG : inventory {default{inventory.maxamount 1;}}
+// Other Tokens
 class MetalSniperUpgraded : inventory {default{inventory.maxamount 1;}}
 
 class MetalSniper_Upgrade : PB_UpgradeItem

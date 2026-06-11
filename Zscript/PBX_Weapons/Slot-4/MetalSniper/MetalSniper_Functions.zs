@@ -5,15 +5,88 @@ extend class PBX_MetalSniper
     {
         grenadeloaded  = true;
         currentMaxAmmo = MetalSniperFullAmmo;
+        zoomstrength = LOWZOOM;
         LockedOn = false;
         ScopeMode = 0;
         enableScopeHUD = false;
         Super.PostBeginPlay();
     }
 
+    override void DoEffect() 
+	{
+		super.DoEffect();
+
+        if (level.frozen) return;
+        
+        // Check if the player exists and if the current weapon they're using is the blaster
+		If(	owner.player && owner.player.readyweapon.GetClass() is self.GetClass())
+        {
+            // Get a pointer to it
+            let weap = PBX_MetalSniper(owner.player.readyweapon);
+            if(!weap) return;
+
+			// Get a pointer to PSprite
+			let psp = owner.player.FindPSprite(PSP_WEAPON);
+			if(!psp) return;
+
+            if(!weap.laserActive) return;
+
+            // Dont spawn the laser sight if the weapon is in one of these states
+            static const StateLabel blockedStates[] = {
+                "Reload", "Reload_Grenade", "ReloadFromADS", "StandardReload",
+                "TakeMagStandard", "TakeMagResonance", "InsertMag", "ReloadFromSpecial",
+                "FinishReload", "RaiseFromEmpty", "Start_Rechamber", "Rechamber", "ChangeAnim",
+                "UnloadFromSpecial","Unload","UnloadRaise","UnloadMagStandard", "UnloadMagEmpty",
+                "UnloadMagResonance", "UnloadChamber", "FinishUnload", "StartUnloadChamber",
+                "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
+            };
+
+            for (int i = 0; i < blockedStates.Size(); i++)
+            {
+                if (InStateSequence(psp.curstate, ResolveState(blockedStates[i]))) return;
+            }
+
+            // Spawn the laser sight
+            double pz = owner.height * 0.5 - owner.floorclip + owner.player.mo.AttackZOffset*owner.player.crouchFactor;
+            FLineTraceData lasersight;
+            owner.LineTrace(owner.angle, 
+                4096, 
+                owner.pitch, 
+                TRF_SOLIDACTORS|TRF_THRUHITSCAN, 
+                offsetz: pz, 
+                data: lasersight
+            );
+
+            Spawn("PBX_GreenDot", lasersight.HitLocation);
+		}
+    }
+
     // ═════════════════════════════════════════════════════════════════════════
     // ACTION FUNCTIONS
     // ═════════════════════════════════════════════════════════════════════════
+    action void setADSWheel()
+    {
+        invoker.wheelinfo = "MS_Zoomed_Wheel";
+    }
+
+    action void resetVariables()
+    {
+        invoker.enableScopeHUD = false;
+        A_SetRenderstyle(1.0, STYLE_Normal);
+        invoker.wheelinfo = "MetalSniperWheel";
+        A_SetInventory("MS_Infrared", 0);
+    }
+
+    // ── Zoom Helpers ────────────────────────────────────────────────────────
+    action double getZoomStrength()
+	{
+		return invoker.zoomstrength;
+	}
+
+	action void setZoomStrength(double set)
+	{
+		invoker.zoomstrength = set;
+	}
 
     action state MS_ReadyZoom()
     {
@@ -23,11 +96,11 @@ extend class PBX_MetalSniper
         PB_CoolDownBarrel(-5, 0, 7, 0,  1);
         PB_CoolDownBarrel( 5, 0, 7, 0, -1);
         A_SetInventory("PB_LockScreenTilt", 0);
+        A_ZoomFactor(getZoomStrength());
         if(invoker.ScopeMode == 1 || invoker.ScopeMode == 2)
         {
             // A_SetBlend(0x00a100, 0.2, 99999);
             A_SetCrosshair(52);
-            A_ZoomFactor(5.0);
             MS_ReadyScope();
             A_SetRenderstyle(0.1, Style_Translucent);
             invoker.enableScopeHUD = true;
@@ -37,43 +110,11 @@ extend class PBX_MetalSniper
             // EndBlend("DarkGreen");
             invoker.enableScopeHUD = false;
             A_SetRenderstyle(1.0, STYLE_Normal);
-            A_ZoomFactor(4.0);
         }
-
         return PB_ReadyFire(ads:true);
     }
 
     // ── Scope Function ────────────────────────────────────────────────────────
-    // action void MS_ReadyNormal()
-    // {
-    //     FLineTraceData Bule;
-    //     bool hit = LineTrace(Angle, 6000, Pitch, 0, player.ViewHeight, 0, 0, Bule);
-    //     if(hit)
-    //     {
-    //         if(Bule.HitActor && Bule.HitActor.bISMONSTER && Bule.HitActor.bFRIENDLY == false && Bule.HitActor is "PB_Monster")
-    //         {				
-    //             if(!invoker.LockedOn)
-    //             {
-    //                 invoker.LockedOn = true;
-    //                 A_StartSound("IronSights", CHAN_WEAPON, volume:0.5, pitch:1.4);
-    //             }
-    //             // let damn = player.FindPSprite(1);
-    //             // if(damn)
-    //             // {
-    //             //     damn.frame = 3;
-    //             //     damn.sprite = GetSpriteIndex("SPRF");
-    //             // }
-    //         }
-    //         else
-    //         if(invoker.LockedOn)
-    //         {
-    //             invoker.LockedOn = false;
-    //             A_StartSound("IronSights", CHAN_WEAPON, volume:0.5, pitch:1.3);
-    //         }
-    //     }	
-    //     // return A_DoPBWeaponAction();
-    // }
-    
     action void MS_ReadyScope()
     {
         FLineTraceData Bule;
@@ -100,7 +141,7 @@ extend class PBX_MetalSniper
                 {
                     // player.PSprites.frame = 1;
                     PBXWeapons_ScopeHandler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData:"..Bule.HitActor.GetTag(), Bule.HitActor.health, Bule.HitActor.GetSpawnHealth(), Bule.HitActor.PainChance);
-                    PBXWeapons_ScopeHandler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData2:", Distance3D(Bule.HitActor), 5.0);
+                    PBXWeapons_ScopeHandler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData2:", Distance3D(Bule.HitActor), invoker.getZoomStrength());
                 }
             }
             else
@@ -115,19 +156,6 @@ extend class PBX_MetalSniper
         // return A_DoPBWeaponAction();
     }
 
-    action void CycleScopeMode()
-    {
-        invoker.ScopeMode = (invoker.ScopeMode + 1) % 3;
-        A_StartSound("MS/Button", CHAN_WEAPON);
-        A_SetBlend(0x00a100, 0.2, 3);
-
-        switch (invoker.ScopeMode)
-        {
-            case 0: A_Print("$PBX_MetalSniper_Scope1"); break;
-            case 1: A_Print("$PBX_MetalSniper_Scope2"); break;
-            case 2: A_Print("$PBX_MetalSniper_Scope3"); break;
-        }
-    }
     // ── Ammo / magazine helpers ───────────────────────────────────────────────
     action void MS_ReloadMag()
     {
@@ -157,57 +185,131 @@ extend class PBX_MetalSniper
         invoker.currentMaxAmmo = capacity;
     }
 
-    // ── Ammo-type switch handler ──────────────────────────────────────────────
-    action void MS_ToggleResonance()
+    // ── Mode switch handler ───────────────────────────────────────────────────
+    action state MS_HandleSpecial()
     {
-        if(isResonance()){setResonance(false);}
-		else {setResonance(true);}
-    }
+        // Get the tokens
+        bool noResonance = FindInventory("MS_Select_NO");
+        bool toggleResonance = FindInventory("MS_Select_Resonance");
 
-    action state MS_HandleAmmo()
-    {
-        if (FindInventory("MS_Select_NO"))
+        bool goAim  = FindInventory("MS_Select_AimMode");
+        bool goGren = FindInventory("MS_Select_GrenMode");
+        bool toggleLaser = FindInventory("MS_Select_Laser");
+        
+        bool toggleZoom = FindInventory("MS_Select_ToggleZoom");
+        bool toggleScope = FindInventory("MS_Select_ToggleScope");
+        bool toggleNVG = FindInventory("MS_Select_ToggleNVG");
+
+        // Handle Resonance Ammo
+        if (noResonance)
         {
             cleanmodetokens();
             A_Print("$PBX_AmmoNotAvailable");
             return resolvestate("Ready3");
         }
 
-        if (FindInventory("MS_Select_Resonance"))
+        if (toggleResonance)
         {
 			// The actual weapon switch is at the end of the unload > reload > chamber sequence
             A_Print(!isResonance() ? "$PBX_MetalSniper_Resonance" : "$PBX_MetalSniper_Standard");
             return PB_GetChamberEmpty() ? resolvestate("ReloadFromSpecial") : resolvestate("UnloadFromSpecial");
         }
+        
+        // Handle Mode Switch
 
-        return resolvestate(null);
-    }
-
-    // ── Mode switch handler ───────────────────────────────────────────────────
-    action state MS_HandleSpecial()
-    {
-        bool alreadyAim  = FindInventory("MS_Select_AimMode")  && MS_getmode() == SniperMode;
-        bool alreadyGren = FindInventory("MS_Select_GrenMode") && MS_getmode() == GrenadeMode;
-
-        if (alreadyAim || alreadyGren)
+        // Check if the mode is already selected
+        if (goAim && MS_getmode() == SniperMode || goGren && MS_getmode() == GrenadeMode)
         {
             A_Print("$PBX_AlreadySelected");
             cleanmodetokens();
-            return resolvestate("Ready3");
+            return resolvestate("Ready3"); // Skip the change animation
         }
 
-        if (FindInventory("MS_Select_AimMode"))
+        // Actual Mode Switch
+        if (goAim)
         {
             MS_SetMode(SniperMode);
             A_Print("$PBX_MetalSniper_AimMode");
         }
-        else if (FindInventory("MS_Select_GrenMode"))
+        if (goGren)
         {
             MS_SetMode(GrenadeMode);
             A_Print("$PBX_MetalSniper_GrenMode");
         }
+        if (toggleLaser)
+        {
+            if(invoker.laserActive) invoker.laserActive = false;
+            else invoker.laserActive = true;
+            A_StartSound("MS/Button", CHAN_AUTO, CHANF_OVERLAP);
+            A_Print(invoker.laserActive ? "$PBX_LaserOn" : "$PBX_LaserOff");
 
+            // Basically only play the change animation if the player is not in ADS
+            // Since the laser can be toggled from both the normal and ads wheel
+            if(!PB_GetZoom()) {
+                cleanmodetokens();
+                return ResolveState("ChangeAnim");
+            }
+        }
+        if(toggleScope)
+        {
+            invoker.ScopeMode = (invoker.ScopeMode + 1) % 3;
+            A_StartSound("MS/Button", CHAN_WEAPON);
+            A_SetBlend(0x00a100, 0.2, 3);
+            switch (invoker.ScopeMode)
+            {
+                case 0: A_Print("$PBX_MetalSniper_Scope1"); break;
+                case 1: A_Print("$PBX_MetalSniper_Scope2"); break;
+                case 2: A_Print("$PBX_MetalSniper_Scope3"); break;
+            }
+        }
+        if (toggleZoom)
+        {
+            if(getZoomStrength() == HIGHZOOM) {
+				setZoomStrength(LOWZOOM);
+				A_Print("$PBX_MetalSniper_ZoomLow");
+			}
+			else {
+				setZoomStrength(HIGHZOOM);
+				A_Print("$PBX_MetalSniper_ZoomHigh");
+			}
+            A_StartSound("MS/Button", CHAN_AUTO, CHANF_OVERLAP);
+        }
+
+        if(toggleNVG)
+        {
+            if(invoker.nvgActive) {
+                invoker.nvgActive = false;
+                A_SetInventory("MS_Infrared", 0);
+            }
+            else {
+                invoker.nvgActive = true;
+                A_SetInventory("MS_Infrared", 1);
+                A_StartSound("RA1IF1", CHAN_AUTO, CHANF_OVERLAP);
+            }
+            A_SetBlend("Black",0.75,16);
+        }
+
+        // Always clear the tokens
+        cleanmodetokens();
         return resolvestate(null);
+    }
+
+    action void MS_ToggleResonance()
+    {
+        if(isResonance()){setResonance(false);}
+		else {setResonance(true);}
+    }
+
+    action void cleanmodetokens()
+    {
+        A_TakeInventory("MS_Select_AimMode",      1);
+        A_TakeInventory("MS_Select_GrenMode",     1);
+        A_TakeInventory("MS_Select_Resonance",    1);
+        A_TakeInventory("MS_Select_Laser",        1);
+        A_TakeInventory("MS_Select_ToggleZoom",   1);
+        A_TakeInventory("MS_Select_ToggleScope",  1);
+        A_TakeInventory("MS_Select_ToggleNVG",    1);
+        A_TakeInventory("MS_Select_NO",           1);
     }
 
     // ── Fire helpers ──────────────────────────────────────────────────────────
@@ -271,15 +373,6 @@ extend class PBX_MetalSniper
     // ── Mode helpers ──────────────────────────────────────────────────────────
     action bool MS_getmode()            { return invoker.AltMode; }
     action void MS_SetMode(bool set = SniperMode) { invoker.AltMode = set; }
-
-    // ── Token cleanup ─────────────────────────────────────────────────────────
-    action void cleanmodetokens()
-    {
-        A_TakeInventory("MS_Select_AimMode",  1);
-        A_TakeInventory("MS_Select_GrenMode", 1);
-        A_TakeInventory("MS_Select_Resonance",1);
-        A_TakeInventory("MS_Select_NO",       1);
-    }
 
     // ── Input helpers ─────────────────────────────────────────────────────────
     action bool PlayerPressedOnce(int button)

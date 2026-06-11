@@ -74,7 +74,7 @@ class PBX_Hud : PB_Hud_ZS
 
     }
 
-     // AUTOMATICALLY DRAW THE WEAPONS, ADD EXCEPTIONS HERE IF YOU WANT TO MANUALLY EDIT THEM
+    // AUTOMATICALLY DRAW THE WEAPONS, ADD EXCEPTIONS HERE IF YOU WANT TO MANUALLY EDIT THEM
     // FOR EXAMPLE IF YOU WANT THEM TO SHOW DIFFERENT SPRITE IF THEY'RE AKIMBO/UPGRADED/ETC.
     // ADJUSTMENTS LIKE SCALE AND POSITION IS HANDLED IN weaponAdjustments() ABOVE
     void DrawPBXWeaponAuto()
@@ -100,17 +100,14 @@ class PBX_Hud : PB_Hud_ZS
             // Slot 9
              
             // PBX Weapons
-            "PBX_MastermindChaingun"
+            "PBX_MastermindChaingun","PBX_MetalSniper"
         };
 
         // Handle exceptions
         string weaponClass = pbWeap.GetClassName();
         for (int i = 0; i < exceptionWeapons.Size(); i++)
         {
-            if (weaponClass == exceptionWeapons[i])
-            {
-                return; // do not draw HUD for these weapons
-            }
+            if (weaponClass == exceptionWeapons[i]) return; // do not draw HUD for these weapons
         }
 
         // Use default Icons
@@ -274,11 +271,13 @@ class PBX_Hud : PB_Hud_ZS
 
             case 'PBX_MetalSniper':
                 let sniper = PBX_MetalSniper(pbWeap);
-                if(sniper)
-                    adjustPos = sniper.AltMode ? (0,-5) : (0,14); 
+                if(!sniper) return;
+                adjustPos = sniper.laserActive ? (0,10) : (0,14); 
+                if(sniper.AltMode)
+                    adjustPos.y -= 19;
+                // adjustPos = sniper.AltMode ? (0,-5) : (0,14); 
                 
-                // MODE
-                // adjustPos2 = (0, 0); 
+                // Resonance Ammo
                 adjustScale2 = 0.7;
                 break;
 
@@ -450,6 +449,7 @@ class PBX_Hud : PB_Hud_ZS
                     // If Not Akimbo ? Suppressed : Non Suppressed
                     (pistolSilenced ? "graphics/pywheel/PISTOL_1.png" : "graphics/pywheel/PISTOL_0.png");
                 pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
                 break;
 
             // Same as the Pistol
@@ -463,20 +463,24 @@ class PBX_Hud : PB_Hud_ZS
                     // If Not Akimbo ? Suppressed : Non Suppressed
                     (smgSilenced ? "ATFLA0" : "ATFLB0");
                 pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
                 break;
 
             // Shows dual wield
             case 'PB_MP40':
                 pbx_image = isAkimbo ? "graphics/WeaponPickups/MP40_DUAL.png" : icon;
                 pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
                 break;
             case 'PB_Revolver':
                 pbx_image = isAkimbo ? "graphics/WeaponPickups/REVOLVER_DUAL.png" : icon;
                 pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
                 break;
             case 'PB_Deagle':
                 pbx_image = isAkimbo ? "graphics/WeaponPickups/DEAGLE_DUAL.png" : icon;
                 pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
                 break;
 
 //////////////// SLOT 3 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -499,6 +503,7 @@ class PBX_Hud : PB_Hud_ZS
                 }
                 pbx_image = shotgunUpgraded ? "9SMUA0" : icon;
                 pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
                 break;
 
             // Shows dual wield and if the weapon has been upgraded
@@ -510,12 +515,14 @@ class PBX_Hud : PB_Hud_ZS
                     // If Not Akimbo ? Upgraded : Non Upgraded
                     (asgUpgraded ? "A9SCA0" : "graphics/WeaponPickups/ASGSINGLE.png");
                 pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
                 break;
 
             // Shows dual wield
             case 'PB_SSG':
                 pbx_image = isAkimbo ? "graphics/WeaponPickups/SSG_DUAL.png" : icon;
                 pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
                 break;
 
             // Shows dual wield and current weapon mode
@@ -527,6 +534,7 @@ class PBX_Hud : PB_Hud_ZS
                          : (demonBreath ? "graphics/pywheel/Quad_Demonic.png"                    // SINGLE QSG DEMON BREATH
                                         : "QSPGA0");     
                 pbx_image2 = quadFullBlast ? "graphics/WeaponIcons/QUAD_FULL.png" : "graphics/WeaponIcons/QUAD_HALF.png";
+                pbx_image3 = " "; //its empty for now
                 break;
 
             // Shows current shell type
@@ -540,6 +548,7 @@ class PBX_Hud : PB_Hud_ZS
                 // Show what Ammo type is selected
                 int cssgshell = clamp(cssg.shellsmode, 0, cssgIcons.Size() - 1);
                 pbx_image2 = cssgIcons[cssgshell];
+                pbx_image3 = " "; //its empty for now
                 break;
 
 //////////////// SLOT 4 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -548,6 +557,7 @@ class PBX_Hud : PB_Hud_ZS
                 // If Akimbo
                 pbx_image = isAkimbo ? "graphics/pywheel/Carbine_Dual.png" : icon;
                 pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
                 break;
 
             // Shows dual wield and if the weapon has been upgraded
@@ -561,6 +571,7 @@ class PBX_Hud : PB_Hud_ZS
                 : hdmrSniperMode  ? "graphics/WeaponPickups/HDMR_SNIPER_SINGLE.png"
                 : "HIFLA0";
                 pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
                 break;
 
             // Draw bars for specific modes and shows the current ammo type
@@ -583,7 +594,9 @@ class PBX_Hud : PB_Hud_ZS
 					PBHud_DrawImageManualAlpha("NIGHTVIS", (topOffsets2.x, 0), DI_ITEM_RIGHT | DI_SCREEN_RIGHT | DI_MIRROR | DI_ITEM_VCENTER | DI_SCREEN_VCENTER, 0.5 + 0.5 * abs(sin(level.MapTime)), scale: (0.3, 0.3), parallax: 1.5, parallax2: 1.5);
                 }
                 // Show what Ammo type is selected
+                pbx_image  = sniper.laserActive ? "graphics/WeaponWheel/MetalSniper/LaserOn.png" : icon;
                 pbx_image2 = sniper && sniper.resonanceAmmoLoaded ? "graphics/WeaponWheel/metalsniper/ResonanceAlt.png" : "graphics/WeaponWheel/metalsniper/StandardAlt.png";
+                pbx_image3 = " "; //its empty for now
                 break;
                 
             // Draw bars for specific modes and the current weapon
@@ -605,6 +618,7 @@ class PBX_Hud : PB_Hud_ZS
                 }
                 pbx_image = crossbow.demonicBallistaMode ? "CBOWT0" : icon;
                 pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
                 break;
 
 //////////////// SLOT 5 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -622,6 +636,7 @@ class PBX_Hud : PB_Hud_ZS
                 pbx_image2   =  mode == 2 ? "graphics/WeaponIcons/EXTREMELYHIHGSPID.png" : 
                                 mode == 1 ? "graphics/WeaponIcons/NORMALSPEED.png" : 
                                 "graphics/WeaponIcons/HIGHSPEED.png";
+                pbx_image3 = " "; //its empty for now
                 break;
 
             // Draw bar for the shield durability
@@ -634,6 +649,7 @@ class PBX_Hud : PB_Hud_ZS
                 PBHud_DrawString(mDefaultFont, Formatnumber(GetAmount("HMGShield")), (-207, -90), DI_TEXT_ALIGN_RIGHT, Font.CR_GREEN);
                 // Show what Ammo type is selected
                 pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
                 break;
 
 //////////////// SLOT 6 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -656,6 +672,7 @@ class PBX_Hud : PB_Hud_ZS
                         pbx_image2 = "graphics/pywheel/rocket_laser.png";
                     }
                 }
+                pbx_image3 = " "; //its empty for now
                 break;
 
             // Shows the currnet grenade mode
@@ -669,6 +686,7 @@ class PBX_Hud : PB_Hud_ZS
                 };
                 int sglgren = clamp(sgl.GrenadeMode, 0, sglIcons.Size() - 1);
                 pbx_image2 = sglIcons[sglgren];
+                pbx_image3 = " "; //its empty for now
                 break;
 
             // Draw the durability bar
@@ -679,6 +697,7 @@ class PBX_Hud : PB_Hud_ZS
                 PBHud_DrawBar("ABAR10", "BGBARL", GetAmount("CyberRLDurability"), GetMaxAmount("CyberRLDurability"), (-111, -52), 0, 1, flagsright);
                 PBHud_DrawString(mDefaultFont, Formatnumber(GetAmount("CyberRLDurability")), (-205, -68.75), DI_TEXT_ALIGN_RIGHT, Font.CR_DARKGRAY);
                 pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
                 break;
 
             // Draw the durablility bar and change the weapon icon
@@ -690,6 +709,7 @@ class PBX_Hud : PB_Hud_ZS
                 PBHud_DrawString(mDefaultFont, Formatnumber(GetAmount("MastermindCGDurability")), (-205, -68.75), DI_TEXT_ALIGN_RIGHT, Font.CR_DARKGRAY);
                 pbx_image = "RMN1H0";
                 pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
                 break;
 
 //////////////// SLOT 7 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -705,6 +725,7 @@ class PBX_Hud : PB_Hud_ZS
                     // If Not Akimbo ? Upgraded : Non Upgraded
                     (m2Upgraded ? "M2PRB0" : icon);
                 pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
                 break;
 
 //////////////// SLOT 8 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -713,6 +734,7 @@ class PBX_Hud : PB_Hud_ZS
                 bool flamerUpgraded = PBX_PlayerHasInventory("FlamerUpgraded");
                 pbx_image = flamerUpgraded ? "FSPWB0" : "FSPWA0";
                 pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
                 break;
 
             // Shows the current primary and secondary mode
@@ -724,6 +746,7 @@ class PBX_Hud : PB_Hud_ZS
                 pbx_image = "FRPKA0";
                 pbx_image2 = cryoSpear ? "graphics/pywheel/CryoRifle_Spear.png" : "graphics/pywheel/CryoRifle_Flak.png";
                 pbx_image3 = cryoMissile ? "graphics/pywheel/CryoRifle_Missile.png" : "graphics/pywheel/CryoRifle_Beam.png";
+                pbx_image3 = " "; //its empty for now
                 break;
 
 //////////////// Missing Icons /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -743,12 +766,14 @@ class PBX_Hud : PB_Hud_ZS
             case 'PB_Unmaker':
                 pbx_image = "UNHDA0";
                 pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
                 break;
 
             default:
                 pbx_image = " ";
                 pbx_image2 = " ";
                 pbx_image3 = " ";
+                pbx_image3 = " "; //its empty for now
                 break;
         }
 

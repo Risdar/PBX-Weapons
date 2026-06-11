@@ -48,44 +48,44 @@ Class PBX_NormalRifle : PB_WeaponBase
         Super.PostBeginPlay();
     }
 
-    // Replace the DMR if the replace cvar is enabled
-    override void AttachToOwner(Actor other)
-    {
-        Super.AttachToOwner(other);
-        if (level.MapName ~== "TITLEMAP") return;       // If its the titlemap, return
-        if(!pbxweapons_normalriflereplace) return;      // If the CVAR is disabled, return
-        if(owner.findinventory("DMRUpgraded")) return;  // If the player has the HDMR, return (though this is probably not needed since this function is only called once)
+    // // Replace the DMR if the replace cvar is enabled
+    // override void AttachToOwner(Actor other)
+    // {
+    //     Super.AttachToOwner(other);
+    //     if (level.MapName ~== "TITLEMAP") return;       // If its the titlemap, return
+    //     if(!pbxweapons_normalriflereplace) return;      // If the CVAR is disabled, return
+    //     if(owner.findinventory("DMRUpgraded")) return;  // If the player has the HDMR, return (though this is probably not needed since this function is only called once)
 
-        // Force switch
-        owner.TakeInventory("PB_DMR",1);
-        if (Owner.player != null) Owner.player.PendingWeapon = self;
-    }
-    // Give the player ammo instead of picking up the weapon if the replace cvar is enabled
-    override bool HandlePickup(Inventory item)
-	{
-        bool hasUpgrade = owner.findinventory("DMRUpgraded");
-        bool isTitlemap = level.MapName ~== "TITLEMAP";
+    //     // Force switch
+    //     owner.TakeInventory("PB_DMR",1);
+    //     if (Owner.player != null) Owner.player.PendingWeapon = self;
+    // }
+    // // Give the player ammo instead of picking up the weapon if the replace cvar is enabled
+    // override bool HandlePickup(Inventory item)
+	// {
+    //     bool hasUpgrade = owner.findinventory("DMRUpgraded");
+    //     bool isTitlemap = level.MapName ~== "TITLEMAP";
 
-        // This is so you dont need to pick up the upgrade twice
-        if (item is "PB_HDMRUpgrade")
-        {
-            console.printf("success");
-            owner.GiveInventory("PB_DMR",1);
-            owner.GiveInventory("DMRUpgraded",1);
-            return super.HandlePickup(item);
-        }
+    //     // This is so you dont need to pick up the upgrade twice
+    //     if (item is "PB_HDMRUpgrade")
+    //     {
+    //         console.printf("success");
+    //         owner.GiveInventory("PB_DMR",1);
+    //         owner.GiveInventory("DMRUpgraded",1);
+    //         return super.HandlePickup(item);
+    //     }
 
-		if (item.GetClassName() == "PB_DMR" 
-            && !isTitlemap                              // If its the titlemap, return
-            && pbxweapons_normalriflereplace            // If the CVAR is disabled, return
-            && !hasUpgrade)                             // If the player has the HDMR, return
-		{
-			item.bPickupgood = true;
-			owner.GiveInventory("PB_HighCalMag", 15); // Give the replacement
-			return true; // Do not process Fist further
-		}
-		return super.HandlePickup(item);
-	}
+	// 	if (item.GetClassName() == "PB_DMR" 
+    //         && !isTitlemap                              // If its the titlemap, return
+    //         && pbxweapons_normalriflereplace            // If the CVAR is disabled, return
+    //         && !hasUpgrade)                             // If the player has the HDMR, return
+	// 	{
+	// 		item.bPickupgood = true;
+	// 		owner.GiveInventory("PB_HighCalMag", 15); // Give the replacement
+	// 		return true; // Do not process Fist further
+	// 	}
+	// 	return super.HandlePickup(item);
+	// }
 
     action bool getBurst()
     {

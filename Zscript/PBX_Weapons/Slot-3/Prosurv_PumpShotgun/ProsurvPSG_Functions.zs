@@ -4,6 +4,7 @@ extend class PBX_ProSurvPSG
 	{
 		super.DoEffect();
 
+        if (level.frozen) return;
         // Check if the player exists and if the current weapon they're using is the blaster
 		If(	owner.player && owner.player.readyweapon.GetClass() is self.GetClass())
         {
@@ -18,11 +19,12 @@ extend class PBX_ProSurvPSG
 			let psp = owner.player.FindPSprite(PSP_WEAPON);
 			if(!psp) return;
 
-            // Dont spawn the laser sight if they're in one of the exceptions
+            // Dont spawn the laser sight if the weapon is in one of these states
             static const StateLabel blockedStates[] = {
 				"Reload", "ShellChecker", "ChamberInsertShell", "ReloadFinished",
-				"Unload", "RemoveBullets", "FInishUnload",
-				"Pump", "PumpBegin", "PumpEnd"
+				"Unload", "RemoveBullets", "FinishUnload",
+				"Pump", "PumpBegin", "PumpEnd", "WeaponRespect",
+				"FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
 			};
 
 			for (int i = 0; i < blockedStates.Size(); i++)

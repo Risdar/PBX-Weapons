@@ -2,7 +2,7 @@
 //////////////////////////// GENERAL ///////////////////////////////////////////////////////////////////////////////
 PBXWeapons_Settings                 = "\cj⟁\c- PBX - Weapons Settings";
 PBXWeapons_Version                  = "PBX - Weapons Version 2.2 Loaded";
-TIP_pbxweapons_normalriflereplace   = "Replaces the starting rifle with BDP's Rifle (CAUTION: VERY BUGGY)";
+TIP_pbxweapons_normalriflereplace   = "Start the game with the Platinum Rifle on top of the Standard PB DMR";
 TIP_pbxweapons_startwithblaster     = "Start the game with the Pistol Blaster, a very weak pistol that has infinite ammo";
 
 //////////////////////////// SLOT 1 ///////////////////////////////////////////////////////////////////////////////
@@ -86,9 +86,18 @@ PBX_MetalSniper_Standard            = "\cd7.62x51mm Armor Piercing \c-Mode";
 PBX_MetalSniper_UpgradePickup       = "Metal Sniper Resonance Ammo Type Upgrade (Slot 4)";
 PBX_MetalSniper_UpgradeTag          = "Metal Sniper Upgrade";
 
+PBX_MetalSniper_GoScope             = "\cdTarget Analysis \c-Switch";
 PBX_MetalSniper_Scope1              = "\cdTarget Analysis \c-Disabled";
 PBX_MetalSniper_Scope2              = "\cdTarget Analysis \c-Minimal";
 PBX_MetalSniper_Scope3              = "\cdTarget Analysis \c-Full";
+
+PBX_MetalSniper_ZoomLow             = "4.0 Magnification";
+PBX_MetalSniper_ZoomHigh            = "7.0 Magnification";
+
+PBX_MetalSniper_nvgOnWW             = "Enable \cdInfrared";
+PBX_MetalSniper_nvgOffWW            = "Disable \cdInfrared";
+PBX_MetalSniper_nvgOn               = "\cdInfrared \c-Enabled";
+PBX_MetalSniper_nvgOff              = "\cdInfrared \c-Disabled";
 
 // Crossbow Ballista
 PBX_CrossbowBallista_Pickup         = "Ballista (Slot 4)";

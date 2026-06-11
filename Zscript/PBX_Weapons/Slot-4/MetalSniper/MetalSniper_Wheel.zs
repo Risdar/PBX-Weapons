@@ -33,8 +33,22 @@ Class MetalSniperWheel : wheelinfocontainer
 			disabled = disableUpgrade.getint() & DisablePBX_MetalSniperUpgrade;
 
 		let weap = PBX_MetalSniper(requester.player.readyweapon);
-		
+
 		iconScale = (1.0, 1.0);
+		PB_SpecialWheel_Mode MS_Laser = new ("PB_SpecialWheel_Mode");
+		if(weap.laserActive) {
+			MS_Laser.Alias = "$PBX_LaserOff";
+			MS_Laser.img = "graphics/WeaponWheel/MetalSniper/LaserOff.png";
+		}
+		else {
+			MS_Laser.Alias = "$PBX_LaserON";
+			MS_Laser.img = "graphics/WeaponWheel/MetalSniper/LaserOn.png";
+		}
+		MS_Laser.tokentogive = "MS_Select_Laser";
+		MS_Laser.scalex = iconscale.x;
+		MS_Laser.scaley = iconscale.y;
+		spw.push(MS_Laser);
+
 		if(requester.FindInventory("MetalSniperUpgraded") || disabled) 
 		{
 			if(weap && weap.resonanceAmmoLoaded)
@@ -72,5 +86,61 @@ Class MetalSniperWheel : wheelinfocontainer
 			spw.Push(MS_Resonance_No);
 		}
 		
+	}
+}
+
+Class MS_Zoomed_Wheel : wheelinfocontainer
+{
+	override int GetSPCount(actor requester)
+	{
+		return 4;
+	}
+	
+	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
+	{
+		super.GetSpecials(spw,requester);
+
+		vector2 iconScale = (1.0, 1.0);
+		let weap = PBX_MetalSniper(requester.player.readyweapon);
+
+		PB_SpecialWheel_Mode MS_Laser = new ("PB_SpecialWheel_Mode");
+		if(weap.laserActive) {
+			MS_Laser.Alias = "$PBX_LaserOff";
+			MS_Laser.img = "graphics/WeaponWheel/MetalSniper/LaserOff.png";
+		}
+		else {
+			MS_Laser.Alias = "$PBX_LaserON";
+			MS_Laser.img = "graphics/WeaponWheel/MetalSniper/LaserOn.png";
+		}
+		MS_Laser.tokentogive = "MS_Select_Laser";
+		MS_Laser.scalex = iconscale.x;
+		MS_Laser.scaley = iconscale.y;
+		spw.push(MS_Laser);
+
+		PB_SpecialWheel_Mode MS_goScope = new ("PB_SpecialWheel_Mode");
+		MS_goScope.img = "graphics/WeaponWheel/MetalSniper/ADSAlt.png";
+		MS_goScope.Alias = "$PBX_MetalSniper_GoScope";
+		MS_goScope.tokentogive = "MS_Select_ToggleScope";
+		MS_goScope.scalex = iconscale.x;
+		MS_goScope.scaley = iconscale.y;
+		spw.push(MS_goScope);
+
+		PB_SpecialWheel_Mode MS_goZoom = new ("PB_SpecialWheel_Mode");
+		MS_goZoom.img = "graphics/WeaponWheel/MetalSniper/MS_Zoom.png";
+		if(weap.zoomstrength == weap.HIGHZOOM) MS_goZoom.Alias = "$PBX_MetalSniper_ZoomLow";
+		else MS_goZoom.Alias = "$PBX_MetalSniper_ZoomHigh";
+		MS_goZoom.tokentogive = "MS_Select_ToggleZoom";
+		MS_goZoom.scalex = iconscale.x;
+		MS_goZoom.scaley = iconscale.y;
+		spw.push(MS_goZoom);
+		
+		PB_SpecialWheel_Mode MS_goNVG = new ("PB_SpecialWheel_Mode");
+		MS_goNVG.img = "GRAPHICS/HiResPickups/Powerups/VISR1.png";
+		if(weap.nvgActive) MS_goNVG.Alias = "$PBX_MetalSniper_nvgOffWW";
+		else MS_goNVG.Alias = "$PBX_MetalSniper_nvgOnWW";
+		MS_goNVG.tokentogive = "MS_Select_ToggleNVG";
+		MS_goNVG.scalex = iconscale.x/2;
+		MS_goNVG.scaley = iconscale.y/2;
+		spw.push(MS_goNVG);
 	}
 }

@@ -3,6 +3,7 @@ extend class PBX_ProsurvBlaster
     override void DoEffect() 
 	{
 		super.DoEffect();
+        if (level.frozen) return;
         // Check if the player exists and if the current weapon they're using is the blaster
         If(	owner.player && owner.player.readyweapon.GetClass() is self.GetClass())
         {
@@ -23,9 +24,10 @@ extend class PBX_ProsurvBlaster
 
     void spawnLaser(PSprite psp)
     {
-        // Dont spawn the laser sight if they're in one of the exceptions
+        // Dont spawn the laser sight if the weapon is in one of these states
         static const StateLabel blockedStates[] = {
-            "Reload", "Recharge"
+            "Reload", "Recharge",
+            "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
         };
 
         for (int i = 0; i < blockedStates.Size(); i++)
