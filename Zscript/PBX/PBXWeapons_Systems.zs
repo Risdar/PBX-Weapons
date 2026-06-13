@@ -10,7 +10,7 @@ class PBXWeapons_Handler : EventHandler
     {
         let pm = players[e.PlayerNumber].mo;
 		if(!pm) return;
-        if (level.MapName ~== "TITLEMAP") return;
+        if (level.MapName == "TITLEMAP") return;
         // SLOT 2
         pm.giveinventory("HellPistolerAmmo", plasmaBlasterFullAmmo);
         pm.giveinventory("LeverActionAmmo", leveractionFullAmmo);

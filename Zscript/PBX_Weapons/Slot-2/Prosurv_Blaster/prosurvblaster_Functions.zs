@@ -26,13 +26,14 @@ extend class PBX_ProsurvBlaster
     {
         // Dont spawn the laser sight if the weapon is in one of these states
         static const StateLabel blockedStates[] = {
-            "Reload", "Recharge","WeaponRespect",
+            "Reload", "Recharge","WeaponRespect", "Deselect", "SelectAnimation",
             "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
         };
 
         for (int i = 0; i < blockedStates.Size(); i++)
         {
-            if (InStateSequence(psp.curstate, ResolveState(blockedStates[i]))) return;
+            if (InStateSequence(psp.curstate, ResolveState(blockedStates[i])) && !InStateSequence(psp.curstate, ResolveState("Ready3"))) 
+                return;
         }
 
         // Spawn the laser sight

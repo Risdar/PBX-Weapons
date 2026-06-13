@@ -103,6 +103,7 @@ Class MS_Zoomed_Wheel : wheelinfocontainer
 		vector2 iconScale = (1.0, 1.0);
 		let weap = PBX_MetalSniper(requester.player.readyweapon);
 
+		// Laser
 		PB_SpecialWheel_Mode MS_Laser = new ("PB_SpecialWheel_Mode");
 		if(weap.laserActive) {
 			MS_Laser.Alias = "$PBX_LaserOff";
@@ -117,30 +118,33 @@ Class MS_Zoomed_Wheel : wheelinfocontainer
 		MS_Laser.scaley = iconscale.y;
 		spw.push(MS_Laser);
 
+		// Scope Mode
 		PB_SpecialWheel_Mode MS_goScope = new ("PB_SpecialWheel_Mode");
-		MS_goScope.img = "graphics/WeaponWheel/MetalSniper/ADSAlt.png";
-		MS_goScope.Alias = "$PBX_MetalSniper_GoScope";
+		MS_goScope.img = "graphics/WeaponWheel/ScopeMode.png";
+		MS_goScope.Alias = "$PBX_GoScope";
 		MS_goScope.tokentogive = "MS_Select_ToggleScope";
-		MS_goScope.scalex = iconscale.x;
-		MS_goScope.scaley = iconscale.y;
+		MS_goScope.scalex = WHEEL_SCOPE_SCALE;
+		MS_goScope.scaley = WHEEL_SCOPE_SCALE;
 		spw.push(MS_goScope);
 
+		// Zoom Strength
 		PB_SpecialWheel_Mode MS_goZoom = new ("PB_SpecialWheel_Mode");
-		MS_goZoom.img = "graphics/WeaponWheel/MetalSniper/MS_Zoom.png";
-		if(weap.zoomstrength == weap.HIGHZOOM) MS_goZoom.Alias = "$PBX_MetalSniper_ZoomLow";
-		else MS_goZoom.Alias = "$PBX_MetalSniper_ZoomHigh";
+		MS_goZoom.img = "graphics/WeaponWheel/ChangeZoom.png";
+		if(weap.zoomstrength == weap.HIGHZOOM) MS_goZoom.Alias = "$PBX_Zoom40";
+		else MS_goZoom.Alias = "$PBX_Zoom70";
 		MS_goZoom.tokentogive = "MS_Select_ToggleZoom";
-		MS_goZoom.scalex = iconscale.x;
-		MS_goZoom.scaley = iconscale.y;
+		MS_goZoom.scalex = WHEEL_ZOOM_SCALE;
+		MS_goZoom.scaley = WHEEL_ZOOM_SCALE;
 		spw.push(MS_goZoom);
 		
+		// NVG
 		PB_SpecialWheel_Mode MS_goNVG = new ("PB_SpecialWheel_Mode");
 		MS_goNVG.img = "GRAPHICS/HiResPickups/Powerups/VISR1.png";
-		if(weap.nvgActive) MS_goNVG.Alias = "$PBX_MetalSniper_nvgOffWW";
-		else MS_goNVG.Alias = "$PBX_MetalSniper_nvgOnWW";
+		if(weap.nvgActive) MS_goNVG.Alias = "$PBX_nvgOffWW";
+		else MS_goNVG.Alias = "$PBX_nvgOnWW";
 		MS_goNVG.tokentogive = "MS_Select_ToggleNVG";
-		MS_goNVG.scalex = iconscale.x/2;
-		MS_goNVG.scaley = iconscale.y/2;
+		MS_goNVG.scalex = WHEEL_NVG_SCALE;
+		MS_goNVG.scaley = WHEEL_NVG_SCALE;
 		spw.push(MS_goNVG);
 	}
 }

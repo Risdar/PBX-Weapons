@@ -35,16 +35,17 @@ extend class PBX_MetalSniper
             // Dont spawn the laser sight if the weapon is in one of these states
             static const StateLabel blockedStates[] = {
                 "Reload", "Reload_Grenade", "ReloadFromADS", "StandardReload", "WeaponRespect",
-                "TakeMagStandard", "TakeMagResonance", "InsertMag", "ReloadFromSpecial",
+                "TakeMagStandard", "TakeMagResonance", "InsertMag", "ReloadFromSpecial", "Deselect",
                 "FinishReload", "RaiseFromEmpty", "Start_Rechamber", "Rechamber", "ChangeAnim",
                 "UnloadFromSpecial","Unload","UnloadRaise","UnloadMagStandard", "UnloadMagEmpty",
-                "UnloadMagResonance", "UnloadChamber", "FinishUnload", "StartUnloadChamber",
+                "UnloadMagResonance", "UnloadChamber", "FinishUnload", "StartUnloadChamber", "SelectAnimation",
                 "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
             };
 
             for (int i = 0; i < blockedStates.Size(); i++)
             {
-                if (InStateSequence(psp.curstate, ResolveState(blockedStates[i]))) return;
+                if (InStateSequence(psp.curstate, ResolveState(blockedStates[i])) && !InStateSequence(psp.curstate, ResolveState("Ready3"))) 
+                    return;
             }
 
             // Spawn the laser sight
@@ -258,20 +259,20 @@ extend class PBX_MetalSniper
             A_SetBlend(0x00a100, 0.2, 3);
             switch (invoker.ScopeMode)
             {
-                case 0: A_Print("$PBX_MetalSniper_Scope1"); break;
-                case 1: A_Print("$PBX_MetalSniper_Scope2"); break;
-                case 2: A_Print("$PBX_MetalSniper_Scope3"); break;
+                case 0: A_Print("$PBX_Scope1"); break;
+                case 1: A_Print("$PBX_Scope2"); break;
+                case 2: A_Print("$PBX_Scope3"); break;
             }
         }
         if (toggleZoom)
         {
             if(getZoomStrength() == HIGHZOOM) {
 				setZoomStrength(LOWZOOM);
-				A_Print("$PBX_MetalSniper_ZoomLow");
+				A_Print("$PBX_Zoom40");
 			}
 			else {
 				setZoomStrength(HIGHZOOM);
-				A_Print("$PBX_MetalSniper_ZoomHigh");
+				A_Print("$PBX_Zoom70");
 			}
             A_StartSound("MS/Button", CHAN_AUTO, CHANF_OVERLAP);
         }
@@ -280,11 +281,13 @@ extend class PBX_MetalSniper
         {
             if(invoker.nvgActive) {
                 invoker.nvgActive = false;
+				A_Print("$PBX_nvgOn");
                 A_SetInventory("MS_Infrared", 0);
             }
             else {
                 invoker.nvgActive = true;
                 A_SetInventory("MS_Infrared", 1);
+				A_Print("$PBX_nvgOff");
                 A_StartSound("RA1IF1", CHAN_AUTO, CHANF_OVERLAP);
             }
             A_SetBlend("Black",0.75,16);

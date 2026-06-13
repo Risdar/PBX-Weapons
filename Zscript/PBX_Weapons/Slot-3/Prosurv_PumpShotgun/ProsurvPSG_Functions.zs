@@ -22,15 +22,16 @@ extend class PBX_ProSurvPSG
             // Dont spawn the laser sight if the weapon is in one of these states
             static const StateLabel blockedStates[] = {
 				"Reload", "ShellChecker", "ChamberInsertShell", "ReloadFinished",
-				"Unload", "RemoveBullets", "FinishUnload",
-				"Pump", "PumpBegin", "PumpEnd", "WeaponRespect",
+				"Unload", "RemoveBullets", "FinishUnload", "SelectAnimation",
+				"Pump", "PumpBegin", "PumpEnd", "WeaponRespect", "Deselect",
 				"FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
 			};
 
 			for (int i = 0; i < blockedStates.Size(); i++)
-			{
-				if (InStateSequence(psp.curstate, ResolveState(blockedStates[i]))) return;
-			}
+            {
+                if (InStateSequence(psp.curstate, ResolveState(blockedStates[i])) && !InStateSequence(psp.curstate, ResolveState("Ready3"))) 
+                    return;
+            }
 
             // Spawn the laser sight
 			double pz = owner.height * 0.5 - owner.floorclip + owner.player.mo.AttackZOffset*owner.player.crouchFactor;

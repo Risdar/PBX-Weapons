@@ -33,13 +33,14 @@ extend class PBX_BDPBattleRifle
             // Dont spawn the laser sight if the weapon is in one of these states
             static const StateLabel blockedStates[] = {
                 "Reload", "ReloadFromADS", "ContinueReload", "RaiseFromEmpty",
-                "Unload", "SwitchAnimation","WeaponRespect",
+                "Unload", "SwitchAnimation","WeaponRespect", "Deselect", "SelectAnimation",
                 "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
             };
 
             for (int i = 0; i < blockedStates.Size(); i++)
             {
-                if (InStateSequence(psp.curstate, ResolveState(blockedStates[i]))) return;
+                if (InStateSequence(psp.curstate, ResolveState(blockedStates[i])) && !InStateSequence(psp.curstate, ResolveState("Ready3"))) 
+                    return;
             }
 
             // Spawn the laser sight
@@ -265,11 +266,11 @@ extend class PBX_BDPBattleRifle
 		{
 			if(getZoomStrength() == HIGHZOOM) {
 				setZoomStrength(LOWZOOM);
-				A_Print("$PBX_BattleRifle_ZoomLow");
+				A_Print("$PBX_Zoom20");
 			}
 			else {
 				setZoomStrength(HIGHZOOM);
-				A_Print("$PBX_BattleRifle_ZoomHigh");
+				A_Print("$PBX_Zoom40");
 			}
 		}
 

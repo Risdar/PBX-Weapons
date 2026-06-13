@@ -1,5 +1,6 @@
 // Includes
 #include "./bdprailgun_Functions.zs"
+#include "./bdprailgun_Wheel.zs"
 #include "./bdprailgun_helpers.zs"
 
 // Constants
@@ -13,6 +14,8 @@ Class PBX_BDPRailgun : PB_WeaponBase
 		Weapon.AmmoType2 "BDPRailgunAmmo";
 		Weapon.AmmoType1 "PB_Cell";
 		PB_WeaponBase.ReserveToMagAmmoFactor 10;
+        PB_WeaponBase.UsesWheel false; // We dont want the player to be able to use the wheel on start
+        PB_WeaponBase.WheelInfo "BDPRailgun_Wheel";
 		Obituary "%o was pierced by %k's Railgun.";
 		Inventory.PickupSound "PLSDRAW";
 		Inventory.Pickupmessage "$PBX_BDPRailgun_Pickup";
@@ -26,11 +29,14 @@ Class PBX_BDPRailgun : PB_WeaponBase
     }
 
 	// bool steam;
-	bool scopeZoom; // this is for the variable scope
+	bool laserActive;
 	bool lockedOn;
+    bool nvgActive;
+    int scopeMode;
+    double zoomstrength;
     const bdpraildamage = 500;
-    const highfactor = 9.0;
-    const lowfactor = 3.0;
+    const LOWZOOM = 3.0;
+    const HIGHZOOM = 9.0;
     const HANDLE_LAYER = -5;
     const MUZZLE_LAYER = -2;
 
@@ -80,6 +86,7 @@ Class PBX_BDPRailgun : PB_WeaponBase
 				A_TakeInventory("PB_LockScreenTilt",1);
                 A_ClearOverlays(HANDLE_LAYER);
 			}
+            TNT1 A 0 PB_SetUsableWheel(false);
 			TNT1 A 0 A_StopSound(1);
 			TNT1 A 0 A_StopSOund(2);
 			TNT1 A 0 A_StopSOund(6);
@@ -102,6 +109,8 @@ Class PBX_BDPRailgun : PB_WeaponBase
             RAIS DCBA 1;
         Ready3:
             RAIL A 1 {
+                A_ZoomFactor(1.0);
+                PB_SetUsableWheel(false);
                 PB_Cooldownbarrel();
 			    PB_HandleCrosshair(97);
 			    return A_DoPBWeaponAction();
@@ -110,9 +119,12 @@ Class PBX_BDPRailgun : PB_WeaponBase
 
         Ready2:
             SNIP C 1 Bright {
+                PB_SetUsableWheel(true);
 				PB_CoolDownBarrel();
+                A_ZoomFactor(getZoomStrength());
                 A_SetCrosshair(-1);
-                doScope();
+                if(invoker.ScopeMode == 1 || invoker.ScopeMode == 2)
+                    doScope();
 				return PB_ReadyFire(ads:true);
             }
             loop;
@@ -120,7 +132,7 @@ Class PBX_BDPRailgun : PB_WeaponBase
         NoAmmo:
             // TNT1 A 0 A_Dryfire("RAILDRY", 1);
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"Ready2");
-            Goto Ready;
+            Goto Ready3;
 
         Fire:
             TNT1 A 0 {
@@ -232,22 +244,22 @@ Class PBX_BDPRailgun : PB_WeaponBase
             TNT1 A 0 {
                 A_overlay(HANDLE_LAYER,"DoNothing");
 			    A_startsound("IronSights",29);
-                A_zoomfactor(3.0);
+                A_zoomfactor(getZoomStrength());
                 A_SetCrosshair(-1);
                 PB_SetZoom(true);
             }
+            TNT1 A 0 PB_SetUsableWheel(true);
             RAIZ ABCDEF 1;
 			Goto Ready2;
 
         ZoomOut:
             TNT1 A 0 {
-                A_StartSound("ADSOUT");
-                if(invoker.scopeZoom == true) A_ZoomFactor(3.0,ZOOM_INSTANT);
+			    A_startsound("IronSights",29);
                 A_ZoomFactor(1.0);
                 PB_SetZoom(false);
                 PB_HandleCrosshair(97);
             }
-            // TNT1 A 0 A_SetCrosshairDX("RAILRet", 10000);
+            TNT1 A 0 PB_SetUsableWheel(false);
             RAIZ FE 1;
             RAIZ DCBA 1;
             Goto Ready3;
@@ -328,13 +340,11 @@ Class PBX_BDPRailgun : PB_WeaponBase
         WeaponSpecial:
             TNT1 A 0 {
 				A_Takeinventory("GoWeaponSpecialAbility",1);
-                if(PB_GetZoom())
-                {
-                    A_HandleScope();
-                    return ResolveState("Ready2");
-                }
+                // Go to weapon wheel handler if in ADS
+                if(PB_GetZoom()) return Railgun_HandleSpecial();
                 return ResolveState(null);
             }
+            // Otherwise go and do hologram spawn
             TNT1 A 0 {
                 A_startsound("bepbep",4);
                 A_SpawnHologram();
@@ -386,30 +396,35 @@ Class PBX_BDPRailgun : PB_WeaponBase
 
         // FLASH STATES
         FlashPunching:
+            TNT1 A 0 PB_SetUsableWheel(false);
             RAIK ABCD 1;
             RAIK E 6;
             RAIK DCBA 1;
             goto Ready3;
 
 		FlashKicking:
+            TNT1 A 0 PB_SetUsableWheel(false);
 			RAIK ABCD 1;
             RAIK E 7;
             RAIK DCBA 1;
 			goto Ready3;
 			
 		FlashAirKicking:
+            TNT1 A 0 PB_SetUsableWheel(false);
 			RAIK ABCD 1;
             RAIK E 8;
             RAIK DCBA 1;
 			goto Ready3;
 			
 		FlashSlideKicking:
+            TNT1 A 0 PB_SetUsableWheel(false);
 			RAIK ABCD 1;
             RAIK E 19;
             RAIK DCBA 1;
 			goto Ready3;
 			
 		FlashSlideKickingStop:
+            TNT1 A 0 PB_SetUsableWheel(false);
 			RAIK ABCDEEE 1; //7 frames 
 			goto Ready3;
 

@@ -2,6 +2,11 @@ enum PBX_eHudSettingFlags{
     DisablePBX_WeaponHud				= 1 << 0,
 }
 
+// The variable scope weapon wheel icon uses this value for its scale
+const WHEEL_ZOOM_SCALE  = 2.0;
+const WHEEL_SCOPE_SCALE = 1.0;
+const WHEEL_NVG_SCALE   = 0.5;
+
 class PBX_Hud : PB_Hud_ZS
 {
     // Set Variables
@@ -101,7 +106,7 @@ class PBX_Hud : PB_Hud_ZS
              
             // PBX Weapons
             "PBX_MastermindChaingun","PBX_MetalSniper","PBX_ProSurvPSG",
-            "PBX_BDPBattleRifle","PBX_Prosurv_LeverAction"
+            "PBX_BDPBattleRifle","PBX_Prosurv_LeverAction", "PBX_BDPRailgun"
         };
 
         // Handle exceptions
@@ -368,14 +373,16 @@ class PBX_Hud : PB_Hud_ZS
                 adjustScale = 0.9;
                 break;
 
-            case 'PB_DemonTech':
+            case 'PB_DTechRifle':
                 adjustPos = (-5, 15);
                 adjustScale = 0.9;
                 break;
 
             case 'PBX_BDPRailgun':
-                adjustPos = (-5, 12);
-                adjustScale = 1.4;
+                let railgun = PBX_BDPRailgun(pbWeap);
+                if(!railgun) return;
+                adjustPos = railgun.laserActive ? (0,12) : (-5, 12); 
+                adjustScale = railgun.laserActive ? 0.7 : 1.4;
                 break;
 
 //////////////// SLOT 8 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -762,6 +769,15 @@ class PBX_Hud : PB_Hud_ZS
                 pbx_image2 = " "; //its empty for now
                 pbx_image3 = " "; //its empty for now
                 break;
+
+            case 'PBX_BDPRailgun':
+                let railgun = PBX_BDPRailgun(pbWeap);
+                if(!railgun) return;
+                pbx_image  = railgun.laserActive ? "graphics/WeaponWheel/PlatRailgun/LaserOn.png" : icon;
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
 
 //////////////// SLOT 8 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //  Change the image if the weapon has been upgraded

@@ -45,7 +45,7 @@ Class PBX_MetalSniper : PB_WeaponBase
     bool nvgActive;
     bool AltMode;
     bool LockedOn;
-    bool enableScopeHUD;
+    bool enableScopeHUD; // This is for the overlay that you see when the scope mode is active
     int currentMaxAmmo;
     int usedAmmo;
     int ScopeMode;

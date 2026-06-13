@@ -61,9 +61,6 @@ PBX_BattleRifle_Tag                 = "UAC M1 'BDP' Battle Rifle";
 PBX_BattleRifle_SemiAuto            = "\cdSemi-Auto \c-Mode";
 PBX_BattleRifle_Burst               = "\ciBurst Fire \c-Mode";
 
-PBX_BattleRifle_ZoomLow             = "2.0 Magnification";
-PBX_BattleRifle_ZoomHigh            = "4.0 Magnification";
-
 PBX_BattleRifle_UpgradePickup       = "Battle Rifle Ricochet and Scope Upgrade (Slot 4)";
 PBX_BattleRifle_UpgradeTag          = "Battle Rifle Upgrade";
 
@@ -85,19 +82,6 @@ PBX_MetalSniper_Standard            = "\cd7.62x51mm Armor Piercing \c-Mode";
 
 PBX_MetalSniper_UpgradePickup       = "Metal Sniper Resonance Ammo Type Upgrade (Slot 4)";
 PBX_MetalSniper_UpgradeTag          = "Metal Sniper Upgrade";
-
-PBX_MetalSniper_GoScope             = "\cdTarget Analysis \c-Switch";
-PBX_MetalSniper_Scope1              = "\cdTarget Analysis \c-Disabled";
-PBX_MetalSniper_Scope2              = "\cdTarget Analysis \c-Minimal";
-PBX_MetalSniper_Scope3              = "\cdTarget Analysis \c-Full";
-
-PBX_MetalSniper_ZoomLow             = "4.0 Magnification";
-PBX_MetalSniper_ZoomHigh            = "7.0 Magnification";
-
-PBX_MetalSniper_nvgOnWW             = "Enable \cdInfrared";
-PBX_MetalSniper_nvgOffWW            = "Disable \cdInfrared";
-PBX_MetalSniper_nvgOn               = "\cdInfrared \c-Enabled";
-PBX_MetalSniper_nvgOff              = "\cdInfrared \c-Disabled";
 
 // Crossbow Ballista
 PBX_CrossbowBallista_Pickup         = "Ballista (Slot 4)";
@@ -141,6 +125,8 @@ PBX_MastermindCG_Normal             = "\caExplosive Tracers \c-Mode";
 PBX_BDPRailgun_Pickup               = "Platinum Railgun (Slot 7)";
 PBX_BDPRailgun_Tag                  = "UAC MK-III 'Platinum' Railgun";
 
+PBX_BDPRailgun_SpawnHologram        = "Spawn Hologram";
+
 //////////////////////////// SLOT 8 ///////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////// SLOT 9 ///////////////////////////////////////////////////////////////////////////////
@@ -163,6 +149,23 @@ PBX_AmmoNotAvailable                = "Ammo Type Not Available";
 PBX_ModeNotAvailable                = "Mode Not Available";
 PBX_NoSpecial                       = "No Weapon Special Available";
 PBX_NotEnoughAmmo                   = "Not Enough Ammo";
+// Targeting system
 PBX_LaserOn                         = "\cdLaser Sight \c-Activated";
 PBX_LaserOff                        = "\ciLaser Sight \c-Deactivated";
+
+PBX_Zoom20                          = "2.0x Magnification";
+PBX_Zoom30                          = "3.0x Magnification";
+PBX_Zoom40                          = "4.0x Magnification";
+PBX_Zoom70                          = "7.0x Magnification";
+PBX_Zoom90                          = "9.0x Magnification";
+
+PBX_GoScope                         = "\cdTarget Analysis \c-Switch";
+PBX_Scope1                          = "\cdTarget Analysis \c-Disabled";
+PBX_Scope2                          = "\cdTarget Analysis \c-Minimal";
+PBX_Scope3                          = "\cdTarget Analysis \c-Full";
+
+PBX_nvgOnWW                         = "Enable \cdInfrared";
+PBX_nvgOffWW                        = "Disable \cdInfrared";
+PBX_nvgOn                           = "\cdInfrared \c-Enabled";
+PBX_nvgOff                          = "\cdInfrared \c-Disabled";
 

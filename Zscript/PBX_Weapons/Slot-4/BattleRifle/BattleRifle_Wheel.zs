@@ -13,6 +13,7 @@ Class BattleRifleWheel : wheelinfocontainer
         
         vector2 scale = (0.9,0.9);
 		
+		// Semi Auto
 		PB_SpecialWheel_Mode BR_Semi = new ("PB_SpecialWheel_Mode");
 		BR_Semi.img = "graphics/WeaponWheel/BattleRifle/BR_Semi.png";
 		BR_Semi.Alias = "$PBX_BattleRifle_SemiAuto";
@@ -21,6 +22,7 @@ Class BattleRifleWheel : wheelinfocontainer
 		BR_Semi.scaley = scale.y;
 		spw.push(BR_Semi);
 		
+		// Burst Fire
 		PB_SpecialWheel_Mode BR_Burst = new ("PB_SpecialWheel_Mode");
 		BR_Burst.img = "graphics/WeaponWheel/BattleRifle/BR_Burst.png";
 		BR_Burst.Alias = "$PBX_BattleRifle_Burst";
@@ -29,15 +31,17 @@ Class BattleRifleWheel : wheelinfocontainer
 		BR_Burst.scaley = scale.y;
 		spw.push(BR_Burst);
 
+		// Zoom Strength
 		PB_SpecialWheel_Mode BR_Zoom = new ("PB_SpecialWheel_Mode");
-		BR_Zoom.img = "graphics/WeaponWheel/BattleRifle/BR_Zoom.png";
-		if(battleRifle.zoomstrength == battleRifle.HIGHZOOM) BR_Zoom.Alias = "$PBX_BattleRifle_ZoomLow";
-		else BR_Zoom.Alias = "$PBX_BattleRifle_ZoomHigh";
+		BR_Zoom.img = "graphics/WeaponWheel/ChangeZoom.png";
+		if(battleRifle.zoomstrength == battleRifle.HIGHZOOM) BR_Zoom.Alias = "$PBX_Zoom20";
+		else BR_Zoom.Alias = "$PBX_Zoom40";
 		BR_Zoom.tokentogive = "BR_Select_Zoom";
-		BR_Zoom.scalex = scale.x;
-		BR_Zoom.scaley = scale.y;
+		BR_Zoom.scalex = WHEEL_ZOOM_SCALE;
+		BR_Zoom.scaley = WHEEL_ZOOM_SCALE;
 		spw.push(BR_Zoom);
 
+		// Laser
 		PB_SpecialWheel_Mode BR_Laser = new ("PB_SpecialWheel_Mode");
 		if(battleRifle.laserActive) {
 			BR_Laser.Alias = "$PBX_LaserOff";

@@ -3,8 +3,60 @@ extend class PBX_BDPRailgun
     override void PostBeginPlay()
     {
         LockedOn = false;
-        scopeZoom = false;
+        scopeMode = 0;
+        zoomstrength = LOWZOOM;
+		laserActive  = false;
         Super.PostBeginPlay();
+    }
+
+        override void DoEffect() 
+	{
+		super.DoEffect();
+
+        if (level.frozen) return;
+        
+        // Check if the player exists and if the current weapon they're using is the blaster
+		If(	owner.player && owner.player.readyweapon.GetClass() is self.GetClass())
+        {
+            // Get a pointer to it
+            let weap = PBX_BDPRailgun(owner.player.readyweapon);
+            if(!weap) return;
+
+			// Get a pointer to PSprite
+			let psp = owner.player.FindPSprite(PSP_WEAPON);
+			if(!psp) return;
+
+            if(!weap.laserActive) return;
+
+            // Dont spawn the laser sight if the weapon is in one of these states
+            static const StateLabel blockedStates[] = {
+                "Pumping", "FinishPump", "FinishPump2", "Reload",
+                "ShellChecker", "ReloadFinished", "ReloadFromPump", "ReloadFromPumpInsertShells",
+                "FinishReloadFromPump", 
+
+                "WeaponRespect", "Deselect", "SelectAnimation",
+                "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
+            };
+
+            for (int i = 0; i < blockedStates.Size(); i++)
+            {
+                if (InStateSequence(psp.curstate, ResolveState(blockedStates[i])) && !InStateSequence(psp.curstate, ResolveState("Ready3"))) 
+                    return;
+            }
+
+            // Spawn the laser sight
+            double pz = owner.height * 0.5 - owner.floorclip + owner.player.mo.AttackZOffset*owner.player.crouchFactor;
+            FLineTraceData lasersight;
+            owner.LineTrace(owner.angle, 
+                4096, 
+                owner.pitch, 
+                TRF_SOLIDACTORS|TRF_THRUHITSCAN, 
+                offsetz: pz, 
+                data: lasersight
+            );
+
+            Spawn("PBX_BlueDot", lasersight.HitLocation);
+		}
     }
 
     action void doScope()
@@ -29,9 +81,12 @@ extend class PBX_BDPRailgun
                     Wireframe.scale.Y = double(Bule.HitActor.Height) * Level.pixelstretch;
                     Wireframe.vel = Bule.HitActor.vel;
                 }
-                // player.PSprites.frame = 1;
-                PBXWeapons_ScopeHandler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData_Blue:"..Bule.HitActor.GetTag(), Bule.HitActor.health, Bule.HitActor.GetSpawnHealth(), Bule.HitActor.PainChance);
-                PBXWeapons_ScopeHandler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData2:", Distance3D(Bule.HitActor), getZoomStrength());
+                if(invoker.ScopeMode == 2)
+                {
+                    // player.PSprites.frame = 1;
+                    PBXWeapons_ScopeHandler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData_Blue:"..Bule.HitActor.GetTag(), Bule.HitActor.health, Bule.HitActor.GetSpawnHealth(), Bule.HitActor.PainChance);
+                    PBXWeapons_ScopeHandler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData2:", Distance3D(Bule.HitActor), getZoomStrength());
+                }
             }
             else
             if(invoker.LockedOn)
@@ -44,9 +99,93 @@ extend class PBX_BDPRailgun
         // return A_DoPBWeaponAction();
     }
 
+    action state Railgun_HandleSpecial()
+    {
+        // Get the tokens
+        bool toggleLaser    = FindInventory("platrailgun_goLaser");
+        bool toggleZoom     = FindInventory("platrailgun_goZoom");
+        bool toggleScope    = FindInventory("platrailgun_goScope");
+        bool toggleNVG      = FindInventory("platrailgun_goNVG");
+        bool goHolo         = FindInventory("platRailgun_goHolo");
+
+
+        // Actual Mode Switch
+        if (toggleLaser)
+        {
+            if(invoker.laserActive) invoker.laserActive = false;
+            else invoker.laserActive = true;
+            A_StartSound("MS/Button", CHAN_AUTO, CHANF_OVERLAP);
+            A_Print(invoker.laserActive ? "$PBX_LaserOn" : "$PBX_LaserOff");
+
+        }
+        if(toggleScope)
+        {
+            invoker.ScopeMode = (invoker.ScopeMode + 1) % 3;
+            A_StartSound("MS/Button", CHAN_WEAPON);
+            A_SetBlend(0x00a100, 0.2, 3);
+            switch (invoker.ScopeMode)
+            {
+                case 0: A_Print("$PBX_Scope1"); break;
+                case 1: A_Print("$PBX_Scope2"); break;
+                case 2: A_Print("$PBX_Scope3"); break;
+            }
+        }
+        if (toggleZoom)
+        {
+            if(getZoomStrength() == HIGHZOOM) {
+                A_StartSound("BEPBEP");
+				setZoomStrength(LOWZOOM);
+				A_Print("$PBX_Zoom30");
+			}
+			else {
+                A_StartSound("BEP");
+				setZoomStrength(HIGHZOOM);
+				A_Print("$PBX_Zoom90");
+			}
+        }
+
+        if(toggleNVG)
+        {
+            if(invoker.nvgActive) {
+                invoker.nvgActive = false;
+                A_SetInventory("MS_Infrared", 0);
+            }
+            else {
+                invoker.nvgActive = true;
+                A_SetInventory("MS_Infrared", 1);
+                A_StartSound("RA1IF1", CHAN_AUTO, CHANF_OVERLAP);
+            }
+            A_SetBlend("Black",0.75,16);
+        }
+
+        if(goHolo)
+        {
+            A_startsound("bepbep",4);
+            A_SpawnHologram();
+        }
+
+        // Always clear the tokens
+        cleanmodetokens();
+        return resolvestate("Ready2");
+    }
+
+    action void cleanmodetokens()
+    {
+        A_SetInventory("platrailgun_goLaser", 0);
+        A_SetInventory("platrailgun_goZoom",  0);
+        A_SetInventory("platrailgun_goScope", 0);
+        A_SetInventory("platrailgun_goNVG",   0);
+        A_SetInventory("platRailgun_goHolo",  0);
+    }
+
     action double getZoomStrength()
     {
-        return invoker.scopeZoom ? highfactor : lowfactor;
+        return invoker.zoomstrength;
+    }
+    
+    action void setZoomStrength(int set)
+    {
+        invoker.zoomstrength = set;
     }
 
     action void A_GunLight(int intensity = 500, int alivetime = 2, int lightr = 255, int lightg = 237, int lightb = 162)
@@ -75,21 +214,6 @@ extend class PBX_BDPRailgun
     action void A_Recoil3D(double amt)
 	{
 		vel += BDPMath.VecFromAngles(angle, pitch, -amt);
-	}
-
-    action void A_HandleScope()
-	{
-		if(!invoker.scopeZoom)
-		{
-			A_StartSound("BEP");
-			invoker.scopeZoom = true;
-		}
-		else
-		{
-			A_StartSound("BEPBEP");
-			invoker.scopeZoom = false;
-		}
-		A_ZoomFactor(getZoomStrength());
 	}
 
     Action void a_spawnhologram()
