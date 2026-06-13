@@ -118,6 +118,13 @@ Class PBX_BDPRailgun : PB_WeaponBase
             loop;
 
         Ready2:
+            TNT1 A 0 {
+                if(invoker.nvgActive) {
+                    A_SetInventory("PBX_Infrared", 1);
+                    A_StartSound("RA1IF1", CHAN_AUTO, CHANF_OVERLAP);
+                }
+            }
+        ReadyToFire2:
             SNIP C 1 Bright {
                 PB_SetUsableWheel(true);
 				PB_CoolDownBarrel();

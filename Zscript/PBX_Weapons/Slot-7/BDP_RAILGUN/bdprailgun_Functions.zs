@@ -148,11 +148,13 @@ extend class PBX_BDPRailgun
         {
             if(invoker.nvgActive) {
                 invoker.nvgActive = false;
-                A_SetInventory("MS_Infrared", 0);
+				A_Print("$PBX_nvgOff");
+                A_SetInventory("PBX_Infrared", 0);
             }
             else {
                 invoker.nvgActive = true;
-                A_SetInventory("MS_Infrared", 1);
+				A_Print("$PBX_nvgOn");
+                A_SetInventory("PBX_Infrared", 1);
                 A_StartSound("RA1IF1", CHAN_AUTO, CHANF_OVERLAP);
             }
             A_SetBlend("Black",0.75,16);

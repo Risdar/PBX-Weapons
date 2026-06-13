@@ -2,10 +2,13 @@ enum PBXWeapons_eGeneralFlags{
     ePBX_Weapons_Version = 1 << 0
 }
 
+// What gives the playr Nightvision, its basically a powerup
+class PBX_Infrared : PB_PowerLightAmp  {default{Powerup.Duration -1800;}}
+
+// Handles giving the player ammo (and other things) on map start
+// This is so the player will always have full ammo when picking up a new weapon
 class PBXWeapons_Handler : EventHandler
 {
-    // Gives the player the AmmoType 2 on spawn
-    // This is so the player will always have full ammo when picking up a new weapon
     Override void PlayerEntered(PlayerEvent e)
     {
         let pm = players[e.PlayerNumber].mo;
@@ -50,6 +53,7 @@ class PBXWeapons_Handler : EventHandler
 }
 
 // This is from Doom Deluxe, all credits goes to Dox778 and the Doom Deluxe team
+// This handles the target analysis system
 class PBXWeapons_ScopeHandler : EventHandler
 {
 	ui bool CanDraw;
@@ -121,9 +125,11 @@ class PBXWeapons_ScopeHandler : EventHandler
 	}	
 }
 
+// For easier testing, though you can also disable the upgrades in the backpack spawners
+// and it will bypass the upgrade requirements
+// to use these cheats just type "netevent <insert cheat name here>" in the console
 Class PBXWeapons_CheatsHandler : Eventhandler
 {	
-	//basically, just type in console "NetEvent CM_AllShells" and voila, you got all the upgrades of this
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		let pm = players[e.player].mo;
@@ -162,6 +168,7 @@ Class PBXWeapons_CheatsHandler : Eventhandler
 	}
 }
 
+// Laser sights
 CLASS PBX_BlueDot : FastProjectile
 { 
 	Default
@@ -212,6 +219,7 @@ class PBX_GreenDot : PBX_BlueDot
 	}
 }
 
+// Cubes
 Class PBX_CubeRadius : actor
 {
 	DEFAULT
@@ -317,6 +325,9 @@ class PBX_RadiusVisualizer : Inventory
         Super.OnDestroy();
     }
 }
+
+// Code that I think could be useful but unused
+// and I dont know where else to put them lol
 
 // vector3 targetpos = lasersight.HitLocation;
 // switch (lasersight.HitType)

@@ -203,7 +203,7 @@ Class PBX_MetalSniper : PB_WeaponBase
         Ready2:  
             TNT1 A 0 {
                 if(invoker.nvgActive) {
-                    A_SetInventory("MS_Infrared", 1);
+                    A_SetInventory("PBX_Infrared", 1);
                     A_StartSound("RA1IF1", CHAN_AUTO, CHANF_OVERLAP);
                 }
             }
