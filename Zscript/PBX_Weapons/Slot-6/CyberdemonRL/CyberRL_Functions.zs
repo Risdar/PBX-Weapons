@@ -10,7 +10,7 @@ extend class PBX_CyberdemonRL
 
 	// override bool Use(bool pickup)
 	// {
-	// 	// if(owner.CountInv("CyberRLDurability") < CyberdemonRLDurability)
+	// 	// if(owner.CountInv("CyberRLDurability") < DURABILITY)
 	// 	console.printf("Use Overide Initiated");
 	// 	if(owner)
 	// 	{

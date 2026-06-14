@@ -9,7 +9,7 @@ extend class PBX_BDPRailgun
         Super.PostBeginPlay();
     }
 
-        override void DoEffect() 
+    override void DoEffect() 
 	{
 		super.DoEffect();
 

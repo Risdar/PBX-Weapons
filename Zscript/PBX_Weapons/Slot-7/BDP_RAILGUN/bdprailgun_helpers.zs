@@ -10,9 +10,9 @@ Class BDPRailgunAmmo : PB_Ammo
 	Default
 	{
 		inventory.amount 0;
-		inventory.maxamount BDPRailgunFullAmmo;
+		inventory.maxamount PBX_BDPRailgun.MAGAZINE_SIZE;
 		ammo.backpackamount 0;
-		ammo.backpackmaxamount BDPRailgunFullAmmo;
+		ammo.backpackmaxamount PBX_BDPRailgun.MAGAZINE_SIZE;
 	    Inventory.Icon "ARMZA0";
         +INVENTORY.IGNORESKILL;
 	}

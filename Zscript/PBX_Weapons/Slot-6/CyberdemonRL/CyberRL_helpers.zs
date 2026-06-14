@@ -3,9 +3,9 @@ class CyberRLDurability : PB_Ammo
 	default
 	{
 		Inventory.Amount 0;
-		inventory.maxamount CyberdemonRLDurability;
+		inventory.maxamount PBX_CyberdemonRL.DURABILITY;
 		Ammo.BackpackAmount 0;
-		Ammo.BackpackMaxAmount CyberdemonRLDurability;
+		Ammo.BackpackMaxAmount PBX_CyberdemonRL.DURABILITY;
 	}
 }
 

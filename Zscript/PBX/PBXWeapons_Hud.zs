@@ -106,7 +106,8 @@ class PBX_Hud : PB_Hud_ZS
              
             // PBX Weapons
             "PBX_MastermindChaingun","PBX_MetalSniper","PBX_ProSurvPSG",
-            "PBX_BDPBattleRifle","PBX_Prosurv_LeverAction", "PBX_BDPRailgun"
+            "PBX_BDPBattleRifle","PBX_Prosurv_LeverAction", "PBX_BDPRailgun",
+            "PBX_NormalRifle"
         };
 
         // Handle exceptions
@@ -251,7 +252,7 @@ class PBX_Hud : PB_Hud_ZS
                             : isAkimbo        ? (hdmrSniperMode ? (-5,-14) : (5,2)) // Upgraded Akimbo: Sniper : Normal
                             : hdmrSniperMode  ? (-6,10) : (-4,10);                  // Upgraded Single: Sniper : Normal
 
-                adjustScale = dmrUpgraded ? 0.9 : 1.0;
+                adjustScale = dmrUpgraded ? 0.8 : 0.9;
 
                 if (hdmrGrenMode && !isAkimbo)
                     adjustPos.y -= 19;                                  
@@ -273,8 +274,14 @@ class PBX_Hud : PB_Hud_ZS
                 break;
 
             case 'PBX_NormalRifle':
-                adjustPos = (-5,12);
-                // adjustScale = 1.3;
+                let nr = PBX_NormalRifle(pbWeap);
+                if(!nr) return;
+
+                adjustPos   = nr.laserActive ? (0,12) : (-5,12);
+                if(isAkimbo)
+                    adjustPos.y -= 17;
+                // adjustPos   = isAkimbo ? (-15,-5) : (-15,12);
+                adjustScale = nr.laserActive ? 0.8 : 0.9;
                 break;
 
             case 'PBX_BDPBattleRifle':
@@ -489,11 +496,13 @@ class PBX_Hud : PB_Hud_ZS
                 pbx_image2 = " "; //its empty for now
                 pbx_image3 = " "; //its empty for now
                 break;
+
             case 'PB_Revolver':
                 pbx_image = isAkimbo ? "graphics/WeaponPickups/REVOLVER_DUAL.png" : icon;
                 pbx_image2 = " "; //its empty for now
                 pbx_image3 = " "; //its empty for now
                 break;
+                
             case 'PB_Deagle':
                 pbx_image = isAkimbo ? "graphics/WeaponPickups/DEAGLE_DUAL.png" : icon;
                 pbx_image2 = " "; //its empty for now
@@ -663,6 +672,16 @@ class PBX_Hud : PB_Hud_ZS
                 pbx_image3 = " "; //its empty for now
                 break;
 
+            case 'PBX_NormalRifle':
+                let nr = PBX_NormalRifle(pbweap);
+                if(!nr) return;
+                pbx_image = nr.laserActive ? "graphics/WeaponWheel/NormalRifle/laseron.png" : icon;
+                // Force to use the dual wield icon if akimbo
+                if(isAkimbo) pbx_image = "graphics/WeaponWheel/NormalRifle/dualwield.png";
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
 //////////////// SLOT 5 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Show the current mode and if the weapon is in triple barrel mode
             case 'PB_Minigun':
@@ -758,7 +777,10 @@ class PBX_Hud : PB_Hud_ZS
             case 'PB_M1Plasma':
                 // If Akimbo
                 pbx_image = isAkimbo ? "graphics/WeaponPickups/M1_DUAL.png" : icon;
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
                 break;
+
             case 'PB_M2Plasma':
                 bool m2Upgraded = PBX_PlayerHasInventory("HasLightningGunUpgrade");
                 pbx_image = isAkimbo ? 
@@ -830,8 +852,8 @@ class PBX_Hud : PB_Hud_ZS
 
         // Actually Draw the Thing
         PBX_DrawImage();
-        if(pbx_image2 != " ") PBX_DrawImage(2);
-        if(pbx_image3 != " ") PBX_DrawImage(3);
+        if(pbx_image2 && (pbx_image2 != " " || pbx_image2 != "")) PBX_DrawImage(2);
+        if(pbx_image3 && (pbx_image3 != " " || pbx_image3 != "")) PBX_DrawImage(3);
     }
 
     // THIS IS ALL AUXILLIARY FUNCTIONS JUST TO KEEP THE CODE CLEAN

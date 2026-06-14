@@ -3,9 +3,9 @@ class MastermindCGDurability : PB_Ammo
 	default
 	{
 		Inventory.Amount 0;
-		inventory.maxamount MastermindCGFullDurability;
+		inventory.maxamount PBX_MastermindChaingun.DURABILITY;
 		Ammo.BackpackAmount 0;
-		Ammo.BackpackMaxAmount MastermindCGFullDurability;
+		Ammo.BackpackMaxAmount PBX_MastermindChaingun.DURABILITY;
 	}
 }
 

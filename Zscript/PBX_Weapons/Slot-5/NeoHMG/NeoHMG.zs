@@ -3,10 +3,6 @@
 #include "./NeoHMG_Wheel.zs"
 #include "./NeoHMG_helpers.zs"
 
-// Constants
-const neohmgFullAmmo = 80;
-const neohmgShieldAmmo = 100;
-
 class PBX_NeoHMG : PB_WeaponBase
 {
 	Default
@@ -47,8 +43,10 @@ class PBX_NeoHMG : PB_WeaponBase
 	
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
 	// Constants
-	const HMG_SHIELDLAYER = -567;
-	const HMG_SHIELDSOUNDLAYER = 234;
+	const MAGAZINE_SIZE 		= 80;
+	const SHIELD_MAXCHARGE 		= 100;
+	const HMG_SHIELDLAYER 		= -567;
+	const HMG_SHIELDSOUNDLAYER 	= 234;
 	const HMG_SHIELDSOUNDLAYER2 = 233;
 
 	// Shield Variables
@@ -274,7 +272,7 @@ class PBX_NeoHMG : PB_WeaponBase
 				A_ZoomFactor(1.0);
 				A_WeaponOffset(0,32);
 			}
-			TNT1 A 0 PB_checkReload("RaiseFromEmpty", null, null, "Ready","Ready",neohmgFullAmmo,1);
+			TNT1 A 0 PB_checkReload("RaiseFromEmpty", null, null, "Ready","Ready",MAGAZINE_SIZE,1);
 			TNT1 A 0 A_Overlay(3,"Cooling",true);
 			HG0R ABCDE 1 {
 				if (invoker.ammo2.amount == 4 )	{A_SetWeaponSprite("XHR4");}
@@ -321,7 +319,7 @@ class PBX_NeoHMG : PB_WeaponBase
 				if (invoker.ammo2.amount == 0 )	{A_SetWeaponSprite("XHR1");}
 			}
 			TNT1 A 0 {
-				PB_AmmoIntoMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname(),neohmgFullAmmo,1);
+				PB_AmmoIntoMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname(),MAGAZINE_SIZE,1);
 				PB_SetMagEmpty(false);
 				PB_SetMagUnloaded(false);
 				PB_SetChamberEmpty(false);

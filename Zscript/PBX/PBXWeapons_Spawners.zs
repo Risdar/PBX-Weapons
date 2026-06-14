@@ -307,7 +307,7 @@ class CyberRLPickup : CustomInventory
             Stop; 
 
         Pickup:
-            TNT1 A 0 A_GiveInventory ("CyberRLDurability",CyberdemonRLDurability);
+            TNT1 A 0 A_GiveInventory ("CyberRLDurability",PBX_CyberdemonRL.DURABILITY);
             TNT1 A 0 A_GiveInventory ("PBX_CyberdemonRL",1);
             Stop;
     }
@@ -333,7 +333,7 @@ class MastermindCGPickup : CustomInventory
             Stop;
 
         Pickup:
-            TNT1 A 0 A_GiveInventory ("MastermindCGDurability",MastermindCGFullDurability);
+            TNT1 A 0 A_GiveInventory ("MastermindCGDurability", PBX_MastermindChaingun.DURABILITY);
             TNT1 A 0 A_GiveInventory ("PBX_MastermindChaingun",1);
             Stop;
     }

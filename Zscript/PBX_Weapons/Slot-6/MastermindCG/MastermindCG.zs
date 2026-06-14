@@ -2,9 +2,6 @@
 #include "./MastermindCG_Functions.zs"
 #include "./MastermindCG_helpers.zs"
 
-// Constants
-const MastermindCGFullDurability = 100;
-
 class PBX_MastermindChaingun : PB_WeaponBase
 {
 	Default
@@ -47,7 +44,8 @@ class PBX_MastermindChaingun : PB_WeaponBase
 
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
 	bool SoulSeekerMode;
-	const ammoTake = 2; // How many rockets does it take for one point of durability
+	const ammoTake = 1; // How many rockets does it take for one point of durability
+	const DURABILITY = 100;
       
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
 	States

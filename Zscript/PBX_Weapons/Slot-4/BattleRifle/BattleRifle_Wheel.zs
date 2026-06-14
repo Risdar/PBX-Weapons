@@ -2,7 +2,7 @@ Class BattleRifleWheel : wheelinfocontainer
 {
 	override int GetSPCount(actor requester)
 	{
-		return 4;
+		return 3;
 	}
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
@@ -13,23 +13,22 @@ Class BattleRifleWheel : wheelinfocontainer
         
         vector2 scale = (0.9,0.9);
 		
-		// Semi Auto
-		PB_SpecialWheel_Mode BR_Semi = new ("PB_SpecialWheel_Mode");
-		BR_Semi.img = "graphics/WeaponWheel/BattleRifle/BR_Semi.png";
-		BR_Semi.Alias = "$PBX_BattleRifle_SemiAuto";
-		BR_Semi.tokentogive = "BR_Select_Semi";
-		BR_Semi.scalex = scale.x;
-		BR_Semi.scaley = scale.y;
-		spw.push(BR_Semi);
-		
-		// Burst Fire
-		PB_SpecialWheel_Mode BR_Burst = new ("PB_SpecialWheel_Mode");
-		BR_Burst.img = "graphics/WeaponWheel/BattleRifle/BR_Burst.png";
-		BR_Burst.Alias = "$PBX_BattleRifle_Burst";
-		BR_Burst.tokentogive = "BR_Select_Burst";
-		BR_Burst.scalex = scale.x;
-		BR_Burst.scaley = scale.y;
-		spw.push(BR_Burst);
+		// Toggle Fire
+		PB_SpecialWheel_Mode BR_ToggleFire = new ("PB_SpecialWheel_Mode");
+		if(battleRifle.isSemiAuto)
+		{
+			BR_ToggleFire.img 	= "graphics/WeaponWheel/BattleRifle/BR_Burst.png";
+			BR_ToggleFire.Alias = "$PB_WHEEL_BURST";
+		}
+		else
+		{
+			BR_ToggleFire.img 	= "graphics/WeaponWheel/BattleRifle/BR_Semi.png";
+			BR_ToggleFire.Alias = "$PB_WHEEL_SEMI";
+		}
+		BR_ToggleFire.tokentogive = "BR_Select_FireMode";
+		BR_ToggleFire.scalex = scale.x;
+		BR_ToggleFire.scaley = scale.y;
+		spw.push(BR_ToggleFire);
 
 		// Zoom Strength
 		PB_SpecialWheel_Mode BR_Zoom = new ("PB_SpecialWheel_Mode");

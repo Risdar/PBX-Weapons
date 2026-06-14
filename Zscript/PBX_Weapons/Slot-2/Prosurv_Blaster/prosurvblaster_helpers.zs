@@ -51,9 +51,9 @@ Class BlasterPistolCharge : PB_Ammo
 	Default
 	{
 		inventory.amount 0;
-		inventory.maxamount prosurvblasterMaxCharge;
+		inventory.maxamount PBX_ProsurvBlaster.MAXCHARGE;
 		ammo.backpackamount 0;
-		ammo.backpackmaxamount prosurvblasterMaxCharge;
+		ammo.backpackmaxamount PBX_ProsurvBlaster.MAXCHARGE;
 	    Inventory.Icon "ARMZA0";
         +INVENTORY.IGNORESKILL;
 	}

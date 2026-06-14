@@ -3,9 +3,6 @@
 #include "./Excavator_Wheel.zs"
 #include "./Excavator_helpers.zs"
 
-// Constants
-const excavatorFullAmmo = 5;
-
 class PBX_Excavator : PB_WeaponBase
 {
 	Default
@@ -55,6 +52,7 @@ class PBX_Excavator : PB_WeaponBase
 	
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
     int excavatorMode;
+    const MAGAZINE_SIZE = 5;
     enum excMode
     {
         eDrillChargeMode = 0,
@@ -153,7 +151,7 @@ class PBX_Excavator : PB_WeaponBase
 		
 //////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
 		Reload:
-            TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, null, "ReadyDrillChargaMode", "ReadyDrillChargaMode", excavatorFullAmmo, 2);
+            TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, null, "ReadyDrillChargaMode", "ReadyDrillChargaMode", MAGAZINE_SIZE, 2);
 			6DKF A 1 A_PlaySound("Ironsights", 15);
             TNT1 A 0 PB_SetRoll(roll-0.6);
             6DKF BCDEF 1 ;
@@ -184,7 +182,7 @@ class PBX_Excavator : PB_WeaponBase
             TNT1 A 0 A_PlaySound("weapons/sgl/inspect1", 15);
             7DKF A 1 ;
             TNT1 A 0 {
-                PB_AmmoIntoMag(invoker.ammo2.getclassname(), invoker.ammo1.getclassname(), excavatorFullAmmo, 2);
+                PB_AmmoIntoMag(invoker.ammo2.getclassname(), invoker.ammo1.getclassname(), MAGAZINE_SIZE, 2);
                 PB_SetMagUnloaded(false);
                 PB_SetChamberEmpty(false);
                 PB_SetMagEmpty(false);

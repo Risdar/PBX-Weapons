@@ -3,17 +3,14 @@
 // #include "./PlasmaBlaster_Wheel.zs"
 // #include "./ProsurvPSG_helpers.zs"
 
-// Constants
-const psgFullAmmo = 9;
-
 class PumpShotgunAmmo : Ammo
 {
     Default
     {
         Inventory.Amount 0;
-        Inventory.MaxAmount psgFullAmmo;
+        Inventory.MaxAmount PBX_ProSurvPSG.MAGAZINE_SIZE;
         Ammo.BackpackAmount 0;
-        Ammo.BackpackMaxAmount psgFullAmmo;
+        Ammo.BackpackMaxAmount PBX_ProSurvPSG.MAGAZINE_SIZE;
         Inventory.Icon "AUSCA0";
         +INVENTORY.IGNORESKILL;
     }
@@ -50,6 +47,7 @@ class PBX_ProSurvPSG : PB_Weapon
     }
 
 	bool laserActive;
+	const MAGAZINE_SIZE = 9;
 
     States
     {
@@ -290,7 +288,7 @@ class PBX_ProSurvPSG : PB_Weapon
                 A_Giveinventory("PB_LockScreenTilt",1);
                 A_SetCrosshair(-1);
 			}
-            TNT1 A 0 PB_CheckReload(null,null,"Pump","Ready3","Ready3",psgFullAmmo);
+            TNT1 A 0 PB_CheckReload(null,null,"Pump","Ready3","Ready3",MAGAZINE_SIZE);
 			TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
             TNT1 A 0 A_JumpIf(PB_GetChamberEmpty(), "ChamberInsertShell"); // Go to insert chamber first
             // Raise Weapon
@@ -299,7 +297,7 @@ class PBX_ProSurvPSG : PB_Weapon
 			XG30 GHIJKL 1 PB_SetRoll(roll-1.0);
         ShellChecker:
             // Main reload loop
-			TNT1 A 0 A_JumpIf(invoker.ammo1.amount < 1 || invoker.ammo2.amount >= psgFullAmmo,"ReloadFinished");
+			TNT1 A 0 A_JumpIf(invoker.ammo1.amount < 1 || invoker.ammo2.amount >= MAGAZINE_SIZE,"ReloadFinished");
 			XG30 L 3 A_DoPBWeaponAction(WRF_NOBOB);
 			XG30 MN 1 A_DoPBWeaponAction(WRF_NOBOB);
 			XG30 O 1 { 

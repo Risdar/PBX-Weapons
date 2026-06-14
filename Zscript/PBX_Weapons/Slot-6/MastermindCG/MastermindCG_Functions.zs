@@ -12,9 +12,9 @@ extend class PBX_MastermindChaingun
 	{
 		if(other && other.player)
 		{
-			if(other.countinv("MastermindCGDurability") < MastermindCGFullDurability)
+			if(other.countinv("MastermindCGDurability") < PBX_MastermindChaingun.DURABILITY)
 			{
-				other.A_giveinventory("MastermindCGDurability", MastermindCGFullDurability);
+				other.A_giveinventory("MastermindCGDurability", PBX_MastermindChaingun.DURABILITY);
 			}
 		}
 		super.attachtoowner(other);
@@ -52,7 +52,7 @@ extend class PBX_MastermindChaingun
 					A_FireCustomMissile("EmptyGrenadeBrass", random(-2,2), 0, 0, -12, 0, random(-2,2));
 					// A_FireCustomMissile("PBX_20mmDoomguy", random(-2,2), 0, 0, -12, 0, random(-2,2));
 				}
-				PB_WeaponRecoil(0.75,frandom(-0.75,0.75));
+				PB_WeaponRecoil(-0.75,frandom(-0.75,0.75));
 				break;
 		}
 	}

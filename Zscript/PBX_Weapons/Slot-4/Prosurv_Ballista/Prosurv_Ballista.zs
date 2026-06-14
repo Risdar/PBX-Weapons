@@ -3,9 +3,6 @@
 #include "./CrossbowBallista_Wheel.zs"
 #include "./CrossbowBallista_helpers.zs"
 
-// Constants
-const crossbowBallistaFullAmmo = 1;
-
 class PBX_Prosurv_Ballista : PB_WeaponBase
 {
 	Default

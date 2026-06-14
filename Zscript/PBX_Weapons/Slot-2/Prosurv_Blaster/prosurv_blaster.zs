@@ -3,9 +3,6 @@
 #include "./prosurvblaster_helpers.zs"
 // #include "./PlasmaBlaster_Wheel.zs"
 
-// Constants
-const prosurvblasterMaxCharge = 100;
-
 // Actual Weapon
 class PBX_ProsurvBlaster : PB_WeaponBase
 {
@@ -51,6 +48,7 @@ class PBX_ProsurvBlaster : PB_WeaponBase
         TAKECHARGE      = 5, // Take this many charge each shot
         CHARGERELOAD    = 3  // How fast should the reload charge the battery
     }
+    const MAXCHARGE = 100;
     const MUZZLELAYER = -5;
 
     States
@@ -100,7 +98,7 @@ class PBX_ProsurvBlaster : PB_WeaponBase
 				PB_SetRoll(0);
 			    PB_HandleCrosshair(65);
 				A_SetInventory("PB_LockScreenTilt",0);
-                modifyBlasterCharge(SET,prosurvblasterMaxCharge);
+                modifyBlasterCharge(SET,MAXCHARGE);
                 PB_WeaponRaise("weapons/blasterpistol/ready");
 			    return PB_RespectIfNeeded();
 			}
@@ -195,7 +193,7 @@ class PBX_ProsurvBlaster : PB_WeaponBase
                 A_Giveinventory("PB_LockScreenTilt",1);
                 A_SetCrosshair(-1);
 			}
-            TNT1 A 0 PB_CheckReload(null, null, null, "Ready3", "Ready3", prosurvblasterMaxCharge);
+            TNT1 A 0 PB_CheckReload(null, null, null, "Ready3", "Ready3", MAXCHARGE);
         Recharge:
             TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
             BRGC CDEF 1 PB_SetRoll(roll+.2);

@@ -6,9 +6,9 @@ class Crossbow_Upgraded : inventory {default{inventory.maxamount 1;}}
 Class CrossbowBallistaAmmo : PB_Ammo{
 	Default
 	{
-		inventory.maxamount crossbowBallistaFullAmmo;
+		inventory.maxamount 1;
 		ammo.backpackamount 0;
-		ammo.backpackmaxamount crossbowBallistaFullAmmo;
+		ammo.backpackmaxamount 1;
 		+INVENTORY.IGNORESKILL
 	}
 }
@@ -314,7 +314,7 @@ class Razorblade : PB_ProjectileAlt
         Height 8;
         Scale 0.75;
         Speed 60;
-        PB_Projectile.BaseDamage 20;
+        PB_Projectile.BaseDamage 80;
 		PB_Projectile.RipperCount 5;
 		PB_Projectile.PenetrationCount 3;
         SeeSound "";

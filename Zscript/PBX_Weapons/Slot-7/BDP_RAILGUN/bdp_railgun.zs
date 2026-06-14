@@ -3,9 +3,6 @@
 #include "./bdprailgun_Wheel.zs"
 #include "./bdprailgun_helpers.zs"
 
-// Constants
-const BDPRailgunFullAmmo = 5;
-
 Class PBX_BDPRailgun : PB_WeaponBase
 {
     Default
@@ -34,6 +31,7 @@ Class PBX_BDPRailgun : PB_WeaponBase
     bool nvgActive;
     int scopeMode;
     double zoomstrength;
+    const MAGAZINE_SIZE = 5;
     const bdpraildamage = 500;
     const LOWZOOM = 3.0;
     const HIGHZOOM = 9.0;
@@ -201,7 +199,7 @@ Class PBX_BDPRailgun : PB_WeaponBase
 				else return resolvestate(null);
 			}
 			// TNT1 A 0 A_AutoReloadMag(1,"ReloadFromPump");
-			TNT1 A 0 {if(invoker.ammo2.amount < BDPRailgunFullAmmo && invoker.ammo1.amount > 9) A_PressingReload();}
+			TNT1 A 0 {if(invoker.ammo2.amount < MAGAZINE_SIZE && invoker.ammo1.amount > 9) A_PressingReload();}
 			Goto FinishPump2;
 
 		FinishPump:
@@ -278,13 +276,13 @@ Class PBX_BDPRailgun : PB_WeaponBase
                 A_Giveinventory("PB_LockScreenTilt",1);
                 A_SetCrosshair(-1);
 			}
-            TNT1 A 0 PB_CheckReload(null,null,"Pumping","Ready3","Ready3",BDPRailgunFullAmmo);
+            TNT1 A 0 PB_CheckReload(null,null,"Pumping","Ready3","Ready3",MAGAZINE_SIZE);
 			TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
             TNT1 A 0 A_overlay(HANDLE_LAYER,"pumpinghandlol");
 			RAIL FGHIJKLMNNOOO 1;
         ShellChecker:
             // Main reload loop
-			TNT1 A 0 A_JumpIf(invoker.ammo1.amount < 1 || invoker.ammo2.amount >= BDPRailgunFullAmmo,"ReloadFinished");
+			TNT1 A 0 A_JumpIf(invoker.ammo1.amount < 1 || invoker.ammo2.amount >= MAGAZINE_SIZE,"ReloadFinished");
 			RAIL O 7 {
                 A_overlay(HANDLE_LAYER,"ReloadingHand2");
                 return A_DoPBWeaponAction(WRF_NOBOB);
@@ -319,11 +317,11 @@ Class PBX_BDPRailgun : PB_WeaponBase
                 A_SetCrosshair(-1);
                 A_overlay(HANDLE_LAYER,"ReloadingHand1");
 			}
-            TNT1 A 0 PB_CheckReload(null,null,"Pumping","Ready3","Ready3",BDPRailgunFullAmmo);
+            TNT1 A 0 PB_CheckReload(null,null,"Pumping","Ready3","Ready3",MAGAZINE_SIZE);
 			TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
 			RAIL X 4;
 		ReloadFromPumpInsertShells:
-			TNT1 A 0 A_JumpIf(invoker.ammo1.amount < 1 || invoker.ammo2.amount >= BDPRailgunFullAmmo,"FinishReloadFromPump");
+			TNT1 A 0 A_JumpIf(invoker.ammo1.amount < 1 || invoker.ammo2.amount >= MAGAZINE_SIZE,"FinishReloadFromPump");
 			RAIL X 7 {
                 A_overlay(HANDLE_LAYER,"ReloadingHand2");
                 return A_DoPBWeaponAction(WRF_NOBOB);

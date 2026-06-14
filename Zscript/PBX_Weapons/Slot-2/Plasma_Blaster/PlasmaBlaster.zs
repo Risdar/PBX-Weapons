@@ -3,9 +3,6 @@
 #include "./PlasmaBlaster_Wheel.zs"
 #include "./PlasmaBlaster_helpers.zs"
 
-// Constants
-const plasmaBlasterFullAmmo = 16;
-
 // Actual Weapon
 class PBX_PlasmaBlaster : PB_WeaponBase
 {
@@ -34,6 +31,7 @@ class PBX_PlasmaBlaster : PB_WeaponBase
     bool blasterPrimary;
     bool blasterSecondary;
     int burstcount;
+    const MAXCHARGE = 16;
     enum blasterEnum {
         PRIM_SEMI       = 0,
         PRIM_AUTO       = 1,
@@ -150,7 +148,7 @@ class PBX_PlasmaBlaster : PB_WeaponBase
             Goto Ready3;
 
         Reload:
-            TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null,null,"Ready3","Ready3",plasmaBlasterFullAmmo);
+            TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null,null,"Ready3","Ready3",MAXCHARGE);
             TNT1 A 0 A_ZoomFactor(1.0);
             TNT1 A 0 A_PlaySound("weapons/smg_magfly1");
             AMGR ABCDEF 1;
@@ -171,7 +169,7 @@ class PBX_PlasmaBlaster : PB_WeaponBase
                 PB_AmmoIntoMag(
                     invoker.ammo2.getClassName(),
                     invoker.ammo1.getClassName(),
-                    plasmaBlasterFullAmmo);
+                    MAXCHARGE);
                 PB_SetMagEmpty(false);
                 PB_SetMagUnloaded(false);
                 PB_SetChamberEmpty(false);

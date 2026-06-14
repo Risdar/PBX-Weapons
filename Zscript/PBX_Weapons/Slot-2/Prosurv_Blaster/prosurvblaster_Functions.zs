@@ -15,7 +15,7 @@ extend class PBX_ProsurvBlaster
             let psp = owner.player.FindPSprite(PSP_WEAPON);
             if(!psp) return;
 
-            if(weap.ammo1.amount < prosurvblasterMaxCharge)
+            if(weap.ammo1.amount < MAXCHARGE)
                 giveBlasterCharge(psp,weap);
             if(weap.laserActive)
                 spawnLaser(psp);

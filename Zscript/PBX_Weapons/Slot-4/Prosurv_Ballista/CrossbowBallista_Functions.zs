@@ -232,17 +232,8 @@ extend class PBX_Prosurv_Ballista
 				PB_WeaponRecoil(-recoilPitch,0);
 				A_ZoomFactor(1.0, SPF_INTERPOLATE);
 				break;
-			//Tic 3
-			case 3:
-				PB_WeaponRecoil(+1.0,0);
-				break;
-			//Tic 4
-			case 4:
-				PB_WeaponRecoil(+1.0,0);
-				break;
-			//Tic 5
-			case 5:
-				PB_WeaponRecoil(+0.5,0);
+			case 3: case 4: case 5:
+				PB_WeaponRecoil(ticCount == 5 ? -0.5 : -1.0,0);
 				break;
 		}
 	}	

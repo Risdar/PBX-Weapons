@@ -5,9 +5,11 @@ Class HMGChamberAmmo : PB_Ammo
 {
 	Default
 	{
-		inventory.maxamount neohmgFullAmmo;
+		inventory.amount 0;
+		inventory.maxamount PBX_NeoHMG.MAGAZINE_SIZE;
 		ammo.backpackamount 0;
-		ammo.backpackmaxamount neohmgFullAmmo;
+		ammo.backpackmaxamount PBX_NeoHMG.MAGAZINE_SIZE;
+        +INVENTORY.IGNORESKILL;
 	}
 }
 
@@ -15,7 +17,7 @@ class HMGShield : PB_Ammo
 {
     Default 
 	{
-        Inventory.MaxAmount neohmgShieldAmmo;
+        Inventory.MaxAmount PBX_NeoHMG.SHIELD_MAXCHARGE;
     }
 }
 

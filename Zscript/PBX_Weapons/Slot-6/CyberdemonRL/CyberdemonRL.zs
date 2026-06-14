@@ -2,9 +2,6 @@
 #include "./CyberRL_Functions.zs"
 #include "./CyberRL_helpers.zs"
 
-// Constants
-const CyberdemonRLDurability = 25;
-
 class PBX_CyberdemonRL : PB_WeaponBase
 {
 	Default
@@ -23,7 +20,7 @@ class PBX_CyberdemonRL : PB_WeaponBase
 		Weapon.AmmoType1 "PB_RocketAmmo";
 		// Weapon.AmmoType2 "CyberRLDurability";
 	    Weapon.AmmoGive1 30;
-	    // Weapon.AmmoGive2 CyberdemonRLDurability; // Picking up a new launcher fully repairs it
+	    // Weapon.AmmoGive2 DURABILITY; // Picking up a new launcher fully repairs it
 		
 //////////////////////////// MESSAGES & SOUNDS ////////////////////////////////////////////////////////////////////////////////////
 		Obituary "%o was blown up by %k's Cyberdemon missile launcher. Ouch!";
@@ -46,6 +43,7 @@ class PBX_CyberdemonRL : PB_WeaponBase
 	bool PiercingRockets;
 	int shotCount;
 	const ammoTake = 3; // How many rockets does it take for one point of durability
+	const DURABILITY = 25; // How many rockets does it take for one point of durability
       
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
 	States

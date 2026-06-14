@@ -1,8 +1,8 @@
 Class ExcavatorRounds : PB_Ammo{
 	Default{
-		inventory.maxamount excavatorFullAmmo;
+		inventory.maxamount PBX_Excavator.MAGAZINE_SIZE;
 		ammo.backpackamount 0;
-		ammo.backpackmaxamount excavatorFullAmmo;
+		ammo.backpackmaxamount PBX_Excavator.MAGAZINE_SIZE;
 		+INVENTORY.IGNORESKILL
 		Inventory.Icon "5DUNA0";
 	}

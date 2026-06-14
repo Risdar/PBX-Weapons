@@ -15,24 +15,24 @@ class PBXWeapons_Handler : EventHandler
 		if(!pm) return;
         if (level.MapName == "TITLEMAP") return;
         // SLOT 2
-        pm.giveinventory("HellPistolerAmmo", plasmaBlasterFullAmmo);
+        pm.giveinventory("HellPistolerAmmo", PBX_PlasmaBlaster.MAXCHARGE);
         pm.giveinventory("LeverActionAmmo", leveractionFullAmmo);
         // SLOT 3
-        pm.giveinventory("PumpShotgunAmmo",psgFullAmmo);
+        pm.giveinventory("PumpShotgunAmmo",PBX_ProSurvPSG.MAGAZINE_SIZE);
         pm.giveinventory("CSSGShellsIn",2);
         // SLOT 4
-        pm.giveinventory("NormalRifleAmmo", NormalRifleFullAmmo);
-        pm.giveinventory("BR_Ammo", BR_AmmoFull);
+        pm.giveinventory("NormalRifleAmmo", PBX_NormalRifle.MAGAZINE_SIZE);
+        pm.giveinventory("BR_Ammo", PBX_BDPBattleRifle.MAGAZINE_SIZE);
         pm.giveinventory("MetalSniperAmmo", MetalSniperFullAmmo-1); // This is because of the weapon respect animation
-        pm.giveinventory("CrossbowBallistaAmmo", crossbowBallistaFullAmmo);
+        pm.giveinventory("CrossbowBallistaAmmo", 1);
         // SLOT 5
-        pm.giveinventory("HMGChamberAmmo", neohmgFullAmmo);
+        pm.giveinventory("HMGChamberAmmo", PBX_NeoHMG.MAGAZINE_SIZE);
         // SLOT 6
-        pm.giveinventory("ExcavatorRounds", excavatorFullAmmo);
-        pm.giveinventory("CyberRLDurability", CyberdemonRLDurability);
-        pm.giveinventory("MastermindCGDurability", MastermindCGFullDurability);
+        pm.giveinventory("ExcavatorRounds", PBX_Excavator.MAGAZINE_SIZE);
+        pm.giveinventory("CyberRLDurability", PBX_CyberdemonRL.DURABILITY);
+        pm.giveinventory("MastermindCGDurability", PBX_MastermindChaingun.DURABILITY);
         // SLOT 7
-        pm.giveinventory("BDPRailgunAmmo", BDPRailgunFullAmmo);
+        pm.giveinventory("BDPRailgunAmmo", PBX_BDPRailgun.MAGAZINE_SIZE);
         // SLOT 9
         // OTHERS
         PB_HelpNotificationsHandler.PB_SendTip("$PBXWeapons_Version", "PBXWeapons_GeneralFlags", ePBX_Weapons_Version);
@@ -353,31 +353,70 @@ class PBX_RadiusVisualizer : Inventory
 // }
 
 // action void MS_ReadyNormal()
-    // {
-    //     FLineTraceData Bule;
-    //     bool hit = LineTrace(Angle, 6000, Pitch, 0, player.ViewHeight, 0, 0, Bule);
-    //     if(hit)
-    //     {
-    //         if(Bule.HitActor && Bule.HitActor.bISMONSTER && Bule.HitActor.bFRIENDLY == false && Bule.HitActor is "PB_Monster")
-    //         {				
-    //             if(!invoker.LockedOn)
-    //             {
-    //                 invoker.LockedOn = true;
-    //                 A_StartSound("IronSights", CHAN_WEAPON, volume:0.5, pitch:1.4);
-    //             }
-    //             // let damn = player.FindPSprite(1);
-    //             // if(damn)
-    //             // {
-    //             //     damn.frame = 3;
-    //             //     damn.sprite = GetSpriteIndex("SPRF");
-    //             // }
-    //         }
-    //         else
-    //         if(invoker.LockedOn)
-    //         {
-    //             invoker.LockedOn = false;
-    //             A_StartSound("IronSights", CHAN_WEAPON, volume:0.5, pitch:1.3);
-    //         }
-    //     }	
-    //     // return A_DoPBWeaponAction();
-    // }
+// {
+//     FLineTraceData Bule;
+//     bool hit = LineTrace(Angle, 6000, Pitch, 0, player.ViewHeight, 0, 0, Bule);
+//     if(hit)
+//     {
+//         if(Bule.HitActor && Bule.HitActor.bISMONSTER && Bule.HitActor.bFRIENDLY == false && Bule.HitActor is "PB_Monster")
+//         {				
+//             if(!invoker.LockedOn)
+//             {
+//                 invoker.LockedOn = true;
+//                 A_StartSound("IronSights", CHAN_WEAPON, volume:0.5, pitch:1.4);
+//             }
+//             // let damn = player.FindPSprite(1);
+//             // if(damn)
+//             // {
+//             //     damn.frame = 3;
+//             //     damn.sprite = GetSpriteIndex("SPRF");
+//             // }
+//         }
+//         else
+//         if(invoker.LockedOn)
+//         {
+//             invoker.LockedOn = false;
+//             A_StartSound("IronSights", CHAN_WEAPON, volume:0.5, pitch:1.3);
+//         }
+//     }	
+//     // return A_DoPBWeaponAction();
+// }
+
+// // Replace the DMR if the replace cvar is enabled
+// override void AttachToOwner(Actor other)
+// {
+//     Super.AttachToOwner(other);
+//     if (level.MapName ~== "TITLEMAP") return;       // If its the titlemap, return
+//     if(!pbxweapons_normalriflereplace) return;      // If the CVAR is disabled, return
+//     if(owner.findinventory("DMRUpgraded")) return;  // If the player has the HDMR, return (though this is probably not needed since this function is only called once)
+
+//     // Force switch
+//     owner.TakeInventory("PB_DMR",1);
+//     if (Owner.player != null) Owner.player.PendingWeapon = self;
+// }
+// // Give the player ammo instead of picking up the weapon if the replace cvar is enabled
+// override bool HandlePickup(Inventory item)
+// {
+//     bool hasUpgrade = owner.findinventory("DMRUpgraded");
+//     bool isTitlemap = level.MapName ~== "TITLEMAP";
+
+//     // This is so you dont need to pick up the upgrade twice
+//     if (item is "PB_HDMRUpgrade")
+//     {
+//         console.printf("success");
+//         owner.GiveInventory("PB_DMR",1);
+//         owner.GiveInventory("DMRUpgraded",1);
+//         return super.HandlePickup(item);
+//     }
+
+// 	if (item.GetClassName() == "PB_DMR" 
+//         && !isTitlemap                              // If its the titlemap, return
+//         && pbxweapons_normalriflereplace            // If the CVAR is disabled, return
+//         && !hasUpgrade)                             // If the player has the HDMR, return
+// 	{
+// 		item.bPickupgood = true;
+// 		owner.GiveInventory("PB_HighCalMag", 15); // Give the replacement
+// 		return true; // Do not process Fist further
+// 	}
+// 	return super.HandlePickup(item);
+// }

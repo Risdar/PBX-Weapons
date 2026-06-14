@@ -65,11 +65,13 @@ PBX_BattleRifle_UpgradePickup       = "Battle Rifle Ricochet and Scope Upgrade (
 PBX_BattleRifle_UpgradeTag          = "Battle Rifle Upgrade";
 
 // Normal RIfle
-PBX_NormalRifle_Pickup              = "Normal Rifle (Slot 4)";
+PBX_NormalRifle_Pickup              = "Assault Rifle (Slot 4)";
 PBX_NormalRifle_Tag                 = "UAC M4 Assault Rifle";
 
-PBX_NormalRifle_Burst               = "\ciBurst Fire \c-Mode";
-PBX_NormalRifle_Auto                = "\caFull-Auto \c-Mode";
+PBX_NormalRifle_NoAkimbo            = "Need another Assault Rifle for akimbo";
+
+PBX_NormalRifle_Single              = "Single Assault Rifle";
+PBX_NormalRifle_Akimbo              = "Akimbo Assault Rifle";
 
 // Metal Sniper
 PBX_MetalSniper_Pickup              = "Metal Sniper (Slot 4)";
@@ -168,4 +170,13 @@ PBX_nvgOnWW                         = "Enable \cdInfrared";
 PBX_nvgOffWW                        = "Disable \cdInfrared";
 PBX_nvgOn                           = "\cdInfrared \c-Enabled";
 PBX_nvgOff                          = "\cdInfrared \c-Disabled";
+
+// These are already in PB
+/* PB_FIREMODE_SEMI = "Firemode: \cfSemi-Auto";
+PB_FIREMODE_BURST = "Firemode: \ciBurst";
+PB_FIREMODE_FULL = "Firemode: \crFull-Auto";
+
+PB_WHEEL_SEMI = "Semi-Auto Mode";
+PB_WHEEL_BURST = "Burst Mode";
+PB_WHEEL_FULL = "Full-Auto Mode"; */
 

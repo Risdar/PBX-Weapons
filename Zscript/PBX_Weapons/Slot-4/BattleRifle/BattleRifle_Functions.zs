@@ -61,8 +61,7 @@ extend class PBX_BDPBattleRifle
 //////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
 	action void cleanmodetokens()
 	{
-		A_SetInventory("BR_Select_Semi",0);
-		A_SetInventory("BR_Select_Burst",0);
+		A_SetInventory("BR_Select_FireMode",0);
 		A_SetInventory("BR_Select_Zoom",0);
 		A_SetInventory("BR_Select_Laser",0);
 	}
@@ -80,11 +79,6 @@ extend class PBX_BDPBattleRifle
 	action bool getSemiAuto()
 	{
 		return invoker.isSemiAuto;
-	}
-
-	action void setSemiAuto(bool set)
-	{
-		invoker.isSemiAuto = set;
 	}
 
     action void BR_ReadyScope()
@@ -239,27 +233,15 @@ extend class PBX_BDPBattleRifle
 
 	action state checkSpecial()
 	{
-		bool goSemi  	 = countinv("BR_Select_Semi")  > 0;
-		bool goBurst 	 = countinv("BR_Select_Burst") > 0;
-		bool toggleZoom  = countinv("BR_Select_Zoom")  > 0;
-		bool toggleLaser = countinv("BR_Select_Laser")  > 0;
+		bool toggleFireMode 	= countinv("BR_Select_FireMode")  	> 0;
+		bool toggleZoom  		= countinv("BR_Select_Zoom")  		> 0;
+		bool toggleLaser 		= countinv("BR_Select_Laser")  		> 0;
 
-		if(goSemi && getSemiAuto() || goBurst && !getSemiAuto())
+		if(toggleFireMode)
 		{
-			A_print("$PBX_AlreadySelected");
-			cleanmodetokens();
-			return resolvestate("ready3");
-		}
-
-		if(goSemi)
-		{
-			setSemiAuto(true);
-			A_Print("$PBX_BattleRifle_SemiAuto");
-		}
-		if(goBurst)
-		{
-			setSemiAuto(false);
-			A_Print("$PBX_BattleRifle_Burst");
+			if(!invoker.isSemiAuto) invoker.isSemiAuto = true;
+			else invoker.isSemiAuto = false;
+			A_Print(invoker.isSemiAuto ? "$PB_FIREMODE_SEMI" : "$PB_FIREMODE_BURST");
 		}
 
 		if(toggleZoom)
@@ -281,15 +263,18 @@ extend class PBX_BDPBattleRifle
             A_Print(invoker.laserActive ? "$PBX_LaserOn" : "$PBX_LaserOff");
         }
 
+		// Always remove the tokens regardless
 		cleanmodetokens();
+
 		// Play sound when opening the wheel in ADS
 		if(PB_GetZoom())
 		{
-			A_StartSound("MS/Button", 26);
+			A_StartSound("MS/Button", 26); 
 			return resolvestate("WeaponReadyADS");
 		}
 
 		// Fallthrough to Switch Animation
+		// The mode switch sound is played there
 		return resolvestate(null);
 	}
 }

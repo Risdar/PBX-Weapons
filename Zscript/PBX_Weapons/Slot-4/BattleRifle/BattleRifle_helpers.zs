@@ -1,15 +1,19 @@
-class BR_Select_Semi : inventory {default{inventory.maxamount 1;}}
-class BR_Select_Burst : inventory {default{inventory.maxamount 1;}}
+class BR_Select_FireMode : inventory {default{inventory.maxamount 1;}}
 class BR_Select_Zoom : inventory {default{inventory.maxamount 1;}}
 class BR_Select_Laser : inventory {default{inventory.maxamount 1;}}
 class BattleRifle_Upgraded : inventory {default{inventory.maxamount 1;}}
 
-class BR_Ammo : PB_Ammo
+class BR_Ammo : Ammo
 {
-	Default
-	{
-		inventory.maxamount BR_AmmoFull;
-	}
+    Default
+    {
+        Inventory.Amount 0;
+        Inventory.MaxAmount PBX_BDPBattleRifle.MAGAZINE_SIZE;
+        Ammo.BackpackAmount 0;
+        Ammo.BackpackMaxAmount PBX_BDPBattleRifle.MAGAZINE_SIZE;
+        Inventory.Icon "AUSCA0";
+        +INVENTORY.IGNORESKILL;
+    }
 }
 
 class BattleRifle_Upgrade : PB_UpgradeItem

@@ -3,8 +3,6 @@
 #include "./BattleRifle_Wheel.zs"
 #include "./BattleRifle_helpers.zs"
 
-const BR_AmmoFull = 15;
-
 class PBX_BDPBattleRifle : PB_WeaponBase
 {
 	Default
@@ -47,6 +45,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 	double zoomstrength;
 	int burstcount;
 	// Change these if you want to edit how strong the zoom modes are
+	const MAGAZINE_SIZE = 15;
 	const HIGHZOOM = 4.0;
 	const LOWZOOM  = 2.0;
 	
@@ -139,7 +138,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			}
 			// Semi-auto: always go to BurstDone after 1 shot
 			// Burst: loop until burstcount hits 3
-			TNT1 A 0 A_JumpIf(invoker.isSemiAuto, "BurstDone");
+			TNT1 A 0 A_JumpIf(getSemiAuto(), "BurstDone");
 			TNT1 A 0 A_JumpIf(invoker.burstcount < 3, "BurstFireRecoil");
 			goto BurstDone;
 
@@ -171,7 +170,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 				if (getBRMag() < 1) PB_SpawnCasing("RifleClipSpawn");
 			}
 			// Same logic as hipfire
-			TNT1 A 0 A_JumpIf(invoker.isSemiAuto, "BurstDoneADS");
+			TNT1 A 0 A_JumpIf(getSemiAuto(), "BurstDoneADS");
 			TNT1 A 0 A_JumpIf(invoker.burstcount < 3, "BurstFireRecoilADS");
 			goto BurstDoneADS;
 
@@ -234,7 +233,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 		Reload:
 			TNT1 A 0 A_ZoomFactor(1.0);
             TNT1 A 0 PB_SetZoom(false);
-            TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, null, "WeaponReady", "NoAmmo", BR_AmmoFull, 1);
+            TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, null, "WeaponReady", "NoAmmo", MAGAZINE_SIZE, 1);
 			TNT1 A 0 A_startsound("BR45OPEN",3,CHANF_OVERLAP);
             BR4R ABCDE 1;
             TNT1 A 0
@@ -254,7 +253,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			TNT1 A 0 
 			{
 				A_startsound("BR45LOAD",3);
-				PB_AmmoIntoMag(invoker.ammo2.getclassname(), invoker.ammo1.getclassname(), BR_AmmoFull,1);
+				PB_AmmoIntoMag(invoker.ammo2.getclassname(), invoker.ammo1.getclassname(), MAGAZINE_SIZE,1);
                 PB_SetMagUnloaded(false);
                 PB_SetMagEmpty(false);
                 PB_SetChamberEmpty(false);

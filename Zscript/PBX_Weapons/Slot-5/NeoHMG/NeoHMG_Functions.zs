@@ -5,7 +5,7 @@ extend class PBX_NeoHMG
 	{
 		ammoType = eHeatedRounds;
 		shieldReady = true;
-		giveinventory("HMGShield", neohmgShieldAmmo);
+		giveinventory("HMGShield", PBX_NeoHMG.SHIELD_MAXCHARGE);
 		super.postbeginplay();
 	}
 
@@ -13,7 +13,7 @@ extend class PBX_NeoHMG
     {
 		if (passive && damage > 0)
 		{
-			shieldDrain = clamp(int(damage * shieldProtectionMultiplier), 1, neohmgShieldAmmo);
+			shieldDrain = clamp(int(damage * shieldProtectionMultiplier), 1, PBX_NeoHMG.SHIELD_MAXCHARGE);
 			// console.printf("Damage dealt");
 			if (owner.player && owner.player.readyweapon is "PBX_NeoHMG" && shieldWasActive)
 			{

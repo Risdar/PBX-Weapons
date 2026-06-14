@@ -8,9 +8,9 @@ Class HellPistolerAmmo : PB_Ammo
 	Default
 	{
 		inventory.amount 0;
-		inventory.maxamount plasmaBlasterFullAmmo;
+		inventory.maxamount PBX_PlasmaBlaster.MAXCHARGE;
 		ammo.backpackamount 0;
-		ammo.backpackmaxamount plasmaBlasterFullAmmo;
+		ammo.backpackmaxamount PBX_PlasmaBlaster.MAXCHARGE;
 	    Inventory.Icon "ARMZA0";
         +INVENTORY.IGNORESKILL;
 	}
