@@ -1,7 +1,7 @@
 [enu default]
 //////////////////////////// GENERAL ///////////////////////////////////////////////////////////////////////////////
 PBXWeapons_Settings                 = "\cj⟁\c- PBX - Weapons Settings";
-PBXWeapons_Version                  = "PBX - Weapons Version 2.2 Loaded";
+PBXWeapons_Version                  = "PBX - Weapons Version 2.5 Loaded";
 TIP_pbxweapons_normalriflereplace   = "Start the game with the Platinum Rifle on top of the Standard PB DMR";
 TIP_pbxweapons_startwithblaster     = "Start the game with the Pistol Blaster, a very weak pistol that has infinite ammo";
 

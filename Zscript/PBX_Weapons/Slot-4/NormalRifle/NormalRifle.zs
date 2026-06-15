@@ -31,6 +31,8 @@ Class PBX_NormalRifle : PB_WeaponBase
 
     bool doBurst;
     bool laserActive;
+    bool waitReleaseRight;
+    bool waitReleaseLeft;
     int burstcount;
     int burstcountLeft;
     const MAGAZINE_SIZE = 31;
@@ -123,14 +125,14 @@ Class PBX_NormalRifle : PB_WeaponBase
         IdleLeft_Overlay:
             DURI O 1 {
                 PB_CoolDownBarrel(14, 0, 3.2);
-                return A_DoPBLeftAction();
+                return NormalRifle_DoLeftAction();
             }
             Loop;
 
 		IdleRight_Overlay:
             DURI S 1 {
                 PB_CoolDownBarrel(-14, 0, 3.2);
-                return A_DoPBRightAction();
+                return NormalRifle_DoRightAction();
             }
             Loop;
 
