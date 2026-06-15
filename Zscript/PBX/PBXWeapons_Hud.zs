@@ -976,45 +976,45 @@ class PBXHUDData : Object
 
 // ALWAYS START THE NAME WITH "PBXHUDService" , after that you can name it whatever
 // MAKE SURE IT INHERITS "service"
-class PBXHUDService_Katana : service
-{
-    // Override this function, you can just copy and paste it
-    override Object GetObjectUI(String request,String stringArg,int intArg,double doubleArg,Object objectArg)
-    {
-        // You dont need to change these since they're only for initialization
-        if(request != "WeaponHUD") return null;
-        let weapon = PB_WeaponBase(objectArg); // Get a pointer to the weapon here so you can do stuff with the weapon
-        if(!weapon) return null;
+// class PBXHUDService_Katana : service
+// {
+//     // Override this function, you can just copy and paste it
+//     override Object GetObjectUI(String request,String stringArg,int intArg,double doubleArg,Object objectArg)
+//     {
+//         // You dont need to change these since they're only for initialization
+//         if(request != "WeaponHUD") return null;
+//         let weapon = PB_WeaponBase(objectArg); // Get a pointer to the weapon here so you can do stuff with the weapon
+//         if(!weapon) return null;
 
-        // Change this to your weapon name
-        if(weapon.GetClassName() != 'PB_ArgentSith')return null;
+//         // Change this to your weapon name
+//         if(weapon.GetClassName() != 'PB_ArgentSith')return null;
 
-        // This is to make sure the data is initialized, you can also ignore this
-        let data = new("PBXHUDData");
-        data.Handled = true;
+//         // This is to make sure the data is initialized, you can also ignore this
+//         let data = new("PBXHUDData");
+//         data.Handled = true;
 
-        // If you want to check the players inventory for weapon mode
-        // use PBX_WeaponHudHandler.PBX_PlayerHasInventory("inventorynamehere");
-        // like this example
-		bool haszoom = PBX_WeaponHudHandler.PBX_PlayerHasInventory("zoomed");
+//         // If you want to check the players inventory for weapon mode
+//         // use PBX_WeaponHudHandler.PBX_PlayerHasInventory("inventorynamehere");
+//         // like this example
+// 		bool haszoom = PBX_WeaponHudHandler.PBX_PlayerHasInventory("zoomed");
 
-        // This is where all the data is
-        // You can change anything here
+//         // This is where all the data is
+//         // You can change anything here
 
-        // This is the path for the weapon icons
-        data.Image1 = "";       // Weapon Icon
-        data.Image2 = "";       // Weapon Mode Icon
-        data.Image3 = "";       // Weapon Mode 2 Icon (For example the CryoRifle has 2 modes at the same time)
+//         // This is the path for the weapon icons
+//         data.Image1 = "";       // Weapon Icon
+//         data.Image2 = "";       // Weapon Mode Icon
+//         data.Image3 = "";       // Weapon Mode 2 Icon (For example the CryoRifle has 2 modes at the same time)
 
-        // This is for its position (x,y)
-        data.Offset1 = (0,0);   // Weapon Icon Position
-        data.Offset2 = (0,0);   // Weapon Mode Icon Position
+//         // This is for its position (x,y)
+//         data.Offset1 = (0,0);   // Weapon Icon Position
+//         data.Offset2 = (0,0);   // Weapon Mode Icon Position
 
-        // This is for the scale
-        data.Scale1 = 1.0;      // Weapon Icon Scale
-        data.Scale2 = 1.0;      // Weapon Mode Icon Scale
+//         // This is for the scale
+//         data.Scale1 = 1.0;      // Weapon Icon Scale
+//         data.Scale2 = 1.0;      // Weapon Mode Icon Scale
 
-        // You can ignore this
-        return data;
-    }
-}
+//         // You can ignore this
+//         return data;
+//     }
+// }
