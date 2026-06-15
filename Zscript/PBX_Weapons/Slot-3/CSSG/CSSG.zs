@@ -30,6 +30,7 @@ Class PBX_CSSG : PB_WeaponBase
 	
 	int shellsmode;
 	int oldshells;
+	const BARREL_CAPACITY = 2;
 	
 	enum CM_ShellTypes {
 		Shell_Buck = 1,
@@ -88,7 +89,6 @@ Class PBX_CSSG : PB_WeaponBase
 				return A_DoPBWeaponAction();
 			}
 			TNT1 A 0 A_startsound("weapons/cssg/in",26);
-			// TNT1 A 0 PB_AmmoIntoMag("CSSGShellsIn","PB_Shell",2,1);
 			C0RB IJ 1 A_DoPBWeaponAction();
 			
 			TNT1 A 4 A_DoPBWeaponAction();
@@ -200,8 +200,10 @@ Class PBX_CSSG : PB_WeaponBase
 		
 		// RELOAD STATES
 		Reload:
-			TNT1 A 0 PB_CheckReload(null, null, null,"Ready3","Ready3",2);
-			TNT1 A 0 A_JumpIfInventory("CSSGShellsIn", 1, 1);
+			TNT1 A 0 PB_CheckReload(null, null, null,"Ready3","Ready3",BARREL_CAPACITY);
+			// If there is still one shell in the barrel, go to reload half
+			// otherwise go to reload full
+			TNT1 A 0 A_JumpIf(invoker.ammo2.amount >= 1, "ReloadHalf");
 			Goto ReloadFull;
 		ReloadHalf:
 			C0HO ABC 1;
@@ -217,7 +219,7 @@ Class PBX_CSSG : PB_WeaponBase
 			TNT1 A 0 A_startsound("weapons/cssg/in",24);
 			C0HB G 1;
 			TNT1 A 0 {
-				PB_AmmoIntoMag("CSSGShellsIn","PB_Shell",2,1);
+				PB_AmmoIntoMag(invoker.ammo2.GetClassName(),invoker.ammo1.GetClassName(),BARREL_CAPACITY);
 				PB_SetMagEmpty(false);
 				PB_SetChamberEmpty(false);
 			}
@@ -249,7 +251,7 @@ Class PBX_CSSG : PB_WeaponBase
 			C0RB BCDFGHI 1 ChangeCSSGShellsLook('C0RB','C0RS','C0RN','C0RK','C0RD','C0RX','C0RW','C0RT','C0RM','C0RX');
 			TNT1 A 0 {
 				A_startsound("weapons/cssg/in",26);
-				PB_AmmoIntoMag("CSSGShellsIn","PB_Shell",2,1);
+				PB_AmmoIntoMag(invoker.ammo2.GetClassName(),invoker.ammo1.GetClassName(),BARREL_CAPACITY);
 				PB_SetMagEmpty(false);
 				PB_SetChamberEmpty(false);
 			}
@@ -314,7 +316,7 @@ Class PBX_CSSG : PB_WeaponBase
 			TNT1 A 0 A_startsound("weapons/cssg/in",24);
 			TNT1 A 0 {
 				// if(countinv(invoker.ammotype2)<2 && countinv(invoker.ammotype1)>0)
-				PB_AmmoIntoMag("CSSGShellsIn","PB_Shell",2,1);
+				PB_AmmoIntoMag(invoker.ammo2.GetClassName(),invoker.ammo1.GetClassName(),BARREL_CAPACITY);
 				PB_SetMagEmpty(false);
 				PB_SetChamberEmpty(false);
 			}
@@ -402,9 +404,12 @@ Class CSSGShellsIn : Ammo
 {
 	default
 	{
-		inventory.maxamount 2;
+        Inventory.Amount 0;
+		inventory.maxamount PBX_CSSG.BARREL_CAPACITY;
 		ammo.backpackamount 0;
-		ammo.backpackmaxamount 2;
+		ammo.backpackmaxamount PBX_CSSG.BARREL_CAPACITY;
+		Inventory.Icon "AUSCA0";
+        +INVENTORY.IGNORESKILL;
 	}
 }
 

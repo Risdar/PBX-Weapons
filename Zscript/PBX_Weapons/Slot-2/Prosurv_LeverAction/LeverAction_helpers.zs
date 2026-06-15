@@ -1,13 +1,25 @@
 class LA_Select_Marlin : inventory {default{inventory.maxamount 1;}}
 class LA_Select_Magnum : inventory {default{inventory.maxamount 1;}}
 class LA_Select_Laser : inventory {default{inventory.maxamount 1;}}
-class LeverActionAmmo : PB_Ammo {default{inventory.maxamount leveractionFullAmmo;}}
+
+Class LeverActionAmmo : PB_Ammo
+{
+	Default
+	{
+		inventory.amount 0;
+		inventory.maxamount PBX_Prosurv_LeverAction.MAGAZINE_SIZE;
+		ammo.backpackamount 0;
+		ammo.backpackmaxamount PBX_Prosurv_LeverAction.MAGAZINE_SIZE;
+	    Inventory.Icon "ARMZA0";
+        +INVENTORY.IGNORESKILL;
+	}
+}
 
 class PBX_MarlinRound : PB_LowCalMag // What the PB_Unload uses
 {
     Default
     {
-        Inventory.Amount 2;
+        Inventory.Amount PBX_Prosurv_LeverAction.AMMO_TAKE_MARLIN;
         Inventory.PickupSound "weapons/casing";
     }
 
@@ -27,7 +39,7 @@ class PBX_MagnumRound : PB_LowCalMag
 {
     Default
     {
-        Inventory.Amount 1;
+        Inventory.Amount PBX_Prosurv_LeverAction.AMMO_TAKE_MAGNUM;
         Inventory.PickupSound "weapons/casing";
     }
 

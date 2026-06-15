@@ -1,3 +1,5 @@
+class BR_Select_Scope : inventory {default{inventory.maxamount 1;}}
+class BR_Select_NVG : inventory {default{inventory.maxamount 1;}}
 class BR_Select_FireMode : inventory {default{inventory.maxamount 1;}}
 class BR_Select_Zoom : inventory {default{inventory.maxamount 1;}}
 class BR_Select_Laser : inventory {default{inventory.maxamount 1;}}

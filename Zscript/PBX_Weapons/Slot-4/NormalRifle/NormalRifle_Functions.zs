@@ -91,116 +91,7 @@ extend class PBX_NormalRifle
     {
         invoker.doBurst = set;
     }
-
-    // I cant believe I actually need to make custom left and right action functions
-    // just so the dual full auto and burst fire works
-
-    action state NormalRifle_DoLeftAction(int minammo = 1)
-	{
-		int firemodecvar = Cvar.GetCvar("SingleDualFire",player).GetInt();
-
-        if(invoker.waitReleaseLeft)
-        {
-            if(firemodecvar == 0 || checkDualWieldButton(true,firemodecvar))
-                invoker.waitReleaseLeft = false;
-            else
-                return resolvestate(null);
-        }   
-
-		if(CountInv(invoker.ammotypeleft) >= minammo && !PB_GetChamberEmpty(true))
-		{
-			switch(firemodecvar)
-			{
-				case 0:
-					if(PressingFire() && !A_IsFiringRightWeapon() && CountInv("DualFiring") == 0)
-						return resolvestate("FireLeft_Overlay");
-					break;
-				case 1:
-					if(PressingFire() && !A_IsFiringLeftWeapon())
-						return resolvestate("FireLeft_Overlay");
-					break;
-				case 2:
-					if(PressingAltFire() && !A_IsFiringLeftWeapon())
-						return resolvestate("FireLeft_Overlay");
-					break;
-			}
-		}
-		else
-		{
-			switch(firemodecvar)
-			{
-				case 0:
-					if(JustPressed(BT_ATTACK) && !A_IsFiringRightWeapon() && CountInv("DualFiring") == 0)
-						A_StartSound("weapons/empty", 10,CHANF_OVERLAP);
-					break;
-				case 1:
-					if(JustPressed(BT_ATTACK) && !A_IsFiringLeftWeapon())
-						A_StartSound("weapons/empty", 10,CHANF_OVERLAP);
-					break;
-				case 2:
-					if(JustPressed(BT_ALTATTACK) && !A_IsFiringLeftWeapon())
-						A_StartSound("weapons/empty", 10,CHANF_OVERLAP);
-					break;
-			}
-			if(!PB_GetChamberEmpty() && CountInv(invoker.ammotype2) >= minammo)
-				A_SetInventory("DualFiring",1);
-		}
-		return resolvestate(null);
-	}
-		
-	action state NormalRifle_DoRightAction(int minammo = 1)
-	{
-		int firemodecvar = Cvar.GetCvar("SingleDualFire",player).GetInt();
-
-        if(invoker.waitReleaseRight)
-        {
-            if(firemodecvar == 0 || checkDualWieldButton(false,firemodecvar))
-                invoker.waitReleaseRight = false;
-            else
-                return resolvestate(null);
-        }
-
-		if(CountInv(invoker.ammotype2) >= minammo && !PB_GetChamberEmpty())
-		{
-			switch(firemodecvar)
-			{
-				case 0:
-					if(PressingFire() && !A_IsFiringLeftWeapon() && CountInv("DualFiring") == 1)
-						return resolvestate("FireRight_Overlay");
-					break;
-				case 1:
-					if(PressingAltFire() && !A_IsFiringRightWeapon())
-						return resolvestate("FireRight_Overlay");
-					break;
-				case 2:
-					if(PressingFire() && !A_IsFiringRightWeapon())
-						return resolvestate("FireRight_Overlay");
-					break;
-			}
-		}
-		else
-		{
-			switch(firemodecvar)
-			{
-				case 0:
-					if(JustPressed(BT_ATTACK) && !A_IsFiringLeftWeapon() && CountInv("DualFiring") == 1)
-						A_StartSound("weapons/empty", 10,CHANF_OVERLAP);
-					break;
-				case 1:
-					if(JustPressed(BT_ALTATTACK) && !A_IsFiringRightWeapon())
-						A_StartSound("weapons/empty", 10,CHANF_OVERLAP);
-					break;
-				case 2:
-					if(JustPressed(BT_ATTACK) && !A_IsFiringRightWeapon())
-						A_StartSound("weapons/empty", 10,CHANF_OVERLAP);
-					break;
-			}
-			if(!PB_GetChamberEmpty(true) && CountInv(invoker.ammotypeleft) >= minammo)
-				A_SetInventory("DualFiring",0);
-		}
-		return resolvestate(null);
-	}
-   
+ 
     action void NormalRifle_FireOverlay(int tic, bool isLeft = false)
     {
         bool burst          = getBurst();
@@ -266,20 +157,27 @@ extend class PBX_NormalRifle
                 PB_WeaponRecoil(recoilX, recoilY);
                 break;
 
-            case 4: // DualFireReload check, reset burst
+            case 4:
+                // Reset burst
                 setBurstCount(0, isLeft ? true : false);
 
+                // Set the fire block to true
+                // this is so the player cant fire
+                // if they havent let go of the firing button
                 if(burst)
                 {
                     if(isLeft) invoker.waitReleaseLeft = true;
-                    else        invoker.waitReleaseRight = true;
+                    else       invoker.waitReleaseRight = true;
                 }
 
+                // Ammo Check
                 if(isLeft && invoker.ammo2.amount <= 0)
                     A_GiveInventory("DualFireReload", 1);
                 else if(!isLeft && invoker.ammoleft.amount <= 0)
                     A_GiveInventory("DualFireReload", 1);
 
+                // Reset burst firing for 
+                // the single button dual wield burst fire
                 if(isLeft)
                     A_SetFiringLeftWeapon(false);
                 else
@@ -288,37 +186,38 @@ extend class PBX_NormalRifle
         }
     }
 
-    action bool checkDualWieldButton(bool isLeft, int firemodecvar)
+    // A custom ready dual wield function that blocks the player from firing
+    // if its in burst fire and they havent let go of the firing button
+    // this is because PB has 3 modes that dictates which are the fire buttons
+    action state ReadyOverlay(bool isLeft)
     {
+        // Set up variables
+        int firemodecvar = Cvar.GetCvar("SingleDualFire",player).GetInt();
+        bool waiting = isLeft ? invoker.waitReleaseLeft : invoker.waitReleaseRight;
+        bool checkDualWieldButton;
+
+        // Check if the fire button is pressed
         switch(firemodecvar)
         {
-            case 0:
-                return !PressingFire();
-            case 1:
-                return isLeft ? !PressingFire() : !PressingAltFire();
-            case 2:
-                return isLeft ? !PressingAltFire() : !PressingFire();
-            default:
-                return true;
+            case 0: checkDualWieldButton = !PressingFire(); break;
+            case 1: checkDualWieldButton = isLeft ? !PressingFire() : !PressingAltFire(); break;
+            case 2: checkDualWieldButton = isLeft ? !PressingAltFire() : !PressingFire(); break;
         }
-    }
 
-    // action int checkDualWieldButton(bool isLeft)
-    // {
-    //     // Get the CVAR and weapon side
-    //     int firemode = Cvar.GetCvar("SingleDualFire", player).GetInt();
-    //     int fireButton = BT_ATTACK;
-    //     if (firemode == 1)
-    //     {
-    //         int fireButton = isLeft ? BT_ATTACK : BT_ALTATTACK;
-    //     }
-    //     // Mode 2: Inverted (Primary fire: Fire right weapon, Alt-fire: Fire left weapon)
-    //     else if (firemode == 2)
-    //     {
-    //         int fireButton = isLeft ? BT_ALTATTACK : BT_ATTACK;
-    //     }
-    //     return fireButton;
-    // }
+        // Basically dont let the player fire
+        // unless they let go of the fire button
+        if(waiting)
+        {
+            if(firemodecvar == 0 || checkDualWieldButton)
+            {
+                if(isLeft) invoker.waitReleaseLeft = false;
+                else invoker.waitReleaseRight = false;
+            }
+            else return resolvestate(null);
+        }
+        if(isLeft) return A_DoPBLeftAction();
+        else return A_DoPBRightAction();
+    }
 
     action void fireweapon(int tic)
     {

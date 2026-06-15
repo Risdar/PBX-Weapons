@@ -5,7 +5,7 @@ extend class PBX_Prosurv_LeverAction
 	{
 		laserActive = false;
 		LAMode = LA_357Magnum;
-		currentMaxAmmo = leveractionFullAmmo;
+		currentMaxAmmo = MAGAZINE_SIZE;
 		super.postbeginplay();
 	}
 
@@ -140,10 +140,10 @@ extend class PBX_Prosurv_LeverAction
 		{
 			case LA_444Marlin:
 				A_SetInventory(invoker.ammotype2,invoker.ammo2.amount / 2);
-				SetAmmoCapacity(invoker.ammotype2,leveractionFullAmmoMarlin);
+				SetAmmoCapacity(invoker.ammotype2,MAGAZINE_SIZE/2);
 				break;
 			case LA_357Magnum:
-				SetAmmoCapacity(invoker.ammotype2,leveractionFullAmmo);
+				SetAmmoCapacity(invoker.ammotype2,MAGAZINE_SIZE);
 				A_SetInventory(invoker.ammotype2,invoker.ammo2.amount * 2);
 				break;
 		}
@@ -192,14 +192,14 @@ extend class PBX_Prosurv_LeverAction
 				if (CountInv("LA_Select_Marlin") == 1) {
 					LA_SetAmmo(LA_444Marlin);
 					setLAMode(LA_444Marlin);
-					invoker.ReserveToMagAmmoFactor = 2;
-					invoker.currentMaxAmmo = leveractionFullAmmoMarlin;
+					invoker.ReserveToMagAmmoFactor = AMMO_TAKE_MARLIN;
+					invoker.currentMaxAmmo = MAGAZINE_SIZE/2;
 				}
 				if (CountInv("LA_Select_Magnum") == 1) {
 					LA_SetAmmo(LA_357Magnum);
 					setLAMode(LA_357Magnum);
-					invoker.ReserveToMagAmmoFactor = 1;
-					invoker.currentMaxAmmo = leveractionFullAmmo;
+					invoker.ReserveToMagAmmoFactor = AMMO_TAKE_MAGNUM;
+					invoker.currentMaxAmmo = MAGAZINE_SIZE;
 				}
 			}
 			clearLAModeTokens();

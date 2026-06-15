@@ -3,14 +3,16 @@ class CB_Select_NormalMode : inventory {default{inventory.maxamount 1;}}
 class CB_Select_NO : inventory {default{inventory.maxamount 1;}}
 class Crossbow_Upgraded : inventory {default{inventory.maxamount 1;}}
 
-Class CrossbowBallistaAmmo : PB_Ammo{
-	Default
-	{
-		inventory.maxamount 1;
-		ammo.backpackamount 0;
-		ammo.backpackmaxamount 1;
-		+INVENTORY.IGNORESKILL
-	}
+class CrossbowBallistaAmmo : Ammo
+{
+    Default
+    {
+        Inventory.Amount 0;
+        Inventory.MaxAmount PBX_Prosurv_Ballista.ARROW_AMOUNT;
+        Ammo.BackpackAmount 0;
+        Ammo.BackpackMaxAmount PBX_Prosurv_Ballista.ARROW_AMOUNT;
+        Inventory.Icon "RIFLA0";
+    }
 }
 
 class BoltPickup : PB_HighCalMag

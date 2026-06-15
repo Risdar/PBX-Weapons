@@ -4,9 +4,11 @@ class MetalSniperAmmo : PB_Ammo
 	default
 	{
 		Inventory.Amount 0;
-		inventory.maxamount MetalSniperFullAmmo;
+		inventory.maxamount PBX_MetalSniper.MAGAZINE_SIZE;
 		Ammo.BackpackAmount 0;
-		Ammo.BackpackMaxAmount MetalSniperFullAmmo;
+		Ammo.BackpackMaxAmount PBX_MetalSniper.MAGAZINE_SIZE;
+        Inventory.Icon "AUSCA0";
+        +INVENTORY.IGNORESKILL;
 	}
 }
 
@@ -14,7 +16,7 @@ class PBX_ResoRound : PB_HighCalMag
 {
     Default
     {
-        Inventory.Amount 6;
+        Inventory.Amount PBX_MetalSniper.AMMO_TAKE_RESONANCE;
         Inventory.PickupSound "weapons/casing";
     }
 

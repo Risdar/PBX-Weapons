@@ -3,10 +3,6 @@
 #include "./LeverAction_Wheel.zs"
 #include "./LeverAction_helpers.zs"
 
-// Constants
-const leveractionFullAmmo 		= 12;
-const leveractionFullAmmoMarlin = 6;
-
 class PBX_Prosurv_LeverAction : PB_WeaponBase
 {
 	Default
@@ -19,7 +15,7 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 		Weapon.SlotPriority 9999;
 		Weapon.SelectionOrder 1300;
         PB_WeaponBase.UsesWheel true;
-		PB_WeaponBase.ReserveToMagAmmoFactor 1;
+		PB_WeaponBase.ReserveToMagAmmoFactor AMMO_TAKE_MAGNUM;
 		PB_WeaponBase.WheelInfo "LeverActionWheel";
         Inventory.AltHudIcon "LVR4E0";
 		
@@ -54,6 +50,9 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 	int currentMaxAmmo;
 	int LAMode;
 	bool laserActive;
+	const MAGAZINE_SIZE = 12; // mag size for marlin is 6
+	const AMMO_TAKE_MAGNUM = 2;
+	const AMMO_TAKE_MARLIN = 3;
 	enum eLAMode
 	{
 		LA_444Marlin,

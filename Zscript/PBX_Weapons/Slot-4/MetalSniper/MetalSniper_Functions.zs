@@ -4,7 +4,7 @@ extend class PBX_MetalSniper
     override void PostBeginPlay()
     {
         grenadeloaded  = true;
-        currentMaxAmmo = MetalSniperFullAmmo;
+        currentMaxAmmo = MAGAZINE_SIZE;
         zoomstrength = LOWZOOM;
 		laserActive  = false;
         LockedOn = false;
@@ -34,7 +34,7 @@ extend class PBX_MetalSniper
 
             // Dont spawn the laser sight if the weapon is in one of these states
             static const StateLabel blockedStates[] = {
-                "Reload", "Reload_Grenade", "ReloadFromADS", "StandardReload", "WeaponRespect",
+                "Reload", "Reload_Grenade", "StandardReload", "WeaponRespect",
                 "TakeMagStandard", "TakeMagResonance", "InsertMag", "ReloadFromSpecial", "Deselect",
                 "FinishReload", "RaiseFromEmpty", "Start_Rechamber", "Rechamber", "ChangeAnim",
                 "UnloadFromSpecial","Unload","UnloadRaise","UnloadMagStandard", "UnloadMagEmpty",
@@ -163,27 +163,25 @@ extend class PBX_MetalSniper
     {
         int amount = invoker.currentMaxAmmo;
         if (PB_GetChamberEmpty()) amount--;
-        invoker.usedAmmo = isResonance() ? 6 : 2;
-		
-        PB_AmmoIntoMag(invoker.ammo2.GetClassName(), invoker.ammo1.GetClassName(), amount, invoker.usedAmmo);
+        PB_AmmoIntoMag(invoker.ammo2.GetClassName(), invoker.ammo1.GetClassName(), amount, invoker.ReserveToMagAmmoFactor);
     }
 
     action void MS_UnloadMag(bool UnloadChamber = false)
     {
         int goal = UnloadChamber ? 0 : 1;
 		string rounds = isResonance() ? "PBX_ResoRound" : "PB_HigherCalRound";
-        invoker.usedAmmo = isResonance() ? 6 : 2;
-        PB_UnloadMag(invoker.ammotype2, invoker.ammotype1, invoker.usedAmmo, 1, 0, goal, rounds);
+        PB_UnloadMag(invoker.ammotype2, invoker.ammotype1, invoker.ReserveToMagAmmoFactor, 1, 0, goal, rounds);
     }
 
     action void MS_AmmoCapacity()
     {
         bool res      = invoker.resonanceAmmoLoaded;
-        int  capacity = res ? MetalSniperFullAmmoResonance : MetalSniperFullAmmo;
+        // these are 3 because the ammo couunter already counts 2 reserve as 1 in the ammo bar
+        int  capacity = res ? MAGAZINE_SIZE / 3 : MAGAZINE_SIZE;
         int  amount   = res ? invoker.ammo2.amount / 3 : invoker.ammo2.amount * 3;
         A_SetInventory(invoker.ammotype2, amount);
         SetAmmoCapacity(invoker.ammotype2, capacity);
-        invoker.ReserveToMagAmmoFactor = res ? 6 : 2;
+        invoker.ReserveToMagAmmoFactor = res ? AMMO_TAKE_RESONANCE : AMMO_TAKE_NORMAL;
         invoker.currentMaxAmmo = capacity;
     }
 

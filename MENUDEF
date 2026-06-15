@@ -11,7 +11,7 @@ OptionMenu "PBXWeapons_Menu"
     StaticText " "
     Option "Start with the BDP Rifle", "pbxweapons_normalriflereplace", "OnOff"
     Option "Start with the Pistol Blaster", "pbxweapons_startwithblaster", "OnOff"
-    Command "Enable All PBX Spawners", "set PBXWeapons_chainsaw_filter 0; set PBXWeapons_pistol_filter 0; set PBXWeapons_shotgun_filter 0; set PBXWeapons_ssg_filter 0; set PBXWeapons_chaingun_filter 0; set PBXWeapons_rocketlauncher_filter 0; set PBXWeapons_plasmarifle_filter 0; set PBXWeapons_bfg_filter 0"
+    Command "Enable All PBX Spawners", "set PBXWeapons_chainsaw_filter 0; set PBXWeapons_pistol_filter 0; set PBXWeapons_shotgun_filter 0; set PBXWeapons_ssg_filter 0; set PBXWeapons_chaingun_filter 0; set PBXWeapons_rocketlauncher_filter 0; set PBXWeapons_plasmarifle_filter 0; set PBXWeapons_bfg_filter 0;set pbxweapons_backpack_filter 0"
     Command "Reset PB Tool Tips", "set pb_helpflags 0"
     Command "Reset PBX Tool Tips", "set PBXWeapons_WeaponHelpFlags 0; set PBXWeapons_UpgradeHelpFlags 0"
 	/* Option "Enable Experimental Features",	"pbxweapons_experimental",	"YesNo" */
@@ -109,7 +109,7 @@ AddOptionMenu "AddonWeaponSpawns" after "LAUT3"
 AddOptionMenu "AddonWeaponSpawns" after "LAUT3"
 {
         // SLOT 7
-    FlagOption    "Platinum Railgun",                        "PBXWeapons_plasmarifle_filter",    "OffOn", 0
+    FlagOption    "Platinum Railgun",                       "PBXWeapons_plasmarifle_filter",    "OffOn", 0
 }
 
 // BFG /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -121,6 +121,11 @@ AddOptionMenu "AddonWeaponSpawns" after "BFGT4"
 }
 
 // Backpacks /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+AddOptionMenu "AddonAmmoSpawns" after "PACKT1"
+{
+    FlagOption    "UAC Commander's Backpack",       "PBXWeapons_backpack_filter",    "OffOn", 4
+}
+
 AddOptionMenu "AddonAmmoSpawns" after "PACKT2"
 {
     FlagOption    "Battle Rifle Upgrade",           "PBXWeapons_backpack_filter",    "OffOn", 2

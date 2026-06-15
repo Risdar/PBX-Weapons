@@ -3,8 +3,8 @@ enum PBX_eHudSettingFlags{
 }
 
 // The variable scope weapon wheel icon uses this value for its scale
-const WHEEL_ZOOM_SCALE  = 2.0;
-const WHEEL_SCOPE_SCALE = 1.0;
+const WHEEL_ZOOM_SCALE  = 0.16;
+const WHEEL_SCOPE_SCALE = 0.16;
 const WHEEL_NVG_SCALE   = 0.5;
 
 class PBX_Hud : PB_Hud_ZS

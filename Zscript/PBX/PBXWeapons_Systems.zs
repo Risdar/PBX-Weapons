@@ -11,37 +11,60 @@ class PBXWeapons_Handler : EventHandler
 {
     Override void PlayerEntered(PlayerEvent e)
     {
+		// Get player pointer
         let pm = players[e.PlayerNumber].mo;
 		if(!pm) return;
+
+		// Dont continue if its the titlemap
         if (level.MapName == "TITLEMAP") return;
+
         // SLOT 2
-        pm.giveinventory("HellPistolerAmmo", PBX_PlasmaBlaster.MAXCHARGE);
-        pm.giveinventory("LeverActionAmmo", leveractionFullAmmo);
-        // SLOT 3
-        pm.giveinventory("PumpShotgunAmmo",PBX_ProSurvPSG.MAGAZINE_SIZE);
-        pm.giveinventory("CSSGShellsIn",2);
-        // SLOT 4
-        pm.giveinventory("NormalRifleAmmo", PBX_NormalRifle.MAGAZINE_SIZE);
-        pm.giveinventory("BR_Ammo", PBX_BDPBattleRifle.MAGAZINE_SIZE);
-        pm.giveinventory("MetalSniperAmmo", MetalSniperFullAmmo-1); // This is because of the weapon respect animation
-        pm.giveinventory("CrossbowBallistaAmmo", 1);
-        // SLOT 5
-        pm.giveinventory("HMGChamberAmmo", PBX_NeoHMG.MAGAZINE_SIZE);
-        // SLOT 6
-        pm.giveinventory("ExcavatorRounds", PBX_Excavator.MAGAZINE_SIZE);
-        pm.giveinventory("CyberRLDurability", PBX_CyberdemonRL.DURABILITY);
-        pm.giveinventory("MastermindCGDurability", PBX_MastermindChaingun.DURABILITY);
-        // SLOT 7
-        pm.giveinventory("BDPRailgunAmmo", PBX_BDPRailgun.MAGAZINE_SIZE);
+		TryGiveInventory(pm, 'PBX_PlasmaBlaster', 'HellPistolerAmmo', PBX_PlasmaBlaster.MAXCHARGE);
+		TryGiveInventory(pm, 'PBX_Prosurv_LeverAction', 'LeverActionAmmo', PBX_Prosurv_LeverAction.MAGAZINE_SIZE);
+
+		// SLOT 3
+		TryGiveInventory(pm, 'PBX_ProSurvPSG', 'PumpShotgunAmmo', PBX_ProSurvPSG.MAGAZINE_SIZE);
+		TryGiveInventory(pm, 'PBX_CSSG', 'CSSGShellsIn', PBX_CSSG.BARREL_CAPACITY);
+
+		// SLOT 4
+		TryGiveInventory(pm, 'PBX_NormalRifle', 'NormalRifleAmmo', PBX_NormalRifle.MAGAZINE_SIZE);
+		TryGiveInventory(pm, 'PBX_BDPBattleRifle', 'BR_Ammo', PBX_BDPBattleRifle.MAGAZINE_SIZE);
+		TryGiveInventory(pm, 'PBX_MetalSniper', 'MetalSniperAmmo', PBX_MetalSniper.MAGAZINE_SIZE - 1); // This is because of the weapon respect animation
+		TryGiveInventory(pm, 'PBX_Prosurv_Ballista', 'CrossbowBallistaAmmo', PBX_Prosurv_Ballista.ARROW_AMOUNT);
+
+		// SLOT 5
+		TryGiveInventory(pm, 'PBX_NeoHMG', 'HMGChamberAmmo', PBX_NeoHMG.MAGAZINE_SIZE);
+
+		// SLOT 6
+		TryGiveInventory(pm, 'PBX_Excavator', 'ExcavatorRounds', PBX_Excavator.MAGAZINE_SIZE);
+		TryGiveInventory(pm, 'PBX_CyberdemonRL', 'CyberRLDurability', PBX_CyberdemonRL.DURABILITY);
+		TryGiveInventory(pm, 'PBX_MastermindChaingun', 'MastermindCGDurability', PBX_MastermindChaingun.DURABILITY);
+
+		// SLOT 7
+		TryGiveInventory(pm, 'PBX_BDPRailgun', 'BDPRailgunAmmo', PBX_BDPRailgun.MAGAZINE_SIZE);
         // SLOT 9
+
         // OTHERS
-        PB_HelpNotificationsHandler.PB_SendTip("$PBXWeapons_Version", "PBXWeapons_GeneralFlags", ePBX_Weapons_Version);
-        pm.giveinventory("PBXWeapons_TipsManager",1);
-        if(pbxweapons_normalriflereplace) pm.giveinventory("PBX_NormalRifle",1);
-        if(pbxweapons_startwithblaster) pm.giveinventory("PBX_ProsurvBlaster",1);
+		TryGiveInventory(pm, 'PBXWeapons_TipsManager', 'PBXWeapons_TipsManager', 1);
+        if(pbxweapons_normalriflereplace) TryGiveInventory(pm, 'PBX_NormalRifle', 'PBX_NormalRifle', 1);
+        if(pbxweapons_startwithblaster) TryGiveInventory(pm, 'PBX_ProsurvBlaster', 'PBX_ProsurvBlaster', 1);
         // pm.giveinventory("PBXWeapons_MonsterWeapons",1);
+        PB_HelpNotificationsHandler.PB_SendTip("$PBXWeapons_Version", "PBXWeapons_GeneralFlags", ePBX_Weapons_Version);
         return;
     }
+
+	// Just a function to make everything look cleaner
+	void TryGiveInventory(PlayerPawn pm, name hasInventory, name whatToGive, int giveAmount)
+	{
+		if (!pm) return;
+
+		// Only give the inventory if the player still doesnt have the item
+		// this way its only given once and wont be given every map change
+		if (pm.CountInv(hasInventory) < 1) 
+		{
+			pm.GiveInventory(whatToGive, giveAmount);
+		}
+	}
 
     // Override void WorldLoaded (WorldEvent e)
     // {

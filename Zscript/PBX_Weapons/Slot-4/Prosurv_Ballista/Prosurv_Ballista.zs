@@ -48,6 +48,7 @@ class PBX_Prosurv_Ballista : PB_WeaponBase
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
 	bool demonicBallistaMode;
 	int currentTakeAmmo;
+	const ARROW_AMOUNT	 		= 1; 
 	const ammoTakeNormal 		= 1; // Normal Shot
 	const ammoTakeDemonic 		= 3; // Demonic Shot
 	const ammoTakeNormalAlt 	= 1; // Normal Altfire (PB_RocketAmmo)
@@ -180,7 +181,7 @@ class PBX_Prosurv_Ballista : PB_WeaponBase
 
 //////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
 		Reload:
-            TNT1 A 0 PB_CheckReload(null, null, null, "Ready3", "ReadyEmpty", 1, getCurrentAmmoTake());
+            TNT1 A 0 PB_CheckReload(null, null, null, "Ready3", "ReadyEmpty", ARROW_AMOUNT, getCurrentAmmoTake());
 			// Raise
 			TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
 			CBWR ABCDEF 1 PB_SetRoll(roll-.4);
@@ -195,8 +196,8 @@ class PBX_Prosurv_Ballista : PB_WeaponBase
 			// Put the Arrow in
 			CBOR AB 1;
 			TNT1 A 0 {
-				A_SetInventory("CrossbowBallistaAmmo",1); // Gives the arrow
-				A_TakeInventory("PB_HighCalMag",1,TIF_NOTAKEINFINITE); // Take 1 reserve
+				A_SetInventory(invoker.ammo2.getclassname(),1); // Gives the arrow
+				A_TakeInventory(invoker.ammo1.getclassname(),1,TIF_NOTAKEINFINITE); // Take 1 reserve
 				PB_SetMagUnloaded(false);
 				PB_SetMagEmpty(false);
 				PB_SetChamberEmpty(false);
@@ -214,7 +215,7 @@ class PBX_Prosurv_Ballista : PB_WeaponBase
 		ReloadDemonic:
 			CBOR OPQ 1 PB_SetRoll(roll+.3);
 			TNT1 A 0 {
-				A_SetInventory("CrossbowBallistaAmmo",1);
+				A_SetInventory(invoker.ammo2.getclassname(),1);
 				A_TakeInventory("PB_DTech",3,TIF_NOTAKEINFINITE);
 				PB_SetMagUnloaded(false);
 				PB_SetMagEmpty(false);
@@ -242,7 +243,7 @@ class PBX_Prosurv_Ballista : PB_WeaponBase
 			CBOR EDC 1;
 			TNT1 A 0 A_PlaySoundEx("weapons/ballista/boltout","Auto");
 			TNT1 A 0 {
-				PB_UnloadMag("CrossbowBallistaAmmo","PB_HighCalMag",getCurrentAmmoTake(),spawnActor: "BoltPickup");
+				PB_UnloadMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname(),getCurrentAmmoTake(),spawnActor: "BoltPickup");
 				PB_SetMagUnloaded(true);
 				PB_SetMagEmpty(true);
 				PB_SetChamberEmpty(true);
@@ -270,7 +271,7 @@ class PBX_Prosurv_Ballista : PB_WeaponBase
 			CBOR TSR 1 PB_SetRoll(roll-.3);
 			TNT1 A 0 A_PlaySoundEx("weapons/ballista/boltinoutdemonic","Auto");
 			TNT1 A 0 {
-				PB_UnloadMag("CrossbowBallistaAmmo","PB_DTech",getCurrentAmmoTake());
+				PB_UnloadMag(invoker.ammo2.getclassname(),"PB_DTech",getCurrentAmmoTake());
 				PB_SetMagUnloaded(true);
 				PB_SetMagEmpty(true);
 				PB_SetChamberEmpty(true);

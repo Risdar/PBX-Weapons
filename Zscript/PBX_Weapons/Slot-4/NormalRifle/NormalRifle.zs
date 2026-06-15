@@ -125,14 +125,14 @@ Class PBX_NormalRifle : PB_WeaponBase
         IdleLeft_Overlay:
             DURI O 1 {
                 PB_CoolDownBarrel(14, 0, 3.2);
-                return NormalRifle_DoLeftAction();
+                return ReadyOverlay(true);
             }
             Loop;
 
 		IdleRight_Overlay:
             DURI S 1 {
                 PB_CoolDownBarrel(-14, 0, 3.2);
-                return NormalRifle_DoRightAction();
+                return ReadyOverlay(false);
             }
             Loop;
 

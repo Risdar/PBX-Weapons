@@ -83,6 +83,7 @@ Class PBX_BDPRailgun : PB_WeaponBase
 				PB_HandleCrosshair(97);
 				A_TakeInventory("PB_LockScreenTilt",1);
                 A_ClearOverlays(HANDLE_LAYER);
+                A_SetInventory("PBX_Infrared", 0);
 			}
             TNT1 A 0 PB_SetUsableWheel(false);
 			TNT1 A 0 A_StopSound(1);
@@ -101,14 +102,19 @@ Class PBX_BDPRailgun : PB_WeaponBase
 				A_SetInventory("PB_LockScreenTilt",0);
                 PB_WeaponRaise("RAILINSR");
                 A_ClearOverlays(HANDLE_LAYER);
+                A_SetInventory("PBX_Infrared", 0);
 			    return PB_RespectIfNeeded();
 			}
         SelectAnimation:
             RAIS DCBA 1;
         Ready3:
-            RAIL A 1 {
+            TNT1 A 0 {
+                A_SetInventory("PBX_Infrared", 0);
                 A_ZoomFactor(1.0);
                 PB_SetUsableWheel(false);
+            }
+        ReadyToFire:
+            RAIL A 1 {
                 PB_Cooldownbarrel();
 			    PB_HandleCrosshair(97);
 			    return A_DoPBWeaponAction();
@@ -263,6 +269,7 @@ Class PBX_BDPRailgun : PB_WeaponBase
                 A_ZoomFactor(1.0);
                 PB_SetZoom(false);
                 PB_HandleCrosshair(97);
+                A_SetInventory("PBX_Infrared", 0);
             }
             TNT1 A 0 PB_SetUsableWheel(false);
             RAIZ FE 1;
@@ -275,6 +282,7 @@ Class PBX_BDPRailgun : PB_WeaponBase
                 A_ZoomFactor(1.0);
                 A_Giveinventory("PB_LockScreenTilt",1);
                 A_SetCrosshair(-1);
+                A_SetInventory("PBX_Infrared", 0);
 			}
             TNT1 A 0 PB_CheckReload(null,null,"Pumping","Ready3","Ready3",MAGAZINE_SIZE);
 			TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
@@ -401,6 +409,7 @@ Class PBX_BDPRailgun : PB_WeaponBase
 
         // FLASH STATES
         FlashPunching:
+            TNT1 A 0 A_SetInventory("PBX_Infrared", 0);
             TNT1 A 0 PB_SetUsableWheel(false);
             RAIK ABCD 1;
             RAIK E 6;
@@ -408,6 +417,7 @@ Class PBX_BDPRailgun : PB_WeaponBase
             goto Ready3;
 
 		FlashKicking:
+            TNT1 A 0 A_SetInventory("PBX_Infrared", 0);
             TNT1 A 0 PB_SetUsableWheel(false);
 			RAIK ABCD 1;
             RAIK E 7;
@@ -415,6 +425,7 @@ Class PBX_BDPRailgun : PB_WeaponBase
 			goto Ready3;
 			
 		FlashAirKicking:
+            TNT1 A 0 A_SetInventory("PBX_Infrared", 0);
             TNT1 A 0 PB_SetUsableWheel(false);
 			RAIK ABCD 1;
             RAIK E 8;
@@ -422,6 +433,7 @@ Class PBX_BDPRailgun : PB_WeaponBase
 			goto Ready3;
 			
 		FlashSlideKicking:
+            TNT1 A 0 A_SetInventory("PBX_Infrared", 0);
             TNT1 A 0 PB_SetUsableWheel(false);
 			RAIK ABCD 1;
             RAIK E 19;
@@ -429,6 +441,7 @@ Class PBX_BDPRailgun : PB_WeaponBase
 			goto Ready3;
 			
 		FlashSlideKickingStop:
+            TNT1 A 0 A_SetInventory("PBX_Infrared", 0);
             TNT1 A 0 PB_SetUsableWheel(false);
 			RAIK ABCDEEE 1; //7 frames 
 			goto Ready3;

@@ -7,7 +7,8 @@ extend class PBX_BDPBattleRifle
 		semiClear 	 = false;
 		laserActive  = false;
 		isSemiAuto 	 = true;
-		zoomstrength = PBX_BDPBattleRifle.LOWZOOM;
+		zoomstrength = LOWZOOM;
+        scopeMode = 0;
 		super.postbeginplay();
 	}
 
@@ -61,6 +62,8 @@ extend class PBX_BDPBattleRifle
 //////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
 	action void cleanmodetokens()
 	{
+		A_SetInventory("BR_Select_Scope",0);
+		A_SetInventory("BR_Select_NVG",0);
 		A_SetInventory("BR_Select_FireMode",0);
 		A_SetInventory("BR_Select_Zoom",0);
 		A_SetInventory("BR_Select_Laser",0);
@@ -103,9 +106,11 @@ extend class PBX_BDPBattleRifle
                     Wireframe.scale.Y = double(Bule.HitActor.Height) * Level.pixelstretch;
                     Wireframe.vel = Bule.HitActor.vel;
                 }
-                // player.PSprites.frame = 1;
-                PBXWeapons_ScopeHandler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData:"..Bule.HitActor.GetTag(), Bule.HitActor.health, Bule.HitActor.GetSpawnHealth(), Bule.HitActor.PainChance);
-                PBXWeapons_ScopeHandler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData2:", Distance3D(Bule.HitActor), getZoomStrength());
+                if(invoker.ScopeMode == 2)
+				{
+					PBXWeapons_ScopeHandler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData:"..Bule.HitActor.GetTag(), Bule.HitActor.health, Bule.HitActor.GetSpawnHealth(), Bule.HitActor.PainChance);
+					PBXWeapons_ScopeHandler.SendInterfaceEvent(self.PlayerNumber(), "PrintScopeData2:", Distance3D(Bule.HitActor), getZoomStrength());
+				}
             }
             else
             if(invoker.LockedOn)
@@ -236,6 +241,8 @@ extend class PBX_BDPBattleRifle
 		bool toggleFireMode 	= countinv("BR_Select_FireMode")  	> 0;
 		bool toggleZoom  		= countinv("BR_Select_Zoom")  		> 0;
 		bool toggleLaser 		= countinv("BR_Select_Laser")  		> 0;
+		bool toggleScope 		= countinv("BR_Select_Scope")  		> 0;
+		bool toggleNVG 			= countinv("BR_Select_NVG")  		> 0;
 
 		if(toggleFireMode)
 		{
@@ -263,6 +270,35 @@ extend class PBX_BDPBattleRifle
             A_Print(invoker.laserActive ? "$PBX_LaserOn" : "$PBX_LaserOff");
         }
 
+		if(toggleScope)
+        {
+            invoker.ScopeMode = (invoker.ScopeMode + 1) % 3;
+            A_StartSound("MS/Button", CHAN_WEAPON);
+            A_SetBlend(0x00a100, 0.2, 3);
+            switch (invoker.ScopeMode)
+            {
+                case 0: A_Print("$PBX_Scope1"); break;
+                case 1: A_Print("$PBX_Scope2"); break;
+                case 2: A_Print("$PBX_Scope3"); break;
+            }
+        }
+
+		if(toggleNVG)
+        {
+            if(invoker.nvgActive) {
+                invoker.nvgActive = false;
+				A_Print("$PBX_nvgOff");
+                A_SetInventory("PBX_Infrared", 0);
+            }
+            else {
+                invoker.nvgActive = true;
+				A_Print("$PBX_nvgOn");
+                A_SetInventory("PBX_Infrared", 1);
+                A_StartSound("RA1IF1", CHAN_AUTO, CHANF_OVERLAP);
+            }
+            A_SetBlend("Black",0.75,16);
+        }
+
 		// Always remove the tokens regardless
 		cleanmodetokens();
 
@@ -270,7 +306,7 @@ extend class PBX_BDPBattleRifle
 		if(PB_GetZoom())
 		{
 			A_StartSound("MS/Button", 26); 
-			return resolvestate("WeaponReadyADS");
+			return resolvestate("Ready2");
 		}
 
 		// Fallthrough to Switch Animation

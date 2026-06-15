@@ -3,10 +3,6 @@
 #include "./MetalSniper_Wheel.zs"
 #include "./MetalSniper_helpers.zs"
 
-// Constants
-const MetalSniperFullAmmo           = 12;
-const MetalSniperFullAmmoResonance  = 4;
-
 Class PBX_MetalSniper : PB_WeaponBase
 {
     default
@@ -21,13 +17,16 @@ Class PBX_MetalSniper : PB_WeaponBase
         weapon.ammotype2 "MetalSniperAmmo";
         PB_WeaponBase.UsesWheel true;
         PB_WeaponBase.WheelInfo "MetalSniperWheel";
-		PB_WeaponBase.ReserveToMagAmmoFactor 2;
+		PB_WeaponBase.ReserveToMagAmmoFactor AMMO_TAKE_NORMAL;
         scale 0.62;
         +weapon.noalert;
         +weapon.noautofire;
     }
 
     // ── Constants ────────────────────────────────────────────────────────────
+    const MAGAZINE_SIZE = 12; // mag size for resonance is 4
+    const AMMO_TAKE_NORMAL = 2;
+    const AMMO_TAKE_RESONANCE = 6;
     const SniperMode  = 0;
     const GrenadeMode = 1;
     const muzzlelayer = -52;
@@ -47,7 +46,6 @@ Class PBX_MetalSniper : PB_WeaponBase
     bool LockedOn;
     bool enableScopeHUD; // This is for the overlay that you see when the scope mode is active
     int currentMaxAmmo;
-    int usedAmmo;
     int ScopeMode;
     double zoomstrength;
 
@@ -125,8 +123,10 @@ Class PBX_MetalSniper : PB_WeaponBase
             TNT1 A 0 PB_HandleCrosshair(42);
             TNT1 A 0 resetVariables();
             TNT1 A 0 A_JumpIf(PB_GetZoom(), "Ready2");
+        ReadyToFire:
             MSNF A 1
             {
+                PB_HandleCrosshair(42);
                 PB_CoolDownBarrel(-4, 0, 6, 0,  1);
                 PB_CoolDownBarrel( 4, 0, 6, 0, -1);
                 return A_DoPBWeaponAction(WRF_ALLOWRELOAD);
@@ -292,7 +292,7 @@ Class PBX_MetalSniper : PB_WeaponBase
                 PB_SetZoom(false);
                 resetVariables();
             }
-            TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, "Start_Rechamber", "Ready3", "NoAmmo", invoker.currentMaxAmmo, invoker.usedAmmo);
+            TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, "Start_Rechamber", "Ready3", "NoAmmo", invoker.currentMaxAmmo, invoker.ReserveToMagAmmoFactor);
         // ── Raise weapon  ──────────────────
         StandardReload:
             TNT1 A 0 A_StartSound("IronSights", 30);

@@ -38,12 +38,14 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 	}
 	
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
+    bool nvgActive;
     bool isSemiAuto;
 	bool semiclear;
 	bool LockedOn;
 	bool laserActive;
-	double zoomstrength;
 	int burstcount;
+    int scopeMode;
+	double zoomstrength;
 	// Change these if you want to edit how strong the zoom modes are
 	const MAGAZINE_SIZE = 15;
 	const HIGHZOOM = 4.0;
@@ -58,6 +60,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			stop;
 
 		Deselect:
+            TNT1 A 0 A_SetInventory("PBX_Infrared", 0);
 			TNT1 A 0 PB_SetZoom(false);
 			BR4S ABCDE 1; 
 			TNT1 A 0 A_StopSound(1);
@@ -67,12 +70,13 @@ class PBX_BDPBattleRifle : PB_WeaponBase
             TNT1 A 0 A_lower();
             Wait;
 		Select:
+            TNT1 A 0 A_SetInventory("PBX_Infrared", 0);
 			TNT1 A 0 PB_WeaponRaise("BR45PICK");
 			TNT1 A 0 PB_RespectIfNeeded();
 		SelectAnimation:
 			TNT1 A 0 {invoker.burstcount = 0;}
 			BR4S EDCBA 1;
-			goto WeaponReady;
+			goto Ready3;
 		
 		WeaponRespect:
 			TNT1 A 0 A_SetCrosshair(-1);
@@ -84,13 +88,14 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			BR4R GHIJKLMNOP 1 A_DoPBWeaponAction();
 			TNT1 A 0 A_startsound("BR45LOAD",3);
 			BR4R QRSTUVWX 1 A_DoPBWeaponAction();
-			goto WeaponReady;
+			goto Ready3;
 
         // READY STATES
         Ready:
         Ready3:
-		WeaponReady:
-			TNT1 A 0 A_jumpif(PB_GetZoom(),"WeaponReadyADS");
+            TNT1 A 0 A_SetInventory("PBX_Infrared", 0);
+			TNT1 A 0 A_jumpif(PB_GetZoom(),"Ready2");
+		ReadyToFire:
 			BR45 B 1 {
 				A_zoomfactor(1.0);
 				PB_HandleCrosshair(42);
@@ -100,7 +105,13 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			Loop;
 		
 		Ready2:
-		WeaponReadyADS:
+			TNT1 A 0 {
+                if(invoker.nvgActive) {
+                    A_SetInventory("PBX_Infrared", 1);
+                    A_StartSound("RA1IF1", CHAN_AUTO, CHANF_OVERLAP);
+                }
+            }
+		ReadyToFire2:
 			TNT1 A 0;
 			BR4Z D 1 Bright  {
 				A_zoomfactor(getZoomStrength());
@@ -111,7 +122,8 @@ class PBX_BDPBattleRifle : PB_WeaponBase
                 A_SetInventory("PB_LockScreenTilt",0);
 
 				// Enables the scope if the player has the upgrade
-				if(countinv("BattleRifle_Upgraded") > 0 || (pbxweapons_backpack_filter & DisablePBX_BattleRifleUpgrade))
+				if(	(countinv("BattleRifle_Upgraded") > 0 || (pbxweapons_backpack_filter & DisablePBX_BattleRifleUpgrade)) &&
+                	(invoker.ScopeMode == 1 || invoker.ScopeMode == 2))
 					BR_ReadyScope();
 
 				return PB_ReadyFire(ads:true);
@@ -154,7 +166,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 				return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOFIRE | WRF_NOPRIMARY);
 			}
 			TNT1 A 0 { invoker.semiclear = false; }
-			goto WeaponReady;
+			goto Ready3;
 
 		BurstFireRecoil:
 			BR45 EF 1;
@@ -164,7 +176,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 		Fire2:
 		FireADS:
 			TNT1 A 0 A_ZoomFactor(getZoomStrength());
-			TNT1 A 0 PB_JumpIfNoAmmo("ReloadFromADS", 1, false);
+			TNT1 A 0 PB_JumpIfNoAmmo("Reload", 1, false);
 			BR4Z D 1 Bright FireWeapon();
 			BR4Z D 1 Bright {
 				if (getBRMag() < 1) PB_SpawnCasing("RifleClipSpawn");
@@ -201,7 +213,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 				return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOFIRE | WRF_NOPRIMARY);
 			}
 			TNT1 A 0 { invoker.semiclear = false; }
-			goto WeaponReadyADS;
+			goto Ready2;
 
 		BurstFireRecoilADS:
 			BR4Z DD 1 Bright;
@@ -217,23 +229,22 @@ class PBX_BDPBattleRifle : PB_WeaponBase
             BR4Z A 1 A_zoomfactor(1.0);
 		    BR4Z B 1 A_zoomfactor(2.0);
 			BR4Z C 1 A_zoomfactor(getZoomStrength());
-            goto WeaponReadyADS;
+            goto Ready2;
         ZoomOut:
+            TNT1 A 0 A_SetInventory("PBX_Infrared", 0);
 			TNT1 A 0 PB_SetZoom(false);
 			TNT1 A 0 A_startsound("IronSights",29);
             BR4Z C 1 A_zoomfactor(getZoomStrength());
 		    BR4Z B 1 A_zoomfactor(2.0);
 			BR4Z A 1 A_zoomfactor(1.0);
-			goto WeaponReady;
+			goto Ready3;
 
         // RELOAD
-		ReloadFromADS:
-			TNT1 A 0 A_Zoomfactor(1.0);
-			TNT1 A 0 PB_SetZoom(false);
 		Reload:
+            TNT1 A 0 A_SetInventory("PBX_Infrared", 0);
 			TNT1 A 0 A_ZoomFactor(1.0);
             TNT1 A 0 PB_SetZoom(false);
-            TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, null, "WeaponReady", "NoAmmo", MAGAZINE_SIZE, 1);
+            TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, null, "Ready3", "NoAmmo", MAGAZINE_SIZE, 1);
 			TNT1 A 0 A_startsound("BR45OPEN",3,CHANF_OVERLAP);
             BR4R ABCDE 1;
             TNT1 A 0
@@ -260,7 +271,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			}
 			BR4R QRSTUVWX 1;
             TNT1 A 0 PB_SetReloading(false);
-			goto WeaponReady;
+			goto Ready3;
 
         RaiseFromEmpty:
             TNT1 A 0 A_ZoomFactor(1.0);
@@ -269,7 +280,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
             goto ContinueReload;
 		
 		Unload:
-			TNT1 A 0 A_Jumpif(pb_getmagunloaded() || getBRMag() < 1,"WeaponReady");
+			TNT1 A 0 A_Jumpif(pb_getmagunloaded() || getBRMag() < 1,"Ready3");
 			TNT1 A 0 A_startsound("BR45OPEN",3,CHANF_OVERLAP);
             BR4R ABCDE 1;
             TNT1 A 0
@@ -285,11 +296,11 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 					}
 			}
             BR4R STUVWX 1;
-            goto WeaponReady;
+            goto Ready3;
 
 		NoAmmo:
 			BR45 B 1 A_StartSound("weapons/empty");
-			goto WeaponReady;
+			goto Ready3;
 
 		SpecialFromADS:
 			TNT1 A 0 A_Takeinventory("GoWeaponSpecialAbility",1);
@@ -308,28 +319,32 @@ class PBX_BDPBattleRifle : PB_WeaponBase
             BR4R ABCDEFG 1;
             TNT1 A 0 A_StartSound("MS/Button", 26);
 			BR4R GFEDCBA 1;
-			goto WeaponReady;
+			goto Ready3;
 		
         // FLASH STATES
         FlashPunching:
+            TNT1 A 0 A_SetInventory("PBX_Infrared", 0);
             BR4K ABCD 1;
 		    BR4K E 13;
 		    BR4K DCBA 1; //14 frames
-            goto WeaponReady;
+            goto Ready3;
 
 		FlashKicking:
+            TNT1 A 0 A_SetInventory("PBX_Infrared", 0);
 			BR4K ABCD 1;
 		    BR4K E 13;
 		    BR4K DCBA 1; //15 frames
-			goto WeaponReady;
+			goto Ready3;
 			
 		FlashAirKicking:
+            TNT1 A 0 A_SetInventory("PBX_Infrared", 0);
 			BR4K ABCD 1;
 		    BR4K E 14;
 		    BR4K DCBA 1; //16 frames
-			goto WeaponReady;
+			goto Ready3;
 			
 		FlashSlideKicking:
+            TNT1 A 0 A_SetInventory("PBX_Infrared", 0);
 			BR4K A 1; 
 			BR4K B 2; 
 			BR4K C 4;
@@ -339,11 +354,12 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 			BR4K C 2;
 			BR4K B 1;
 			BR4K A 1; //27 frames
-			goto WeaponReady;
+			goto Ready3;
 			
 		FlashSlideKickingStop:
+            TNT1 A 0 A_SetInventory("PBX_Infrared", 0);
 			BR4K EDCBAAA 1; //7 frames 
-			goto WeaponReady;
+			goto Ready3;
 	}
 	
 }
