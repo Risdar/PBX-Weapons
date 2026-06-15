@@ -7,63 +7,135 @@ const WHEEL_ZOOM_SCALE  = 0.16;
 const WHEEL_SCOPE_SCALE = 0.16;
 const WHEEL_NVG_SCALE   = 0.5;
 
-class PBX_Hud : PB_Hud_ZS
+class PBX_WeaponHudHandler : EventHandler
 {
-    // Set Variables
-    int pbx_weapon_PosX, pbx_weapon_PosY, pbx_weaponmode_PosX, pbx_weaponmode_PosY;
-    double pbx_weaponmode_hudscale, pbx_weapon_hudscale;
-    double pbx_weapon_alpha, pbx_weaponmode_alpha;
-    int pbx_weapon_boxW, pbx_weapon_boxH;
-    int pbx_weaponmode_boxW, pbx_weaponmode_boxH;
-    Vector2 pbx_weapon_pos, pbx_weapon_truescale, pbx_weapon_box1;
-    Vector2 pbx_weapon_pos2, pbx_weapon_truescale2, pbx_weapon_box2;
-    Vector2 pbx_weapon_pos3, pbx_weapon_truescale3, pbx_weapon_box3; // For specific cases
-    int flagsleft, flagsright;
+    ui int pbx_weapon_PosX, pbx_weapon_PosY, pbx_weaponmode_PosX, pbx_weaponmode_PosY;
+    ui double pbx_weaponmode_hudscale, pbx_weapon_hudscale;
+    ui double pbx_weapon_alpha, pbx_weaponmode_alpha;
+    ui int pbx_weapon_boxW, pbx_weapon_boxH;
+    ui int pbx_weaponmode_boxW, pbx_weaponmode_boxH;
+    ui Vector2 pbx_weapon_pos, pbx_weapon_truescale, pbx_weapon_box1;
+    ui Vector2 pbx_weapon_pos2, pbx_weapon_truescale2, pbx_weapon_box2;
+    ui Vector2 pbx_weapon_pos3, pbx_weapon_truescale3, pbx_weapon_box3;
+    ui int flagsleft, flagsright, flagssTextAlignRight, flagsManualVisor1, flagsManualVisor2;
+    ui string pbx_image, pbx_image2, pbx_image3;
+    ui bool isAkimbo;
+    ui Array<Service> HUDServices;
+    ui bool ServicesLoaded;
 
-    string pbx_image, pbx_image2, pbx_image3;
-    bool isAkimbo;
-    
-    // In case I forgot
-    // weap = CPlayer.ReadyWeapon;
-	// pbWeap = PB_WeaponBase(weap);
-    // PlayerPawn plr;
-
-    // What The Engine Draws
-    override void Draw(int state, double TicFrac)
+    override void RenderOverlay(RenderEvent e)
     {
-		Super.Draw(state, TicFrac);
+        if (gamestate != GS_LEVEL || automapactive)
+            return;
 
-        if(menuactive || consolestate == c_up) 
-            gatherPBXCVARs();
+        let phud = PB_Hud_ZS(StatusBar);
+        if (!phud) return;
+        if (phud.hudState == BaseStatusBar.HUD_None || phud.PlayerWasDead) return;
 
-        if(hudState != HUD_None && !PlayerWasDead)
-		{
-            DrawPBXHud();
-		}
+        let plr = players[consoleplayer];
+        let weap = plr.ReadyWeapon;
+        let pbWeap = PB_WeaponBase(weap);
+        if (!pbWeap) return;
+
+        if (menuactive || consolestate == c_up)
+            gatherPBXCVARs(plr); // Gather the CVARs
+
+        // Begin drawing the HUD
+        phud.BeginHUD();    // Initialize
+        FindHUDServices();  // Find other mods that uses PBX HUD
+        weaponAdjustments(pbWeap); // Load in the weapon hud adjustments
+        DrawPBXWeaponAuto(phud, pbWeap); // Automatically draw weapons that set their AltHudIcon
+        
+        // First check if any other mod added their own PBX Hud
+        // if there is then draw them
+        let ext = GetExternalHUD(pbWeap);
+        if (ext)
+        {
+            pbx_image = ext.Image1;
+            pbx_image2 = ext.Image2;
+            pbx_image3 = ext.Image3;
+
+            pbx_weapon_pos += ext.Offset1;
+            pbx_weapon_pos2 += ext.Offset2;
+            pbx_weapon_pos3 += ext.Offset3;
+
+            pbx_weapon_truescale *= ext.Scale1;
+            pbx_weapon_truescale2 *= ext.Scale2;
+            pbx_weapon_truescale3 *= ext.Scale3;
+
+            PBX_DrawImage(phud);
+
+            if(ext.Image2 != "")
+                PBX_DrawImage(phud,2);
+
+            if(ext.Image3 != "")
+                PBX_DrawImage(phud,3);
+        }
+
+        // If there isnt any then fallback to default
+        else
+        {
+            DrawPBXWeaponManual(phud,pbWeap);
+        }
     }
 
-    // GET THE HUD POSITION FROM THE SETTINGS
-    void gatherPBXCVARs()
+    // Find the Services function
+    private
+    ui void FindHUDServices()
+    {
+        if (ServicesLoaded)
+            return;
+
+        let it = ServiceIterator.Find("PBXHUDService");
+
+        Service svc;
+
+        while ((svc = it.Next()))
+        {
+            HUDServices.Push(svc);
+        }
+
+        ServicesLoaded = true;
+    }
+
+    // Function to get the Data from those Services
+    private
+    ui PBXHUDData GetExternalHUD(PB_WeaponBase weapon)
+    {
+        for (uint i = 0; i < HUDServices.Size(); i++)
+        {
+            let data = PBXHUDData(HUDServices[i].GetObjectUI("WeaponHUD",objectArg:weapon));
+            if (data && data.Handled){
+                // console.printf("data loaded");
+                return data;
+            }
+        }
+        return null;
+    }
+
+    // Get the user CVARs
+    protected
+    ui void gatherPBXCVARs(PlayerInfo plr)
     {
         // Weapon Pickup Sprites
-        pbx_weapon_PosX = CVar.GetCVar("pbxweapons_Weaponhud_x", CPlayer).GetInt();
-        pbx_weapon_PosY = CVar.GetCVar("pbxweapons_Weaponhud_y", CPlayer).GetInt();
-        pbx_weapon_hudscale = CVar.GetCVar("pbxweapons_Weaponhud_scale", CPlayer).GetFloat();
-        pbx_weapon_alpha = CVar.GetCVar("pbxweapons_Weaponhud_alpha", CPlayer).GetFloat();
-        pbx_weapon_boxW = CVar.GetCVar("pbxweapons_Weaponhud_boxW", CPlayer).GetInt();
-        pbx_weapon_boxH = CVar.GetCVar("pbxweapons_Weaponhud_boxH", CPlayer).GetInt();
+        pbx_weapon_PosX = CVar.GetCVar("pbxweapons_Weaponhud_x", plr).GetInt();
+        pbx_weapon_PosY = CVar.GetCVar("pbxweapons_Weaponhud_y", plr).GetInt();
+        pbx_weapon_hudscale = CVar.GetCVar("pbxweapons_Weaponhud_scale", plr).GetFloat();
+        pbx_weapon_alpha = CVar.GetCVar("pbxweapons_Weaponhud_alpha", plr).GetFloat();
+        pbx_weapon_boxW = CVar.GetCVar("pbxweapons_Weaponhud_boxW", plr).GetInt();
+        pbx_weapon_boxH = CVar.GetCVar("pbxweapons_Weaponhud_boxH", plr).GetInt();
 
         pbx_weapon_pos = (pbx_weapon_PosX, pbx_weapon_PosY);
         pbx_weapon_truescale = (pbx_weapon_hudscale, pbx_weapon_hudscale);
         pbx_weapon_box1 = (pbx_weapon_boxW, pbx_weapon_boxH);
 
         // Weapon Modes
-        pbx_weaponmode_PosX = CVar.GetCVar("pbxweapons_WeaponModehud_x", CPlayer).GetInt();
-        pbx_weaponmode_PosY = CVar.GetCVar("pbxweapons_WeaponModehud_y", CPlayer).GetInt();
-        pbx_weaponmode_hudscale = CVar.GetCVar("pbxweapons_WeaponModehud_scale", CPlayer).GetFloat();
-        pbx_weaponmode_alpha = CVar.GetCVar("pbxweapons_WeaponModehud_alpha", CPlayer).GetFloat();
-        pbx_weaponmode_boxW = CVar.GetCVar("pbxweapons_WeaponModehud_boxW", CPlayer).GetInt();
-        pbx_weaponmode_boxH = CVar.GetCVar("pbxweapons_WeaponModehud_boxH", CPlayer).GetInt();
+        pbx_weaponmode_PosX = CVar.GetCVar("pbxweapons_WeaponModehud_x", plr).GetInt();
+        pbx_weaponmode_PosY = CVar.GetCVar("pbxweapons_WeaponModehud_y", plr).GetInt();
+        pbx_weaponmode_hudscale = CVar.GetCVar("pbxweapons_WeaponModehud_scale", plr).GetFloat();
+        pbx_weaponmode_alpha = CVar.GetCVar("pbxweapons_WeaponModehud_alpha", plr).GetFloat();
+        pbx_weaponmode_boxW = CVar.GetCVar("pbxweapons_WeaponModehud_boxW", plr).GetInt();
+        pbx_weaponmode_boxH = CVar.GetCVar("pbxweapons_WeaponModehud_boxH", plr).GetInt();
 
         pbx_weapon_pos2 = (pbx_weaponmode_PosX, pbx_weaponmode_PosY);
         pbx_weapon_truescale2 = (pbx_weaponmode_hudscale, pbx_weaponmode_hudscale);
@@ -74,15 +146,431 @@ class PBX_Hud : PB_Hud_ZS
         pbx_weapon_truescale3 = pbx_weapon_truescale2;
         pbx_weapon_box3 = (pbx_weaponmode_boxW, pbx_weaponmode_boxH);
 
-        flagsleft = DI_SCREEN_LEFT_BOTTOM | DI_ITEM_LEFT_BOTTOM;
-        flagsright = DI_SCREEN_RIGHT_BOTTOM | DI_ITEM_RIGHT_BOTTOM;
+        flagsleft = BaseStatusBar.DI_SCREEN_LEFT_BOTTOM | BaseStatusBar.DI_ITEM_LEFT_BOTTOM;
+        flagsright = BaseStatusBar.DI_SCREEN_RIGHT_BOTTOM | BaseStatusBar.DI_ITEM_RIGHT_BOTTOM;
+        flagssTextAlignRight = BaseStatusBar.DI_TEXT_ALIGN_RIGHT;
+        // These are used for the Metal Sniper Smart Scope Overlay
+        flagsManualVisor1 = BaseStatusBar.DI_ITEM_LEFT | BaseStatusBar.DI_SCREEN_LEFT | BaseStatusBar.DI_ITEM_VCENTER | BaseStatusBar.DI_SCREEN_VCENTER;
+        flagsManualVisor2 = BaseStatusBar.DI_ITEM_RIGHT | BaseStatusBar.DI_SCREEN_RIGHT | BaseStatusBar.DI_MIRROR | BaseStatusBar.DI_ITEM_VCENTER | BaseStatusBar.DI_SCREEN_VCENTER;
 
     }
 
-    // AUTOMATICALLY DRAW THE WEAPONS, ADD EXCEPTIONS HERE IF YOU WANT TO MANUALLY EDIT THEM
-    // FOR EXAMPLE IF YOU WANT THEM TO SHOW DIFFERENT SPRITE IF THEY'RE AKIMBO/UPGRADED/ETC.
-    // ADJUSTMENTS LIKE SCALE AND POSITION IS HANDLED IN weaponAdjustments() ABOVE
-    void DrawPBXWeaponAuto()
+    // Manually draw the weapon
+    protected
+    ui void DrawPBXWeaponManual(PB_Hud_ZS phud, PB_WeaponBase pbWeap)
+    {
+        // Standard Check
+        if(PBXWeapons_hudsetting_filter & DisablePBX_WeaponHud) return;
+        if (!pbWeap) return;
+
+        // Set Defaults & Variables
+        TextureID iconID = pbWeap.AltHudIcon.IsValid() ? pbWeap.AltHudIcon : pbWeap.Icon;
+        string icon = TexMan.GetName(iconID);
+
+        // Add the weapons here
+        switch(pbWeap.GetClassName())
+        {
+//////////////// SLOT 2 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Shows dual wield and suppressed
+            case 'PB_Pistol':
+                let pistol = PB_Pistol(pbWeap);
+                if(!pistol) return;
+                bool pistolSilenced = pistol.hasSilencer;
+                pbx_image = isAkimbo ? 
+                    // If Akimbo ? Suppressed : Non Suppressed
+                    (pistolSilenced ? "graphics/pywheel/PISTOL_7.png" : "graphics/pywheel/PISTOL_4.png") :
+                    // If Not Akimbo ? Suppressed : Non Suppressed
+                    (pistolSilenced ? "graphics/pywheel/PISTOL_1.png" : "graphics/pywheel/PISTOL_0.png");
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
+            // Same as the Pistol
+            case 'PB_SMG':
+                let smg = PB_SMG(pbWeap);
+                if(!smg) return;
+                bool smgSilenced = smg.hasSilencer;
+                pbx_image = isAkimbo ? 
+                    // If Akimbo ? Suppressed : Non Suppressed
+                    (smgSilenced ? "graphics/pywheel/SMG/SMG_DUAL_SUPPRESSED.png" : "graphics/pywheel/SMG/SMG_DUAL.png") :
+                    // If Not Akimbo ? Suppressed : Non Suppressed
+                    (smgSilenced ? "ATFLA0" : "ATFLB0");
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
+            // Shows dual wield
+            case 'PB_MP40':
+                pbx_image = isAkimbo ? "graphics/WeaponPickups/MP40_DUAL.png" : icon;
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
+            case 'PB_Revolver':
+                pbx_image = isAkimbo ? "graphics/WeaponPickups/REVOLVER_DUAL.png" : icon;
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+                
+            case 'PB_Deagle':
+                pbx_image = isAkimbo ? "graphics/WeaponPickups/DEAGLE_DUAL.png" : icon;
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
+            case 'PBX_Prosurv_LeverAction':
+                let lar = PBX_Prosurv_LeverAction(pbWeap);
+                if(!lar) return;
+                pbx_image  = lar.laserActive ? "graphics/WeaponWheel/LeverAction/LaserOn.png" : icon;
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
+//////////////// SLOT 3 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Shows current shell type and if the weapon has been upgraded
+            case 'PB_Shotgun':
+                let shotgun = PB_Shotgun(pbWeap);
+                bool shotgunUpgraded = PBX_PlayerHasInventory("PumpshotgunMagazine");
+                if(!shotgun) return;
+                switch(shotgun.shellsmode)
+                {
+                    case PB_Shotgun.Shell_Buck:
+                        pbx_image2 = "buckhud";
+                        break;
+                    case PB_Shotgun.Shell_Slug:
+                        pbx_image2 = "slughud";
+                        break;
+                    case PB_Shotgun.Shell_Drag:
+                        pbx_image2 = "drgnhud";
+                        break;
+                }
+                pbx_image = shotgunUpgraded ? "9SMUA0" : icon;
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
+            // Shows dual wield and if the weapon has been upgraded
+            case 'PB_Autoshotgun':
+                bool asgUpgraded = PBX_PlayerHasInventory("AutoshotgunDrumMag");
+                pbx_image = isAkimbo ? 
+                    // If Akimbo ? Upgraded : Non Upgraded
+                    (asgUpgraded ? "graphics/WeaponPickups/ASG_UPGRADED_DOUBLE.png" : "graphics/WeaponPickups/ASGDOUBLE.png") :
+                    // If Not Akimbo ? Upgraded : Non Upgraded
+                    (asgUpgraded ? "A9SCA0" : "graphics/WeaponPickups/ASGSINGLE.png");
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
+            // Shows dual wield
+            case 'PB_SSG':
+                pbx_image = isAkimbo ? "graphics/WeaponPickups/SSG_DUAL.png" : icon;
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
+            // Shows dual wield and current weapon mode
+            case 'PB_QuadSG':
+                bool quadFullBlast = PBX_PlayerHasInventory("FullBlastMode");
+                bool demonBreath = PBX_PlayerHasInventory("BreathMode");
+                pbx_image = isAkimbo ? (demonBreath ? "graphics/WeaponPickups/QSGDUAL_DEMON.png" // DUAL QSG DEMON BREATH
+                                        : "graphics/pywheel/Quad_Dual.png")                      // DUAL QSG BUCKSHOT
+                         : (demonBreath ? "graphics/pywheel/Quad_Demonic.png"                    // SINGLE QSG DEMON BREATH
+                                        : "QSPGA0");     
+                pbx_image2 = quadFullBlast ? "graphics/WeaponIcons/QUAD_FULL.png" : "graphics/WeaponIcons/QUAD_HALF.png";
+                pbx_image3 = " "; //its empty for now
+                break;
+
+            // Shows current shell type
+            case 'PBX_CSSG':
+                let cssg = PBX_CSSG(pbWeap);
+                if(!cssg) return;
+                static const string cssgIcons[] = {
+                    "buckhud", "slughud", "flcthud", "flakhud", "drgnhud", 
+                    "explhud", "phoshud", "doomhud", "dnmkhud", "subzhud"
+                };
+                // Show what Ammo type is selected
+                int cssgshell = clamp(cssg.shellsmode, 0, cssgIcons.Size() - 1);
+                pbx_image2 = cssgIcons[cssgshell];
+                pbx_image3 = " "; //its empty for now
+                break;
+
+            case 'PBX_ProSurvPSG':
+                let psg = PBX_ProSurvPSG(pbWeap);
+                if(!psg) return;
+                pbx_image  = psg.laserActive ? "graphics/WeaponWheel/ProsurvPSG/LaserOn.png" : icon;
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+            
+
+//////////////// SLOT 4 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Shows dual wield
+            case 'PB_Carbine':
+                // If Akimbo
+                pbx_image = isAkimbo ? "graphics/pywheel/Carbine_Dual.png" : icon;
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
+            // Shows dual wield and if the weapon has been upgraded
+            case 'PB_DMR':
+                bool dmrUpgraded   = PBX_PlayerHasInventory("DMRUpgraded");
+                bool hdmrSniperMode = PBX_PlayerHasInventory("HDMRSniperMode");
+                // WHAT IS THIS LMAOOOOO
+                pbx_image = !dmrUpgraded  ? (isAkimbo ? "graphics/WeaponPickups/DMR_DUAL.png" : icon)
+                : isAkimbo       ? (hdmrSniperMode ? "graphics/WeaponPickups/HMDR_SNIPER_DOUBLE.png"
+                                                    : "graphics/pywheel/hdmr_dual.png")
+                : hdmrSniperMode  ? "graphics/WeaponPickups/HDMR_SNIPER_SINGLE.png"
+                : "HIFLA0";
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
+            case 'PBX_BDPBattleRifle':
+                let br = PBX_BDPBattleRifle(pbWeap);
+                if(!br) return;
+                pbx_image  = br.laserActive ? "graphics/WeaponWheel/BattleRifle/BR_LaserOn.png" : icon;
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
+            // Draw bars for specific modes and shows the current ammo type
+            case 'PBX_MetalSniper':
+                let sniper = PBX_MetalSniper(pbWeap);
+                if(!sniper) return;
+                // Show Rocket Ammo if Grenade Secondary Mode is Selected
+                if (sniper.AltMode) 
+                {
+                    phud.PBHud_DrawImage("BARBACR3", (-90, -71), flagsright, phud.playerBoxAlpha);
+                    phud.PBHud_DrawBar("ABAR4", "BGBARL", phud.GetAmount("PB_RocketAmmo"), phud.GetMaxAmount("PB_RocketAmmo"), (-100, -72), 0, 1, flagsright);
+                    phud.PBHud_DrawString(phud.mDefaultFont, phud.Formatnumber(phud.GetAmount("PB_RocketAmmo")), (-207, -90), flagssTextAlignRight, Font.CR_RED);
+                }
+                // This draws the overlay when the smart scope is enabled
+                if (sniper.enableScopeHUD)
+                {
+                    // Get pb's offsets
+                    let pbx_visorOffsets = phud.visorOffsets;
+                    let pbx_m32to0 = phud.m32to0;
+                    // Combine them here
+                    vector2 topOffsets1 = ((-24 - pbx_visorOffsets) + (-pbx_m32to0), -24 - pbx_visorOffsets - pbx_m32to0);
+                    vector2 topOffsets2 = ((24 + pbx_visorOffsets) + (pbx_m32to0), -24 - pbx_visorOffsets - pbx_m32to0);
+                    // Draw
+					phud.PBHud_DrawImageManualAlpha("NIGHTVIS", (topOffsets1.x, 0), flagsManualVisor1, 0.5 + 0.5 * abs(sin(level.MapTime)), scale: (0.3, 0.3), parallax: 1.5, parallax2: 1.5);
+					phud.PBHud_DrawImageManualAlpha("NIGHTVIS", (topOffsets2.x, 0), flagsManualVisor2, 0.5 + 0.5 * abs(sin(level.MapTime)), scale: (0.3, 0.3), parallax: 1.5, parallax2: 1.5);
+                }
+                // Show what Ammo type is selected
+                pbx_image  = sniper.laserActive ? "graphics/WeaponWheel/MetalSniper/LaserOn.png" : icon;
+                pbx_image2 = sniper && sniper.resonanceAmmoLoaded ? "graphics/WeaponWheel/metalsniper/ResonanceAlt.png" : "graphics/WeaponWheel/metalsniper/StandardAlt.png";
+                pbx_image3 = " "; //its empty for now
+                break;
+                
+            // Draw bars for specific modes and the current weapon
+            case 'PBX_Prosurv_Ballista':
+                let crossbow = PBX_Prosurv_Ballista(pbWeap);
+                // Show Fuel if Demonic Mode, Show Rocket if Standard Mode
+                if(!crossbow) return;
+                if (crossbow.demonicBallistaMode) 
+                {
+                    phud.PBHud_DrawImage("BARBACD3", (-90, -71), flagsright, phud.playerBoxAlpha);
+                    phud.PBHud_DrawBar("ABAR6", "BGBARL", phud.GetAmount("PB_Fuel"), phud.GetMaxAmount("PB_Fuel"), (-100, -72), 0, 1, flagsright);
+                    phud.PBHud_DrawString(phud.mDefaultFont, phud.Formatnumber(phud.GetAmount("PB_Fuel")), (-207, -90), flagssTextAlignRight, Font.CR_RED);
+                }
+                else 
+                {
+                    phud.PBHud_DrawImage("BARBACR3", (-90, -71), flagsright, phud.playerBoxAlpha);
+                    phud.PBHud_DrawBar("ABAR4", "BGBARL", phud.GetAmount("PB_RocketAmmo"), phud.GetMaxAmount("PB_RocketAmmo"), (-100, -72), 0, 1, flagsright);
+                    phud.PBHud_DrawString(phud.mDefaultFont, phud.Formatnumber(phud.GetAmount("PB_RocketAmmo")), (-207, -90), flagssTextAlignRight, Font.CR_RED);
+                }
+                pbx_image = crossbow.demonicBallistaMode ? "CBOWT0" : icon;
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
+            case 'PBX_NormalRifle':
+                let nr = PBX_NormalRifle(pbweap);
+                if(!nr) return;
+                pbx_image = nr.laserActive ? "graphics/WeaponWheel/NormalRifle/laseron.png" : icon;
+                // Force to use the dual wield icon if akimbo
+                if(isAkimbo) pbx_image = "graphics/WeaponWheel/NormalRifle/dualwield.png";
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
+//////////////// SLOT 5 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Show the current mode and if the weapon is in triple barrel mode
+            case 'PB_Minigun':
+                bool tripleBarrel = PBX_PlayerHasInventory("TripleBarrelMode");
+                // If the current mode is the triplebarrel
+                pbx_image = tripleBarrel ? "8GUNA0" : icon;
+                bool chaingunMode = PBX_PlayerHasInventory("ChainGunMode");
+                bool tripleMode = PBX_PlayerHasInventory("TripleBarrelMode");
+                int mode = !chaingunMode && tripleMode  ? 2       // triple
+                            :  chaingunMode && !tripleMode ? 1    // chaingun (default)
+                            : 0;                                  // normal
+
+                pbx_image2   =  mode == 2 ? "graphics/WeaponIcons/EXTREMELYHIHGSPID.png" : 
+                                mode == 1 ? "graphics/WeaponIcons/NORMALSPEED.png" : 
+                                "graphics/WeaponIcons/HIGHSPEED.png";
+                pbx_image3 = " "; //its empty for now
+                break;
+
+            // Draw bar for the shield durability
+            case 'PBX_NeoHMG':
+                let neoHMG = PBX_NeoHMG(pbWeap);
+                // Show Shield Durability
+                if(!neoHMG) return;
+                phud.PBHud_DrawImage("BARBASH3", (-90, -71), flagsright, phud.playerBoxAlpha);
+                phud.PBHud_DrawBar("ABAR9", "BGBARL", phud.GetAmount("HMGShield"), phud.GetMaxAmount("HMGShield"), (-100, -72), 0, 1, flagsright);
+                phud.PBHud_DrawString(phud.mDefaultFont, phud.Formatnumber(phud.GetAmount("HMGShield")), (-207, -90), flagssTextAlignRight, Font.CR_GREEN);
+                // Show what Ammo type is selected
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
+//////////////// SLOT 6 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Shows the currnet rocket mode
+            case 'PB_RocketLauncher':
+                // WHY IS THE ROCKETLAUNCHER MODE SWITCH SO JANK
+                // WHAT DO YOU MEAN ITS A STRING
+                if(pbweap)
+                {
+                    if(pbweap.rocketLauncherMode == "Standard")
+                    {
+                        pbx_image2 = "graphics/pywheel/rocket_standard.png";
+                    }
+                    else if (pbweap.rocketLauncherMode == "Homing")
+                    {
+                        pbx_image2 = "graphics/pywheel/rocket_homing.png";
+                    }
+                    else if (pbweap.rocketLauncherMode == "Laser")
+                    {
+                        pbx_image2 = "graphics/pywheel/rocket_laser.png";
+                    }
+                }
+                pbx_image3 = " "; //its empty for now
+                break;
+
+            // Shows the currnet grenade mode
+            case 'PB_SuperGL':
+                let sgl = PB_SuperGL(pbWeap);
+                if(!sgl) return;
+                static const string sglIcons[] = {
+                    "graphics/pywheel/grenade_impact.png", "graphics/pywheel/grenade_sticky.png", 
+                    "graphics/pywheel/grenade_acid.png", "graphics/pywheel/grenade_incendiary.png", 
+                    "graphics/pywheel/grenade_cryo.png"
+                };
+                int sglgren = clamp(sgl.GrenadeMode, 0, sglIcons.Size() - 1);
+                pbx_image2 = sglIcons[sglgren];
+                pbx_image3 = " "; //its empty for now
+                break;
+
+            // Draw the durability bar
+            case 'PBX_CyberdemonRL':
+                let crl = PBX_CyberdemonRL(pbWeap);
+                if(!crl) return;
+                phud.PBHud_DrawImage("BARBADD2", (-73, -49), flagsright, phud.playerBoxAlpha);
+                phud.PBHud_DrawBar("ABAR10", "BGBARL", phud.GetAmount("CyberRLDurability"), phud.GetMaxAmount("CyberRLDurability"), (-111, -52), 0, 1, flagsright);
+                phud.PBHud_DrawString(phud.mDefaultFont, phud.Formatnumber(phud.GetAmount("CyberRLDurability")), (-205, -68.75), flagssTextAlignRight, Font.CR_DARKGRAY);
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
+            // Draw the durablility bar and change the weapon icon
+            case 'PBX_MastermindChaingun':
+                let mcg = PBX_MastermindChaingun(pbWeap);
+                if (!mcg) return; 
+                phud.PBHud_DrawImage("BARBADD2", (-73, -49), flagsright, phud.playerBoxAlpha);
+                phud.PBHud_DrawBar("ABAR10", "BGBARL", phud.GetAmount("MastermindCGDurability"), phud.GetMaxAmount("MastermindCGDurability"), (-111, -52), 0, 1, flagsright);
+                phud.PBHud_DrawString(phud.mDefaultFont, phud.Formatnumber(phud.GetAmount("MastermindCGDurability")), (-205, -68.75), flagssTextAlignRight, Font.CR_DARKGRAY);
+                pbx_image = "RMN1H0";
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
+//////////////// SLOT 7 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            case 'PB_M1Plasma':
+                // If Akimbo
+                pbx_image = isAkimbo ? "graphics/WeaponPickups/M1_DUAL.png" : icon;
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
+            case 'PB_M2Plasma':
+                bool m2Upgraded = PBX_PlayerHasInventory("HasLightningGunUpgrade");
+                pbx_image = isAkimbo ? 
+                    // If Akimbo ? Upgraded : Non Upgraded
+                    (m2Upgraded ? "graphics/WeaponPickups/M2_UPGR_DUAL.png" : "graphics/WeaponPickups/M2_DUAL.png") :
+                    // If Not Akimbo ? Upgraded : Non Upgraded
+                    (m2Upgraded ? "M2PRB0" : icon);
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
+            case 'PBX_BDPRailgun':
+                let railgun = PBX_BDPRailgun(pbWeap);
+                if(!railgun) return;
+                pbx_image  = railgun.laserActive ? "graphics/WeaponWheel/PlatRailgun/LaserOn.png" : icon;
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
+
+//////////////// SLOT 8 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //  Change the image if the weapon has been upgraded
+            case 'PB_Flamethrower':
+                bool flamerUpgraded = PBX_PlayerHasInventory("FlamerUpgraded");
+                pbx_image = flamerUpgraded ? "FSPWB0" : "FSPWA0";
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
+            // Shows the current primary and secondary mode
+            case 'PB_CryoRifle':
+                let cryorifle = PB_CryoRifle(pbWeap);
+                if(!cryorifle) return;
+                bool cryoMissile = cryorifle.cryoPrimary   == cryorifle.PRIM_MISSILE;
+                bool cryoSpear   = cryorifle.cryoSecondary == cryorifle.SEC_SPEAR;
+                pbx_image = "FRPKA0";
+                pbx_image2 = cryoSpear ? "graphics/pywheel/CryoRifle_Spear.png" : "graphics/pywheel/CryoRifle_Flak.png";
+                pbx_image3 = cryoMissile ? "graphics/pywheel/CryoRifle_Missile.png" : "graphics/pywheel/CryoRifle_Beam.png";
+                break;
+
+//////////////// Missing Icons /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // You dont need to add these weapons to the exceptions above since they dont count as valid
+            case 'PB_ChexRifle':
+                pbx_image = "CRRSA0";
+                pbx_image2 = " "; //its empty for now
+                break;
+            case 'PB_LMG':
+                pbx_image = "LMPIA0";
+                pbx_image2 = " "; //its empty for now
+                break;
+            case 'PB_BFG9000':
+                pbx_image = "097GA0";
+                pbx_image2 = " "; //its empty for now
+                break;
+            case 'PB_Unmaker':
+                pbx_image = "UNHDA0";
+                pbx_image2 = " "; //its empty for now
+                pbx_image3 = " "; //its empty for now
+                break;
+
+            default:
+                pbx_image = " ";
+                pbx_image2 = " ";
+                pbx_image3 = " ";
+                pbx_image3 = " "; //its empty for now
+                break;
+        }
+
+        // Actually Draw the Thing
+        PBX_DrawImage(phud);
+        if(pbx_image2 && (pbx_image2 != " " || pbx_image2 != "")) PBX_DrawImage(phud,2);
+        if(pbx_image3 && (pbx_image3 != " " || pbx_image3 != "")) PBX_DrawImage(phud,3);
+    }
+
+    protected
+    ui void DrawPBXWeaponAuto(PB_Hud_ZS phud, PB_WeaponBase pbWeap)
     {
         // Standard check
         if(PBXWeapons_hudsetting_filter & DisablePBX_WeaponHud) return;
@@ -123,12 +611,13 @@ class PBX_Hud : PB_Hud_ZS
 
         if (iconID.IsValid())
         {
-            PBX_DrawImage();
+            PBX_DrawImage(phud);
         }
     }
 
     // ADJUST SPECIFIC WEAPON POSITION AND SCALE HERE
-    void weaponAdjustments()
+    protected
+    ui void weaponAdjustments(PB_WeaponBase pbWeap)
     {
         // Set defaults 
         vector2 adjustPos,adjustPos2, adjustPos3 = (0,0);
@@ -447,471 +936,85 @@ class PBX_Hud : PB_Hud_ZS
         // Console.Printf("Pos: %d, %d", adjustPos.x, adjustPos.y);
     }
 
-    // MANUALLY DRAW THE WEAPONS AND WEAPON MODES
-    void DrawPBXWeaponManual()
+    protected
+    ui void PBX_DrawImage(PB_Hud_ZS phud, int whatimage = 1)
     {
-        // Standard Check
-        if(PBXWeapons_hudsetting_filter & DisablePBX_WeaponHud) return;
-        if (!pbWeap) return;
-
-        // Set Defaults & Variables
-        TextureID iconID = pbWeap.AltHudIcon.IsValid() ? pbWeap.AltHudIcon : pbWeap.Icon;
-        string icon = TexMan.GetName(iconID);
-
-        // Add the weapons here
-        switch(pbWeap.GetClassName())
+        string image; Vector2 pos, scale, box; double transparency;
+        switch (whatimage)
         {
-//////////////// SLOT 2 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // Shows dual wield and suppressed
-            case 'PB_Pistol':
-                let pistol = PB_Pistol(pbWeap);
-                if(!pistol) return;
-                bool pistolSilenced = pistol.hasSilencer;
-                pbx_image = isAkimbo ? 
-                    // If Akimbo ? Suppressed : Non Suppressed
-                    (pistolSilenced ? "graphics/pywheel/PISTOL_7.png" : "graphics/pywheel/PISTOL_4.png") :
-                    // If Not Akimbo ? Suppressed : Non Suppressed
-                    (pistolSilenced ? "graphics/pywheel/PISTOL_1.png" : "graphics/pywheel/PISTOL_0.png");
-                pbx_image2 = " "; //its empty for now
-                pbx_image3 = " "; //its empty for now
-                break;
-
-            // Same as the Pistol
-            case 'PB_SMG':
-                let smg = PB_SMG(pbWeap);
-                if(!smg) return;
-                bool smgSilenced = smg.hasSilencer;
-                pbx_image = isAkimbo ? 
-                    // If Akimbo ? Suppressed : Non Suppressed
-                    (smgSilenced ? "graphics/pywheel/SMG/SMG_DUAL_SUPPRESSED.png" : "graphics/pywheel/SMG/SMG_DUAL.png") :
-                    // If Not Akimbo ? Suppressed : Non Suppressed
-                    (smgSilenced ? "ATFLA0" : "ATFLB0");
-                pbx_image2 = " "; //its empty for now
-                pbx_image3 = " "; //its empty for now
-                break;
-
-            // Shows dual wield
-            case 'PB_MP40':
-                pbx_image = isAkimbo ? "graphics/WeaponPickups/MP40_DUAL.png" : icon;
-                pbx_image2 = " "; //its empty for now
-                pbx_image3 = " "; //its empty for now
-                break;
-
-            case 'PB_Revolver':
-                pbx_image = isAkimbo ? "graphics/WeaponPickups/REVOLVER_DUAL.png" : icon;
-                pbx_image2 = " "; //its empty for now
-                pbx_image3 = " "; //its empty for now
-                break;
-                
-            case 'PB_Deagle':
-                pbx_image = isAkimbo ? "graphics/WeaponPickups/DEAGLE_DUAL.png" : icon;
-                pbx_image2 = " "; //its empty for now
-                pbx_image3 = " "; //its empty for now
-                break;
-
-            case 'PBX_Prosurv_LeverAction':
-                let lar = PBX_Prosurv_LeverAction(pbWeap);
-                if(!lar) return;
-                pbx_image  = lar.laserActive ? "graphics/WeaponWheel/LeverAction/LaserOn.png" : icon;
-                pbx_image2 = " "; //its empty for now
-                pbx_image3 = " "; //its empty for now
-                break;
-
-//////////////// SLOT 3 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // Shows current shell type and if the weapon has been upgraded
-            case 'PB_Shotgun':
-                let shotgun = PB_Shotgun(pbWeap);
-                bool shotgunUpgraded = PBX_PlayerHasInventory("PumpshotgunMagazine");
-                if(!shotgun) return;
-                switch(shotgun.shellsmode)
-                {
-                    case PB_Shotgun.Shell_Buck:
-                        pbx_image2 = "buckhud";
-                        break;
-                    case PB_Shotgun.Shell_Slug:
-                        pbx_image2 = "slughud";
-                        break;
-                    case PB_Shotgun.Shell_Drag:
-                        pbx_image2 = "drgnhud";
-                        break;
-                }
-                pbx_image = shotgunUpgraded ? "9SMUA0" : icon;
-                pbx_image2 = " "; //its empty for now
-                pbx_image3 = " "; //its empty for now
-                break;
-
-            // Shows dual wield and if the weapon has been upgraded
-            case 'PB_Autoshotgun':
-                bool asgUpgraded = PBX_PlayerHasInventory("AutoshotgunDrumMag");
-                pbx_image = isAkimbo ? 
-                    // If Akimbo ? Upgraded : Non Upgraded
-                    (asgUpgraded ? "graphics/WeaponPickups/ASG_UPGRADED_DOUBLE.png" : "graphics/WeaponPickups/ASGDOUBLE.png") :
-                    // If Not Akimbo ? Upgraded : Non Upgraded
-                    (asgUpgraded ? "A9SCA0" : "graphics/WeaponPickups/ASGSINGLE.png");
-                pbx_image2 = " "; //its empty for now
-                pbx_image3 = " "; //its empty for now
-                break;
-
-            // Shows dual wield
-            case 'PB_SSG':
-                pbx_image = isAkimbo ? "graphics/WeaponPickups/SSG_DUAL.png" : icon;
-                pbx_image2 = " "; //its empty for now
-                pbx_image3 = " "; //its empty for now
-                break;
-
-            // Shows dual wield and current weapon mode
-            case 'PB_QuadSG':
-                bool quadFullBlast = PBX_PlayerHasInventory("FullBlastMode");
-                bool demonBreath = PBX_PlayerHasInventory("BreathMode");
-                pbx_image = isAkimbo ? (demonBreath ? "graphics/WeaponPickups/QSGDUAL_DEMON.png" // DUAL QSG DEMON BREATH
-                                        : "graphics/pywheel/Quad_Dual.png")                      // DUAL QSG BUCKSHOT
-                         : (demonBreath ? "graphics/pywheel/Quad_Demonic.png"                    // SINGLE QSG DEMON BREATH
-                                        : "QSPGA0");     
-                pbx_image2 = quadFullBlast ? "graphics/WeaponIcons/QUAD_FULL.png" : "graphics/WeaponIcons/QUAD_HALF.png";
-                pbx_image3 = " "; //its empty for now
-                break;
-
-            // Shows current shell type
-            case 'PBX_CSSG':
-                let cssg = PBX_CSSG(pbWeap);
-                if(!cssg) return;
-                static const string cssgIcons[] = {
-                    "buckhud", "slughud", "flcthud", "flakhud", "drgnhud", 
-                    "explhud", "phoshud", "doomhud", "dnmkhud", "subzhud"
-                };
-                // Show what Ammo type is selected
-                int cssgshell = clamp(cssg.shellsmode, 0, cssgIcons.Size() - 1);
-                pbx_image2 = cssgIcons[cssgshell];
-                pbx_image3 = " "; //its empty for now
-                break;
-
-            case 'PBX_ProSurvPSG':
-                let psg = PBX_ProSurvPSG(pbWeap);
-                if(!psg) return;
-                pbx_image  = psg.laserActive ? "graphics/WeaponWheel/ProsurvPSG/LaserOn.png" : icon;
-                pbx_image2 = " "; //its empty for now
-                pbx_image3 = " "; //its empty for now
-                break;
-            
-
-//////////////// SLOT 4 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // Shows dual wield
-            case 'PB_Carbine':
-                // If Akimbo
-                pbx_image = isAkimbo ? "graphics/pywheel/Carbine_Dual.png" : icon;
-                pbx_image2 = " "; //its empty for now
-                pbx_image3 = " "; //its empty for now
-                break;
-
-            // Shows dual wield and if the weapon has been upgraded
-            case 'PB_DMR':
-                bool dmrUpgraded   = PBX_PlayerHasInventory("DMRUpgraded");
-                bool hdmrSniperMode = PBX_PlayerHasInventory("HDMRSniperMode");
-                // WHAT IS THIS LMAOOOOO
-                pbx_image = !dmrUpgraded  ? (isAkimbo ? "graphics/WeaponPickups/DMR_DUAL.png" : icon)
-                : isAkimbo       ? (hdmrSniperMode ? "graphics/WeaponPickups/HMDR_SNIPER_DOUBLE.png"
-                                                    : "graphics/pywheel/hdmr_dual.png")
-                : hdmrSniperMode  ? "graphics/WeaponPickups/HDMR_SNIPER_SINGLE.png"
-                : "HIFLA0";
-                pbx_image2 = " "; //its empty for now
-                pbx_image3 = " "; //its empty for now
-                break;
-
-            case 'PBX_BDPBattleRifle':
-                let br = PBX_BDPBattleRifle(pbWeap);
-                if(!br) return;
-                pbx_image  = br.laserActive ? "graphics/WeaponWheel/BattleRifle/BR_LaserOn.png" : icon;
-                pbx_image2 = " "; //its empty for now
-                pbx_image3 = " "; //its empty for now
-                break;
-
-            // Draw bars for specific modes and shows the current ammo type
-            case 'PBX_MetalSniper':
-                let sniper = PBX_MetalSniper(pbWeap);
-                if(!sniper) return;
-                // Show Rocket Ammo if Grenade Secondary Mode is Selected
-                if (sniper.AltMode) 
-                {
-                    PBHud_DrawImage("BARBACR3", (-90, -71), flagsright, playerBoxAlpha);
-                    PBHud_DrawBar("ABAR4", "BGBARL", GetAmount("PB_RocketAmmo"), GetMaxAmount("PB_RocketAmmo"), (-100, -72), 0, 1, flagsright);
-                    PBHud_DrawString(mDefaultFont, Formatnumber(GetAmount("PB_RocketAmmo")), (-207, -90), DI_TEXT_ALIGN_RIGHT, Font.CR_RED);
-                }
-                // This draws the overlay when the smart scope is enabled
-                if (sniper.enableScopeHUD)
-                {
-                    vector2 topOffsets1 = ((-24 - visorOffsets) + (-m32to0), -24 - visorOffsets - m32to0);
-                    vector2 topOffsets2 = ((24 + visorOffsets) + (m32to0), -24 - visorOffsets - m32to0);
-					PBHud_DrawImageManualAlpha("NIGHTVIS", (topOffsets1.x, 0), DI_ITEM_LEFT | DI_SCREEN_LEFT | DI_ITEM_VCENTER | DI_SCREEN_VCENTER, 0.5 + 0.5 * abs(sin(level.MapTime)), scale: (0.3, 0.3), parallax: 1.5, parallax2: 1.5);
-					PBHud_DrawImageManualAlpha("NIGHTVIS", (topOffsets2.x, 0), DI_ITEM_RIGHT | DI_SCREEN_RIGHT | DI_MIRROR | DI_ITEM_VCENTER | DI_SCREEN_VCENTER, 0.5 + 0.5 * abs(sin(level.MapTime)), scale: (0.3, 0.3), parallax: 1.5, parallax2: 1.5);
-                }
-                // Show what Ammo type is selected
-                pbx_image  = sniper.laserActive ? "graphics/WeaponWheel/MetalSniper/LaserOn.png" : icon;
-                pbx_image2 = sniper && sniper.resonanceAmmoLoaded ? "graphics/WeaponWheel/metalsniper/ResonanceAlt.png" : "graphics/WeaponWheel/metalsniper/StandardAlt.png";
-                pbx_image3 = " "; //its empty for now
-                break;
-                
-            // Draw bars for specific modes and the current weapon
-            case 'PBX_Prosurv_Ballista':
-                let crossbow = PBX_Prosurv_Ballista(pbWeap);
-                // Show Fuel if Demonic Mode, Show Rocket if Standard Mode
-                if(!crossbow) return;
-                if (crossbow.demonicBallistaMode) 
-                {
-                    PBHud_DrawImage("BARBACD3", (-90, -71), flagsright, playerBoxAlpha);
-                    PBHud_DrawBar("ABAR6", "BGBARL", GetAmount("PB_Fuel"), GetMaxAmount("PB_Fuel"), (-100, -72), 0, 1, flagsright);
-                    PBHud_DrawString(mDefaultFont, Formatnumber(GetAmount("PB_Fuel")), (-207, -90), DI_TEXT_ALIGN_RIGHT, Font.CR_RED);
-                }
-                else 
-                {
-                    PBHud_DrawImage("BARBACR3", (-90, -71), flagsright, playerBoxAlpha);
-                    PBHud_DrawBar("ABAR4", "BGBARL", GetAmount("PB_RocketAmmo"), GetMaxAmount("PB_RocketAmmo"), (-100, -72), 0, 1, flagsright);
-                    PBHud_DrawString(mDefaultFont, Formatnumber(GetAmount("PB_RocketAmmo")), (-207, -90), DI_TEXT_ALIGN_RIGHT, Font.CR_RED);
-                }
-                pbx_image = crossbow.demonicBallistaMode ? "CBOWT0" : icon;
-                pbx_image2 = " "; //its empty for now
-                pbx_image3 = " "; //its empty for now
-                break;
-
-            case 'PBX_NormalRifle':
-                let nr = PBX_NormalRifle(pbweap);
-                if(!nr) return;
-                pbx_image = nr.laserActive ? "graphics/WeaponWheel/NormalRifle/laseron.png" : icon;
-                // Force to use the dual wield icon if akimbo
-                if(isAkimbo) pbx_image = "graphics/WeaponWheel/NormalRifle/dualwield.png";
-                pbx_image2 = " "; //its empty for now
-                pbx_image3 = " "; //its empty for now
-                break;
-
-//////////////// SLOT 5 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // Show the current mode and if the weapon is in triple barrel mode
-            case 'PB_Minigun':
-                bool tripleBarrel = PBX_PlayerHasInventory("TripleBarrelMode");
-                // If the current mode is the triplebarrel
-                pbx_image = tripleBarrel ? "8GUNA0" : icon;
-                bool chaingunMode = PBX_PlayerHasInventory("ChainGunMode");
-                bool tripleMode = PBX_PlayerHasInventory("TripleBarrelMode");
-                int mode = !chaingunMode && tripleMode  ? 2       // triple
-                            :  chaingunMode && !tripleMode ? 1    // chaingun (default)
-                            : 0;                                  // normal
-
-                pbx_image2   =  mode == 2 ? "graphics/WeaponIcons/EXTREMELYHIHGSPID.png" : 
-                                mode == 1 ? "graphics/WeaponIcons/NORMALSPEED.png" : 
-                                "graphics/WeaponIcons/HIGHSPEED.png";
-                pbx_image3 = " "; //its empty for now
-                break;
-
-            // Draw bar for the shield durability
-            case 'PBX_NeoHMG':
-                let neoHMG = PBX_NeoHMG(pbWeap);
-                // Show Shield Durability
-                if(!neoHMG) return;
-                PBHud_DrawImage("BARBASH3", (-90, -71), flagsright, playerBoxAlpha);
-                PBHud_DrawBar("ABAR9", "BGBARL", GetAmount("HMGShield"), GetMaxAmount("HMGShield"), (-100, -72), 0, 1, flagsright);
-                PBHud_DrawString(mDefaultFont, Formatnumber(GetAmount("HMGShield")), (-207, -90), DI_TEXT_ALIGN_RIGHT, Font.CR_GREEN);
-                // Show what Ammo type is selected
-                pbx_image2 = " "; //its empty for now
-                pbx_image3 = " "; //its empty for now
-                break;
-
-//////////////// SLOT 6 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // Shows the currnet rocket mode
-            case 'PB_RocketLauncher':
-                // WHY IS THE ROCKETLAUNCHER MODE SWITCH SO JANK
-                // WHAT DO YOU MEAN ITS A STRING
-                if(pbweap)
-                {
-                    if(pbweap.rocketLauncherMode == "Standard")
-                    {
-                        pbx_image2 = "graphics/pywheel/rocket_standard.png";
-                    }
-                    else if (pbweap.rocketLauncherMode == "Homing")
-                    {
-                        pbx_image2 = "graphics/pywheel/rocket_homing.png";
-                    }
-                    else if (pbweap.rocketLauncherMode == "Laser")
-                    {
-                        pbx_image2 = "graphics/pywheel/rocket_laser.png";
-                    }
-                }
-                pbx_image3 = " "; //its empty for now
-                break;
-
-            // Shows the currnet grenade mode
-            case 'PB_SuperGL':
-                let sgl = PB_SuperGL(pbWeap);
-                if(!sgl) return;
-                static const string sglIcons[] = {
-                    "graphics/pywheel/grenade_impact.png", "graphics/pywheel/grenade_sticky.png", 
-                    "graphics/pywheel/grenade_acid.png", "graphics/pywheel/grenade_incendiary.png", 
-                    "graphics/pywheel/grenade_cryo.png"
-                };
-                int sglgren = clamp(sgl.GrenadeMode, 0, sglIcons.Size() - 1);
-                pbx_image2 = sglIcons[sglgren];
-                pbx_image3 = " "; //its empty for now
-                break;
-
-            // Draw the durability bar
-            case 'PBX_CyberdemonRL':
-                let crl = PBX_CyberdemonRL(pbWeap);
-                if(!crl) return;
-                PBHud_DrawImage("BARBADD2", (-73, -49), flagsright, playerBoxAlpha);
-                PBHud_DrawBar("ABAR10", "BGBARL", GetAmount("CyberRLDurability"), GetMaxAmount("CyberRLDurability"), (-111, -52), 0, 1, flagsright);
-                PBHud_DrawString(mDefaultFont, Formatnumber(GetAmount("CyberRLDurability")), (-205, -68.75), DI_TEXT_ALIGN_RIGHT, Font.CR_DARKGRAY);
-                pbx_image2 = " "; //its empty for now
-                pbx_image3 = " "; //its empty for now
-                break;
-
-            // Draw the durablility bar and change the weapon icon
-            case 'PBX_MastermindChaingun':
-                let mcg = PBX_MastermindChaingun(pbWeap);
-                if (!mcg) return; 
-                PBHud_DrawImage("BARBADD2", (-73, -49), flagsright, playerBoxAlpha);
-                PBHud_DrawBar("ABAR10", "BGBARL", GetAmount("MastermindCGDurability"), GetMaxAmount("MastermindCGDurability"), (-111, -52), 0, 1, flagsright);
-                PBHud_DrawString(mDefaultFont, Formatnumber(GetAmount("MastermindCGDurability")), (-205, -68.75), DI_TEXT_ALIGN_RIGHT, Font.CR_DARKGRAY);
-                pbx_image = "RMN1H0";
-                pbx_image2 = " "; //its empty for now
-                pbx_image3 = " "; //its empty for now
-                break;
-
-//////////////// SLOT 7 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            case 'PB_M1Plasma':
-                // If Akimbo
-                pbx_image = isAkimbo ? "graphics/WeaponPickups/M1_DUAL.png" : icon;
-                pbx_image2 = " "; //its empty for now
-                pbx_image3 = " "; //its empty for now
-                break;
-
-            case 'PB_M2Plasma':
-                bool m2Upgraded = PBX_PlayerHasInventory("HasLightningGunUpgrade");
-                pbx_image = isAkimbo ? 
-                    // If Akimbo ? Upgraded : Non Upgraded
-                    (m2Upgraded ? "graphics/WeaponPickups/M2_UPGR_DUAL.png" : "graphics/WeaponPickups/M2_DUAL.png") :
-                    // If Not Akimbo ? Upgraded : Non Upgraded
-                    (m2Upgraded ? "M2PRB0" : icon);
-                pbx_image2 = " "; //its empty for now
-                pbx_image3 = " "; //its empty for now
-                break;
-
-            case 'PBX_BDPRailgun':
-                let railgun = PBX_BDPRailgun(pbWeap);
-                if(!railgun) return;
-                pbx_image  = railgun.laserActive ? "graphics/WeaponWheel/PlatRailgun/LaserOn.png" : icon;
-                pbx_image2 = " "; //its empty for now
-                pbx_image3 = " "; //its empty for now
-                break;
-
-
-//////////////// SLOT 8 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //  Change the image if the weapon has been upgraded
-            case 'PB_Flamethrower':
-                bool flamerUpgraded = PBX_PlayerHasInventory("FlamerUpgraded");
-                pbx_image = flamerUpgraded ? "FSPWB0" : "FSPWA0";
-                pbx_image2 = " "; //its empty for now
-                pbx_image3 = " "; //its empty for now
-                break;
-
-            // Shows the current primary and secondary mode
-            case 'PB_CryoRifle':
-                let cryorifle = PB_CryoRifle(pbWeap);
-                if(!cryorifle) return;
-                bool cryoMissile = cryorifle.cryoPrimary   == cryorifle.PRIM_MISSILE;
-                bool cryoSpear   = cryorifle.cryoSecondary == cryorifle.SEC_SPEAR;
-                pbx_image = "FRPKA0";
-                pbx_image2 = cryoSpear ? "graphics/pywheel/CryoRifle_Spear.png" : "graphics/pywheel/CryoRifle_Flak.png";
-                pbx_image3 = cryoMissile ? "graphics/pywheel/CryoRifle_Missile.png" : "graphics/pywheel/CryoRifle_Beam.png";
-                pbx_image3 = " "; //its empty for now
-                break;
-
-//////////////// Missing Icons /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // You dont need to add these weapons to the exceptions above since they dont count as valid
-            case 'PB_ChexRifle':
-                pbx_image = "CRRSA0";
-                pbx_image2 = " "; //its empty for now
-                break;
-            case 'PB_LMG':
-                pbx_image = "LMPIA0";
-                pbx_image2 = " "; //its empty for now
-                break;
-            case 'PB_BFG9000':
-                pbx_image = "097GA0";
-                pbx_image2 = " "; //its empty for now
-                break;
-            case 'PB_Unmaker':
-                pbx_image = "UNHDA0";
-                pbx_image2 = " "; //its empty for now
-                pbx_image3 = " "; //its empty for now
-                break;
-
             default:
-                pbx_image = " ";
-                pbx_image2 = " ";
-                pbx_image3 = " ";
-                pbx_image3 = " "; //its empty for now
-                break;
+            case 1: image = pbx_image;  pos = pbx_weapon_pos;  scale = pbx_weapon_truescale;  transparency = pbx_weapon_alpha;     box = pbx_weapon_box1; break;
+            case 2: image = pbx_image2; pos = pbx_weapon_pos2; scale = pbx_weapon_truescale2; transparency = pbx_weaponmode_alpha; box = pbx_weapon_box2; break;
+            case 3: image = pbx_image3; pos = pbx_weapon_pos3; scale = pbx_weapon_truescale3; transparency = pbx_weaponmode_alpha; box = pbx_weapon_box3; break;
         }
-
-        // Actually Draw the Thing
-        PBX_DrawImage();
-        if(pbx_image2 && (pbx_image2 != " " || pbx_image2 != "")) PBX_DrawImage(2);
-        if(pbx_image3 && (pbx_image3 != " " || pbx_image3 != "")) PBX_DrawImage(3);
+        phud.PBHud_DrawImage(image, pos, flagsright, transparency, scale: scale);
     }
 
-    // THIS IS ALL AUXILLIARY FUNCTIONS JUST TO KEEP THE CODE CLEAN
-    // Draw what type of image
-    void PBX_DrawImage(int whatimage = 1)
+    // protected
+    static clearscope bool PBX_PlayerHasInventory(name inv)
     {
-        switch(whatimage)
-        {
-            string image;
-            Vector2 pos;
-            Vector2 scale;
-            Vector2 box;
-            double transparency;
-
-            // Weapon Pickup Sprite
-            default:
-            case 1:
-                image           = pbx_image;
-                pos             = pbx_weapon_pos;
-                scale           =  pbx_weapon_truescale;
-                transparency    = pbx_weapon_alpha;
-                box             = pbx_weapon_box1;
-                break;
-            // Weapon Mode Sprite
-            case 2:
-                image           = pbx_image2;
-                pos             = pbx_weapon_pos2;
-                scale           = pbx_weapon_truescale2;
-                transparency    = pbx_weaponmode_alpha;
-                box             = pbx_weapon_box2;
-                break;
-            // Weapon Mode 2 Sprite
-            case 3:
-                image           = pbx_image3;
-                pos             = pbx_weapon_pos3;
-                scale           = pbx_weapon_truescale3;
-                transparency    = pbx_weaponmode_alpha;
-                box             = pbx_weapon_box3;
-                break;
-        }
-        // PBHud_DrawImage(image, pos, flagsright, transparency, box: box, scale: scale);
-        PBHud_DrawImage(image, pos, flagsright, transparency, scale: scale);
+        return PlayerPawn(players[consoleplayer].mo).CountInv(inv) > 0;
     }
+}
 
-    // Check if the player has an inventory item, returns true if yes
-    bool PBX_PlayerHasInventory(name inventory)
-    {
-        return PlayerPawn(CPlayer.mo).CountInv(inventory) > 0;
-    }
+class PBXHUDData : Object
+{
+    bool Handled;
 
-    // What Actually Draws the HUD
-    void DrawPBXHud()
+    String Image1;
+    String Image2;
+    String Image3;
+
+    Vector2 Offset1;
+    Vector2 Offset2;
+    Vector2 Offset3;
+
+    double Scale1;
+    double Scale2;
+    double Scale3;
+}
+
+// ALWAYS START THE NAME WITH "PBXHUDService" , after that you can name it whatever
+// MAKE SURE IT INHERITS "service"
+class PBXHUDService_Katana : service
+{
+    // Override this function, you can just copy and paste it
+    override Object GetObjectUI(String request,String stringArg,int intArg,double doubleArg,Object objectArg)
     {
-        let plr = PlayerPawn(CPlayer.mo);
-        if(!plr) return;
-        if(!weap || !pbWeap) return;
-        weaponAdjustments();
-        DrawPBXWeaponAuto();
-        DrawPBXWeaponManual();
+        // You dont need to change these since they're only for initialization
+        if(request != "WeaponHUD") return null;
+        let weapon = PB_WeaponBase(objectArg); // Get a pointer to the weapon here so you can do stuff with the weapon
+        if(!weapon) return null;
+
+        // Change this to your weapon name
+        if(weapon.GetClassName() != 'PB_ArgentSith')return null;
+
+        // This is to make sure the data is initialized, you can also ignore this
+        let data = new("PBXHUDData");
+        data.Handled = true;
+
+        // If you want to check the players inventory for weapon mode
+        // use PBX_WeaponHudHandler.PBX_PlayerHasInventory("inventorynamehere");
+        // like this example
+		bool haszoom = PBX_WeaponHudHandler.PBX_PlayerHasInventory("zoomed");
+
+        // This is where all the data is
+        // You can change anything here
+
+        // This is the path for the weapon icons
+        data.Image1 = "";       // Weapon Icon
+        data.Image2 = "";       // Weapon Mode Icon
+        data.Image3 = "";       // Weapon Mode 2 Icon (For example the CryoRifle has 2 modes at the same time)
+
+        // This is for its position (x,y)
+        data.Offset1 = (0,0);   // Weapon Icon Position
+        data.Offset2 = (0,0);   // Weapon Mode Icon Position
+
+        // This is for the scale
+        data.Scale1 = 1.0;      // Weapon Icon Scale
+        data.Scale2 = 1.0;      // Weapon Mode Icon Scale
+
+        // You can ignore this
+        return data;
     }
 }

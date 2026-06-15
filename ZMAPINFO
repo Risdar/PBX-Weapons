@@ -1,6 +1,6 @@
 Gameinfo
 {
-	StatusBarClass = "PBX_Hud"
+	addeventhandlers = "PBX_WeaponHudHandler"
 	addeventhandlers = "PBXWeapons_CheatsHandler"
 	addeventhandlers = "PBXWeapons_WeaponSpawner"
 	addeventhandlers = "PBXWeapons_ScopeHandler"
