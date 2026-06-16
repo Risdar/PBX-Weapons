@@ -3,7 +3,7 @@ extend class PBX_ProsurvBlaster
     override void DoEffect() 
 	{
 		super.DoEffect();
-        if (level.frozen) return;
+        if (level.isFrozen()) return;
         // Check if the player exists and if the current weapon they're using is the blaster
         If(	owner.player && owner.player.readyweapon.GetClass() is self.GetClass())
         {

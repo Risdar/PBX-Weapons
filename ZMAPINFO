@@ -1,6 +1,6 @@
 Gameinfo
 {
-	addeventhandlers = "PBX_WeaponHudHandler"
+	addeventhandlers = "PBXHUD_Handler"
 	addeventhandlers = "PBXWeapons_CheatsHandler"
 	addeventhandlers = "PBXWeapons_WeaponSpawner"
 	addeventhandlers = "PBXWeapons_ScopeHandler"
