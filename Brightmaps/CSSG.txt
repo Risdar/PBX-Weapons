@@ -8,6 +8,10 @@ Brightmap Sprite C0FFC0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0FFC0.png" Disa
 Brightmap Sprite C0FFD0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0FFD0.png" DisableFullbright }
 Brightmap Sprite C0FFE0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0FFE0.png" DisableFullbright }
 Brightmap Sprite C0FFF0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0FFF0.png" DisableFullbright }
+Brightmap Sprite C0FFG0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0FFG0.png" DisableFullbright }
+Brightmap Sprite C0FFH0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0FFH0.png" DisableFullbright }
+Brightmap Sprite C0FFI0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0FFI0.png" DisableFullbright }
+
 
 //fire half
 Brightmap Sprite C0FHA0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0FHA0.png" DisableFullbright }
@@ -16,11 +20,13 @@ Brightmap Sprite C0FHC0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0FHC0.png" Disa
 Brightmap Sprite C0FHD0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0FHD0.png" DisableFullbright }
 Brightmap Sprite C0FHE0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0FHE0.png" DisableFullbright }
 
+
 //Select
 Brightmap Sprite C0SUA0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0SUA0.png" DisableFullbright }
 Brightmap Sprite C0SUB0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0SUB0.png" DisableFullbright }
 Brightmap Sprite C0SUC0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0SUC0.png" DisableFullbright }
 Brightmap Sprite C0SUD0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0SUD0.png" DisableFullbright }
+
 
 //Reload Full Open
 Brightmap Sprite C0ROA0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0ROA0.png" DisableFullbright }
@@ -37,6 +43,7 @@ Brightmap Sprite C0ROK0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0ROK0.png" Disa
 Brightmap Sprite C0ROL0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0ROL0.png" DisableFullbright }
 Brightmap Sprite C0ROM0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0ROM0.png" DisableFullbright }
 
+
 //Reload - Close
 Brightmap Sprite C0RCA0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0RCA0.png" DisableFullbright }
 Brightmap Sprite C0RCB0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0RCB0.png" DisableFullbright }
@@ -49,11 +56,13 @@ Brightmap Sprite C0RCH0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0RCH0.png" Disa
 Brightmap Sprite C0RCI0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0RCI0.png" DisableFullbright }
 Brightmap Sprite C0RCJ0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0RCJ0.png" DisableFullbright }
 
+
 //Reload - single - open
 Brightmap Sprite C0HOA0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0HOA0.png" DisableFullbright }
 Brightmap Sprite C0HOB0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0HOB0.png" DisableFullbright }
 Brightmap Sprite C0HOC0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0HOC0.png" DisableFullbright }
 Brightmap Sprite C0HOD0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0HOD0.png" DisableFullbright }
+
 
 //Kick
 Brightmap Sprite C0KOA0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0KOA0.png" DisableFullbright }
@@ -64,6 +73,7 @@ Brightmap Sprite C0KOE0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0KOE0.png" Disa
 Brightmap Sprite C0KOF0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0KOF0.png" DisableFullbright }
 Brightmap Sprite C0KOG0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0KOG0.png" DisableFullbright }
 
+
 //Melee
 Brightmap Sprite C0MOA0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0MOA0.png" DisableFullbright }
 Brightmap Sprite C0MOB0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0MOB0.png" DisableFullbright }
@@ -71,6 +81,7 @@ Brightmap Sprite C0MOC0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0MOC0.png" Disa
 Brightmap Sprite C0MOD0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0MOD0.png" DisableFullbright }
 Brightmap Sprite C0MOE0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0MOE0.png" DisableFullbright }
 Brightmap Sprite C0MOF0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0MOF0.png" DisableFullbright }
+
 
 //respect animation
 Brightmap Sprite C0XRA0 { map "Brightmaps/Weapons/Slot-3/CSSG/BMC0XRA0.png" DisableFullbright }

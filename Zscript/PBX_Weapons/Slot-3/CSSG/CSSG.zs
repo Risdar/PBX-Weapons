@@ -72,10 +72,10 @@ Class PBX_CSSG : PB_WeaponBase
 			TNT1 A 1 A_DoPBWeaponAction();
 			TNT1 A 0 A_Startsound("Ironsights", CHAN_AUTO);
 			C0XR ABC 1 A_DoPBWeaponAction();
-			C0XR DEEFFFFFFFF 1 A_DoPBWeaponAction();
-			C0XR GHI 1 A_DoPBWeaponAction();
+			C0XR DEFGHHHHHHHH 1 A_DoPBWeaponAction();
+			C0XR IJK 1 A_DoPBWeaponAction();
 			TNT1 A 0 A_startsound("CSSGOPEN",25);
-			C0XR JK 1 A_DoPBWeaponAction();
+			C0XR LM 1 A_DoPBWeaponAction();
 			
 			TNT1 A 3 A_DoPBWeaponAction();
 			
@@ -85,31 +85,32 @@ Class PBX_CSSG : PB_WeaponBase
 		//insert shells
 			C0RB A 1;
 			C0RB BCDFGH 1 {
-				ChangeCSSGShellsLook('C0RB','C0RS','C0RN','C0RK','C0RD','C0RX','C0RW','C0RT','C0RM','C0RX');
+				ChangeCSSGShellsLook('C0RB','C0RS','C0RN','C0RK','C0RD','C0RX','C0RW','C0RT','C0RM','C1RX');
 				return A_DoPBWeaponAction();
 			}
 			TNT1 A 0 A_startsound("weapons/cssg/in",26);
-			C0RB IJ 1 A_DoPBWeaponAction();
+			TNT1 A 0 PB_AmmoIntoMag("CSSGShellsIn","PB_Shell",2,1);
+			C0RB IJKLMM 1 A_DoPBWeaponAction();
 			
 			TNT1 A 4 A_DoPBWeaponAction();
 			
 			TNT1 A 0 A_startsound("CSSGCLOS",29);
 			C0RC ABC 1 A_DoPBWeaponAction();
-			C0RC DEF 1 A_DoPBWeaponAction();
+			C0RC DEEEEF 1 A_DoPBWeaponAction();
 			C0RC GHIJ 1 A_DoPBWeaponAction();
 			
-			C0XR LLLL 1 A_DoPBWeaponAction();
+			C0XR NNNN 1 A_DoPBWeaponAction();
 		//random pump
 			TNT1 A 0 A_startsound("weapons/sgmvpump",64);
 			TNT1 A 0 A_quakeEx(0,1,1,6,0,10,"",QF_RELATIVE|QF_SCALEDOWN|QF_SCALEUP);
-			C0XR LMNOOOO 1 A_DoPBWeaponAction();
+			C0XR NOPQRSSSSS 1 A_DoPBWeaponAction();
 			TNT1 A 0 A_startsound("weapons/sgpump",65);
-			C0XR PPNNMMLLL 1 A_DoPBWeaponAction();
+			C0XR TUVWX 1 A_DoPBWeaponAction();
 			
-			C0XR QQRR 1 A_DoPBWeaponAction();
+			C0XR YYZZ 1 A_DoPBWeaponAction();
 			C0ID A 2 A_DoPBWeaponAction();
 			goto ready;
-			
+
 			
 			
 		Ready:
@@ -140,16 +141,16 @@ Class PBX_CSSG : PB_WeaponBase
 			TNT1 A 0 A_ZoomFactor(0.95);
 			TNT1 A 0 A_recoil(6);
 			//C0FF C 1;
-			C0FF D 1;
+			C0FF F 1;
 			TNT1 A 0 A_ZoomFactor(0.975);
-			C0FF D 1;
+			C0FF G 1;
 			TNT1 A 0 A_ZoomFactor(0.985);
 			TNT1 A 0 A_QuakeEx(3,3,3,6,0,60,"",QF_RELATIVE|QF_SCALEDOWN);
-			C0FF D 1;
+			C0FF H 1;
 			TNT1 A 0 A_ZoomFactor(0.995);
-			C0FF D 1;
+			C0FF I 1;
 			TNT1 A 0 A_ZoomFactor(1.0);
-			C0FF EEF 1;
+			C0FF IHGFEDC 1;
 			C0ID A 1 A_DoPBWeaponAction(WRF_NOFIRE);
 			goto reload;
 		
@@ -159,7 +160,7 @@ Class PBX_CSSG : PB_WeaponBase
 		RightFire:
 			TNT1 A 0 CM_PlayAltFireSound();
 			TNT1 A 0 A_overlay(-31,"MuzzleFlashRight");
-			C0FH A 1 bright FireHalfCSSGRight();
+			C0FH AB 1 bright FireHalfCSSGRight();
 			TNT1 A 0 PB_TakeAmmo(invoker.ammotype2,1);
 			TNT1 A 0 A_ZoomFactor(0.975);
 			TNT1 A 0 PB_WeaponRecoil(-3,frandom(-0.5,0.5));
@@ -168,19 +169,22 @@ Class PBX_CSSG : PB_WeaponBase
 				A_FireProjectile("ShotgunWad",random(-2,2),0,3,-4,FPF_NOAUTOAIM,random(-2,2));
 			}
 			C0FH C 1 PB_GunSmoke(-2,0,-1);
-			TNT1 A 0 A_ZoomFactor(0.985);
-			C0FH C 1;
-			TNT1 A 0 A_ZoomFactor(0.995);
+			TNT1 A 0 A_ZoomFactor(0.975);
 			C0FH D 1;
+			TNT1 A 0 A_ZoomFactor(0.985);
+			C0FH E 1;
+			TNT1 A 0 A_ZoomFactor(0.995);
+			C0FH F 1;
 			TNT1 A 0 A_ZoomFactor(1.0);
-			C0FH DE 1;
-			C0ID A 1;
+			C0FH G 1;
+			C0FH FEDC 1;
+			C0ID AA 1;
 			goto ready;
 		LeftFire:
-			TNT1 A 0 PB_JumpIfNoAmmo;
+			TNT1 A 0 PB_JumpIfNoAmmo();
 			TNT1 A 0 CM_PlayAltFireSound();
 			TNT1 A 0 A_overlay(-31,"MuzzleFlashLeft");
-			C0FH B 1 bright FireHalfCSSGLeft();
+			C0FH HI 1 bright FireHalfCSSGLeft();
 			TNT1 A 0 PB_TakeAmmo(invoker.ammotype2,1);
 			TNT1 A 0 A_ZoomFactor(0.975);
 			TNT1 A 0 PB_WeaponRecoil(-3,frandom(-0.5,0.5));
@@ -188,14 +192,17 @@ Class PBX_CSSG : PB_WeaponBase
 				PB_GunSmoke(2,0,-1);
 				A_FireProjectile("ShotgunWad",random(-2,2),0,-3,-4,FPF_NOAUTOAIM,random(-2,2));
 			}
-			C0FH C 1 PB_GunSmoke(2,0,-1);
+			C0FH J 1 PB_GunSmoke(2,0,-1);
+			TNT1 A 0 A_ZoomFactor(0.975);
+			C0FH K 1;
 			TNT1 A 0 A_ZoomFactor(0.985);
-			C0FH C 1;
+			C0FH L 1;
 			TNT1 A 0 A_ZoomFactor(0.995);
-			C0FH D 1;
+			C0FH M 1;
 			TNT1 A 0 A_ZoomFactor(1.0);
-			C0FH DE 1;
-			C0ID A 1;
+			C0FH N 1;
+			C0FH MLKJ 1;
+			C0ID AA 1;
 			goto reload;
 		
 		// RELOAD STATES
@@ -214,16 +221,15 @@ Class PBX_CSSG : PB_WeaponBase
 			TNT1 A 0 PB_GunSmoke(0,0,-2);
 			C0HO II 1;
 		//insert shell
-			C0HB ABC 1 ChangeCSSGShellsLook('C0HB','C0HS','C0HN','C0HK','C0HD','C0HX','C0HW','C0HT','C0HM','C0HX');
-			C0HB DEF 1 ChangeCSSGShellsLook('C0HB','C0HS','C0HN','C0HK','C0HD','C0HX','C0HW','C0HT','C0HM','C0HX');
+			C0HB ABC 1 ChangeCSSGShellsLook('C0HB','C0HS','C0HN','C0HK','C0HD','C0HX','C0HW','C0HT','C0HM','C1HX');
+			C0HB DEF 1 ChangeCSSGShellsLook('C0HB','C0HS','C0HN','C0HK','C0HD','C0HX','C0HW','C0HT','C0HM','C1HX');
 			TNT1 A 0 A_startsound("weapons/cssg/in",24);
-			C0HB G 1;
 			TNT1 A 0 {
 				PB_AmmoIntoMag(invoker.ammo2.GetClassName(),invoker.ammo1.GetClassName(),BARREL_CAPACITY);
 				PB_SetMagEmpty(false);
 				PB_SetChamberEmpty(false);
 			}
-			C0HB HI 1;
+			C0HB GHIJKLMN 1;
 			TNT1 A 3;
 		CloseSSG:
 			TNT1 A 0 A_startsound("CSSGCLOS",29);
@@ -248,14 +254,14 @@ Class PBX_CSSG : PB_WeaponBase
 			C0RO P 1;
 		//insert shells
 			C0RB A 1;
-			C0RB BCDFGHI 1 ChangeCSSGShellsLook('C0RB','C0RS','C0RN','C0RK','C0RD','C0RX','C0RW','C0RT','C0RM','C0RX');
+			C0RB BCDFGH 1 ChangeCSSGShellsLook('C0RB','C0RS','C0RN','C0RK','C0RD','C0RX','C0RW','C0RT','C0RM','C1RX');
 			TNT1 A 0 {
 				A_startsound("weapons/cssg/in",26);
 				PB_AmmoIntoMag(invoker.ammo2.GetClassName(),invoker.ammo1.GetClassName(),BARREL_CAPACITY);
 				PB_SetMagEmpty(false);
 				PB_SetChamberEmpty(false);
 			}
-			C0RB J 1;
+			C0RB IJKLMM 1;
 			TNT1 A 2;
 			goto CloseSSG;
 			
@@ -266,8 +272,8 @@ Class PBX_CSSG : PB_WeaponBase
 			TNT1 A 0 A_startsound("CSSGOPEN",25);
 			C0HO D 1;
 			TNT1 A 4;
-			C0RB JI 1;
-			C0RB HGFEDCB 1 ChangeCSSGShellsLook('C0RB','C0RS','C0RN','C0RK','C0RD','C0RX','C0RW','C0RT','C0RM','C0RX');
+			C0RB LKJI 1;
+			C0RB HGFEDCB 1 ChangeCSSGShellsLook('C0RB','C0RS','C0RN','C0RK','C0RD','C0RX','C0RW','C0RT','C0RM','C1RX');
 			TNT1 A 0 {
 				CM_HandleUnload();
 				PB_SetChamberEmpty(true);
@@ -312,7 +318,7 @@ Class PBX_CSSG : PB_WeaponBase
 			}
 			C0RO NOP 1;
 			C0RB A 1;
-			C0RB BCDEFGH 1 ChangeCSSGShellsLook('C0RB','C0RS','C0RN','C0RK','C0RD','C0RX','C0RW','C0RT','C0RM','C0RX');
+			C0RB BCDEFGH 1 ChangeCSSGShellsLook('C0RB','C0RS','C0RN','C0RK','C0RD','C0RX','C0RW','C0RT','C0RM','C1RX');
 			TNT1 A 0 A_startsound("weapons/cssg/in",24);
 			TNT1 A 0 {
 				// if(countinv(invoker.ammotype2)<2 && countinv(invoker.ammotype1)>0)
@@ -320,7 +326,7 @@ Class PBX_CSSG : PB_WeaponBase
 				PB_SetMagEmpty(false);
 				PB_SetChamberEmpty(false);
 			}
-			C0RB IJ 1;
+			C0RB IJKLMM 1;
 			TNT1 A 3;
 			goto closeSSG;
 			
@@ -382,7 +388,8 @@ Class PBX_CSSG : PB_WeaponBase
 			C0RW ABCDEF 0;
 			C0RT ABCDEF 0;
 			C0RM ABCDEF 0;
-			C0RX ABCDEF 0;
+			C1RX ABCDEF 0;
+
 			C0HB ABCD 0;
 			C0HD ABCD 0;
 			C0HX ABCD 0;
@@ -392,7 +399,7 @@ Class PBX_CSSG : PB_WeaponBase
 			C0HK ABCD 0;
 			C0HT ABCD 0;
 			C0HM ABCD 0;
-			C0HX ABCD 0;
+			C1HX ABCD 0;
 			stop;
 			
 	}

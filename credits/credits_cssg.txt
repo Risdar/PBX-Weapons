@@ -11,6 +11,8 @@ and of course, this Pseudo update (more like a remake)
 -Jaih1r0
 
 Additional Credits:
+New CSSG Sprites is from ModDB by SamuelGuy (https://www.moddb.com/mods/project-brutality/addons/pbv031-alpha-commander-ssg)
+
 Ice upgrade pickup sprite is made by SchrödingCat, Eriance/Amuscaria, Realm667
 Ice projectiles is from PBWP's Marauder Shotgun Freeze Shells made by JhulkerCraft
 
