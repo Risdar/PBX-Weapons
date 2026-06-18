@@ -24,20 +24,3 @@ server int PBXWeapons_backpack_filter = 0;
 
 server int PBXWeapons_specialdrop_filter = 0;
 
-// HUD
-server int PBXWeapons_hudsetting_filter = 0;
-server int PBXWeapons_generalsetting_filter = 0;
-
-user int PBXWeapons_Weaponhud_x = -100;
-user int PBXWeapons_Weaponhud_y = -90;
-user float PBXWeapons_Weaponhud_scale = 1.0;
-user float PBXWeapons_Weaponhud_alpha = 1.0;
-user int PBXWeapons_Weaponhud_boxW = 96;
-user int PBXWeapons_Weaponhud_boxH = 36;
-
-user int PBXWeapons_WeaponModehud_x = -260;
-user int PBXWeapons_WeaponModehud_y = -14;
-user float PBXWeapons_WeaponModehud_scale = 2.5;
-user float PBXWeapons_WeaponModehud_alpha = 1.0;
-user int PBXWeapons_WeaponModehud_boxW = 56;
-user int PBXWeapons_WeaponModehud_boxH = 56;
