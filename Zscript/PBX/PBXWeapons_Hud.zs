@@ -117,18 +117,17 @@ class PBXWeapons_HUDHandler : EventHandler
                     
                 break;
 
+            // Draw bar for the shield durability
+            case 'PBX_NeoHMG':
+                PBX_DrawAmmoBar(phud,DRAW_THIRD_BAR,"BARBASH3","ABAR9","HMGShield",Font.CR_GREEN);
+                break;
+
             // Draw the durability bar
             case 'PBX_CyberdemonRL':
-                let crl = PBX_CyberdemonRL(pbWeap);
-                if(!crl) return;
-
                 PBX_DrawAmmoBar(phud,DRAW_SECOND_BAR,"BARBADD2","ABAR10","CyberRLDurability",Font.CR_DARKGRAY);
                 break;
 
             case 'PBX_MastermindChaingun':
-                let mcg = PBX_MastermindChaingun(pbWeap);
-                if (!mcg) return; 
-
                 PBX_DrawAmmoBar(phud,DRAW_SECOND_BAR,"BARBADD2","ABAR10","MastermindCGDurability",Font.CR_DARKGRAY);
                 break;
 

@@ -17,8 +17,8 @@ class PBX_NeoHMG : PB_WeaponBase
         PB_WeaponBase.UsesWheel true;
 		PB_WeaponBase.WheelInfo "HMGWheel";
         Inventory.AltHudIcon "HG0WA0";
-		PB_WeaponBase.MaxOverheat 400;
-		PB_WeaponBase.OverheatCoolingRate 4;
+		PB_WeaponBase.MaxOverheat MAX_OVERHEAT;
+		PB_WeaponBase.OverheatCoolingRate OVERHEATCOOLING_RATE;
 		PB_WeaponBase.ReserveToMagAmmoFactor 1;
 
 //////////////////////////// AMMO ////////////////////////////////////////////////////////////////////////////////////
@@ -48,6 +48,9 @@ class PBX_NeoHMG : PB_WeaponBase
 	const HMG_SHIELDLAYER 		= -567;
 	const HMG_SHIELDSOUNDLAYER 	= 234;
 	const HMG_SHIELDSOUNDLAYER2 = 233;
+	const MAX_OVERHEAT	 		= 450;
+	const OVERHEATCOOLING_RATE 	= 4;
+	const OVERHEATCOOLING_LAYER = 3;
 
 	// Shield Variables
 	bool shieldEnabled;
@@ -68,6 +71,7 @@ class PBX_NeoHMG : PB_WeaponBase
 
 	// Modes
 	int ammoType;
+	bool isOverheating;
 	enum NeoHMGRounds
 	{
 		eHeatedRounds = 0,
@@ -85,25 +89,31 @@ class PBX_NeoHMG : PB_WeaponBase
             HG0D ABCD 1;
 			TNT1 A 0 A_lower(120);	
 			wait;
+
 		WeaponRespect:
 			HG0U ABCD 1 A_DoPBWeaponAction();
 			goto ready3;
+
 		Select:
-			TNT1 A 0 PB_WeaponRaise("weapon/HMG/Stop");
-			TNT1 A 0 PB_WeapTokenSwitch("CarbineSelected");
-			TNT1 A 0 A_GiveInventory("Zoomed",1);
-			TNT1 A 0 A_Overlay(3,"Cooling",true);
-			TNT1 A 0 PB_RespectIfNeeded();
-		SelectContinue:
-			TNT1 A 0;
+			TNT1 A 0 {
+				A_WeaponOffset(0,32);
+				PB_SetRoll(0);
+				PB_HandleCrosshair(52);
+				A_SetInventory("PB_LockScreenTilt",0);
+                PB_WeaponRaise("weapons/HMG/Stop");
+				cooldownOverheat();
+			    return PB_RespectIfNeeded();
+			}
 		SelectAnimation:
-			TNT1 A 0 {if(PB_GetOverheat() > 1) {A_Overlay(3, "Cooling",true);}}
+			TNT1 A 0 {if(PB_GetOverheat() > 1) {cooldownOverheat();}}
 			TNT1 A 0 A_JumpIf(PB_GetMagUnloaded(), "UnloadedSelect");
 			HG0U ABCD 1;
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
 		Ready3:
+			TNT1 A 0 A_JumpIf(PB_GetMagUnloaded(), "ReadyUnload");
 			"####" A 0 {
-				if(PB_GetOverheat() > 1) {A_Overlay(3, "Cooling",true);}
+				if(PB_GetOverheat() > 1) {cooldownOverheat();}
+				if(PB_GetOverheat() == 0) {invoker.isOverheating = false;}
 				PB_HandleCrosshair(52);
 			}
 		ReadyToFire:
@@ -113,9 +123,9 @@ class PBX_NeoHMG : PB_WeaponBase
 			XH03 A 0;
 			XH04 A 0;
 			// Actual Code
-			TNT1 A 0 A_JumpIf(PB_GetMagUnloaded(), "ReadyUnload");
 			HG0F A 1 {
-				PB_CoolDownBarrel(0, 0, 3);
+				PB_HandleCrosshair(52);
+				HMG_CoolDownBarrel();
 				if (invoker.ammo2.amount == 4 )	{A_SetWeaponSprite("XH04");}
 				if (invoker.ammo2.amount == 3 )	{A_SetWeaponSprite("XH03");}
 				if (invoker.ammo2.amount == 2 )	{A_SetWeaponSprite("XH02");}
@@ -129,8 +139,9 @@ class PBX_NeoHMG : PB_WeaponBase
 		
 		ReadyUnload:
 			HG0R R 1 {
-				PB_CoolDownBarrel(0, 0, 3);
+				HMG_CoolDownBarrel();
 				PB_HandleCrosshair(52);
+				if(PB_GetOverheat() == 0) {invoker.isOverheating = false;}
 				if (PressingFire() && PressingAltfire() && CountInv(invoker.ammotype2) > 0)
 					return resolvestate("Fire");
 				return A_DoPBWeaponAction(WRF_ALLOWRELOAD); 
@@ -140,6 +151,23 @@ class PBX_NeoHMG : PB_WeaponBase
 		UnloadedSelect:
 			HG0R MNOPQRS 1;
 			goto ReadyUnload;
+
+		Overheat:
+			TNT1 A 0 A_PlaySound("MG42HEAT");
+			TNT1 A 0 {
+				invoker.isOverheating = false;
+				HMG_CoolDownBarrel();
+				cooldownOverheat();
+			}
+			HG0F A 45 {
+				if (invoker.ammo2.amount == 4 )	{A_SetWeaponSprite("XH04");}
+				if (invoker.ammo2.amount == 3 )	{A_SetWeaponSprite("XH03");}
+				if (invoker.ammo2.amount == 2 )	{A_SetWeaponSprite("XH02");}
+				if (invoker.ammo2.amount <= 1 )	{A_SetWeaponSprite("XH01");}
+				if (invoker.ammo2.amount == 0 )	{A_SetWeaponSprite("XH01");}
+				return A_DoPBWeaponAction(WRF_NOFIRE|WRF_NOSWITCH);
+			}
+			Goto Ready3;
         
 //////////////////////////// FIRE ////////////////////////////////////////////////////////////////////////////////////
 		Fire:
@@ -149,6 +177,7 @@ class PBX_NeoHMG : PB_WeaponBase
 			XH03 BCDEF 0;
 			XH04 EF 0;
 			// Actual Code
+			TNT1 A 0 A_JumpIf(PB_GetOverheat() >= MAX_OVERHEAT-5,"overheat");
 			TNT1 A 0 PB_HandleCrosshair(52);
             TNT1 A 0 PB_jumpIfNoAmmo("Reload",1,false);
 			HG0F B 1 bright {
@@ -156,14 +185,14 @@ class PBX_NeoHMG : PB_WeaponBase
 				if (invoker.ammo2.amount == 2 )	{A_SetWeaponSprite("XH02");}
 				if (invoker.ammo2.amount <= 1 )	{A_SetWeaponSprite("XH01");}
 				if (invoker.ammo2.amount == 0 )	{A_SetWeaponSprite("XH01");}
-				return fireHMG(0,1);
+				return fireHMG(1);
 			}
 			HG0F C 1 bright {
 				if (invoker.ammo2.amount == 3 )	{A_SetWeaponSprite("XH03");}
 				if (invoker.ammo2.amount == 2 )	{A_SetWeaponSprite("XH02");}
 				if (invoker.ammo2.amount <= 1 )	{A_SetWeaponSprite("XH01");}
 				if (invoker.ammo2.amount == 0 )	{A_SetWeaponSprite("XH01");}
-				return fireHMG(0,2);
+				return fireHMG(2);
 			}
 			HG0F D 1 {
 				if (invoker.ammo2.amount == 3 )	{A_SetWeaponSprite("XH03");}
@@ -273,7 +302,6 @@ class PBX_NeoHMG : PB_WeaponBase
 				A_WeaponOffset(0,32);
 			}
 			TNT1 A 0 PB_checkReload("RaiseFromEmpty", null, null, "Ready","Ready",MAGAZINE_SIZE,1);
-			TNT1 A 0 A_Overlay(3,"Cooling",true);
 			HG0R ABCDE 1 {
 				if (invoker.ammo2.amount == 4 )	{A_SetWeaponSprite("XHR4");}
 				if (invoker.ammo2.amount == 3 )	{A_SetWeaponSprite("XHR3");}
@@ -317,6 +345,10 @@ class PBX_NeoHMG : PB_WeaponBase
 				if (invoker.ammo2.amount == 2 )	{A_SetWeaponSprite("XHR2");}
 				if (invoker.ammo2.amount <= 1 )	{A_SetWeaponSprite("XHR1");}
 				if (invoker.ammo2.amount == 0 )	{A_SetWeaponSprite("XHR1");}
+			}
+			TNT1 A 0 {
+				invoker.isOverheating = false;
+				PB_SetOverheat(0);
 			}
 			TNT1 A 0 {
 				PB_AmmoIntoMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname(),MAGAZINE_SIZE,1);
@@ -412,7 +444,7 @@ class PBX_NeoHMG : PB_WeaponBase
 		
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////
 		FlashPunching:
-			TNT1 A 0 A_Overlay(3,"Cooling",true);
+			TNT1 A 0 cooldownOverheat();
 			HG0K ABCDEFGHFEDCBA 1;
 			goto Ready3;
 		
@@ -434,13 +466,16 @@ class PBX_NeoHMG : PB_WeaponBase
 		
 //////////////////////////// OVERLAYS ////////////////////////////////////////////////////////////////////////////////////
 		Cooling:
+			TNT1 A 1 {if(PB_GetOverheat() == 0) invoker.isOverheating = false;}
 			TNT1 A 8;
-			TNT1 A 4 PB_ModifyOverheat(-5);
+			TNT1 A 4 {
+				// console.printf("lowered overheat");
+				PB_ModifyOverheat(-5);
+			}
 			Wait;
 
 		MuzzleFlash:
-			TNT1 A 0 A_Overlayflags(Overlayid(),PSPF_MIRROR|PSPF_FLIP,random(0,1));
-			TNT1 A 0 A_jump(256,"Muzzle1","Muzzle2");
+			TNT1 A 0 A_jump(256,"Muzzle1","Muzzle3");
 		Muzzle1:
 			HG0M AB 1 bright;
 			stop;

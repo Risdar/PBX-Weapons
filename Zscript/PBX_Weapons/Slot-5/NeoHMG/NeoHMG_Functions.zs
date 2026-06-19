@@ -5,6 +5,7 @@ extend class PBX_NeoHMG
 	{
 		ammoType = eHeatedRounds;
 		shieldReady = true;
+		isOverheating = false;
 		giveinventory("HMGShield", PBX_NeoHMG.SHIELD_MAXCHARGE);
 		super.postbeginplay();
 	}
@@ -140,6 +141,27 @@ extend class PBX_NeoHMG
         return resolvestate(null);
     }
 
+	action void HMG_CoolDownBarrel()
+	{
+		int heat = PB_GetOverheat();
+		
+		if (heat < 115)
+		{
+			PB_CoolDownBarrel(0, 0, 2, 0, 0, 0, 1.0, 1.0, true);
+			return;
+		}
+		
+		double scale = PB_Math.LinearMap(double(heat), 175.0, 500.0, 0.8, 2.5);
+		double alpha = PB_Math.LinearMap(double(heat), 175.0, 500.0, 0.5, 1.5);
+		
+		PB_CoolDownBarrel(0, 0, 2, 0, 0, 0, scale, alpha, true);
+	}
+
+	action void cooldownOverheat()
+	{
+		A_Overlay(OVERHEATCOOLING_LAYER,"Cooling",true);
+	}
+
 	action int getAmmoType()
 	{
 		return invoker.ammoType;
@@ -150,13 +172,19 @@ extend class PBX_NeoHMG
 		return invoker.ammoType = set;
 	}
 
-	action void HMG_fireBullet()
+	action void HMG_fireBullet(bool overheating)
 	{
 		string loadedbullets;
 		string soundtouse;
+		double spread;
+
+		if(overheating)				 	spread = 7;
+		else if(PB_GetOverheat() > 115) spread = 1.0 + (PB_GetOverheat() / 100.0);
+		else							spread = 3;
 		
 		if(PB_GetOverheat() > 115)
 		{
+			invoker.isOverheating = true;
 			switch(getAmmoType())
 			{
 				default:
@@ -176,44 +204,40 @@ extend class PBX_NeoHMG
 			soundtouse = "weapon/HMG/Fire";
 		}
 		A_Startsound(soundtouse,30);
-		PB_FireBullets(loadedbullets, 1, 3, 0, 0, 2.5);
+		PB_FireBullets(loadedbullets, 1, spread, 0, 0, spread);
 	}
 
-	action void fireHMG(int weaponSide, int ticCount)
+	action void fireHMG(int ticCount)
 	{
+		bool overheating = invoker.isOverheating;
+
 		switch (ticCount)
 		{
-			//Tic 1
-			default:
 			case 1:
+				// SETUP
 				A_AlertMonsters();
-				switch (weaponSide)
-				{
-					default:
-					case 0:
-                        // SETUP
-						A_WeaponOffset(0,32);
-                        PB_SetRoll(0);
-                        A_TakeInventory("PB_LockScreenTilt",1);
-                        // ACTUAL FIRING
-						HMG_fireBullet();
-						PB_DynamicTail("lmg", "lmg");
-						A_overlay(-7,"MuzzleFlash");
-						PB_WeaponRecoil(-1.1,frandom(-0.82,0.82));
-						PB_IncrementHeat(2);
-						PB_GunSmoke(0, 0, 0);
-						PB_LowAmmoSoundWarning("hdmr");
-						PB_FireOffset();
-						A_QuakeEx(0,1,0,12,0,10,"",QF_WAVE|QF_RELATIVE|QF_SCALEDOWN,0.6,0,0.2,0,0,0.3,0.40);
-						A_Zoomfactor(0.985);
-                        // TAKE AMMO
-				        PB_LowAmmoSoundWarning();
-				        pb_takeammo(invoker.ammotype2,1,0);
-                        break;
-				}
+				A_WeaponOffset(0,32);
+				PB_SetRoll(0);
+				A_TakeInventory("PB_LockScreenTilt",1);
+				// ACTUAL FIRING
+				HMG_fireBullet(overheating);
+				PB_DynamicTail("lmg", "lmg");
+				A_FlashOverlay();
+				PB_WeaponRecoil(-1.1,frandom(-0.82,0.82));
+				PB_IncrementHeat(2);
+				PB_GunSmoke(0, 0, 0);
+				PB_LowAmmoSoundWarning("hdmr");
+				PB_FireOffset();
+				A_QuakeEx(0,1,0,12,0,10,"",QF_WAVE|QF_RELATIVE|QF_SCALEDOWN,0.6,0,0.2,0,0,0.3,0.40);
+				A_Zoomfactor(0.985);
+				// TAKE AMMO
+				PB_LowAmmoSoundWarning();
+				pb_takeammo(invoker.ammotype2,1,0);
+				break;
 			//Tic 2
 			case 2:
-				PB_ModifyOverheat(5);
+				// console.printf("given overheat");
+				PB_ModifyOverheat(overheating ? 15 : 10);
 				A_ZoomFactor(1.0, SPF_INTERPOLATE);
 				break;
 		}
