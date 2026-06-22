@@ -1,6 +1,0 @@
-#include "Zscript/Maths/GlobalMaths.zsc"
-#include "Zscript/Maths/Matrix.zsc"
-#include "Zscript/Maths/Matrix4.zsc"
-#include "Zscript/Maths/Quaternion.zsc"
-#include "Zscript/Maths/VectorUtil.zsc"
-#include "Zscript/Maths/math.zsc"

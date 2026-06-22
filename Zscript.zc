@@ -1,14 +1,11 @@
 Version 4.13
 
 // General
-#include "Zscript/PBX/PBXWeapons_Spawners.zs"
-#include "Zscript/PBX/PBXWeapons_Systems.zs"
-#include "Zscript/PBX/PBXWeapons_Hud.zs"        // Draw ammo bars
-#include "Zscript/PBX/PBXWeapons_HUDData.zs"    // Data that the Core uses to draw the icons
-#include "Zscript/PBX/PBXWeapons_Tips.zs"
-
-// Big thanks to EmeraldCoastt and the BDP team for this
-#include "Zscript/Maths/Include.zsc"
+#include "Zscript/PBX_Weapons/PBXWeapons_Spawners.zs"
+#include "Zscript/PBX_Weapons/PBXWeapons_Systems.zs"
+#include "Zscript/PBX_Weapons/PBXWeapons_Hud.zs"        // Draw ammo bars
+#include "Zscript/PBX_Weapons/PBXWeapons_HUDData.zs"    // Data that the Core uses to draw the icons
+#include "Zscript/PBX_Weapons/PBXWeapons_Tips.zs"
 
 // Each weapon has their own includes (basically helper files), you cen see these in each weapon files
 // Slot 1
