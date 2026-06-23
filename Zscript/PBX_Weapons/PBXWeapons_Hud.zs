@@ -29,7 +29,7 @@ class PBXWeapons_HUDHandler : EventHandler
     }
 
 //////////////////////////// MAIN FUNCTION ////////////////////////////////////////////////////////////////////////////////////
-    override void RenderUnderlay(RenderEvent e)
+    override void RenderOverlay(RenderEvent e)
     {
         // Dont draw if the player is not in a leve or if the automap is active
         if (gamestate != GS_LEVEL || automapactive)
