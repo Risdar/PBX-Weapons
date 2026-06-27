@@ -121,8 +121,8 @@ Class PBX_MetalSniper : PB_WeaponBase
             MSR6 ABCDEFGHIJKLMNOPQR 0;  // insert resonance mag 
         Ready3:
             TNT1 A 0 PB_HandleCrosshair(42);
-            TNT1 A 0 resetVariables();
             TNT1 A 0 A_JumpIf(PB_GetZoom(), "Ready2");
+            TNT1 A 0 resetVariables();
         ReadyToFire:
             MSNF A 1
             {

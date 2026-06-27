@@ -119,7 +119,7 @@ class RailCasing: BaseMagActor
 	}
 }
 
-class RailgunTrail : VisualThinker
+class BDP_RailgunTrail : VisualThinker
 {
 	override void PostBeginPlay()
 	{
@@ -143,43 +143,44 @@ class RailgunTrail : VisualThinker
 }
 
 CLASS RailgunRail : Actor
-	{
+{
 	Default
-		{
+	{
 		Radius 1; 
 		Height 1;
 		+nogravity;
 		+noclip;
-		}
-	States
-		{
-			Spawn:
-				TNT1 AAA 0 A_SpawnItemEX("WhiteShockwave");
-				TNT1 AAAA 0 A_spawnprojectile ("FireworkSFXType2", 2, 0, random (0, 360), 2, random (-10, -80));
-				RAIL A 0 A_SpawnItemEx ("DetectFloorCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-				RAIL A 0 A_SpawnItemEx ("DetectCeilCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-				//RAIL A 0 A_spawnprojectile ("BluePlasmaFire", 0, 0, random (0, 360), 2, random (0, 360));
-				TNT1 AAAAAAAAAA 0 A_spawnprojectile ("ExplosionParticleVeryFast", 0, 0, random (0, 360), 2, random (0, 360));
-				TNT1 AAAAAAAA 0 A_spawnprojectile ("ExplosionParticleHeavy", 5, 0, random (0, 360), 2, random (0, -180));
-				TNT1 AAAAAAAAAA 0 A_spawnprojectile ("ExplosionParticleHeavy", 5, 0, random (0, 360), 2, random (0, 360));
-				TNT1 AAAAAAAAA 0 A_spawnprojectile ("ExplosionParticleVeryFast", 5, 0, random (0, 360), 2, random (0, 360));
-				MODL A 1 BRIGHT{
-					Radius_Quake(3, 8, 0, 15, 0);
-					A_startsound("BONECRACK",1);
-					A_startsound("RICMET",2);
-					A_spraydecal("RailLightning",36);
-					Actor Core = spawn("railgunrail2",pos);
-					core.angle = angle;
-					core.pitch = pitch;
-				}
-				MODL A 35 BRIGHT;
-			TimeToFade:
-				MODL A 1 BRIGHT {
-					A_fadeout(0.01);
-				}
-				LOOP;
-		}
 	}
+
+	States
+	{
+		Spawn:
+			TNT1 AAA 0 A_SpawnItemEX("WhiteShockwave");
+			TNT1 AAAA 0 A_spawnprojectile ("FireworkSFXType2", 2, 0, random (0, 360), 2, random (-10, -80));
+			RAIL A 0 A_SpawnItemEx ("DetectFloorCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+			RAIL A 0 A_SpawnItemEx ("DetectCeilCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+			//RAIL A 0 A_spawnprojectile ("BluePlasmaFire", 0, 0, random (0, 360), 2, random (0, 360));
+			TNT1 AAAAAAAAAA 0 A_spawnprojectile ("ExplosionParticleVeryFast", 0, 0, random (0, 360), 2, random (0, 360));
+			TNT1 AAAAAAAA 0 A_spawnprojectile ("ExplosionParticleHeavy", 5, 0, random (0, 360), 2, random (0, -180));
+			TNT1 AAAAAAAAAA 0 A_spawnprojectile ("ExplosionParticleHeavy", 5, 0, random (0, 360), 2, random (0, 360));
+			TNT1 AAAAAAAAA 0 A_spawnprojectile ("ExplosionParticleVeryFast", 5, 0, random (0, 360), 2, random (0, 360));
+			MODL A 1 BRIGHT{
+				Radius_Quake(3, 8, 0, 15, 0);
+				A_startsound("BONECRACK",1);
+				A_startsound("RICMET",2);
+				A_spraydecal("RailLightning",36);
+				Actor Core = spawn("railgunrail2",pos);
+				core.angle = angle;
+				core.pitch = pitch;
+			}
+			MODL A 35 BRIGHT;
+		TimeToFade:
+			MODL A 1 BRIGHT {
+				A_fadeout(0.01);
+			}
+			LOOP;
+	}
+}
 
 CLASS RailgunRail2 : Actor
 {
@@ -381,7 +382,7 @@ class HoloBlood : Actor
 	}
 }
 
-class RailgunProjectile : Actor
+class RailgunProjectile : PB_JavelinProjectile_Hot
 {
 	int user_railangle;
 	Default
@@ -389,7 +390,7 @@ class RailgunProjectile : Actor
 		Radius 2;
 		Height 2;
 		Speed 80;
-		DamageFactor 0;
+		// DamageFactor 0;
 		DamageType 'Railgun';
 		Projectile;
 		+RANDOMIZE

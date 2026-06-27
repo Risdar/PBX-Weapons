@@ -134,11 +134,10 @@ class PBX_ProsurvBlaster : PB_WeaponBase
             BRGF A 1 BRIGHT fireweapon(1);
             BRGF B 1 fireweapon(2);
             BRGF C 1 fireweapon(3);
-            BRGF DC 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD|WRF_NOPRIMARY);
-            BRGT AAAAAAA 1 {
+            BRGT DCAAAAAAA 1 {
                 if (JustPressed(BT_ATTACK) && invoker.ammo1.amount > 0) 
                     return ResolveState("Fire");
-                return A_DoPBWeaponAction(WRF_ALLOWRELOAD|WRF_NOPRIMARY);
+                return ResolveState(null);
             }
             Goto Ready3;
 
@@ -151,8 +150,11 @@ class PBX_ProsurvBlaster : PB_WeaponBase
             BRGG G 1 BRIGHT fireweapon(1);
             BRGG H 1 fireweapon(2);
             BRGG I 1 fireweapon(3);
-            BRGG J 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD|WRF_NOFIRE);
-            BRGG KLFFFFFF 1 PB_ReadyFire(ads:true,useMag:false);
+            BRGG JKLFFFFFF 1 {
+                if (JustPressed(BT_ATTACK) && invoker.ammo1.amount > 0) 
+                    return ResolveState("Fire2");
+                return ResolveState(null);
+            }
             Goto Ready2;
 
         AltFire:

@@ -281,7 +281,7 @@ extend class PBX_BDPRailgun
         FSpawnParticleParams trail;
         for(int i = railspawn.distance; i > 0; i -= 2)
         {
-            let trail = Level.SpawnVisualThinker("RailgunTrail");
+            let trail = Level.SpawnVisualThinker("BDP_RailgunTrail");
             trail.pos = railspawn.HitLocation + trailpos * (i/railspawn.distance);
             trail.pos += (frandom(1,-1),frandom(1,-1),frandom(1,-1));
         }
