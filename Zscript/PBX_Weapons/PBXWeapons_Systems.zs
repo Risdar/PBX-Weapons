@@ -47,8 +47,6 @@ class PBXWeapons_Handler : EventHandler
         if(pbxweapons_normalriflereplace) TryGiveInventory(whatToGive:'PBX_NormalRifle', diffCheck:false);
         if(pbxweapons_startwithblaster) TryGiveInventory(whatToGive:'PBX_ProsurvBlaster', diffCheck:false);
         // pm.giveinventory("PBXWeapons_MonsterWeapons",1);
-        PB_HelpNotificationsHandler.PB_SendTip("$PBXWeapons_Version", "PBXCore_ThrowawayFlag", 0 << 0);
-        return;
     }
 
 	// Just a function to make everything look cleaner
