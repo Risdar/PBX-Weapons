@@ -14,7 +14,7 @@ OptionMenu "PBXWeapons_Menu"
     StaticText " "
     SafeCommand "Enable All PBX Spawners", "set PBXWeapons_chainsaw_filter 0; set PBXWeapons_pistol_filter 0; set PBXWeapons_shotgun_filter 0; set PBXWeapons_ssg_filter 0; set PBXWeapons_chaingun_filter 0; set PBXWeapons_rocketlauncher_filter 0; set PBXWeapons_plasmarifle_filter 0; set PBXWeapons_bfg_filter 0;set pbxweapons_backpack_filter 0"
     SafeCommand "Reset PB Tool Tips", "set pb_helpflags 0"
-    SafeCommand "Reset PBX Tool Tips", "set PBXWeapons_WeaponHelpFlags 0; set PBXWeapons_UpgradeHelpFlags 0"
+    SafeCommand "Reset PBX Weapons Tool Tips", "set PBXWeapons_WeaponHelpFlags 0; set PBXWeapons_UpgradeHelpFlags 0"
 	/* Option "Enable Experimental Features",	"pbxweapons_experimental",	"YesNo" */    
     StaticText " "
 

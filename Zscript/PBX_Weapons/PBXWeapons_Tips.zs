@@ -30,26 +30,8 @@ enum PBXWeapons_eWeaponTipFlags
     PBX_TIP_CSSG_UPGRADE        = 1 << 3
 }
 
-class PBXWeapons_TipsManager : inventory
+class PBXWeapons_TipsManager : PBXCore_TipsManager
 {
-	Default
-	{
-		// These are just some useful values for an inventory token
-		// that make sure it can't be taken away or dropped:
-		inventory.maxamount 1;
-		+INVENTORY.UNDROPPABLE
-		+INVENTORY.UNTOSSABLE
-		+INVENTORY.PERSISTENTPOWER
-	}
-
-	private void SendTipArrayIfNeeded(Array<String> tipStrings, string cvarName, int tipFlag)
-	{
-		if(!PB_HelpNotificationsHandler.CheckTipEvent(tipFlag, CVar.GetCvar(cvarName)))
-		{
-			PB_HelpNotificationsHandler.PB_SendTipArray(tipStrings, cvarName, tipFlag);
-		}
-	}
-
 	override bool HandlePickup(Inventory item)
 	{
 		string weaponHelpCvar = "PBXWeapons_WeaponHelpFlags";
@@ -66,7 +48,7 @@ class PBXWeapons_TipsManager : inventory
                 Array<String> tips;
                 tips.Push("$PBX_PlasmaBlaster_Tip1");
                 tips.Push("$PBX_PlasmaBlaster_Tip2");
-                SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_PLASMABLASTER);
+                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_PLASMABLASTER);
             }
             break;
 
@@ -76,7 +58,7 @@ class PBXWeapons_TipsManager : inventory
                 tips.Push("$PBX_LeverAction_Tip1");
                 tips.Push("$PBX_LeverAction_Tip2");
                 tips.Push("$PBX_LeverAction_Tip3");
-                SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_LEVERACTION);
+                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_LEVERACTION);
             }
             break;
             
@@ -88,7 +70,7 @@ class PBXWeapons_TipsManager : inventory
                 tips.Push("$PBX_CSSG_Tip2");
                 tips.Push("$PBX_CSSG_Tip3");
                 tips.Push("$PBX_DisableUpgrade");
-                SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_CSSG);
+                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_CSSG);
             }
             break;
 
@@ -100,7 +82,7 @@ class PBXWeapons_TipsManager : inventory
                 tips.Push("$PBX_BattleRifle_Tip2");
                 tips.Push("$PBX_BattleRifle_Tip3");
                 tips.Push("$PBX_DisableUpgrade");
-                SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_BATTLERIFLE);
+                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_BATTLERIFLE);
             }
             break;
             
@@ -113,7 +95,7 @@ class PBXWeapons_TipsManager : inventory
                 tips.Push("$PBX_MetalSniper_Tip4");
                 tips.Push("$PBX_MetalSniper_Tip5");
                 tips.Push("$PBX_DisableUpgrade");
-                SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_METALSNIPER);
+                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_METALSNIPER);
             }
             break;
 
@@ -125,7 +107,7 @@ class PBXWeapons_TipsManager : inventory
                 tips.Push("$PBX_ProsurvBallista_Tip3");
                 tips.Push("$PBX_ProsurvBallista_Tip4");
                 tips.Push("$PBX_DisableUpgrade");
-                SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_CROSSBOW);
+                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_CROSSBOW);
             }
             break;
 
@@ -137,7 +119,7 @@ class PBXWeapons_TipsManager : inventory
                 tips.Push("$PBX_NeoHMG_Tip2");
                 tips.Push("$PBX_NeoHMG_Tip3");
                 tips.Push("$PBX_NeoHMG_Tip4");
-                SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_NEOHMG);
+                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_NEOHMG);
             }
             break;
 
@@ -148,7 +130,7 @@ class PBXWeapons_TipsManager : inventory
                 tips.Push("$PBX_Excavator_Tip1");
                 tips.Push("$PBX_Excavator_Tip2");
                 tips.Push("$PBX_Excavator_Tip3");
-                SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_EXCAVATOR);
+                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_EXCAVATOR);
             }
             break;
             case 'PBX_CyberdemonRL':
@@ -157,7 +139,7 @@ class PBXWeapons_TipsManager : inventory
                 tips.Push("$PBX_MonsterWeapon1");
                 tips.Push("$PBX_MonsterWeapon2");
                 tips.Push("$PBX_CyberRL_Tip1");
-                SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_CYBERDEMONRL);
+                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_CYBERDEMONRL);
             }
             break;
             case 'PBX_MastermindChaingun':
@@ -166,7 +148,7 @@ class PBXWeapons_TipsManager : inventory
                 tips.Push("$PBX_MonsterWeapon1");
                 tips.Push("$PBX_MonsterWeapon2");
                 tips.Push("$PBX_MastermindCG_Tip1");
-                SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_MASTERMINDCG);
+                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_MASTERMINDCG);
             }
             break;
 
@@ -177,7 +159,7 @@ class PBXWeapons_TipsManager : inventory
                 tips.Push("$PBX_BDPRailgun_Tip1");
                 tips.Push("$PBX_BDPRailgun_Tip2");
                 tips.Push("$PBX_BDPRailgun_Tip3");
-                SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_BDPRAILGUN);
+                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_BDPRAILGUN);
             }
             break;
 
@@ -187,7 +169,7 @@ class PBXWeapons_TipsManager : inventory
                 Array<String> tips;
                 tips.Push("$PBX_DemonExt_Tip1");
                 tips.Push("$PBX_DemonExt_Tip2");
-                SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_DEMONEXT);
+                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_DEMONEXT);
             }
             break;
 
@@ -198,7 +180,7 @@ class PBXWeapons_TipsManager : inventory
                 tips.Push("$PBX_MetalSniperUpgrade_Tip1");
                 tips.Push("$PBX_MetalSniperUpgrade_Tip2");
                 tips.Push("$PBX_MetalSniperUpgrade_Tip3");
-                SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_METALSNIPER_UPGRADE);
+                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_METALSNIPER_UPGRADE);
             }
             break;
             case 'BattleRifle_Upgrade':
@@ -207,7 +189,7 @@ class PBXWeapons_TipsManager : inventory
                 tips.Push("$PBX_BattleRifleUpgrade_Tip1");
                 tips.Push("$PBX_BattleRifleUpgrade_Tip2");
                 tips.Push("$PBX_BattleRifleUpgrade_Tip3");
-                SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_BATTLERIFLE_UPGRADE);
+                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_BATTLERIFLE_UPGRADE);
             }
             break;
             case 'PBX_DemonicBallistaUpgrade':
@@ -216,7 +198,7 @@ class PBXWeapons_TipsManager : inventory
                 tips.Push("$PBX_DemonicBallista_Tip1");
                 tips.Push("$PBX_DemonicBallista_Tip2");
                 tips.Push("$PBX_DemonicBallista_Tip3");
-                SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_CROSSBOW_UPGRADE);
+                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_CROSSBOW_UPGRADE);
             }
             break;
             case 'SubZeroShellsUpgrade': case 'ExplosiveShellsUpgrade': case 'WPShellsUpgrade':
@@ -225,7 +207,7 @@ class PBXWeapons_TipsManager : inventory
                 Array<String> tips;
                 tips.Push("$PBX_CSSGUpgrade_Tip1");
                 tips.Push("$PBX_CSSGUpgrade_Tip2");
-                SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_CSSG_UPGRADE);
+                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_CSSG_UPGRADE);
             }
             break;
         }

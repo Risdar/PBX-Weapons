@@ -5,68 +5,48 @@ class PBX_Infrared : PB_PowerLightAmp  {default{Powerup.Duration -1800;}}
 // This is so the player will always have full ammo when picking up a new weapon
 class PBXWeapons_Handler : EventHandler
 {
-	PlayerPawn pm;
-
     Override void PlayerEntered(PlayerEvent e)
     {
 		// Get player pointer
-        pm = players[e.PlayerNumber].mo;
+        let pm = players[e.PlayerNumber].mo;
 		if(!pm) return;
 
 		// Dont continue if its the titlemap
         if (level.MapName == "TITLEMAP") return;
 
         // SLOT 2
-		TryGiveInventory('PBX_PlasmaBlaster', 'HellPistolerAmmo', PBX_PlasmaBlaster.MAXCHARGE);
-		TryGiveInventory('PBX_Prosurv_LeverAction', 'LeverActionAmmo', PBX_Prosurv_LeverAction.MAGAZINE_SIZE);
+		PBXCore_Handler.TryGiveInventory(pm,'PBX_PlasmaBlaster', 'HellPistolerAmmo', PBX_PlasmaBlaster.MAXCHARGE);
+		PBXCore_Handler.TryGiveInventory(pm,'PBX_Prosurv_LeverAction', 'LeverActionAmmo', PBX_Prosurv_LeverAction.MAGAZINE_SIZE);
 
 		// SLOT 3
-		TryGiveInventory('PBX_ProSurvPSG', 'PumpShotgunAmmo', PBX_ProSurvPSG.MAGAZINE_SIZE);
-		TryGiveInventory('PBX_CSSG', 'CSSGShellsIn', PBX_CSSG.BARREL_CAPACITY);
+		PBXCore_Handler.TryGiveInventory(pm,'PBX_ProSurvPSG', 'PumpShotgunAmmo', PBX_ProSurvPSG.MAGAZINE_SIZE);
+		PBXCore_Handler.TryGiveInventory(pm,'PBX_CSSG', 'CSSGShellsIn', PBX_CSSG.BARREL_CAPACITY);
 
 		// SLOT 4
-		TryGiveInventory('PBX_NormalRifle', 'NormalRifleAmmo', PBX_NormalRifle.MAGAZINE_SIZE);
-		TryGiveInventory('PBX_BDPBattleRifle', 'BR_Ammo', PBX_BDPBattleRifle.MAGAZINE_SIZE);
-		TryGiveInventory('PBX_MetalSniper', 'MetalSniperAmmo', PBX_MetalSniper.MAGAZINE_SIZE - 1); // This is because of the weapon respect animation
-		TryGiveInventory('PBX_Prosurv_Ballista', 'CrossbowBallistaAmmo', PBX_Prosurv_Ballista.ARROW_AMOUNT);
+		PBXCore_Handler.TryGiveInventory(pm,'PBX_NormalRifle', 'NormalRifleAmmo', PBX_NormalRifle.MAGAZINE_SIZE);
+		PBXCore_Handler.TryGiveInventory(pm,'PBX_BDPBattleRifle', 'BR_Ammo', PBX_BDPBattleRifle.MAGAZINE_SIZE);
+		PBXCore_Handler.TryGiveInventory(pm,'PBX_MetalSniper', 'MetalSniperAmmo', PBX_MetalSniper.MAGAZINE_SIZE - 1); // This is because of the weapon respect animation
+		PBXCore_Handler.TryGiveInventory(pm,'PBX_Prosurv_Ballista', 'CrossbowBallistaAmmo', PBX_Prosurv_Ballista.ARROW_AMOUNT);
 
 		// SLOT 5
-		TryGiveInventory('PBX_NeoHMG', 'HMGChamberAmmo', PBX_NeoHMG.MAGAZINE_SIZE);
+		PBXCore_Handler.TryGiveInventory(pm,'PBX_NeoHMG', 'HMGChamberAmmo', PBX_NeoHMG.MAGAZINE_SIZE);
 
 		// SLOT 6
-		TryGiveInventory('PBX_Excavator', 'ExcavatorRounds', PBX_Excavator.MAGAZINE_SIZE);
-		TryGiveInventory('PBX_CyberdemonRL', 'CyberRLDurability', PBX_CyberdemonRL.DURABILITY);
-		TryGiveInventory('PBX_MastermindChaingun', 'MastermindCGDurability', PBX_MastermindChaingun.DURABILITY);
+		PBXCore_Handler.TryGiveInventory(pm,'PBX_Excavator', 'ExcavatorRounds', PBX_Excavator.MAGAZINE_SIZE);
+		PBXCore_Handler.TryGiveInventory(pm,'PBX_CyberdemonRL', 'CyberRLDurability', PBX_CyberdemonRL.DURABILITY);
+		PBXCore_Handler.TryGiveInventory(pm,'PBX_MastermindChaingun', 'MastermindCGDurability', PBX_MastermindChaingun.DURABILITY);
 
 		// SLOT 7
-		TryGiveInventory('PBX_BDPRailgun', 'BDPRailgunAmmo', PBX_BDPRailgun.MAGAZINE_SIZE);
+		PBXCore_Handler.TryGiveInventory(pm,'PBX_BDPRailgun', 'BDPRailgunAmmo', PBX_BDPRailgun.MAGAZINE_SIZE);
         // SLOT 9
 
         // OTHERS
-		TryGiveInventory(whatToGive:'PBXWeapons_TipsManager', diffCheck:false);
-        if(pbxweapons_normalriflereplace) TryGiveInventory(whatToGive:'PBX_NormalRifle', diffCheck:false);
-        if(pbxweapons_startwithblaster) TryGiveInventory(whatToGive:'PBX_ProsurvBlaster', diffCheck:false);
-        // pm.giveinventory("PBXWeapons_MonsterWeapons",1);
+		PBXCore_Handler.TryGiveInventory(pm,whatToGive:'PBXWeapons_TipsManager', diffCheck:false);
+        if(pbxweapons_normalriflereplace) 
+			PBXCore_Handler.TryGiveInventory(pm,whatToGive:'PBX_NormalRifle', diffCheck:false);
+        if(pbxweapons_startwithblaster) 
+			PBXCore_Handler.TryGiveInventory(pm,whatToGive:'PBX_ProsurvBlaster', diffCheck:false);
     }
-
-	// Just a function to make everything look cleaner
-	void TryGiveInventory(name hasInventory = "", name whatToGive = "", int giveAmount = 1, bool diffCheck = true)
-	{
-		// Only give the inventory if the player still doesnt have the item
-		// this way its only given once and wont be given every map change
-		if (pm.CountInv(diffCheck ? hasInventory : whatToGive) < 1) 
-		{
-			pm.GiveInventory(whatToGive, giveAmount);
-		}
-	}
-
-    // Override void WorldLoaded (WorldEvent e)
-    // {
-    //     // Sets the PB Monster Drop to Just Ammo on First Time Loading
-    //     if (!FirstTimeLoadingPBX) return;
-    //     CVAR.FindCVar('FirstTimeLoadingPBX').SetBool(false);
-    //     //destroy();
-    // }
 }
 
 // This is from Doom Deluxe, all credits goes to Dox778 and the Doom Deluxe team
