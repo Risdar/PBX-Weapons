@@ -22,7 +22,7 @@ Class PBX_BDPRailgun : PB_WeaponBase
 		Weapon.SelectionOrder 1550;
 		Inventory.AltHUDIcon "XBDRA0";
 		Tag "$PBX_BDPRailgun_Tag";
-        scale 0.7;
+        scale 1.0;
     }
 
 	// bool steam;
