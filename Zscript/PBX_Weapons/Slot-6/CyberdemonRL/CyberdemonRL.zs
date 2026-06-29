@@ -43,7 +43,7 @@ class PBX_CyberdemonRL : PB_WeaponBase
 	bool PiercingRockets;
 	int shotCount;
 	const ammoTake = 3; // How many rockets does it take for one point of durability
-	const DURABILITY = 25; // How many rockets does it take for one point of durability
+	const DURABILITY = 75; // Durability Amount
       
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
 	States
