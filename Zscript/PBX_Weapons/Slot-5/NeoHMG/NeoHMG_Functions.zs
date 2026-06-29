@@ -194,7 +194,7 @@ extend class PBX_NeoHMG
 					break;
 				case eChargedRounds:
 					loadedbullets = "PB_792x57mm_Charged";
-					soundtouse = "PLSM9";
+					soundtouse = "LFIRE";
 					break;
 			}
 		}
@@ -205,6 +205,20 @@ extend class PBX_NeoHMG
 		}
 		A_Startsound(soundtouse,30);
 		PB_FireBullets(loadedbullets, 1, spread, 0, 0, spread);
+	}
+
+	action void setMagSprite(
+		name l4, 
+		name l3, 
+		name l2, 
+		name l1
+	)
+	{
+		int ammo = invoker.ammo2.amount;
+		if		(ammo == 4) A_SetWeaponSpriteEx(l4);
+		else if (ammo == 3) A_SetWeaponSpriteEx(l3);
+		else if (ammo == 2) A_SetWeaponSpriteEx(l2);
+		else if (ammo <= 1)	A_SetWeaponSpriteEx(l1);
 	}
 
 	action void fireHMG(int ticCount)
@@ -229,7 +243,7 @@ extend class PBX_NeoHMG
 				PB_LowAmmoSoundWarning("hdmr");
 				PB_FireOffset();
 				A_QuakeEx(0,1,0,12,0,10,"",QF_WAVE|QF_RELATIVE|QF_SCALEDOWN,0.6,0,0.2,0,0,0.3,0.40);
-				A_Zoomfactor(0.985);
+				A_Zoomfactor(0.95);
 				// TAKE AMMO
 				PB_LowAmmoSoundWarning();
 				pb_takeammo(invoker.ammotype2,1,0);
@@ -237,8 +251,8 @@ extend class PBX_NeoHMG
 			//Tic 2
 			case 2:
 				// console.printf("given overheat");
-				PB_ModifyOverheat(overheating ? 15 : 10);
-				A_ZoomFactor(1.0, SPF_INTERPOLATE);
+				PB_ModifyOverheat(overheating ? OVERHEAT_GIVE_OVR : OVERHEAT_GIVE_NORM);
+				// A_ZoomFactor(1.0, SPF_INTERPOLATE);
 				break;
 		}
 	}
