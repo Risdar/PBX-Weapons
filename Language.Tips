@@ -10,8 +10,8 @@ PBX_PlasmaBlaster_Tip2 = "You can switch modes using %s.";
 
 // Lever Action
 PBX_LeverAction_Tip1 = "The Lever Action Rifle can use two types of ammo.";
-PBX_LeverAction_Tip2 = "The .444 Marlin rounds deal high damage but only has 6 shots.";
-PBX_LeverAction_Tip3 = "While the .357 Magnum rounds deal less damage but has 12 shots.";
+PBX_LeverAction_Tip2 = "The .444 Marlin rounds deal high damage but only has %d shots.";
+PBX_LeverAction_Tip3 = "While the .357 Magnum rounds deal less damage but has %d shots.";
 
 //////////////////////////// SLOT 3 ///////////////////////////////////////////////////////////////////////////////
 // CSSG 
@@ -28,16 +28,14 @@ PBX_BattleRifle_Tip1 = "The Battle Rifle is a simple weapon that has two modes."
 PBX_BattleRifle_Tip2 = "You can switch between Burst fire and Semi-auto using %s";
 PBX_BattleRifle_Tip3 = "You can get the Smart Scope and Ricochet Bullets by picking it's upgrade that spawn on Tier 2 backpacks.";
 
-PBX_BattleRifleUpgrade_Tip1 = "You just picked up the scope upgrade and the ricochet bullets.";
-PBX_BattleRifleUpgrade_Tip2 = "The Scope will now show information on the highlighted enemies";
-PBX_BattleRifleUpgrade_Tip3 = "Your every bullets will now ricochet.";
+PBX_BattleRifleUpgrade_Tip1 = "You just picked up Battle Rifle Upgade.";
+PBX_BattleRifleUpgrade_Tip2 = "The Scope will now show have the target analysis ablity and every bullet will ricochet";
 
 // Metal Sniper
 PBX_MetalSniper_Tip1 = "The Metal Sniper two AltFire modes and three scope modes.";
 PBX_MetalSniper_Tip2 = "The Grenade AltFire needs to be primed before firing by pressing %s and then %s.";
 PBX_MetalSniper_Tip3 = "You can switch Target Analysis Mode by pressing %s when scoped in";
-PBX_MetalSniper_Tip4 = "The standard 7.62x51mm Armor Piercing deals high piercing damage";
-PBX_MetalSniper_Tip5 = "You can get the alternate Resonance Ammo type by picking it's upgrade that spawn on Tier 3 backpacks.";
+PBX_MetalSniper_Tip4 = "You can get the alternate Resonance Ammo type by picking it's upgrade that spawn on Tier 3 backpacks.";
 
 PBX_MetalSniperUpgrade_Tip1 = "The Resonance Ammo is a special Anti Arachno-Shield round.";
 PBX_MetalSniperUpgrade_Tip2 = "Shooting it at an Arachnotron shield will ignite the shield and stun all nearby enemies.";
@@ -46,7 +44,7 @@ PBX_MetalSniperUpgrade_Tip3 = "Every shot has a high chance to stun the target."
 // Crossbow Ballista 
 PBX_ProsurvBallista_Tip1 = "The Ballista is a simple crossbow that deals high piercing damage.";
 PBX_ProsurvBallista_Tip2 = "The Altfire shoots an arrow that detonates after a while.";
-PBX_ProsurvBallista_Tip3 = "Arrow you have already shot can be picked back up.";
+PBX_ProsurvBallista_Tip3 = "Shot arrows can be picked back up.";
 PBX_ProsurvBallista_Tip4 = "You can get the Demonic Ballista by picking it's upgrade that spawn on Tier 2 backpacks.";
 
 PBX_DemonicBallista_Tip1 = "You just picked up the Demonic Ballista.";
@@ -56,7 +54,7 @@ PBX_DemonicBallista_Tip3 = "You can change modes using %s.";
 //////////////////////////// SLOT 5 ///////////////////////////////////////////////////////////////////////////////
 // HMG
 PBX_NeoHMG_Tip1 = "The HMG is an automatic heavy weapon that has an overheat system and a shield accumulator.";
-PBX_NeoHMG_Tip2 = "When the overheat system reaches 115° C, the weapon will modify the projectile to a more powerful version.";
+PBX_NeoHMG_Tip2 = "When the overheat system reaches %d° C, the weapon will modify the projectile to a more powerful version.";
 PBX_NeoHMG_Tip3 = "You can choose between heated rounds and charged rounds using %s.";
 PBX_NeoHMG_Tip4 = "You can activate the shield by holding %s, it will then block any damage and recharge when not in use";
 

@@ -145,7 +145,7 @@ extend class PBX_NeoHMG
 	{
 		int heat = PB_GetOverheat();
 		
-		if (heat < 115)
+		if (heat < OVERHEAT_THRESHOLD)
 		{
 			PB_CoolDownBarrel(0, 0, 2, 0, 0, 0, 1.0, 1.0, true);
 			return;
@@ -179,10 +179,10 @@ extend class PBX_NeoHMG
 		double spread;
 
 		if(overheating)				 	spread = 7;
-		else if(PB_GetOverheat() > 115) spread = 1.0 + (PB_GetOverheat() / 100.0);
+		else if(PB_GetOverheat() > OVERHEAT_THRESHOLD) spread = 1.0 + (PB_GetOverheat() / 100.0);
 		else							spread = 3;
 		
-		if(PB_GetOverheat() > 115)
+		if(PB_GetOverheat() > OVERHEAT_THRESHOLD)
 		{
 			invoker.isOverheating = true;
 			switch(getAmmoType())

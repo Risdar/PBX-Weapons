@@ -134,7 +134,12 @@ class PBX_ProsurvBlaster : PB_WeaponBase
             BRGF A 1 BRIGHT fireweapon(1);
             BRGF B 1 fireweapon(2);
             BRGF C 1 fireweapon(3);
-            BRGT DCAAAAAAA 1 {
+            BRGF DC 1 {
+                if (JustPressed(BT_ATTACK) && invoker.ammo1.amount > 0) 
+                    return ResolveState("Fire");
+                return ResolveState(null);
+            }
+            BRGT AAAAAAA 1 {
                 if (JustPressed(BT_ATTACK) && invoker.ammo1.amount > 0) 
                     return ResolveState("Fire");
                 return ResolveState(null);

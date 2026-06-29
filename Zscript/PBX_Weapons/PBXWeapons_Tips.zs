@@ -56,8 +56,8 @@ class PBXWeapons_TipsManager : PBXCore_TipsManager
             {
                 Array<String> tips;
                 tips.Push("$PBX_LeverAction_Tip1");
-                tips.Push("$PBX_LeverAction_Tip2");
-                tips.Push("$PBX_LeverAction_Tip3");
+                tips.Push(string.format(StringTable.Localize("$PBX_LeverAction_Tip2"), PBX_Prosurv_LeverAction.MAGAZINE_SIZE/2));
+                tips.Push(string.format(StringTable.Localize("$PBX_LeverAction_Tip3"), PBX_Prosurv_LeverAction.MAGAZINE_SIZE));
                 PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_LEVERACTION);
             }
             break;
@@ -93,7 +93,6 @@ class PBXWeapons_TipsManager : PBXCore_TipsManager
                 tips.Push(string.format(StringTable.Localize("$PBX_MetalSniper_Tip2"), PB_HelpNotificationsHandler.PB_FormatKeybinds("+ALTATTACK"), PB_HelpNotificationsHandler.PB_FormatKeybinds("+ATTACK")));
                 tips.Push(string.format(StringTable.Localize("$PBX_MetalSniper_Tip3"), PB_HelpNotificationsHandler.PB_FormatKeybinds("+pb_specialwheel")));
                 tips.Push("$PBX_MetalSniper_Tip4");
-                tips.Push("$PBX_MetalSniper_Tip5");
                 tips.Push("$PBX_DisableUpgrade");
                 PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_METALSNIPER);
             }
@@ -116,7 +115,7 @@ class PBXWeapons_TipsManager : PBXCore_TipsManager
             {
                 Array<String> tips;
                 tips.Push("$PBX_NeoHMG_Tip1");
-                tips.Push("$PBX_NeoHMG_Tip2");
+                tips.Push(string.format(StringTable.Localize("$PBX_NeoHMG_Tip2"), PBX_NeoHMG.OVERHEAT_THRESHOLD));
                 tips.Push(string.format(StringTable.Localize("$PBX_NeoHMG_Tip3"), PB_HelpNotificationsHandler.PB_FormatKeybinds("+pb_specialwheel")));
                 tips.Push(string.format(StringTable.Localize("$PBX_NeoHMG_Tip4"), PB_HelpNotificationsHandler.PB_FormatKeybinds("+ALTATTACK")));
                 PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_NEOHMG);
@@ -189,7 +188,6 @@ class PBXWeapons_TipsManager : PBXCore_TipsManager
                 Array<String> tips;
                 tips.Push("$PBX_BattleRifleUpgrade_Tip1");
                 tips.Push("$PBX_BattleRifleUpgrade_Tip2");
-                tips.Push("$PBX_BattleRifleUpgrade_Tip3");
                 PBXCore_TipsManager.SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_BATTLERIFLE_UPGRADE);
             }
             break;
