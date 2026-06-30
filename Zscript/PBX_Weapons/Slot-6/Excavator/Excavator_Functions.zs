@@ -43,6 +43,44 @@ extend class PBX_Excavator
 		A_Takeinventory("EX_Select_DrillMode",1);
 		A_takeinventory("EX_Select_DropMode",1);
 	}
+
+	action state handleSpecial()
+	{
+		A_Takeinventory("GoWeaponSpecialAbility",1);
+		A_ZoomFactor(1.0);
+
+		bool goDrop	= countinv("EX_Select_DropMode")  > 0;
+		bool goDril	= countinv("EX_Select_DrillMode") > 0;
+		bool alreadyDrop = goDrop && getExcavatorMode() == eDropShotMode;
+		bool alreadyDrill = goDril && getExcavatorMode() == eDrillChargeMode;
+
+		if(countinv("PBX_CloseWheel") > 0)
+		{
+			A_TakeInventory("PBX_CloseWheel",1);
+			return resolvestate("Ready3");
+		}
+
+		if(alreadyDrop || alreadyDrill)
+		{
+			A_print("$PBX_AlreadySelected");
+			cleanmodetokens();
+			return resolvestate("ready3");
+		}
+		
+		if(goDrop)
+		{
+			setExcavatorMode(eDropShotMode);
+			A_takeinventory("EX_Select_DropMode",1);
+			A_Print("$PBX_Excavator_DropMode");
+		}
+		if(goDril)
+		{
+			setExcavatorMode(eDrillChargeMode);
+			A_takeinventory("EX_Select_DrillMode",1);
+			A_Print("$PBX_Excavator_DrillMode");
+		}
+		return resolvestate(null);
+	}
 	
 	action void FireWeapon()
 	{

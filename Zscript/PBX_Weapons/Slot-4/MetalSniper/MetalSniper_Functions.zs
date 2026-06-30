@@ -200,6 +200,13 @@ extend class PBX_MetalSniper
         bool toggleScope = FindInventory("MS_Select_ToggleScope");
         bool toggleNVG = FindInventory("MS_Select_ToggleNVG");
 
+        if(countinv("PBX_CloseWheel") > 0)
+		{
+			A_TakeInventory("PBX_CloseWheel",1);
+			if(PB_GetZoom()) return resolvestate("Ready2");
+			else return resolvestate("Ready3");
+		}
+
         // Handle Resonance Ammo
         if (noResonance)
         {

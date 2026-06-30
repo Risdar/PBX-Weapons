@@ -20,13 +20,21 @@ Class CSSGWeaponWheel : wheelinfocontainer
 		// 	sp++;
 		
 		// return sp;
-		return 10;
+		return 11;
 	}
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
 	{
 		super.GetSpecials(spw,requester);
 		vector2 iconScale = (0.5, 0.5);
+
+		PB_SpecialWheel_Mode Weapon_Close = new ("PB_SpecialWheel_Mode");
+		Weapon_Close.img = "graphics/WeaponWheel/CloseMenu.png";
+		Weapon_Close.Alias = "$PBX_CloseMenu";
+		Weapon_Close.tokentogive = "PBX_CloseWheel";
+		Weapon_Close.scalex = WHEEL_CLOSEMENU_SCALE;
+		Weapon_Close.scaley = WHEEL_CLOSEMENU_SCALE;
+		spw.Push(Weapon_Close);
 		
 		PB_SpecialWheel_Mode CSSG_BuckShot = new ("PB_SpecialWheel_Mode");
 		CSSG_BuckShot.img = "graphics/WeaponWheel/CSSG/SG_Buck.png";
@@ -35,15 +43,12 @@ Class CSSGWeaponWheel : wheelinfocontainer
 		CSSG_BuckShot.scalex = iconscale.x;
 		CSSG_BuckShot.scaley = iconscale.y;
 		
-		
 		PB_SpecialWheel_Mode CSSG_Slug = new ("PB_SpecialWheel_Mode");
 		CSSG_Slug.img = "graphics/WeaponWheel/CSSG/SG_Slug.png";
 		CSSG_Slug.Alias = "$PBX_CM_SLUGLD";
 		CSSG_Slug.tokentogive = "SelectCSG_Slugshot";
 		CSSG_Slug.scalex = iconscale.x;
 		CSSG_Slug.scaley = iconscale.y;
-		
-		
 		
 		PB_SpecialWheel_Mode CSSG_Flechette = new ("PB_SpecialWheel_Mode");
 		CSSG_Flechette.img = "graphics/WeaponWheel/CSSG/SG_Flechette.png";

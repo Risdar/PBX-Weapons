@@ -69,7 +69,6 @@ extend class PBX_Prosurv_LeverAction
 
 	action void clearLAModeTokens()
 	{
-		A_SetInventory("CantWeaponSpecial", 0);
 		A_SetInventory("LA_Select_Marlin", 0);
 		A_SetInventory("LA_Select_Magnum", 0);
 		A_SetInventory("LA_Select_Laser" ,0);
@@ -158,6 +157,15 @@ extend class PBX_Prosurv_LeverAction
 		bool goMagnum 	 = findinventory("LA_Select_Magnum");
 		bool toggleLaser = findinventory("LA_Select_Laser");
 
+		A_SetInventory("CantWeaponSpecial",0);
+		
+		if(countinv("PBX_CloseWheel") > 0)
+		{
+			A_TakeInventory("PBX_CloseWheel",1);
+			if(PB_GetZoom()) return resolvestate("Ready2");
+			else return resolvestate("Ready3");
+		}
+
 		if(goMarlin && getLAMode() == LA_444Marlin || goMagnum && getLAMode() == LA_357Magnum)
 		{
 			A_Print("$PB_ALREADYSELECTED");
@@ -184,18 +192,16 @@ extend class PBX_Prosurv_LeverAction
 
 	action state PB_HandleWheel()
 	{
-		if(
-		findinventory("LA_Select_Marlin") ||
-		findinventory("LA_Select_Magnum"))
+		if(findinventory("LA_Select_Marlin") || findinventory("LA_Select_Magnum"))
 		{
 			{
-				if (CountInv("LA_Select_Marlin") == 1) {
+				if (CountInv("LA_Select_Marlin") > 0) {
 					LA_SetAmmo(LA_444Marlin);
 					setLAMode(LA_444Marlin);
 					invoker.ReserveToMagAmmoFactor = AMMO_TAKE_MARLIN;
 					invoker.currentMaxAmmo = MAGAZINE_SIZE/2;
 				}
-				if (CountInv("LA_Select_Magnum") == 1) {
+				if (CountInv("LA_Select_Magnum") > 0) {
 					LA_SetAmmo(LA_357Magnum);
 					setLAMode(LA_357Magnum);
 					invoker.ReserveToMagAmmoFactor = AMMO_TAKE_MAGNUM;

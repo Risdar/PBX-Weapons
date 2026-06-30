@@ -20,7 +20,6 @@ PBX_PlasmaBlaster_Charge           = "\cvAltFire: Charge-Fire";
 PBX_ProsurvBlaster_Pickup          = "Blaster Pistol (Slot 2)";
 PBX_ProsurvBlaster_Tag             = "UAC MK-I Plasma Pistol";
 
-
 // Lever Action
 PBX_LeverAction_Pickup              = "Lever Action Rifle (Slot 2)";
 PBX_LeverAction_Tag                 = "UAC M1893 Mod 0 Lever Action";
@@ -47,6 +46,8 @@ PBX_CM_WPLOAD                       = "\c[WPBronze]White Phosphorus\c- Shells";
 PBX_CM_DOOMLD                       = "\ctTriple Doom\c- Shells";
 PBX_CM_DNMKULD                      = "\c[DanmakuYellow]Danmaku \c-Shells";   
 PBX_CM_SUBZRLD                      = "\cnSub-Zero \c-Shells";   
+
+PBX_CSSG_ALR                        = "Ammo type already selected: %s";
 
 PBX_PICKUP_EXPL                     = "Got the Explosive shell upgrade!";
 PBX_PICKUP_WPSP                     = "Got the White phosphorus shell upgrade!";
@@ -145,6 +146,7 @@ PBX_CommandPack_Pickup              = "You found the UAC Command Pack! You got t
 PBX_CommandPack_Tag                 = "UAC Command Pack";
 
 // SHARED
+PBX_CloseMenu                       = "Close Menu";
 PBX_AlreadySelected                 = "Mode Already Selected";
 PBX_NoUpgrade                       = "You Don't Have the Upgrade for This Weapon";
 PBX_AmmoNotAvailable                = "Ammo Type Not Available";

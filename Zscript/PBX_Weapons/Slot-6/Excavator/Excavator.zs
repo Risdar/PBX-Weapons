@@ -228,47 +228,19 @@ class PBX_Excavator : PB_WeaponBase
 		
 //////////////////////////// WEAPON SPECIAL ////////////////////////////////////////////////////////////////////////////////////
 		Weaponspecial:
-           TNT1 A 0 {
-				A_Takeinventory("GoWeaponSpecialAbility",1);
-				A_Takeinventory("Zoomed",1);
-				A_Takeinventory("ADSmode",1);
-				A_ZoomFactor(1.0);
-			}
-            TNT1 A 0 {
-				if((findinventory("EX_Select_DropMode") && getExcavatorMode() == eDropShotMode) || 
-				(findinventory("EX_Select_DrillMode") && getExcavatorMode() == eDrillChargeMode))
-				{
-					A_print("$PBX_AlreadySelected");
-					cleanmodetokens();
-					return resolvestate("ready3");
-				}
-				
-				if(findinventory("EX_Select_DropMode"))
-				{
-					setExcavatorMode(eDropShotMode);
-                    A_takeinventory("EX_Select_DropMode",1);
-					A_Print("$PBX_Excavator_DropMode");
-				}
-				if(findinventory("EX_Select_DrillMode"))
-				{
-					setExcavatorMode(eDrillChargeMode);
-                    A_takeinventory("EX_Select_DrillMode",1);
-					A_Print("$PBX_Excavator_DrillMode");
-				}
-				return resolvestate(null);
-			}
-            TNT1 A 0 A_JumpIf(getExcavatorMode() == eDropShotMode, "SwitchToDrill");
-        SwitchToDrop:
+            TNT1 A 0 handleSpecial();
+        SwitchAnimation:
             7DKF LMNOP 1;
             TNT1 A 0 A_PlaySound("excavator/switch");		
             7DKF PONML 1;
-            Goto ReadyDropShotMode;
-
-        SwitchToDrill:
-            7DKF LMNOP 1;
-            TNT1 A 0 A_PlaySound("excavator/switch");		
-            7DKF PONML 1 ;
-            Goto ReadyDrillChargaMode;
+            TNT1 A 0 {
+                if(getExcavatorMode() == eDrillChargeMode)
+                    return resolvestate("ReadyDrillChargaMode");
+                if(getExcavatorMode() == eDropShotMode)
+                    return resolvestate("ReadyDropShotMode");
+                return resolvestate(null);
+            }
+            Goto Ready3; // Fallback, I dont think it'll ever go here
 		
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////
 		FlashPunching:

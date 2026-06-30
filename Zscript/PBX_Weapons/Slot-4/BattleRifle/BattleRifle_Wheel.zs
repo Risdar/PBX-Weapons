@@ -5,25 +5,42 @@ Class BattleRifleWheel : wheelinfocontainer
 		bool hasUpgrade = requester.FindInventory("BattleRifle_Upgraded");
 		bool isZooming  = requester.FindInventory("Zoomed");
 		bool disabled;
+
 		let disableUpgrade = Cvar.GetCvar('PBXWeapons_backpack_filter', requester.player);
 		if(disableUpgrade)
 			disabled = disableUpgrade.getint() & DisablePBX_BattleRifleUpgrade;
+
 		// this is so the nvg and scope mode is added when
 		// the weapon has been upgraded and is zoomed in
-		int result = 3;
+		int result = 4;
 		if((hasUpgrade || disabled) && isZooming) result++;
 		return result;
 	}
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
 	{
+		super.GetSpecials(spw,requester);
+
 		let battleRifle = PBX_BDPBattleRifle(requester.player.readyweapon);
+		if (!battleRifle) return;
+
 		bool hasUpgrade = requester.FindInventory("BattleRifle_Upgraded");
 		bool isZooming  = requester.FindInventory("Zoomed");
 
-		super.GetSpecials(spw,requester);
+		bool disabled;
+		let disableUpgrade = Cvar.GetCvar('PBXWeapons_backpack_filter', requester.player);
+		if(disableUpgrade)
+			disabled = disableUpgrade.getint() & DisablePBX_BattleRifleUpgrade;
         
         vector2 scale = (0.9,0.9);
+
+		PB_SpecialWheel_Mode Weapon_Close = new ("PB_SpecialWheel_Mode");
+		Weapon_Close.img = "graphics/WeaponWheel/CloseMenu.png";
+		Weapon_Close.Alias = "$PBX_CloseMenu";
+		Weapon_Close.tokentogive = "PBX_CloseWheel";
+		Weapon_Close.scalex = WHEEL_CLOSEMENU_SCALE;
+		Weapon_Close.scaley = WHEEL_CLOSEMENU_SCALE;
+		spw.push(Weapon_Close);
 		
 		// Toggle Fire
 		PB_SpecialWheel_Mode BR_ToggleFire = new ("PB_SpecialWheel_Mode");
@@ -66,11 +83,6 @@ Class BattleRifleWheel : wheelinfocontainer
 		BR_Zoom.scalex = WHEEL_ZOOM_SCALE;
 		BR_Zoom.scaley = WHEEL_ZOOM_SCALE;
 		spw.push(BR_Zoom);
-
-		bool disabled;
-		let disableUpgrade = Cvar.GetCvar('PBXWeapons_backpack_filter', requester.player);
-		if(disableUpgrade)
-			disabled = disableUpgrade.getint() & DisablePBX_BattleRifleUpgrade;
 
 		if((hasUpgrade || disabled) && isZooming)
 		{

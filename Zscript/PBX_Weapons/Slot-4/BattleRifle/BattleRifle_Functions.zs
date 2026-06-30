@@ -244,6 +244,12 @@ extend class PBX_BDPBattleRifle
 		bool toggleScope 		= countinv("BR_Select_Scope")  		> 0;
 		bool toggleNVG 			= countinv("BR_Select_NVG")  		> 0;
 
+		if(countinv("PBX_CloseWheel") > 0)
+		{
+			A_TakeInventory("PBX_CloseWheel",1);
+			return resolvestate("Ready3");
+		}
+
 		if(toggleFireMode)
 		{
 			if(!invoker.isSemiAuto) invoker.isSemiAuto = true;

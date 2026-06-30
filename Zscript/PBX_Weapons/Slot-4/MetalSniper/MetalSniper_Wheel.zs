@@ -2,7 +2,7 @@ Class MetalSniperWheel : wheelinfocontainer
 {
 	override int GetSPCount(actor requester)
 	{
-		return 3;
+		return 4;
 	}
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
@@ -10,6 +10,14 @@ Class MetalSniperWheel : wheelinfocontainer
 		super.GetSpecials(spw,requester);
 
 		vector2 iconScale = (0.7, 0.7);
+
+		PB_SpecialWheel_Mode Weapon_Close = new ("PB_SpecialWheel_Mode");
+		Weapon_Close.img = "graphics/WeaponWheel/CloseMenu.png";
+		Weapon_Close.Alias = "$PBX_CloseMenu";
+		Weapon_Close.tokentogive = "PBX_CloseWheel";
+		Weapon_Close.scalex = WHEEL_CLOSEMENU_SCALE;
+		Weapon_Close.scaley = WHEEL_CLOSEMENU_SCALE;
+		spw.push(Weapon_Close);
 
 		PB_SpecialWheel_Mode MS_AimMode = new ("PB_SpecialWheel_Mode");
 		MS_AimMode.img = "graphics/WeaponWheel/MetalSniper/ADSAlt.png";

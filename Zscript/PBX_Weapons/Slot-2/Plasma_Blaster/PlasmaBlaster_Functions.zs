@@ -20,6 +20,12 @@ extend class PBX_PlasmaBlaster
         bool goBurst    = CountInv("Plasma_Select_Burst")  > 0;
         bool goCharge   = CountInv("Plasma_Select_Charge") > 0;
 
+        if(countinv("PBX_CloseWheel") > 0)
+		{
+			A_TakeInventory("PBX_CloseWheel",1);
+			return resolvestate("Ready3");
+		}
+
         // Check if already selected, if yes go to ready3
         if( goAuto && getPrimary() == PRIM_AUTO || goBurst  && getSecondary() == SEC_BURST ||
             goSemi && getPrimary() == PRIM_SEMI || goCharge && getSecondary() == SEC_CHARGE) 

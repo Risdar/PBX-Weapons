@@ -276,6 +276,13 @@ extend class PBX_NormalRifle
 		bool toggleDualWield  	= countinv("NR_Select_DualWield")   > 0;
 		bool toggleLaser 	    = countinv("NR_Select_Laser")       > 0;
 
+        if(countinv("PBX_CloseWheel") > 0)
+		{
+			A_TakeInventory("PBX_CloseWheel",1);
+            if(PB_GetZoom()) return resolvestate("Ready2");
+			else return resolvestate("Ready3");
+		}
+
 		if(toggleFireMode)
 		{
 			if(invoker.doBurst) invoker.doBurst = false;

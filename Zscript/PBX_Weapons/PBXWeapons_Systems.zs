@@ -1,5 +1,6 @@
 // What gives the playr Nightvision, its basically a powerup
 class PBX_Infrared : PB_PowerLightAmp  {default{Powerup.Duration -1800;}}
+class PBX_CloseWheel : inventory {default{inventory.maxamount 1;}}
 
 // Handles giving the player ammo (and other things) on map start
 // This is so the player will always have full ammo when picking up a new weapon

@@ -89,6 +89,12 @@ extend class PBX_Prosurv_Ballista
         bool selectDemonic = FindInventory("CB_Select_DemonicMode");
         bool selectNo = FindInventory("CB_Select_No");
 
+		if(countinv("PBX_CloseWheel") > 0)
+		{
+			A_TakeInventory("PBX_CloseWheel",1);
+			return resolvestate("Ready3");
+		}
+
         if (selectNo)
         {
             cleanmodetokens();

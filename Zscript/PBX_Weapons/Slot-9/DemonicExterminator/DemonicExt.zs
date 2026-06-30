@@ -43,6 +43,10 @@ Class PBX_DemonExt : PB_WeaponBase
 	const LASER_DAMAGE = 80;
 	int ExterminatorMode;
 	bool ExterminatorWeaponSpecial;
+
+	const specialOverlay = 11;
+	const muzzleLayer = -64;
+
 	states{
 		Spawn:
 			UNMX A -1 bright;
@@ -64,7 +68,6 @@ Class PBX_DemonExt : PB_WeaponBase
 			goto Ready3;
 		
 		Deselect:
-			//TNT1 A 0 PB_CheckBarrelPlace1();
 			TNT1 A 0 A_stopsound(chan_unmkidle);
 			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == 2,"DeselectSoul");
 			UNMD ABCDE 1; 
@@ -132,7 +135,7 @@ Class PBX_DemonExt : PB_WeaponBase
 			goto ready3;
 		Fire.BigOrb:
 			TNT1 A 0 {A_TakeInventory("Unloading",1);A_TakeInventory("GoSpecial",1);}
-			TNT1 A 0 A_overlay(-64,"MuzzleFlash1");
+			TNT1 A 0 A_overlay(muzzleLayer,"MuzzleFlash1");
 			TNT1 A 0 A_Stopsounds(1,3);
 			TNT1 A 0 A_startsound("unmaker/fire",21);
 			TNT1 A 0 A_startsound("unmaker/pick",23);
@@ -159,7 +162,7 @@ Class PBX_DemonExt : PB_WeaponBase
 		Fire.Laser:
 			
 			TNT1 A 0 A_jumpif(countinv(invoker.ammotype1) < invoker.primammouse, "FireNoAmmo");
-			TNT1 A 0 A_overlay(-64,"MuzzleFlash2");
+			TNT1 A 0 A_overlay(muzzleLayer,"MuzzleFlash2");
 			TNT1 A 0 A_startsound("unmaker/laser",21);
 			TNT1 A 0 A_TakeInventory(invoker.ammotype1,invoker.primammouse,TIF_NOTAKEINFINITE);
 			UNMF A 1 bright UNM_FireLasers();
@@ -258,7 +261,7 @@ Class PBX_DemonExt : PB_WeaponBase
 		Fire.Incineration:
 			
 			TNT1 A 0 A_jumpif(countinv(invoker.ammotype1) < invoker.primammouse2, "FireNoAmmo");
-			UNMF A 1 bright {A_overlay(-64,"MuzzleFlash0");A_startsound("unmaker/fire",21);UNM_FireBeams(invoker.U_Level);A_TakeInventory(invoker.ammotype1,invoker.primammouse2,TIF_NOTAKEINFINITE);UNM_Add_level();}
+			UNMF A 1 bright {A_overlay(muzzleLayer,"MuzzleFlash0");A_startsound("unmaker/fire",21);UNM_FireBeams(invoker.U_Level);A_TakeInventory(invoker.ammotype1,invoker.primammouse2,TIF_NOTAKEINFINITE);UNM_Add_level();}
 			TNT1 A 0 {PB_FireOffset();PB_WeaponRecoil(-0.32,frandom(-0.25,0.25));}
 			UNMF BC 1 bright A_weaponoffset(0,35);
 			UNMF MNO 1 bright A_WeaponOffset(0,-1,WOF_ADD);
@@ -274,7 +277,6 @@ Class PBX_DemonExt : PB_WeaponBase
 			goto ready3;
 
 		AltFire:
-			//TNT1 A 0 PB_CheckBarrelPlace1();
 			//TNT1 A 0 A_JumpIf(PressingReload() && PressingAltFire(),"Altfire.Soul");
 			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == 1,"AltFire.Incineration");
 			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == 2,"Altfire.Soul");
@@ -312,7 +314,7 @@ Class PBX_DemonExt : PB_WeaponBase
 		AltHold.Laser:
 			TNT1 A 0 A_jumpif(countinv(invoker.ammotype1) < invoker.secammouse, "FireNoAmmo");
 			UNMF A 2 Bright {
-				A_overlay(-64,"MuzzleFlash3");
+				A_overlay(muzzleLayer,"MuzzleFlash3");
 				A_WeaponOffset(0,32);
 				A_TakeInventory("PB_DTech",invoker.secammouse,TIF_NOTAKEINFINITE);
 				A_FireCustomMissile("DemonExterminatorEnergyBlast",0,FALSE,0,-3);
@@ -349,7 +351,7 @@ Class PBX_DemonExt : PB_WeaponBase
 			TNT1 A 0 A_overlay(68,"LightningFlash");
 			UNMI HHHH 1 A_weaponoffset(0 + random(-3,3),32 + random(1,4));
 			TNT1 A 0 A_weaponoffset(0,32);
-			TNT1 A 0 A_overlay(-64,"MuzzleFlash1");
+			TNT1 A 0 A_overlay(muzzleLayer,"MuzzleFlash1");
 			TNT1 A 0 A_Stopsounds(1,3);
 			TNT1 A 0 A_startsound("unmaker/fire",21);
 			TNT1 A 0 A_startsound("unmaker/pick",23);
@@ -392,7 +394,7 @@ Class PBX_DemonExt : PB_WeaponBase
 			UNMI K 1 Bright Offset(1,34);
 			UNMI K 1 Bright Offset(0,35);
 			UNMI K 1 Bright Offset(-1,34);
-			TNT1 A 0 A_overlay(-64,"MuzzleFlash3");
+			TNT1 A 0 A_overlay(muzzleLayer,"MuzzleFlash3");
 			TNT1 A 0 A_Stopsounds(1,3);
 			TNT1 A 0 A_PlaySound("DSREAFI4",CHAN_AUTO);
 			TNT1 AAAA 0 A_startsound("unmaker/thunder",CHAN_AUTO);

@@ -108,6 +108,11 @@ extend class PBX_BDPRailgun
         bool toggleNVG      = FindInventory("platrailgun_goNVG");
         bool goHolo         = FindInventory("platRailgun_goHolo");
 
+        if(countinv("PBX_CloseWheel") > 0)
+		{
+			A_TakeInventory("PBX_CloseWheel",1);
+			return resolvestate("Ready2"); // Since the wheel can only be accessed from ADS
+		}
 
         // Actual Mode Switch
         if (toggleLaser)

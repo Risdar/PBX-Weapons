@@ -12,23 +12,73 @@ extend class PBX_DemonExt{
 		if(PS)
 			PS.frame = frm;
 	}
-	Action void WeaponSpecialCheck(){
-		if(FindInventory("GoWeaponSpecialAbility") || findinventory("UMDE_Select_LightningMode") || findinventory("UMDE_Select_IncinerationMode") || findinventory("UMDE_Select_LightningMode")){
-			WeaponSpecialCheckContinue();
+
+	Action void WeaponSpecialCheck()
+	{
+		bool goLaser = countinv("UMDE_Select_LaserMode") > 0;
+		bool goIncenartor = countinv("UMDE_Select_IncinerationMode") > 0;
+		bool goLightning = countinv("UMDE_Select_LightningMode") > 0;
+
+		if(FindInventory("GoWeaponSpecialAbility") || goLaser || goIncenartor || goLightning)
+		{
 			A_TakeInventory("GoWeaponSpecialAbility",1);
+			
+			if(countinv("PBX_CloseWheel") > 0)
+			{
+				A_TakeInventory("PBX_CloseWheel",1);
+				return;
+			}
+
+			if((goLaser      && invoker.ExterminatorMode == LaserMode) 
+			|| (goIncenartor && invoker.ExterminatorMode == IncinerationMode) 
+			|| (goLightning  && invoker.ExterminatorMode == LightningMode))
+			{
+				A_print("$PBX_AlreadySelected");
+				cleanmodetokens();
+				return;
+			}
+			
+			if(goLaser)
+			{
+				DEUM_SetMode(LaserMode);
+				A_print("$PBX_DemonExt_Laser");
+			}
+			
+			if(goIncenartor)
+			{
+				DEUM_SetMode(IncinerationMode);
+				A_print("$PBX_DemonExt_Incin");
+			}
+			
+			if(goLightning)
+			{
+				DEUM_SetMode(LightningMode);
+				A_print("$PBX_DemonExt_Lightning");
+			}
+
+			A_StartSound("unmaker/switch",CHAN_WEAPON);
+			cleanmodetokens();
+			A_Overlay(specialOverlay,"WeaponSpecialLayer");
 		}
 	}
+
 	const LaserMode = 0;
 	const IncinerationMode = 1;
 	const LightningMode = 2;
+
 	action void DEUM_SetMode(int set = 0){invoker.ExterminatorMode = set;}
-	action void cleanmodetokens(){
+
+	action void cleanmodetokens()
+	{
 		A_TakeInventory("UMDE_Select_LaserMode",1);
 		A_TakeInventory("UMDE_Select_IncinerationMode",1);
 		A_TakeInventory("UMDE_Select_LightningMode",1);
 	}
-	action void DemonExtCrosshair(){
-		switch(invoker.ExterminatorMode){
+
+	action void DemonExtCrosshair()
+	{
+		switch(invoker.ExterminatorMode)
+		{
 			case 0 : PB_HandleCrosshair(26); break;
 			case 1 : PB_HandleCrosshair(14); break;
 			case 2 : PB_HandleCrosshair(90); break;
@@ -36,62 +86,9 @@ extend class PBX_DemonExt{
 		}
 	}
 	
-	Action void WeaponSpecialCheckContinue(){
-		if(
-		(findinventory("UMDE_Select_LaserMode") && invoker.ExterminatorMode == LaserMode) || 
-		(findinventory("UMDE_Select_IncinerationMode") && invoker.ExterminatorMode == IncinerationMode) || 
-		(findinventory("UMDE_Select_LightningMode") && invoker.ExterminatorMode == LightningMode)
-		){
-			A_print("$PBX_AlreadySelected");
-			cleanmodetokens();
-		}
-		
-		if(findinventory("UMDE_Select_LaserMode"))
-		{
-			DEUM_SetMode(LaserMode);
-			A_print("$PBX_DemonExt_Laser");
-			A_StartSound("unmaker/switch",CHAN_WEAPON);
-			cleanmodetokens();
-			A_Overlay(11,"WeaponSpecialLayer");
-		}
-		
-		if(findinventory("UMDE_Select_IncinerationMode"))
-		{
-			DEUM_SetMode(IncinerationMode);
-			A_print("$PBX_DemonExt_Incin");
-			A_StartSound("unmaker/switch",CHAN_WEAPON);
-			cleanmodetokens();
-			A_Overlay(11,"WeaponSpecialLayer");
-		}
-		
-		if(findinventory("UMDE_Select_LightningMode"))
-		{
-			DEUM_SetMode(LightningMode);
-			A_print("$PBX_DemonExt_Lightning");
-			A_StartSound("unmaker/switch",CHAN_WEAPON);
-			cleanmodetokens();
-			A_Overlay(11,"WeaponSpecialLayer");
-		}
-		
-		//return resolvestate(null);
-	}
-	action state UNM_WeaponReady(){
-		// if (CountInv("HasBarrel")>=1) 
-		// {
-		// 	return ResolveState("ReadyBarrel");
-		// }
-		// if (CountInv("HasFlameBarrel")>=1) 
-		// {
-		// 	return ResolveState("ReadyFlameBarrel");
-		// }
-		// if (CountInv("HasIceBarrel")>=1) 
-		// {
-		// 	return ResolveState("ReadyIceBarrel");
-		// }
+	action state UNM_WeaponReady()
+	{
 		WeaponSpecialCheck();
-		//if(invoker.ExterminatorMode == 0){PB_HandleCrosshair(26);}
-		//if(invoker.ExterminatorMode == 0){PB_HandleCrosshair(26);}
-		//if(invoker.ExterminatorMode == 0){PB_HandleCrosshair(90);}
 		DemonExtCrosshair();
 		A_TakeInventory("CantDoAction",0);
 		if(!invoker.ExterminatorWeaponSpecial){
@@ -99,6 +96,7 @@ extend class PBX_DemonExt{
 		}
 		return ResolveState(NULL);
 	}
+
 	action void UNM_Add_level()
 	{
 		invoker.U_level++;
@@ -125,13 +123,15 @@ extend class PBX_DemonExt{
 		//A_RailAttack(54, 0, 0, "none", "red", RGF_SILENT | RGF_FULLBRIGHT | RGF_EXPLICITANGLE, 0, "Unmaker64Puff", i, 0, 0, 0, 5, 2, "UnmakerLaser64Spark", -1,270,1);
 	}
 	//A_FireProjectile("UNMK_StormSpray",0,0);
+
 	action void UNM_FireLasers()
 	{
 		int lv = Player.ReFire%3*5+5;
 		for(int i = -lv; i <= lv; i += lv) A_RailAttack(LASER_DAMAGE, 0, 0, "none", "red", RGF_SILENT | RGF_FULLBRIGHT | RGF_EXPLICITANGLE | RGF_NORANDOMPUFFZ, 0, "Unmaker64Puff", i, 0, 0, 0, 5, 2, "UnmakerLaser64Spark", -1,270,1);
 	}
 	
-	action void UNM_FireStorm(int stormLayers = 2, int distanceIntervals = 40){
+	action void UNM_FireStorm(int stormLayers = 2, int distanceIntervals = 40)
+	{
 		//A_SpawnItemEx("UNMK_StormSpray", 0, 0, 0, 0, 0, 0, 0, SXF_SETTARGET|SXF_ORIGINATOR, 0);
 		for(int i = 0; i < stormLayers; i++){
 			actor a = A_FireProjectile("UNMK_StormSpray",0,0);
@@ -145,37 +145,4 @@ extend class PBX_DemonExt{
 		}
 	}
 	
-	// Action State PB_CheckBarrelThrow1()
-	// {
-	// 	//if owner doesnt have berserk wont throw it, so do the barrel place check instead
-	// 	if(countinv("PB_powerstrength")<1)
-	// 		return PB_CheckBarrelPlace1();
-		
-	// 	//got nukage barrel
-	// 	if(countinv("GrabbedBarrel")>0)
-	// 		return resolvestate("ThrowBarrel");
-	// 	//got flame barrel
-	// 	if(countinv("GrabbedFlameBarrel")>0)
-	// 		return resolvestate("ThrowFlameBarrel");
-	// 	//got ice barrel
-	// 	if(countinv("GrabbedIceBarrel")>0)
-	// 		return resolvestate("ThrowIceBarrel");
-	// 	//no barrel
-	// 	return resolvestate(null);
-	// }
-	
-	// Action State PB_CheckBarrelPlace1()
-	// {
-	// 	//got nukage barrel
-	// 	if(countinv("GrabbedBarrel")>0)
-	// 		return resolvestate("PlaceBarrel");
-	// 	//got flame barrel
-	// 	if(countinv("GrabbedFlameBarrel")>0)
-	// 		return resolvestate("PlaceFlameBarrel");
-	// 	//got ice barrel
-	// 	if(countinv("GrabbedIceBarrel")>0)
-	// 		return resolvestate("PlaceIceBarrel");
-	// 	//no barrel
-	// 	return resolvestate(null);
-	// }
 }

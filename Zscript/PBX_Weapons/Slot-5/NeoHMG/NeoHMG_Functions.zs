@@ -116,8 +116,16 @@ extend class PBX_NeoHMG
 
 	action state HMG_HandleSpecial()
     {
-        bool alreadyHeated  = FindInventory("HMG_Select_Heated")  && getAmmoType() == eHeatedRounds;
-        bool alreadyCharged = FindInventory("HMG_Select_Charged") && getAmmoType() == eChargedRounds;
+        bool goHeated  = CountInv("HMG_Select_Heated") > 0;
+        bool goCharged = CountInv("HMG_Select_Charged") > 0;
+        bool alreadyHeated  = goHeated  && getAmmoType() == eHeatedRounds;
+        bool alreadyCharged = goCharged && getAmmoType() == eChargedRounds;
+
+		if(countinv("PBX_CloseWheel") > 0)
+		{
+			A_TakeInventory("PBX_CloseWheel",1);
+			return resolvestate("Ready3");
+		}
 
         if (alreadyHeated || alreadyCharged)
         {
@@ -126,12 +134,13 @@ extend class PBX_NeoHMG
             return resolvestate("Ready3");
         }
 
-        if (FindInventory("HMG_Select_Heated"))
+        if (goHeated)
         {
             setAmmoType(eHeatedRounds);
             A_Print("$PBX_NeoHMG_Heated");
         }
-        else if (FindInventory("HMG_Select_Charged"))
+
+        if (goCharged)
         {
             setAmmoType(eChargedRounds);
             A_Print("$PBX_NeoHMG_Charged");
@@ -178,9 +187,11 @@ extend class PBX_NeoHMG
 		string soundtouse;
 		double spread;
 
-		if(overheating)				 	spread = 7;
-		else if(PB_GetOverheat() > OVERHEAT_THRESHOLD) spread = 1.0 + (PB_GetOverheat() / 100.0);
-		else							spread = 3;
+		if(overheating)	
+						spread = 7;
+		else if(PB_GetOverheat() > OVERHEAT_THRESHOLD) 
+						spread = 1.0 + (PB_GetOverheat() / 100.0);
+		else			spread = 3;
 		
 		if(PB_GetOverheat() > OVERHEAT_THRESHOLD)
 		{

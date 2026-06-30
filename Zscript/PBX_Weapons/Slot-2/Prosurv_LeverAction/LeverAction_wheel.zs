@@ -2,7 +2,7 @@ Class LeverActionWheel : wheelinfocontainer
 {
 	override int GetSPCount(actor requester)
 	{
-		return 3;
+		return 4;
 	}
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
@@ -13,6 +13,14 @@ Class LeverActionWheel : wheelinfocontainer
 		
 		let la = PBX_Prosurv_LeverAction(requester.player.readyweapon);
 		if(!la) return;
+
+		PB_SpecialWheel_Mode Weapon_Close = new ("PB_SpecialWheel_Mode");
+		Weapon_Close.img = "graphics/WeaponWheel/CloseMenu.png";
+		Weapon_Close.Alias = "$PBX_CloseMenu";
+		Weapon_Close.tokentogive = "PBX_CloseWheel";
+		Weapon_Close.scalex = WHEEL_CLOSEMENU_SCALE;
+		Weapon_Close.scaley = WHEEL_CLOSEMENU_SCALE;
+		spw.push(Weapon_Close);
 
 		PB_SpecialWheel_Mode LA_Marlin = new ("PB_SpecialWheel_Mode");
 		LA_Marlin.img = "graphics/WeaponWheel/LeverAction/Marlin.png";

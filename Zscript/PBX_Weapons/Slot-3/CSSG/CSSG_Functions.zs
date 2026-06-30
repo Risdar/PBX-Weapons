@@ -580,10 +580,12 @@ extend class PBX_CSSG
 				tounload = 'PBX_CSSG_SubZeroShell';
 				break;
 		}
+
 		PB_UnloadMag(
 			invoker.ammo2.getClassName(),
 			invoker.ammo1.getClassName(),
-			1,1,0,0,tounload);
+			1,1,0,0,tounload
+		);
 		
 	}
 
@@ -591,6 +593,12 @@ extend class PBX_CSSG
 	{
 		int mode = invoker.shellsmode + 1;
 		int actmode = invoker.shellsmode; // actual mode
+
+		if(countinv("PBX_CloseWheel") > 0)
+		{
+			A_TakeInventory("PBX_CloseWheel",1);
+			return resolvestate("Ready3");
+		}
 		
 		// If you dont have an upgrade token, cancel wheel
 		if(countinv("SelectCSG_No") > 0)
@@ -603,7 +611,7 @@ extend class PBX_CSSG
 		// If you've already selected the same shell type, cancel wheel
 		if(countinv(PBX_CSSG.CSSG_ShellsToken1[actmode]) > 0)
 		{
-			A_Print("Ammo type already selected: "..PBX_CSSG.CSSG_ShellsType[actmode]);
+			A_Print(String.format(StringTable.Localize("$PBX_CSSG_ALR"),PBX_CSSG.CSSG_ShellsType[actmode]));
 			return resolvestate("CancelWheel");
 		}
 		

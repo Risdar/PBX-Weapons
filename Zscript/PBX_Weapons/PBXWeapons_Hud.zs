@@ -1,7 +1,8 @@
 // The Wheel for Scope Mode, Variable Zoom, and NVG Toggle uses these values for its scale
-const WHEEL_ZOOM_SCALE  = 0.16;
-const WHEEL_SCOPE_SCALE = 0.16;
-const WHEEL_NVG_SCALE   = 0.5;
+const WHEEL_ZOOM_SCALE       = 0.16;
+const WHEEL_SCOPE_SCALE      = 0.16;
+const WHEEL_NVG_SCALE        = 0.5;
+const WHEEL_CLOSEMENU_SCALE  = 0.15;
 
 // Draw the ammo bar for some weapons
 class PBXWeapons_HUDHandler : EventHandler
