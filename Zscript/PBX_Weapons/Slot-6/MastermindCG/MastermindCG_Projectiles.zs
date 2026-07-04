@@ -6,6 +6,7 @@ class MastermindCGProjectile : PB_MasterMindTracer
 		PB_Projectile.BaseDamage 200;
 		PB_Projectile.RipperCount 1;
         PB_Projectile.PenetrationCount 3;
+		+PB_PROJECTILE.NOCRITICALS
 		Species "Marines";
 	}
 }
@@ -17,8 +18,6 @@ class MastermindCG_SoulSeeker : MastermindCGProjectile
 	{
 		+RIPPER;
 		PB_Projectile.BaseDamage 150;
-		// PB_Projectile.RipperCount 1;
-		// PB_Projectile.PenetrationCount 3;
 	}
 
 	override void PostBeginPlay()

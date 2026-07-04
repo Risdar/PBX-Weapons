@@ -261,8 +261,7 @@ Class ExcavatorDrill : PB_ProjectileAlt
 		Height 6;
 		Gravity 1.25;
 		PB_Projectile.BaseDamage 250;
-		PB_Projectile.RipperCount 0;
-		PB_Projectile.PenetrationCount 0;
+		+PB_PROJECTILE.NOCRITICALS
 		DamageType "ExplosiveImpact";
 		Decal "Scorch";
 	}
@@ -334,8 +333,7 @@ Class ExcavatorDropShot : PB_ProjectileAlt
 		Radius 6;
 		Height 6;
 		PB_Projectile.BaseDamage 50;
-		PB_Projectile.RipperCount 0;
-		PB_Projectile.PenetrationCount 0;
+		+PB_PROJECTILE.NOCRITICALS
 		Scale 1.15;
 		DamageType "ExplosiveImpact";
 		Decal "Scorch";

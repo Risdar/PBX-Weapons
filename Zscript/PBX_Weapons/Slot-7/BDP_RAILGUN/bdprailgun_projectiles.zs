@@ -13,6 +13,8 @@ class RailgunProjectile : PB_JavelinProjectile_Hot
 		+MISSILE
 		+FORCERADIUSDMG
 		+THRUACTORS
+		PB_Projectile.BaseDamage 50;
+		+PB_PROJECTILE.NOCRITICALS
 		Species "Marines";
 		Scale 1.0;
 		

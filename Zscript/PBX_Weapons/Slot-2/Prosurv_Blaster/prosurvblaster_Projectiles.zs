@@ -6,9 +6,8 @@ class ProsurvBlasterProjectile : PB_ProjectileAlt
         +BLOODSPLATTER ;
         -DONTSPLASH;
         speed 200;
-        PB_Projectile.BaseDamage 5;
-		PB_Projectile.RipperCount 1;
-		PB_Projectile.PenetrationCount 1;
+        PB_Projectile.BaseDamage 10;
+		+PB_PROJECTILE.NOCRITICALS
         // damage 3;
         scale 0.3;
         RenderStyle "Add";

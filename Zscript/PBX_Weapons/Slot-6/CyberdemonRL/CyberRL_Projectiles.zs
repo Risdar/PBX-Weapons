@@ -1,47 +1,34 @@
-class CRL_NormalRockets : CRL_PiercingRockets
+class CRL_NormalRockets : PB_ProjectileAlt
 {
     Default
     {
 		PB_Projectile.BaseDamage 350;
-		PB_Projectile.RipperCount 1;
-        PB_Projectile.PenetrationCount 3;
-    }
-}
-
-class CRL_PiercingRockets : PB_ProjectileAlt
-{
-    Default
-    {
-		PB_Projectile.BaseDamage 230;
-		PB_Projectile.RipperCount 8;
-        PB_Projectile.PenetrationCount 3;
-        Projectile;
+		+PB_PROJECTILE.NOCRITICALS
+        DamageType "ExplosiveImpact";
+        Decal "Scorch";
+        RenderStyle "Add";
         Radius 10;
         Height 8;
         Speed 90;
-        DamageType "ExplosiveImpact";
-        Gravity 0.00;
-        Decal "Scorch";
-        RenderStyle "Add";
+        gravity 0;
         // +MISSILE;
-        -NOGRAVITY
+        Projectile;
+        -RIPPER
         +EXTREMEDEATH
         +BLOODSPLATTER 
         +THRUSPECIES
         +MTHRUSPECIES
         +RANDOMIZE
         Species "Marines";
-        Scale 1.0;
+        Scale 2.0;
         SeeSound "DSCANFIR";
         DeathSound "Explosion";
         Obituary "%o was blown up by %k's Cyberdemon missile launcher. Ouch!";
     }
+
     States
 	{
         Spawn:
-            TNT1 A 0;
-            
-        Spawn1:
             TNT1 A 0 A_JumpIf(waterlevel > 1, "SpawnUnderwater");
             WYVB A 1 Bright A_SpawnItem("RedFlareSmall22",0,0);
             TNT1 A 0 A_CustomMissile ("OldschoolRocketSmokeTrail2", 2, 0, random (160, 210), 2, random (-30, 30));
@@ -55,27 +42,57 @@ class CRL_PiercingRockets : PB_ProjectileAlt
         
         SpawnUnderwater:
             WYVB A 1 Bright A_SpawnItem("YellowFlareSmall",0,0);
-            // TNT1 A 0 A_CustomMissile ("BUBULZ", 0, 0, random (0, 360), 2, random (0, 180));
             Goto Spawn1;
            
-        XDeath:
         Crash:
-        Death:
-            EXPL A 1 A_Explode(80,200);
-            EXPL A 0 Radius_Quake (2, 8, 0, 15, 0);
-            TNT1 A 0; //A_AlertMonsters;
-            TNT1 A 0 A_SpawnItemEx ("DetectFloorCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-            TNT1 A 0 A_SpawnItemEx ("DetectCeilCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-            // TNT1 A 0 A_SpawnItemEx ("UnderwaterExplosion",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-            TNT1 A 0 A_SpawnItemEx ("ExplosionFlareSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-            TNT1 A 0 A_SpawnItemEx ("RocketExplosion",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-            TNT1 AAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 180));
-            TNT1 AAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 360));
-            TNT1 AAAAAAAAA 0 A_CustomMissile ("ExplosionParticleVeryFast", 0, 0, random (0, 360), 2, random (0, 360));
-            TNT1 AAAAAAA 0 A_CustomMissile ("MediumExplosionFlames", 0, 0, random (0, 360), 2, random (0, 360));
-            TNT1 A 1;
-            TNT1 A 0 A_PlaySound("FAREXPL", 3);
-            //TNT1 A 3 A_CustomMissile ("HeavyExplosionSmoke", 2, 0, random (0, 360), 2, random (0, 360))
-            Stop;
+		XDeath:
+		Death:
+			TNT1 A 0 {
+				A_Stop();
+				bNOINTERACTION = true;
+				bNOGRAVITY = true;
+			}
+			TNT1 A 0;
+			TNT1 A 0
+			{
+				A_Explode((80), 200);
+				A_StopSound(105);
+				A_StartSound("FAREXPL", CHAN_AUTO,CHANF_OVERLAP,0.5,0,1.1);
+				Radius_Quake (2, 4, 0, 7, 0);
+				A_SpawnItemEx ("DetectFloorCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+				A_SpawnItemEx ("DetectCeilCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+				A_SpawnItemEx ("ExplosionFlareSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+				A_SpawnItemEx ("LiquidExplosionEffectSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+				A_SpawnProjectile ("ExplosionSmokeFast22", 0, 0, random (0, 360), 2, random (0, 360));
+				A_SpawnProjectile ("MediumExplosionFlames", 0, 0, random (0, 360), 2, random (0, 360));
+				A_SpawnProjectile ("PBExplosionparticles", 0, 0, random (0, 360), 2, random (40, 90));
+				A_SpawnProjectile ("PBExplosionparticles2", 0, 0, random (0, 360), 2, random (40, 90));
+				A_SpawnProjectile ("PBExplosionparticles3", 10, 0, random (0, 360), 2, random (40, 90));
+			}
+			TNT1 A 0 A_Jump(256, "Spawn1", "Spawn2", "Spawn3");
+		Spawn1:
+			X004 ABCDE 1 bright Light("EXPLOSIONFLASH");
+			X004 FGHIJKLMNOPQ 1 bright;
+			stop;
+		Spawn2:
+			X003 ABCDE 1 bright Light("EXPLOSIONFLASH");
+			X003 FGHIJKLMNOPQRSTUVWXYZ 1 bright;
+			stop;
+		Spawn3:
+			X125 ABCDE 1 bright Light("EXPLOSIONFLASH");
+			X125 FGHIJKLMNOPQR 1 bright;
+			Stop;
 	}
+}
+
+class CRL_PiercingRockets : CRL_NormalRockets
+{
+    Default
+    {
+        +RIPPER
+		PB_Projectile.BaseDamage 250;
+		PB_Projectile.RipperCount 12;
+        PB_Projectile.PenetrationCount 5;
+        Scale 1.0;
+    }
 }

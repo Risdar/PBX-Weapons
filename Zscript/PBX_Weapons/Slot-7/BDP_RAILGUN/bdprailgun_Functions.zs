@@ -119,14 +119,14 @@ extend class PBX_BDPRailgun
         {
             if(invoker.laserActive) invoker.laserActive = false;
             else invoker.laserActive = true;
-            A_StartSound("MS/Button", CHAN_AUTO, CHANF_OVERLAP);
+            A_StartSound("BEP", CHAN_WEAPON, CHANF_OVERLAP);
             A_Print(invoker.laserActive ? "$PBX_LaserOn" : "$PBX_LaserOff");
 
         }
         if(toggleScope)
         {
             invoker.ScopeMode = (invoker.ScopeMode + 1) % 3;
-            A_StartSound("MS/Button", CHAN_WEAPON);
+            A_StartSound("BEP", CHAN_WEAPON, CHANF_OVERLAP);
             A_SetBlend(0x00a100, 0.2, 3);
             switch (invoker.ScopeMode)
             {
@@ -138,12 +138,12 @@ extend class PBX_BDPRailgun
         if (toggleZoom)
         {
             if(getZoomStrength() == HIGHZOOM) {
-                A_StartSound("BEPBEP");
+                A_StartSound("BEPBEP", CHAN_WEAPON, CHANF_OVERLAP);
 				setZoomStrength(LOWZOOM);
 				A_Print("$PBX_Zoom30");
 			}
 			else {
-                A_StartSound("BEP");
+                A_StartSound("BEP", CHAN_WEAPON, CHANF_OVERLAP);
 				setZoomStrength(HIGHZOOM);
 				A_Print("$PBX_Zoom90");
 			}

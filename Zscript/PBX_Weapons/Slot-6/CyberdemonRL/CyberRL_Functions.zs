@@ -37,7 +37,7 @@ extend class PBX_CyberdemonRL
 				// PB_TakeAmmo(invoker.ammotype2,1);
 				A_TakeInventory(invoker.AmmoType1, invoker.ammoTake, TIF_NOTAKEINFINITE);
 				A_TakeInventory("CyberRLDurability",1,TIF_NOTAKEINFINITE);
-				PB_FireBullets(tofire, 1, frandom(-2,2), 0, 0, frandom(-0.5, 0.5));
+				PB_FireBullets(tofire, 1, 0, 0, 0, 0.5);
 				PB_IncrementHeat(4);
 				break;
 			//Tic 2
