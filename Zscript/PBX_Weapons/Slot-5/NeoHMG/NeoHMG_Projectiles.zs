@@ -1,26 +1,3 @@
-class HMG_Select_Heated : inventory {default{inventory.maxamount 1;}}
-class HMG_Select_Charged : inventory {default{inventory.maxamount 1;}}
-
-Class HMGChamberAmmo : PB_Ammo
-{
-	Default
-	{
-		inventory.amount 0;
-		inventory.maxamount PBX_NeoHMG.MAGAZINE_SIZE;
-		ammo.backpackamount 0;
-		ammo.backpackmaxamount PBX_NeoHMG.MAGAZINE_SIZE;
-        +INVENTORY.IGNORESKILL;
-	}
-}
-
-class HMGShield : PB_Ammo 
-{
-    Default 
-	{
-        Inventory.MaxAmount PBX_NeoHMG.SHIELD_MAXCHARGE;
-    }
-}
-
 class PB_792x57mm_Heated : PB_792x57mm
 {
 	Default

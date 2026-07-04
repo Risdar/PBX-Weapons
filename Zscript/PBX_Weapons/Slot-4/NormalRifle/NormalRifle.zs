@@ -1,7 +1,10 @@
 // Includes
 #include "./NormalRifle_Functions.zs"
 #include "./NormalRifle_Wheel.zs"
-#include "./NormalRifle_helpers.zs"
+
+class NR_Select_FireMode : inventory {default{inventory.maxamount 1;}}
+class NR_Select_DualWield : inventory {default{inventory.maxamount 1;}}
+class NR_Select_Laser : inventory {default{inventory.maxamount 1;}}
 
 Class PBX_NormalRifle : PB_WeaponBase
 {

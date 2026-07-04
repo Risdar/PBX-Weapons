@@ -17,6 +17,7 @@ Class UNMK_Projectile : UNMK_DExtFastProjectile
 		scale 0.1;
 		decal "PlasmaScorchLower";
 	}
+	
 	states
 	{
 		Spawn:

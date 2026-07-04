@@ -1,7 +1,16 @@
 // Includes
 #include "./bdprailgun_Functions.zs"
+#include "./bdprailgun_Projectiles.zs"
 #include "./bdprailgun_Wheel.zs"
 #include "./bdprailgun_helpers.zs"
+
+// Tokens
+class killhologram : inventory {default{inventory.maxamount 1;}}
+class platRailgun_goHolo : inventory {default{inventory.maxamount 1;}}
+class platrailgun_goZoom : inventory {default{inventory.maxamount 1;}}
+class platrailgun_goScope : inventory {default{inventory.maxamount 1;}}
+class platrailgun_goNVG : inventory {default{inventory.maxamount 1;}}
+class platrailgun_goLaser : inventory {default{inventory.maxamount 1;}}
 
 Class PBX_BDPRailgun : PB_WeaponBase
 {

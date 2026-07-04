@@ -39,7 +39,9 @@ class PBXWeapons_Handler : EventHandler
 
 		// SLOT 7
 		PBXCore_Handler.TryGiveInventory(pm,'PBX_BDPRailgun', 'BDPRailgunAmmo', PBX_BDPRailgun.MAGAZINE_SIZE);
+
         // SLOT 9
+		PBXCore_Handler.TryGiveInventory(pm,'PBX_DemonExt', 'SoulCharge', PBX_DemonExt.SOUL_CAPACITY);
 
         // OTHERS
 		PBXCore_Handler.TryGiveInventory(pm,whatToGive:'PBXWeapons_TipsManager', diffCheck:false);

@@ -1,7 +1,11 @@
 // Includes
 #include "./NeoHMG_Functions.zs"
+#include "./NeoHMG_Projectiles.zs"
 #include "./NeoHMG_Wheel.zs"
-#include "./NeoHMG_helpers.zs"
+
+// Tokens
+class HMG_Select_Heated : inventory {default{inventory.maxamount 1;}}
+class HMG_Select_Charged : inventory {default{inventory.maxamount 1;}}
 
 class PBX_NeoHMG : PB_WeaponBase
 {

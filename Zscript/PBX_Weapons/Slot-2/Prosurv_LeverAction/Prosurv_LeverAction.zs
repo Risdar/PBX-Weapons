@@ -1,7 +1,11 @@
 // Includes
 #include "./LeverAction_Functions.zs"
+#include "./LeverAction_Projectiles.zs"
 #include "./LeverAction_Wheel.zs"
-#include "./LeverAction_helpers.zs"
+
+class LA_Select_Marlin : inventory {default{inventory.maxamount 1;}}
+class LA_Select_Magnum : inventory {default{inventory.maxamount 1;}}
+class LA_Select_Laser : inventory {default{inventory.maxamount 1;}}
 
 class PBX_Prosurv_LeverAction : PB_WeaponBase
 {
@@ -78,47 +82,46 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
                 A_SetCrosshair(-1);
 				// PB_HandleCrosshair(-1);
 				A_Giveinventory("PB_LockScreenTilt",1);
-                PB_SetZoom(false);
 			}
 			TNT1 AAAAAA 1 {
 				PB_SetRoll(roll-0.3);
-				A_DoPBWeaponAction();
+                return A_DoPBWeaponAction();
 			}
 			TNT1 A 0 A_PlaysoundEx("weapons/leveraction/inspect", "Auto");
 			LVRA ZYXWV 1 {
 				PB_SetRoll(roll+0.3);
-				A_DoPBWeaponAction();
+                return A_DoPBWeaponAction();
 			}
 			TNT1 A 0 A_StartSound("weapons/leveraction/flip");
 			LVR4 F 1 {
 				PB_SetRoll(roll+0.3);
-				A_DoPBWeaponAction();
+                return A_DoPBWeaponAction();
 			}
 			LVRA FGIKM 1 {
 				PB_SetRoll(roll+0.3);
-				A_DoPBWeaponAction();
+                return A_DoPBWeaponAction();
 			}
 			TNT1 A 0 A_StartSound("weapons/leveraction/rechamber");
 			LVRA NNNNNOPQR 1 {
 				PB_SetRoll(roll-0.3);
-				A_DoPBWeaponAction();
+                return A_DoPBWeaponAction();
 			}
 			LVRA SUT 1 {
 				PB_SetRoll(roll-0.3);
-				A_DoPBWeaponAction();
+                return A_DoPBWeaponAction();
 			}
 			LVR4 G 1 {
 				PB_SetRoll(roll-0.3);
-				A_DoPBWeaponAction();
+                return A_DoPBWeaponAction();
 			}
 			LVRA AA 1 {
 				PB_SetRoll(roll-0.3);
-				A_DoPBWeaponAction();
+                return A_DoPBWeaponAction();
 			}
 			TNT1 A 0 A_StartSound("weapons/leveraction/openchamber");
 			LVR2 RSTUVVVV 1 {
 				PB_SetRoll(roll+1.0);
-				A_DoPBWeaponAction();
+                return A_DoPBWeaponAction();
 			}
 			LVR2 V 3 A_DoPBWeaponAction();
 			LVR3 AB 1 A_DoPBWeaponAction();
@@ -126,27 +129,27 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 				A_StartSound("insertshell");
 				PB_WeaponRecoil(-0.2,+0.2);
 				PB_SetRoll(roll-0.4);
-				A_DoPBWeaponAction();
+                return A_DoPBWeaponAction();
 			}
 			LVR3 D 1 {
 				PB_WeaponRecoil(+0.2,-0.2);
 				PB_SetRoll(roll+0.4);
-				A_DoPBWeaponAction();
+                return A_DoPBWeaponAction();
 			}
 			LVR3 EFG 1 A_DoPBWeaponAction();
 			LVR2 V 5 A_DoPBWeaponAction();
 			TNT1 A 0 A_StartSound("weapons/leveraction/openchamber");
 			LVR2 VUTSRQ 1 {
-				A_DoPBWeaponAction();
 				PB_SetRoll(roll-1.0);
+                return A_DoPBWeaponAction();
 			}
 			LVR2 PONM 1 {
-				A_DoPBWeaponAction();
 				PB_SetRoll(roll+1.0);
+                return A_DoPBWeaponAction();
 			}
 			LVRA AA 1 {
-				A_DoPBWeaponAction();
 				PB_SetRoll(roll+1.0);
+                return A_DoPBWeaponAction();
 			}
 			TNT1 A 0 A_Takeinventory("PB_LockScreenTilt",1);
 			Goto Ready3;

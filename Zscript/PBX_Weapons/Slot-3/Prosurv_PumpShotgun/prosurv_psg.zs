@@ -3,19 +3,6 @@
 // #include "./PlasmaBlaster_Wheel.zs"
 // #include "./ProsurvPSG_helpers.zs"
 
-class PumpShotgunAmmo : Ammo
-{
-    Default
-    {
-        Inventory.Amount 0;
-        Inventory.MaxAmount PBX_ProSurvPSG.MAGAZINE_SIZE;
-        Ammo.BackpackAmount 0;
-        Ammo.BackpackMaxAmount PBX_ProSurvPSG.MAGAZINE_SIZE;
-        Inventory.Icon "AUSCA0";
-        +INVENTORY.IGNORESKILL;
-    }
-}
-
 // Actual Weapon
 class PBX_ProSurvPSG : PB_Weapon
 {
@@ -57,10 +44,9 @@ class PBX_ProSurvPSG : PB_Weapon
 
         WeaponRespect:
 			TNT1 A 0 {
-				A_SetCrosshair(5);
+				A_SetCrosshair(-1);
 				A_Giveinventory("PB_LockScreenTilt",1);
 			}
-			TNT1 A 0 PB_SetZoom(false);
 			TNT1 AAAAAA 1 {
 				PB_SetRoll(roll-0.3);
 				return A_DoPBWeaponAction();

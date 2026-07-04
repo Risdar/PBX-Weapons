@@ -1,7 +1,11 @@
 // Includes
 #include "./Excavator_Functions.zs"
+#include "./Excavator_Projectiles.zs"
 #include "./Excavator_Wheel.zs"
-#include "./Excavator_helpers.zs"
+
+// Tokens
+class EX_Select_DropMode : inventory{default{inventory.maxamount 1;}}
+class EX_Select_DrillMode : inventory{default{inventory.maxamount 1;}}
 
 class PBX_Excavator : PB_WeaponBase
 {

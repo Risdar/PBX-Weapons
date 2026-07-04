@@ -1,7 +1,12 @@
 // Includes
 #include "./PlasmaBlaster_Functions.zs"
+#include "./PlasmaBlaster_Projectiles.zs"
 #include "./PlasmaBlaster_Wheel.zs"
-#include "./PlasmaBlaster_helpers.zs"
+
+class Plasma_Select_Auto : inventory {default{inventory.maxamount 1;}}
+class Plasma_Select_Semi : inventory {default{inventory.maxamount 1;}}
+class Plasma_Select_Burst : inventory {default{inventory.maxamount 1;}}
+class Plasma_Select_Charge : inventory {default{inventory.maxamount 1;}}
 
 // Actual Weapon
 class PBX_PlasmaBlaster : PB_WeaponBase

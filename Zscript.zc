@@ -1,8 +1,10 @@
 Version 4.13
 
 // General
-#include "Zscript/PBX_Weapons/PBXWeapons_Spawners.zs"
 #include "Zscript/PBX_Weapons/PBXWeapons_Systems.zs"
+#include "Zscript/PBX_Weapons/PBXWeapons_Upgrades.zs"
+#include "Zscript/PBX_Weapons/PBXWeapons_Ammo.zs"
+#include "Zscript/PBX_Weapons/PBXWeapons_Spawners.zs"
 #include "Zscript/PBX_Weapons/PBXWeapons_Hud.zs"        // Draw ammo bars
 #include "Zscript/PBX_Weapons/PBXWeapons_HUDData.zs"    // Data that the Core uses to draw the icons
 #include "Zscript/PBX_Weapons/PBXWeapons_Tips.zs"

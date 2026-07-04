@@ -1,62 +1,4 @@
-class BR_Select_Scope : inventory {default{inventory.maxamount 1;}}
-class BR_Select_NVG : inventory {default{inventory.maxamount 1;}}
-class BR_Select_FireMode : inventory {default{inventory.maxamount 1;}}
-class BR_Select_Zoom : inventory {default{inventory.maxamount 1;}}
-class BR_Select_Laser : inventory {default{inventory.maxamount 1;}}
-class BattleRifle_Upgraded : inventory {default{inventory.maxamount 1;}}
-
-class BR_Ammo : Ammo
-{
-    Default
-    {
-        Inventory.Amount 0;
-        Inventory.MaxAmount PBX_BDPBattleRifle.MAGAZINE_SIZE;
-        Ammo.BackpackAmount 0;
-        Ammo.BackpackMaxAmount PBX_BDPBattleRifle.MAGAZINE_SIZE;
-        Inventory.Icon "AUSCA0";
-        +INVENTORY.IGNORESKILL;
-    }
-}
-
-class BattleRifle_Upgrade : PB_UpgradeItem
-{
-	Default
-	{
-		//$Title Battle Rifle Upgrade
-		//$Category Project Brutality - Weapon Upgrades
-		//Game Doom;
-		//SpawnID
-		Height 32;
-		//-COUNTITEM
-		-INVENTORY.ALWAYSPICKUP;
-		-COUNTITEM;
-		Inventory.Pickupsound "CLIPIN";
-		Inventory.PickupMessage "$PBX_BattleRifle_UpgradePickup";
-		Tag "$PBX_BattleRifle_UpgradeTag";
-		Scale 1.0;
-		FloatBobStrength 0.5;
-	}
-
-	States
-	{
-	Spawn:
-		BRXU A -1;
-		Stop;
-
-	Pickup:
-		TNT1 A 0 A_JumpIf(!FindInventory("PBX_BDPBattleRifle") || !FindInventory("BattleRifle_Upgraded") || CountInv("PB_HighCalMag") < GetAmmoCapacity("PB_HighCalMag"),1);
-		fail;
-		TNT1 A 0 {
-			A_SetInventory("BattleRifle_Upgraded", 1);
-			A_GiveInventory("PBX_BDPBattleRifle", 1);
-			A_SetWeaponTag("PBX_BDPBattleRifle","$PBX_BattleRifle_Tag");
-            A_GiveInventory("PB_HighCalMag", 30);
-		}
-		Stop;
-	}
-}
-
-class DecorativeTracer: FastProjectile
+class DecorativeTracer : FastProjectile
 {
 	default
 	{
@@ -151,31 +93,32 @@ class EmptyRifleClip: BaseMagActor
 		bouncetype "doom";
 		+thruactors;
 	}
-   States
-   {
-	Spawn:
-		//TNT1 A 7 A_PlaySound("NULL")
-		TNT1 A 0;
-		TNT1 A 0 A_playsound("BR45PING");
-		ECLI I 4 ;
-		ECLI IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII 4 A_SetRoll(roll+45,SPF_INTERPOLATE);
-		Stop;
-	Death:
-		TNT1 A 0;
-		TNT1 A 0 A_Jump(128,2);
-		TNT1 A 0 A_ChangeFlag("XFLIP",1);
-		TNT1 A 0;
-		TNT1 A 0;
-		TNT1 A 0 A_SetRoll(0);
-		C4S3 I 0
-		{
-				bnointeraction = true;
-				A_changelinkflags(true);
-		}
-		
-		stay1:
-		ECLI J 400;
-		Goto Fadeout;
+
+   	States
+   	{
+		Spawn:
+			//TNT1 A 7 A_PlaySound("NULL")
+			TNT1 A 0;
+			TNT1 A 0 A_playsound("BR45PING");
+			ECLI I 4 ;
+			ECLI IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII 4 A_SetRoll(roll+45,SPF_INTERPOLATE);
+			Stop;
+		Death:
+			TNT1 A 0;
+			TNT1 A 0 A_Jump(128,2);
+			TNT1 A 0 A_ChangeFlag("XFLIP",1);
+			TNT1 A 0;
+			TNT1 A 0;
+			TNT1 A 0 A_SetRoll(0);
+			C4S3 I 0
+			{
+					bnointeraction = true;
+					A_changelinkflags(true);
+			}
+			
+			stay1:
+			ECLI J 400;
+			Goto Fadeout;
 	}
 }
 

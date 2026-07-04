@@ -3,6 +3,13 @@
 #include "./BattleRifle_Wheel.zs"
 #include "./BattleRifle_helpers.zs"
 
+class BR_Select_Scope : inventory {default{inventory.maxamount 1;}}
+class BR_Select_NVG : inventory {default{inventory.maxamount 1;}}
+class BR_Select_FireMode : inventory {default{inventory.maxamount 1;}}
+class BR_Select_Zoom : inventory {default{inventory.maxamount 1;}}
+class BR_Select_Laser : inventory {default{inventory.maxamount 1;}}
+class BattleRifle_Upgraded : inventory {default{inventory.maxamount 1;}}
+
 class PBX_BDPBattleRifle : PB_WeaponBase
 {
 	Default

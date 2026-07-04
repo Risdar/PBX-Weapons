@@ -7,6 +7,11 @@
 #include "./DemonicExtStuff.zs"
 #include "./DemonicExt_Wheel.zs"
 
+// Tokens
+class UMDE_Select_LaserMode : inventory{default{inventory.maxamount 1;}}
+class UMDE_Select_IncinerationMode : inventory{default{inventory.maxamount 1;}}
+class UMDE_Select_LightningMode : inventory{default{inventory.maxamount 1;}}
+
 // The Actual Weapon
 Class PBX_DemonExt : PB_WeaponBase
 {
@@ -30,6 +35,7 @@ Class PBX_DemonExt : PB_WeaponBase
 		PB_WeaponBase.WheelInfo "DemonicExtWheel";
 		PB_WeaponBase.ReserveToMagAmmoFactor 1;
 	}
+
 	const chan_unmkidle = 66;	//the channel of the idle sound
 	int U_level;				//the offset of the beams (its actually in an array, this is the index of that value, check UN_LevelOfs[] below)
 	const primammouse2 = 6;		//how many ammo uses its primary
@@ -44,22 +50,30 @@ Class PBX_DemonExt : PB_WeaponBase
 	int ExterminatorMode;
 	bool ExterminatorWeaponSpecial;
 
+	const SOUL_CAPACITY = 666;
+
 	const specialOverlay = 11;
 	const muzzleLayer = -64;
+
+	const SOUL_GAIN = 6;
 
 	states{
 		Spawn:
 			UNMX A -1 bright;
 			Loop;
+			
 		Select:
-			TNT1 A 0 A_weaponoffset(0,32); 
-			goto SelectFirstPersonLegs;
-		SelectContinue:
-			TNT1 A 0 PB_WeapTokenSwitch("UnmakerSelected");
+            TNT1 A 0 {
+				A_WeaponOffset(0,32);
+				PB_SetRoll(0);
+				A_zoomfactor(1.0);
+			    DemonExtCrosshair();
+				A_SetInventory("PB_LockScreenTilt",0);
+				PB_WeapTokenSwitch("UnmakerSelected");
+                PB_WeaponRaise("UNMAKSEL");
+			    return PB_RespectIfNeeded();
+			}
 		SelectAnimation:
-			TNT1 A 0 A_zoomfactor(1.0);
-			TNT1 A 0 PB_setroll(0);
-			TNT1 A 0 A_startsound("UNMAKSEL",20);
 			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == 2,"SelectSoul");
 			UNMS ABCDE 1; 
 			goto Ready3;
@@ -82,10 +96,8 @@ Class PBX_DemonExt : PB_WeaponBase
 			TNT1 A 0 PB_RespectIfNeeded();
 		WeaponRespect:
 			UNMD EDCBA 1 UNM_WeaponReady();
-			
-			UNMI AAAAAAAAAAAAAAA 1 UNM_WeaponReady();//A_PlaySound("RCHARGE",CHAN_ITEM);
+			UNMI AAAAAAAAAAAAAAA 1 UNM_WeaponReady();
 			TNT1 A 0 A_startsound("UNOCFIR", 1);
-			//TNT1 A 0 A_startsound("UNMSTA", 3);
 			UNMI AAAA 1 UNM_WeaponReady();
 			TNT1 A 0 A_overlay(66,"LightningFlash");
 			UNMI AAAA 1 UNM_WeaponReady();
@@ -101,7 +113,6 @@ Class PBX_DemonExt : PB_WeaponBase
 			UNMI AAAA 1 UNM_WeaponReady();
 			TNT1 A 0 A_overlay(68,"LightningFlash");
 			UNMI AAAA 1 UNM_WeaponReady();
-			
 		Ready3:
 			TNT1 A 0 A_Startsound("unmaker/hum",chan_unmkidle,CHANF_LOOPING);
 			//UNMI A 0 A_JumpIf(invoker.ExterminatorMode == 2,"Ready.Soul");

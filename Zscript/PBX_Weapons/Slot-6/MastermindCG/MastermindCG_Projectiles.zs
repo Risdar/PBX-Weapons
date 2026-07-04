@@ -1,14 +1,3 @@
-class MastermindCGDurability : PB_Ammo
-{
-	default
-	{
-		Inventory.Amount 0;
-		inventory.maxamount PBX_MastermindChaingun.DURABILITY;
-		Ammo.BackpackAmount 0;
-		Ammo.BackpackMaxAmount PBX_MastermindChaingun.DURABILITY;
-	}
-}
-
 class MastermindCGProjectile : PB_MasterMindTracer
 {
 	Default
@@ -19,50 +8,6 @@ class MastermindCGProjectile : PB_MasterMindTracer
         PB_Projectile.PenetrationCount 3;
 		Species "Marines";
 	}
-
-	// States
-	// {
-	// 	Spawn:
-	// 		MISL A 0;
-	// 		TNT1 A 0 A_PlaySound("DSRLAUN");
-	// 	Live:
-	// 		MISL A 1 Bright;
-	// 		TNT1 A 0 A_JumpIf(waterlevel > 1, "SpawnUnderwater");
-	// 		TNT1 A 0 A_SpawnItem("RocketFlare",-20,0);
-	// 		TNT1 A 0 A_SpawnItem ("OldschoolRocketSmokeTrail2");
-	// 		TNT1 A 0 A_CustomMissile ("OldschoolRocketSmokeTrail2", 2, 0, random (160, 210), 2, random (-30, 30));
-	// 		Loop;
-
-	// 	SpawnUnderwater:
-	// 		TNT1 A 0 A_ChangeFlag("NOGRAVITY", 0);
-	// 		TNT1 A 0 A_SpawnItem("RocketFlare",-20,0);
-	// 	//TNT1 A 0 A_CustomMissile ("BUBULZ", 0, 0, random (0, 360), 2, random (0, 180))
-	// 		MISL A 1 Bright;
-	// 		Goto Live;
-
-	// 	Death:
-	// 		EXPL A 0 Radius_Quake (4, 30, 0, 15, 0);
-	// 		TNT1 A 0 A_PlaySound("Explosion");
-	// 		TNT1 A 0 A_SpawnItem("WhiteShockwaveSmall");
-	// 		EXPL A 0 A_CustomMissile ("ExplosionSmoke", 0, 0, random (0, 360), 2, random (0, 360));
-	// 	//TNT1 A 0 A_SpawnItemEx ("UnderwaterExplosion",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
-	// 		TNT1 A 0 A_SpawnItemEx ("DetectFloorCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-	// 		TNT1 A 0 A_SpawnItemEx ("DetectCeilCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-	// 		TNT1 A 0 A_SpawnItemEx ("ExplosionFlareSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-	// 		TNT1 A 0 A_SpawnItemEx ("MinigunExplosion",0,0,13,0,0,0,0,SXF_NOCHECKPOSITION,0);
-	// 		TNT1 AAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 360));
-	// 		TNT1 AA 0 A_CustomMissile ("ExplosionParticle2", 0, 0, random (0, 360), 2, random (0, 90));
-	// 		EXPL A 0;
-	// 		TNT1 AAAA 0 A_CustomMissile ("SmallExplosionFlames", 0, 0, random (0, 360), 2, random (0, 360));
-	// 		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0);
-	// 		TNT1 A 0;
-	// 		TNT1 A 2;
-	// 	//TNT1 A 0 A_SpawnItemEx ("LiquidExplosionEffectSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
-	// 		TNT1 A 0 A_PlaySound("FAREXPL", 3);
-	// 		TNT1 A 15;
-	// 		TNT1 A 0 A_PlaySound("distantexp", 5);
-	// 		Stop;
-	// }
 }
 
 // The code homing code is from Gun Bonsai
@@ -115,24 +60,26 @@ class HomingShots_Aux : Inventory
 	// passed those checks twice in a row.
 	bool TerminalHoming() 
 	{
-		return owner.tracer
-			&& owner.CheckLOF(
-				0, // flags
-				64+level*32, // range, 2m + 1m/level
-				0, // minrange
-				0, 0, // angles
-				0, 0, // offset
-				AAPTR_TRACER);
+		return owner.tracer && owner.CheckLOF(
+			0, // flags
+			64+level*32, // range, 2m + 1m/level
+			0, // minrange
+			0, 0, // angles
+			0, 0, // offset
+			AAPTR_TRACER
+		);
 	}
 
 	void DoHoming() 
 	{
-		if (!owner) {
+		if (!owner) 
+		{
 			// Our owning projectile vanished. Ideally this should have destroyed us
 			// as well, but sometimes that doesn't happen.
 			Destroy();
 			return;
 		}
+
 		// This is kind of gross.
 		// Ideally, we'd just call A_SeekerMissile and let it do its thing. However,
 		// when it acquires a lock on something it adjusts the Z velocity without
@@ -158,9 +105,7 @@ class HomingShots_Aux : Inventory
 			min(ceil((64 + level*32)/128.0), 8)); // scan range for new targets in blocks
 			// Reject anything that is not a PB_Monster
 			if (owner.tracer && !(owner.tracer is "PB_Monster"))
-			{
 				owner.tracer = null;
-			}
 			owner.vel = vel;
 			owner.angle = angle;
 		} 
@@ -176,9 +121,10 @@ class HomingShots_Aux : Inventory
 			// which means we should let A_SeekerMissile take over flight control and
 			// guide us in.
 			owner.A_SeekerMissile(
-			0, // terminal homing cone radius
-			min(level, 90), // max turn angle per tic, degrees
-			SMF_PRECISE | SMF_CURSPEED);
+				0, // terminal homing cone radius
+				min(level, 90), // max turn angle per tic, degrees
+				SMF_PRECISE | SMF_CURSPEED
+			);
 		}
 
 		if (owner.tracer != null && pbxweapons_debug)

@@ -1,6 +1,6 @@
 // Includes
 #include "./prosurvblaster_Functions.zs"
-#include "./prosurvblaster_helpers.zs"
+#include "./prosurvblaster_Projectiles.zs"
 // #include "./PlasmaBlaster_Wheel.zs"
 
 // Actual Weapon
@@ -67,7 +67,7 @@ class PBX_ProsurvBlaster : PB_WeaponBase
             BRGT EDCBAAAAA 1 A_DoPBWeaponAction();
             BRGC CDEF 1 {
                 PB_SetRoll(roll+.2);
-                A_DoPBWeaponAction();
+                return A_DoPBWeaponAction();
             }
             TNT1 A 0 A_PlaySoundEx("weapons/blasterpistol/recharge","Weapon");
             BRGC GHIJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJK 1 A_DoPBWeaponAction();
@@ -75,7 +75,7 @@ class PBX_ProsurvBlaster : PB_WeaponBase
             BRGC LM 1 A_DoPBWeaponAction();
             BRGC NOPQ 1 {
                 PB_SetRoll(roll-.2);
-                A_DoPBWeaponAction();
+                return A_DoPBWeaponAction();
             }
             Goto Ready3;
 

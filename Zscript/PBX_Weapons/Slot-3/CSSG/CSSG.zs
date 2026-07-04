@@ -1,11 +1,8 @@
 // Includes
 #include "./CSSG_Functions.zs"
-#include "./CSSG_Casings.zs"
-#include "./CSSG_Shells.zs"
-#include "./CSSG_Upgrades.zs"
 #include "./CSSG_Wheel.zs"
 #include "./CSSG_Projectiles.zs"
-
+#include "./CSSG_helpers.zs"
 
 Class PBX_CSSG : PB_WeaponBase
 {
@@ -76,9 +73,7 @@ Class PBX_CSSG : PB_WeaponBase
 			C0XR IJK 1 A_DoPBWeaponAction();
 			TNT1 A 0 A_startsound("CSSGOPEN",25);
 			C0XR LM 1 A_DoPBWeaponAction();
-			
 			TNT1 A 3 A_DoPBWeaponAction();
-			
 			C0RO NO 1 A_DoPBWeaponAction();
 			TNT1 AA 0 PB_GunSmoke(random(0,1),0,-2);
 			C0RO P 1 A_DoPBWeaponAction();
@@ -89,16 +84,12 @@ Class PBX_CSSG : PB_WeaponBase
 				return A_DoPBWeaponAction();
 			}
 			TNT1 A 0 A_startsound("weapons/cssg/in",26);
-			TNT1 A 0 PB_AmmoIntoMag("CSSGShellsIn","PB_Shell",2,1);
 			C0RB IJKLMM 1 A_DoPBWeaponAction();
-			
 			TNT1 A 4 A_DoPBWeaponAction();
-			
 			TNT1 A 0 A_startsound("CSSGCLOS",29);
 			C0RC ABC 1 A_DoPBWeaponAction();
 			C0RC DEEEEF 1 A_DoPBWeaponAction();
 			C0RC GHIJ 1 A_DoPBWeaponAction();
-			
 			C0XR NNNN 1 A_DoPBWeaponAction();
 		//random pump
 			TNT1 A 0 A_startsound("weapons/sgmvpump",64);
@@ -106,14 +97,10 @@ Class PBX_CSSG : PB_WeaponBase
 			C0XR NOPQRSSSSS 1 A_DoPBWeaponAction();
 			TNT1 A 0 A_startsound("weapons/sgpump",65);
 			C0XR TUVWX 1 A_DoPBWeaponAction();
-			
 			C0XR YYZZ 1 A_DoPBWeaponAction();
 			C0ID A 2 A_DoPBWeaponAction();
 			goto ready;
 
-			
-			
-		Ready:
 		Ready3:
 			TNT1 A 0 CM_HandleCrosshair();
 			TNT1 A 0 PB_CoolDownBarrel();
@@ -122,8 +109,6 @@ Class PBX_CSSG : PB_WeaponBase
 		
 		// FIRE STATES
 		Fire:
-			//TNT1 A 0 PB_CheckBarrelThrow1();
-			//TNT1 A 0 PB_CheckAmmoFire();
 			TNT1 A 0 {
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
@@ -240,7 +225,6 @@ Class PBX_CSSG : PB_WeaponBase
 			goto ready3;
 			
 		ReloadFull:
-			//TNT1 A 0 A_takeinventory(invoker.UnloaderToken,10);
 			C0RO ABC 1;
 			C0RO DEF 1;
 			C0RO GHIJ 1;
@@ -266,7 +250,6 @@ Class PBX_CSSG : PB_WeaponBase
 			goto CloseSSG;
 			
 		Unload:
-			//TNT1 A 0 A_Takeinventory("Unloading",1);
 			TNT1 A 0 A_Jumpif(PB_GetChamberEmpty() || countinv(invoker.ammotype2) < 1,"Ready3");
 			C0HO ABC 1;
 			TNT1 A 0 A_startsound("CSSGOPEN",25);
@@ -405,19 +388,4 @@ Class PBX_CSSG : PB_WeaponBase
 	}
 	
 }
-
-//the ammo counter
-Class CSSGShellsIn : Ammo
-{
-	default
-	{
-        Inventory.Amount 0;
-		inventory.maxamount PBX_CSSG.BARREL_CAPACITY;
-		ammo.backpackamount 0;
-		ammo.backpackmaxamount PBX_CSSG.BARREL_CAPACITY;
-		Inventory.Icon "AUSCA0";
-        +INVENTORY.IGNORESKILL;
-	}
-}
-
 

@@ -1,7 +1,20 @@
 // Includes
 #include "./MetalSniper_Functions.zs"
+#include "./MetalSniper_Projectiles.zs"
 #include "./MetalSniper_Wheel.zs"
-#include "./MetalSniper_helpers.zs"
+
+// Normal Wheel Tokens
+class MS_Select_AimMode : inventory {default{inventory.maxamount 1;}}
+class MS_Select_GrenMode : inventory {default{inventory.maxamount 1;}}
+class MS_Select_Resonance : inventory {default{inventory.maxamount 1;}}
+class MS_Select_Laser : inventory {default{inventory.maxamount 1;}}
+class MS_Select_NO : inventory {default{inventory.maxamount 1;}}
+// ADS Wheel Tokens
+class MS_Select_ToggleZoom : inventory {default{inventory.maxamount 1;}}
+class MS_Select_ToggleScope : inventory {default{inventory.maxamount 1;}}
+class MS_Select_ToggleNVG : inventory {default{inventory.maxamount 1;}}
+// Other Tokens
+class MetalSniperUpgraded : inventory {default{inventory.maxamount 1;}}
 
 Class PBX_MetalSniper : PB_WeaponBase
 {

@@ -1,7 +1,13 @@
 // Includes
 #include "./CrossbowBallista_Functions.zs"
+#include "./CrossbowBallista_Projectiles.zs"
 #include "./CrossbowBallista_Wheel.zs"
-#include "./CrossbowBallista_helpers.zs"
+
+// Tokens
+class CB_Select_DemonicMode : inventory {default{inventory.maxamount 1;}}
+class CB_Select_NormalMode : inventory {default{inventory.maxamount 1;}}
+class CB_Select_NO : inventory {default{inventory.maxamount 1;}}
+class Crossbow_Upgraded : inventory {default{inventory.maxamount 1;}}
 
 class PBX_Prosurv_Ballista : PB_WeaponBase
 {
@@ -24,8 +30,6 @@ class PBX_Prosurv_Ballista : PB_WeaponBase
 		Weapon.AmmoType1 "PB_HighCalMag";
 	    Weapon.AmmoType2 "CrossbowBallistaAmmo";
 	    Weapon.AmmoGive1 15;
-		//PB_WeaponBase.unloadertoken "MyWeaponUnloaded"; token that indicates if this specific weapon is unloaded, example of the token defined below this class
-		//PB_WeaponBase.respectItem "MyWeaponRespect"; token needed for the respect to work, in case your weapon has a respect animation, example of the token defined below this class
 		
 //////////////////////////// SPRITES & OFFSETS ////////////////////////////////////////////////////////////////////////////////////
         Weapon.BobStyle "InverseSmooth";
@@ -74,7 +78,7 @@ class PBX_Prosurv_Ballista : PB_WeaponBase
 			TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
 			CBWR ABCDEF 1 {
 				PB_SetRoll(roll-.4);
-				A_DoPBWeaponAction;
+                return A_DoPBWeaponAction();
 			}
 			CBWR GGGGGGGGG 1 A_DoPBWeaponAction();
 			TNT1 A 0 A_PlaySoundEx("Ironsights","Auto");
@@ -87,22 +91,23 @@ class PBX_Prosurv_Ballista : PB_WeaponBase
 			CBOR CDE 1 A_DoPBWeaponAction();
 			CBOR FG 1 {
 				PB_SetRoll(roll-.3);
-				A_DoPBWeaponAction();
+                return A_DoPBWeaponAction();
 			}
 			CBOR H 1 {
 				PB_SetRoll(roll+.3);
-				A_DoPBWeaponAction();
+                return A_DoPBWeaponAction();
 			}
 			CBOR IJ 1 {
 				PB_SetRoll(roll+.4);
-				A_DoPBWeaponAction();
+                return A_DoPBWeaponAction();
 			}
 			TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
 			CBOR KLMN 1 {
 				PB_SetRoll(roll+.4);
-				A_DoPBWeaponAction();
+                return A_DoPBWeaponAction();
 			}
 			Goto Ready3;
+			
 		Select:
 			TNT1 A 0 PB_WeaponRaise("weapons/ballista/raise");
 			TNT1 A 0 PB_RespectIfNeeded();

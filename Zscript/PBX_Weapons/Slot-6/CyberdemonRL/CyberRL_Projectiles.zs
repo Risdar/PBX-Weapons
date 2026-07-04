@@ -1,14 +1,3 @@
-class CyberRLDurability : PB_Ammo
-{
-	default
-	{
-		Inventory.Amount 0;
-		inventory.maxamount PBX_CyberdemonRL.DURABILITY;
-		Ammo.BackpackAmount 0;
-		Ammo.BackpackMaxAmount PBX_CyberdemonRL.DURABILITY;
-	}
-}
-
 class CRL_NormalRockets : CRL_PiercingRockets
 {
     Default

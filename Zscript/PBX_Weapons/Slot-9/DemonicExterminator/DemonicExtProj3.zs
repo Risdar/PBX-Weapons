@@ -1,5 +1,7 @@
-Class UNMK_DExtActor : Actor{
-	Default{
+Class UNMK_DExtActor : Actor
+{
+	Default
+	{
 		Species "Marines";
 		+THRUSPECIES
 		+MTHRUSPECIES
@@ -8,8 +10,11 @@ Class UNMK_DExtActor : Actor{
 		+FORCERADIUSDMG
 	}
 }
-Class UNMK_DExtFastProjectile : FastProjectile{
-	Default{
+
+Class UNMK_DExtFastProjectile : FastProjectile
+{
+	Default
+	{
 		Species "Marines";
 		+THRUSPECIES
 		+MTHRUSPECIES
