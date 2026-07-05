@@ -124,6 +124,14 @@ PBX_MastermindCG_Tag                = "Spider Mastermind's Chaingun";
 
 PBX_MastermindCG_SoulSeeker         = "\crSoul Seeker \c-Mode";
 PBX_MastermindCG_Normal             = "\caExplosive Tracers \c-Mode";
+
+// Paingiver
+PBX_Paingiver_Pickup                = "You got the Paingiver! (Slot 6)";
+PBX_Paingiver_Tag                   = "Paingiver";
+
+PBX_Paingiver_Enraged               = "\c[PB_DTech]Enraged Paingiver \c-Mode";
+PBX_Paingiver_Desc                  = "\ciForged From The Metal Smelting Pits Of The Golgothan Enclave: \cdThe Paingiver Is A Weapon Of Pure Malice Devised For A Singular Purpose - To Enact Suffering Upon The Weak!";
+
 //////////////////////////// SLOT 7 ///////////////////////////////////////////////////////////////////////////////
 PBX_BDPRailgun_Pickup               = "Platinum Railgun (Slot 7)";
 PBX_BDPRailgun_Tag                  = "UAC MK-III 'Platinum' Railgun";

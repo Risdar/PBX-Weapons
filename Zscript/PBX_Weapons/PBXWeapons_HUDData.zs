@@ -418,6 +418,35 @@ class PBXHUDService_PBX_Excavator : service
     }
 }
 
+class PBXHUDService_PBX_Paingiver : service
+{
+    override Object GetObjectUI(String request,String stringArg,int intArg,double doubleArg,Object objectArg)
+    {
+        if(request != "PBX_HUD") return null;
+        let weapon = PB_WeaponBase(objectArg); // Get a pointer to the weapon here so you can do stuff with the weapon
+        if(!weapon) return null;
+
+        if(weapon.GetClassName() != 'PBX_Paingiver')return null;
+
+        let data = PBXHUDData(new("PBXHUDData"));
+        if (!data) return null;
+        data.Handled = true;
+        data.SkipAutoDraw = false;
+
+        data.Image1 = "";       // Weapon Icon
+        data.Image2 = "";       // Weapon Mode Icon
+        data.Image3 = "";       // Weapon Mode 2 Icon (For example the CryoRifle has 2 modes at the same time)
+
+        data.Offset1 = (-25,15); // Weapon Icon Position
+        data.Offset2 = (0,0);    // Weapon Mode Icon Position
+
+        data.Scale1 = 1.2;      // Weapon Icon Scale
+        data.Scale2 = 1.0;      // Weapon Mode Icon Scale
+
+        return data;
+    }
+}
+
 //////////////// SLOT 7 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class PBXHUDService_PBX_Railgun : service
 {

@@ -19,3 +19,9 @@ $rolloff excavator/explode 1300 1800
 
 // Mastermind Chaingun
 RMNGSHOT RMNGSHOT
+
+// Paingiver
+RLFIRE1 RLFIRE1
+RLFIRE2 RLFIRE2
+RLSWEET RLSWEET
+RLBOOM RLBOOM

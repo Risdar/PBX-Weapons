@@ -35,6 +35,7 @@ Version 4.13
 #include "Zscript/PBX_Weapons/Slot-6/Excavator/Excavator.zs" // Excavator
 #include "Zscript/PBX_Weapons/Slot-6/CyberdemonRL/CyberdemonRL.zs" // Cyberdemon Rocket launcher
 #include "Zscript/PBX_Weapons/Slot-6/MastermindCG/MastermindCG.zs" // Mastermind Chaingun
+#include "Zscript/PBX_Weapons/Slot-6/Paingiver/Paingiver.zs" // Mastermind Chaingun
 
 // Slot 7
 #include "Zscript/PBX_Weapons/Slot-7/BDP_Railgun/bdp_railgun.zs" // BDP Railgun

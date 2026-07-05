@@ -99,8 +99,7 @@ class PBXWeapons_HUDHandler : EventHandler
             case 'PBX_NeoHMG':
                 PBXCore_HUDHandler.PBX_DrawAmmoBar(
                     phud,
-                    PBXCore_HUDHandler.
-                    DRAW_THIRD_BAR,
+                    PBXCore_HUDHandler.DRAW_THIRD_BAR,
                     "BARBASH3",
                     "ABAR9",
                     "HMGShield",
@@ -128,6 +127,23 @@ class PBXWeapons_HUDHandler : EventHandler
                     "ABAR10",
                     "MastermindCGDurability",
                     Font.CR_DARKGRAY
+                );
+                break;
+
+            case 'PBX_Paingiver':
+                let pngv = PBX_Paingiver(pbWeap);
+                // Show Fuel if Demonic Mode, Show Rocket if Standard Mode
+                if(!pngv) return;
+
+                bool enraged = pngv.enragedState;
+
+                PBXCore_HUDHandler.PBX_DrawAmmoBar(
+                    phud,
+                    PBXCore_HUDHandler.DRAW_SECOND_BAR,
+                    enraged ? "BARBACZ2"                      : "BARBASC2",
+                    enraged ? "ABAR7"                         : "ABAR11",
+                    "SoulCharge",
+                    enraged ? Font.FindFontColor("PB_DTech")  : Font.CR_DARKRED
                 );
                 break;
 

@@ -65,16 +65,19 @@ class PBX_CyberdemonRL : PB_WeaponBase
 			TNT1 A 0 A_Lower();
 			Wait;
 		Select:
-			TNT1 A 0 PB_WeaponRaise("BFGREADY");
-			// TNT1 A 0 PB_RespectIfNeeded();
-		SelectContinue:
-			TNT1 A 0;
+			TNT1 A 0 {
+				A_WeaponOffset(0,32);
+				PB_SetRoll(0);
+			    PB_HandleCrosshair(78);
+				A_SetInventory("PB_LockScreenTilt",0);
+                PB_WeaponRaise("BFGREADY");
+			    return PB_RespectIfNeeded();
+			}
 		SelectAnimation:
 			TNT1 A 0 A_StartSound("RLCYCLE", CHAN_AUTO, CHANF_OVERLAP);
 			CYBF I 0 A_GunFlash();
 			CYBF ONML 1 BRIGHT;
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
-		Ready:
 		Ready3:
 			TNT1 A 0 PB_HandleCrosshair(78);
 			TNT1 A 0 PB_CoolDownBarrel();

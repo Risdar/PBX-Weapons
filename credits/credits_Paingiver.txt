@@ -1,0 +1,35 @@
+----------------------------------------
+Updated By Jeniffer/Jenny For New PB3.0 Build Update
+----------------------------------------
+PB3.0_Paingiver v8.6 Final Edition Updated 10-11-2023
+----------------------------------------
+Seeker-Rocket : Seeker-Rocket Now Has Its Own Actor For Seeker-Rocket Smoke-Trail : Added 10-11-2023
+----------------------------------------
+Paingiver Alt Fir Missing A Jump String (Fixed) 10-11-2023
+----------------------------------------
+Fire Rocket Projectile (Fixed) 10-10-2023
+----------------------------------------
+Alt Fire Rocket Trail Smoke (Fixed) 09-10-2023
+----------------------------------------
+HellTrooper GloryKill Execution Added 11-10-2023
+----------------------------------------
+ACS Execute Console Message Error Bug (Fixed) 11-10-2023
+----------------------------------------
+Code Clean-Up Fixes 09-10-2023
+----------------------------------------
+Kicking Enemies (Fixed)
+----------------------------------------
+SlideKicking (Fixed)
+----------------------------------------
+All Kicking and SlideKicking Animations Re-Done: Animations A-lot Smoother
+----------------------------------------
+Punching Enemies (Fixed)
+----------------------------------------
+Grabbed-Barrels (Fixed)
+----------------------------------------
+GloryKill While Using: (Yes)
+----------------------------------------
+All Unwanted Code Removed and Replaced
+----------------------------------------
+Credits to Moa-Dixon and R3W
+----------------------------------------

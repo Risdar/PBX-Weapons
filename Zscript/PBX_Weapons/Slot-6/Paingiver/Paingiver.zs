@@ -1,0 +1,354 @@
+// // Includes
+#include "./Paingiver_Projectiles.zs"
+// #include "./CyberRL_Projectiles.zs"
+
+class PBX_Paingiver : PB_WeaponBase
+{
+	Default
+	{
+        //$Title Cyberdemon RL
+        //$Category Weapons
+        //$Sprite CYBFA0
+//////////////////////////// WEAPON DATA ////////////////////////////////////////////////////////////////////////////////////
+		Weapon.SlotNumber 6;
+		Weapon.SlotPriority 0;
+	    Weapon.SelectionOrder 3800;
+	    Inventory.Icon "W17PA0";
+        Inventory.AltHudIcon "W17PA0";
+		// PB_WeaponBase.ReserveToMagAmmoFactor 2;
+
+        Weapon.BobRangeX 0.3;
+        Weapon.BobRangeY 0.5;
+        Weapon.BobStyle "InverseSmooth";
+        Weapon.BobSpeed 2.0;
+		
+//////////////////////////// AMMO ////////////////////////////////////////////////////////////////////////////////////
+		Weapon.AmmoType1 "PB_RocketAmmo";
+	    Weapon.AmmoGive1 30;
+		
+//////////////////////////// MESSAGES & SOUNDS ////////////////////////////////////////////////////////////////////////////////////
+        Obituary "Death By Paingiver. Ouch!";
+		Inventory.Pickupmessage "$PBX_Paingiver_Pickup";
+	    Inventory.PickupSound "misc/rockboxa";
+		Tag "$PBX_Paingiver_Tag";
+	    FloatBobStrength 0.5;
+	    Scale 0.9;
+        
+//////////////////////////// WEAPON FLAGS ////////////////////////////////////////////////////////////////////////////////////
+        +WEAPON.NOAUTOAIM;
+        +WEAPON.EXPLOSIVE;
+        +WEAPON.NOAUTOFIRE;
+		+Inventory.AUTOACTIVATE;
+        +Inventory.AlwaysPickUp;
+        +FORCEXYBILLBOARD;
+        +FLOORCLIP;
+        +DONTGIB;
+	}
+
+//////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
+	bool enragedState;
+	int shotCount;
+	const ammoTake = 2;
+      
+//////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
+	override void postbeginplay()
+	{
+		enragedState = false;
+        shotCount = 0;
+		super.postbeginplay();
+	}
+
+    override void DoEffect() 
+    {
+        super.DoEffect();
+
+		If(!owner.player || !(owner.player.readyweapon is "PBX_Paingiver"))
+            return;
+        if(!enragedState) 
+            return;
+
+        if(CountInv("SoulCharge") <= 0)
+        {
+            A_Playsound("UNMSWT2",3);
+            // A_Print("No Power lol");
+            A_Print("$PB_UNMAKER_RUNOUT");
+            enragedState = false;
+            return;
+        }
+
+        if(gametic % Object.TICRATE*5)
+            TakeInventory("SoulCharge",5);
+
+    }
+
+    override void ModifyDamage(int damage, Name damageType, out int newDamage, bool passive, Actor inflictor, Actor source, int flags)
+    {
+		if (passive && damage > 0)
+		{
+			if (owner.player && owner.player.readyweapon is "PBX_Paingiver" && enragedState)
+			{
+				newDamage = damage/4;
+			}
+		}
+
+    }
+      
+//////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
+	States
+	{
+//////////////////////////// SETUP ////////////////////////////////////////////////////////////////////////////////////
+		Spawn:
+            W17P A 0 NoDelay;
+            W17P A 10 A_PBVPFramework("W17P");
+            "####" "#" 0 A_PbvpInterpolate();
+            Loop;
+
+        Deselect:
+           TNT1 A 0 {
+				A_WeaponOffset(0,32);
+				PB_SetRoll(0);
+				PB_HandleCrosshair(-1);
+				A_TakeInventory("PB_LockScreenTilt",1);
+			}
+			TNT1 A 0 A_StopSound(CHAN_WEAPON);
+            TNT1 A 0 A_PlaySound("KICKSW", CHAN_AUTO);
+            TNT1 A 0 A_ZoomFactor(1.0);
+            W17S A 1 PB_WeaponRecoilBasic( 0.5);
+            W17S B 1 PB_WeaponRecoilBasic( 0.8);
+            W17S C 1 PB_WeaponRecoilBasic( 0.5);
+            TNT1 A 0 PB_WeaponRecoilBasic(-0.18);
+			TNT1 A 0 A_Lower();
+			Wait;
+
+		Select:
+            TNT1 A 0 {
+				A_WeaponOffset(0,32);
+				PB_SetRoll(0);
+			    PB_HandleCrosshair(65);
+				A_SetInventory("PB_LockScreenTilt",0);
+                PB_WeaponRaise("weapons/sgl/inspect2");
+			    return PB_RespectIfNeeded();
+			}
+		SelectAnimation:
+			TNT1 A 0 A_PlaySound("rocket", 2);
+            TNT1 A 0 A_PlaySound("KICKSW", CHAN_AUTO);
+            TNT1 A 0 PB_WeaponRecoilBasic(-0.2);
+            W17S C 1 PB_WeaponRecoilBasic(-0.5);
+            W17S B 1 PB_WeaponRecoilBasic(0.5);
+            W17S A 1 PB_WeaponRecoilBasic(0.2);
+//////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
+		Ready3:
+			W17A A 1 {
+                PB_CoolDownBarrel();
+                return A_DoPBWeaponAction();
+            }
+			Loop;
+
+        NoAmmo:
+		    W17A A 5 {
+                A_ZoomFactor(1.0);
+                A_PlaySound("weapons/empty", 4);
+            }
+            Goto Ready3;
+		
+//////////////////////////// FIRE ////////////////////////////////////////////////////////////////////////////////////
+		Fire:
+            TNT1 A 0 {
+			    PB_HandleCrosshair(65);
+                A_WeaponOffset(0,32);
+                PB_SetRoll(0);
+                A_TakeInventory("PB_LockScreenTilt",1);
+            }
+			TNT1 A 0 PB_JumpIfNoAmmo(min:ammoTake,secondary:false);
+            TNT1 A 0 A_PlaySound("RLFIRE", CHAN_WEAPON);
+            TNT1 A 0 A_PlaySound("RLsweet", CHAN_VOICE);
+            W17F A 1 Bright A_DoPBWeaponAction();
+            TNT1 A 0 Bright {
+                A_AlertMonsters();
+                PB_FireOffset();
+                PB_IncrementHeat(5);
+                A_FireCustomMissile("YellowFlareSpawn",0,0,0,0);
+                if(!invoker.enragedState)
+                    A_TakeInventory(invoker.ammo1.getClassName(),ammoTake,TIF_NOTAKEINFINITE);
+                A_FireCustomMissile("PB_Rocket", 0, 0, 0, 0);
+                A_FireCustomMissile("RocketGlassBreaker", 0, 0, 0, 0);
+                PB_WeaponRecoil(-0.5,1.0);
+                A_ZoomFactor(0.90);
+            }
+            W17F BCD 1 {
+                if(invoker.enragedState)
+                    return A_DoPBWeaponAction();
+                PB_WeaponRecoilBasic(-1.0); 
+                A_ZoomFactor(0.97); 
+                return resolvestate(null);
+            }
+            W17F EF 2 {
+                if(invoker.enragedState)
+                    return A_DoPBWeaponAction();
+                PB_WeaponRecoilBasic(0.5);  
+                A_ZoomFactor(0.99); 
+                return resolvestate(null);
+            }
+            W17F GH 2 {
+                if(invoker.enragedState)
+                    return A_DoPBWeaponAction();
+                PB_WeaponRecoilBasic(-1.0); 
+                A_ZoomFactor(1.0); 
+                return resolvestate(null);
+            }
+            W17F I 2  {
+                if(invoker.enragedState)
+                    return A_DoPBWeaponAction();
+                return resolvestate(null);
+            }
+            W17A A 8 {
+                if(invoker.enragedState)
+                    return A_DoPBWeaponAction();
+                return resolvestate(null);
+            }
+            MISG B 0 PB_ReFire();
+            W17A A 1 A_DoPBWeaponAction();
+            Goto Ready3;
+
+		Reload:
+			TNT1 A 0;
+			goto Ready3;
+
+//////////////////////////// ALT FIRE ////////////////////////////////////////////////////////////////////////////////////
+		AltFire:
+            TNT1 A 0 {
+                A_WeaponOffset(0,32);
+                PB_SetRoll(0);
+                A_TakeInventory("PB_LockScreenTilt",1);
+            }
+			TNT1 A 0 { invoker.shotCount = 0; }
+        AltFireLoop:
+			TNT1 A 0 PB_JumpIfNoAmmo(min:ammoTake,secondary:false);
+            TNT1 A 0 A_PlaySound("RLFIRE2", CHAN_WEAPON);
+            TNT1 A 0 A_PlaySound("RLsweet", CHAN_VOICE);
+            W17F A 1 Bright A_DoPBWeaponAction();
+            TNT1 A 0 {
+                A_FireCustomMissile("YellowFlareSpawn",0,0,0,0);
+                if(!invoker.enragedState)
+                    A_TakeInventory(invoker.ammo1.getClassName(),ammoTake,TIF_NOTAKEINFINITE);
+                A_FireCustomMissile("SeekerRocket", frandom(20, -20), 1, 0, 0,FPF_NOAUTOAIM, 0);
+                A_AlertMonsters();
+                PB_IncrementHeat(5);
+                PB_FireOffset();
+                A_ZoomFactor(0.90);
+            }
+            W17F BCDE 1 {
+                if(invoker.enragedState)
+                    return A_DoPBWeaponAction();
+                return resolvestate(null);
+            }
+			TNT1 A 0 { invoker.shotCount++; }
+			TNT1 A 0 A_JumpIf(invoker.shotCount < 3, "AltFireLoop");
+        FireEnd:
+            TNT1 A 0 { 
+                A_ZoomFactor(0.93); 
+                PB_FireOffset();
+            }
+            W17F FG 1 {
+                if(invoker.enragedState)
+                    return A_DoPBWeaponAction();
+                PB_WeaponRecoilBasic(-1.0); 
+                A_ZoomFactor(0.97); 
+                return resolvestate(null);
+            }
+            W17F HI 2 {
+                if(invoker.enragedState)
+                    return A_DoPBWeaponAction();
+                PB_WeaponRecoilBasic(0.5);  
+                A_ZoomFactor(0.99); 
+                return resolvestate(null);
+            }
+            W17A A 2 {
+                if(invoker.enragedState)
+                    return A_DoPBWeaponAction();
+                PB_WeaponRecoilBasic(-1.0); 
+                A_ZoomFactor(1.0); 
+                return resolvestate(null);
+            }
+            W17A A 16 {
+                if(invoker.enragedState)
+                    return A_DoPBWeaponAction();
+                return resolvestate(null);
+            }
+            MISG B 0 A_ReFire();
+            W17A A 1 A_DoPBWeaponAction();
+            Goto Ready3;
+		
+//////////////////////////// WEAPON SPECIAL ////////////////////////////////////////////////////////////////////////////////////
+		Weaponspecial:
+			TNT1 A 0 A_Takeinventory("GoWeaponSpecialAbility",1);
+            TNT1 A 0 {
+                if(invoker.enragedState || (CountInv("SoulCharge") < PBX_DemonExt.SOUL_CAPACITY/2))
+                {
+                    A_StartSound("UNMWARN",7);
+                    A_Print(invoker.enragedState ? "$PB_UNMAKER_WARN" : "$PB_UNMAKER_TOOLOW");
+                    return ResolveState("Ready3");
+                }
+                return ResolveState(null);
+            }
+			TNT1 A 0 {
+                invoker.enragedState = true;
+            	A_StartSound("unmaker/switch", CHAN_AUTO, CHANF_OVERLAP);
+                A_Print("$PBX_Paingiver_Enraged");
+			}
+			goto Ready3;
+
+//////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////
+		FlashKicking:
+            W17A A 1 ;
+            W17S A 1 ;
+            W17S A 1 ;
+            W17S B 1 ;
+            W17S C 6 ;
+            W17S B 1 ;
+            W17S A 1 ;
+            W17S A 1 ;
+			goto Ready3;
+
+        FlashAirKicking:
+            W17A A 1 ;
+            W17S A 1 ;
+            W17S A 1 ;
+            W17S B 1 ;
+            W17S C 7 ;
+            W17S B 1 ;
+            W17S A 1 ;
+            W17S A 1 ;
+			goto Ready3;
+
+        FlashSlideKicking:
+            W17A A 1 ;
+            W17S A 1 ;
+            W17S A 1 ;
+            W17S B 1 ;
+            W17S C 13 ;
+            W17S B 1 ;
+            W17S A 1 ;
+            W17S A 1 ;
+			goto Ready3;
+
+        FlashSlideKickingStop:
+            W17A A 1 ;
+			goto Ready3;
+
+        FlashPunching:
+            W17A A 1 ;
+            W17S A 1 ;
+            W17S A 1 ;
+            W17S B 1 ;
+            W17S C 7 ;
+            W17S B 1 ;
+            W17S A 1 ;
+            W17S A 1 ;
+			goto Ready3;
+
+        FlashPunchingStop:
+            W17A A 1 ;
+			goto Ready3;
+	}
+}
