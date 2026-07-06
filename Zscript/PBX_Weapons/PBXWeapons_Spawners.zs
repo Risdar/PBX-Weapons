@@ -39,7 +39,8 @@ enum PBXWeapons_eChaingunSpawns
 enum PBXWeapons_eRocketLauncherSpawns
 {
 ////// SLOT 6 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	DisablePBX_Excavator			        = 1 << 0
+	DisablePBX_Excavator			        = 1 << 0,
+	DisablePBX_Paingiver			        = 1 << 1
 }
 
 enum PBXWeapons_ePlasmaRifleSpawns
@@ -139,6 +140,11 @@ class PBXRocketLauncher_Injector : PBInjector
 		{
 			handler.InjectSpawn('PB_RLSpawnerT3', 'PBX_Excavator', 255, 1);
 			handler.InjectSpawn('PB_RLSpawnerT4', 'PBX_Excavator', 255, 1);
+		}
+		// Paingiver
+		if(!(pbxweapons_rocketlauncher_filter & DisablePBX_Paingiver))
+		{
+			handler.InjectSpawn('PB_RLSpawnerT4', 'PBX_Paingiver', 255, 1);
 		}
 		// // Cyberdemon RL
 		// if(!(pbx_rocketlauncher_filter & DisablePBX_CyberdemonRL))

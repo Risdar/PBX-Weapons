@@ -48,7 +48,9 @@ class PBX_Paingiver : PB_WeaponBase
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
 	bool enragedState;
 	int shotCount;
-	const ammoTake = 2;
+	const ammoTake = 2; // How many rocket ammo does it take per shot
+	const soulTake = 3; // How many souls to take per tic
+    const minSoul = PBX_DemonExt.SOUL_CAPACITY/2; // The minimum souls needed to activatae enraged mode
       
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
 	override void postbeginplay()
@@ -70,14 +72,14 @@ class PBX_Paingiver : PB_WeaponBase
         if(CountInv("SoulCharge") <= 0)
         {
             A_Playsound("UNMSWT2",3);
-            // A_Print("No Power lol");
-            A_Print("$PB_UNMAKER_RUNOUT");
+            self.A_StopSound(6);
+            owner.A_Print("$PB_UNMAKER_RUNOUT");
+            owner.A_RemoveLight("FrightenerLight");
             enragedState = false;
             return;
         }
 
-        if(gametic % Object.TICRATE*5)
-            TakeInventory("SoulCharge",5);
+        TakeInventory("SoulCharge",soulTake,TIF_NOTAKEINFINITE);
 
     }
 
@@ -91,6 +93,13 @@ class PBX_Paingiver : PB_WeaponBase
 			}
 		}
 
+    }
+
+    action state rapidFire()
+    {
+        if(invoker.enragedState)
+            return A_DoPBWeaponAction();
+        return resolvestate(null);
     }
       
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
@@ -111,11 +120,12 @@ class PBX_Paingiver : PB_WeaponBase
 				A_TakeInventory("PB_LockScreenTilt",1);
 			}
 			TNT1 A 0 A_StopSound(CHAN_WEAPON);
+			TNT1 A 0 A_StopSound(6);
             TNT1 A 0 A_PlaySound("KICKSW", CHAN_AUTO);
             TNT1 A 0 A_ZoomFactor(1.0);
-            W17S A 1 PB_WeaponRecoilBasic( 0.5);
-            W17S B 1 PB_WeaponRecoilBasic( 0.8);
-            W17S C 1 PB_WeaponRecoilBasic( 0.5);
+            W17S A 1 PB_WeaponRecoilBasic(0.5);
+            W17S B 1 PB_WeaponRecoilBasic(0.8);
+            W17S C 1 PB_WeaponRecoilBasic(0.5);
             TNT1 A 0 PB_WeaponRecoilBasic(-0.18);
 			TNT1 A 0 A_Lower();
 			Wait;
@@ -139,6 +149,10 @@ class PBX_Paingiver : PB_WeaponBase
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
 		Ready3:
 			W17A A 1 {
+                if(invoker.enragedState)
+                    A_PlaySound("UNOCIDL", 6,1,1);
+                else
+                    A_PlaySound("BFGHUM", 6,1,1);
                 PB_CoolDownBarrel();
                 return A_DoPBWeaponAction();
             }
@@ -176,36 +190,20 @@ class PBX_Paingiver : PB_WeaponBase
                 A_ZoomFactor(0.90);
             }
             W17F BCD 1 {
-                if(invoker.enragedState)
-                    return A_DoPBWeaponAction();
                 PB_WeaponRecoilBasic(-1.0); 
                 A_ZoomFactor(0.97); 
-                return resolvestate(null);
             }
             W17F EF 2 {
-                if(invoker.enragedState)
-                    return A_DoPBWeaponAction();
                 PB_WeaponRecoilBasic(0.5);  
                 A_ZoomFactor(0.99); 
-                return resolvestate(null);
             }
             W17F GH 2 {
-                if(invoker.enragedState)
-                    return A_DoPBWeaponAction();
                 PB_WeaponRecoilBasic(-1.0); 
                 A_ZoomFactor(1.0); 
-                return resolvestate(null);
+                return rapidFire();
             }
-            W17F I 2  {
-                if(invoker.enragedState)
-                    return A_DoPBWeaponAction();
-                return resolvestate(null);
-            }
-            W17A A 8 {
-                if(invoker.enragedState)
-                    return A_DoPBWeaponAction();
-                return resolvestate(null);
-            }
+            W17F I 2 rapidFire();
+            W17A A 8 rapidFire();
             MISG B 0 PB_ReFire();
             W17A A 1 A_DoPBWeaponAction();
             Goto Ready3;
@@ -237,44 +235,24 @@ class PBX_Paingiver : PB_WeaponBase
                 PB_FireOffset();
                 A_ZoomFactor(0.90);
             }
-            W17F BCDE 1 {
-                if(invoker.enragedState)
-                    return A_DoPBWeaponAction();
-                return resolvestate(null);
-            }
+            W17F BCDE 1;
 			TNT1 A 0 { invoker.shotCount++; }
 			TNT1 A 0 A_JumpIf(invoker.shotCount < 3, "AltFireLoop");
         FireEnd:
-            TNT1 A 0 { 
-                A_ZoomFactor(0.93); 
-                PB_FireOffset();
-            }
             W17F FG 1 {
-                if(invoker.enragedState)
-                    return A_DoPBWeaponAction();
                 PB_WeaponRecoilBasic(-1.0); 
                 A_ZoomFactor(0.97); 
-                return resolvestate(null);
             }
             W17F HI 2 {
-                if(invoker.enragedState)
-                    return A_DoPBWeaponAction();
                 PB_WeaponRecoilBasic(0.5);  
                 A_ZoomFactor(0.99); 
-                return resolvestate(null);
             }
             W17A A 2 {
-                if(invoker.enragedState)
-                    return A_DoPBWeaponAction();
                 PB_WeaponRecoilBasic(-1.0); 
                 A_ZoomFactor(1.0); 
-                return resolvestate(null);
+                return rapidFire();
             }
-            W17A A 16 {
-                if(invoker.enragedState)
-                    return A_DoPBWeaponAction();
-                return resolvestate(null);
-            }
+            W17A A 16 rapidFire();
             MISG B 0 A_ReFire();
             W17A A 1 A_DoPBWeaponAction();
             Goto Ready3;
@@ -283,7 +261,7 @@ class PBX_Paingiver : PB_WeaponBase
 		Weaponspecial:
 			TNT1 A 0 A_Takeinventory("GoWeaponSpecialAbility",1);
             TNT1 A 0 {
-                if(invoker.enragedState || (CountInv("SoulCharge") < PBX_DemonExt.SOUL_CAPACITY/2))
+                if(invoker.enragedState || (CountInv("SoulCharge") < minSoul))
                 {
                     A_StartSound("UNMWARN",7);
                     A_Print(invoker.enragedState ? "$PB_UNMAKER_WARN" : "$PB_UNMAKER_TOOLOW");
@@ -293,6 +271,8 @@ class PBX_Paingiver : PB_WeaponBase
             }
 			TNT1 A 0 {
                 invoker.enragedState = true;
+                A_AttachLightDef("FrightenerLight","FrightenerLight");
+                A_FireCustomMissile("MancubusSwitchModeEffect", 0, 0, 0, random(1,3));
             	A_StartSound("unmaker/switch", CHAN_AUTO, CHANF_OVERLAP);
                 A_Print("$PBX_Paingiver_Enraged");
 			}

@@ -437,10 +437,10 @@ class PBXHUDService_PBX_Paingiver : service
         data.Image2 = "";       // Weapon Mode Icon
         data.Image3 = "";       // Weapon Mode 2 Icon (For example the CryoRifle has 2 modes at the same time)
 
-        data.Offset1 = (-25,15); // Weapon Icon Position
+        data.Offset1 = (-10,15); // Weapon Icon Position
         data.Offset2 = (0,0);    // Weapon Mode Icon Position
 
-        data.Scale1 = 1.2;      // Weapon Icon Scale
+        data.Scale1 = 1.3;      // Weapon Icon Scale
         data.Scale2 = 1.0;      // Weapon Mode Icon Scale
 
         return data;

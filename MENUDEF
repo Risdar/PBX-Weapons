@@ -84,6 +84,7 @@ AddOptionMenu "AddonWeaponSpawns" after "LAUT3"
 {
         // SLOT 6
     FlagOption    "Excavator",                              "PBXWeapons_rocketlauncher_filter",    "OffOn", 0
+    FlagOption    "Paingiver",                              "PBXWeapons_rocketlauncher_filter",    "OffOn", 1
         // SPECIAL
     FlagOption    "Cyberdemon drop their Weapon",           "PBXWeapons_specialdrop_filter",    "OffOn", 0
     FlagOption    "Spider Mastermind drop their Weapon",    "PBXWeapons_specialdrop_filter",    "OffOn", 1

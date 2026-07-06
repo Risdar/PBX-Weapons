@@ -5,7 +5,7 @@
 //////////////////////////// SLOT 2 ///////////////////////////////////////////////////////////////////////////////
 // Plasma Blaster
 PBX_PlasmaBlaster_Tip1 = "The Plasma Blaster has 4 modes, two for each primary and secondary.";
-PBX_PlasmaBlaster_Tip2 = "You can switch modes using %s.";
+PBX_PlasmaBlaster_Tip2 = "You can switch modes using %s";
 
 
 // Lever Action
@@ -17,23 +17,22 @@ PBX_LeverAction_Tip3 = "While the .357 Magnum rounds deal less damage but has %d
 // CSSG 
 PBX_CSSG_Tip1 = "The Commander Shotgun has many different types of Ammo.";
 PBX_CSSG_Tip2 = "The different types of shells starts spawning in Tier 2 Backpacks.";
-PBX_CSSG_Tip3 = "You can switch shell types by using %s.";
+PBX_CSSG_Tip3 = "You can switch shell types by using %s";
 
 PBX_CSSGUpgrade_Tip1 = "You just picked up one of the many CSSG Upgrades.";
 PBX_CSSGUpgrade_Tip2 = "Gotta catch 'em all.";
 
 //////////////////////////// SLOT 4 ///////////////////////////////////////////////////////////////////////////////
 // BattleRifle 
-PBX_BattleRifle_Tip1 = "The Battle Rifle is a simple weapon that has two modes.";
-PBX_BattleRifle_Tip2 = "You can switch between Burst fire and Semi-auto using %s";
-PBX_BattleRifle_Tip3 = "You can get the Smart Scope and Ricochet Bullets by picking it's upgrade that spawn on Tier 2 backpacks.";
+PBX_BattleRifle_Tip1 = "The Battle Rifle can be switched between Burst fire and Semi-auto using %s";
+PBX_BattleRifle_Tip2 = "You can get the Smart Scope and Ricochet Bullets by picking it's upgrade that spawn on Tier 2 backpacks.";
 
 PBX_BattleRifleUpgrade_Tip1 = "You just picked up Battle Rifle Upgade.";
 PBX_BattleRifleUpgrade_Tip2 = "The Scope will now show have the target analysis ablity and every bullet will ricochet";
 
 // Metal Sniper
 PBX_MetalSniper_Tip1 = "The Metal Sniper two AltFire modes and three scope modes.";
-PBX_MetalSniper_Tip2 = "The Grenade AltFire needs to be primed before firing by pressing %s and then %s.";
+PBX_MetalSniper_Tip2 = "The Grenade AltFire needs to be primed before firing by pressing %s and then %s";
 PBX_MetalSniper_Tip3 = "You can switch Target Analysis Mode by pressing %s when scoped in";
 PBX_MetalSniper_Tip4 = "You can get the alternate Resonance Ammo type by picking it's upgrade that spawn on Tier 3 backpacks.";
 
@@ -49,13 +48,13 @@ PBX_ProsurvBallista_Tip4 = "You can get the Demonic Ballista by picking it's upg
 
 PBX_DemonicBallista_Tip1 = "You just picked up the Demonic Ballista.";
 PBX_DemonicBallista_Tip2 = "Every shot will now deal fire damage and the Altfire shoots a flaming razorblade";
-PBX_DemonicBallista_Tip3 = "You can change modes using %s.";
+PBX_DemonicBallista_Tip3 = "You can change modes using %s";
 
 //////////////////////////// SLOT 5 ///////////////////////////////////////////////////////////////////////////////
 // HMG
 PBX_NeoHMG_Tip1 = "The HMG is an automatic heavy weapon that has an overheat system and a shield accumulator.";
 PBX_NeoHMG_Tip2 = "When the overheat system reaches %d° C, the weapon will modify the projectile to a more powerful version.";
-PBX_NeoHMG_Tip3 = "You can choose between heated rounds and charged rounds using %s.";
+PBX_NeoHMG_Tip3 = "You can choose between heated rounds and charged rounds using %s";
 PBX_NeoHMG_Tip4 = "You can activate the shield by holding %s, it will then block any damage and recharge when not in use";
 
 //////////////////////////// SLOT 6 ///////////////////////////////////////////////////////////////////////////////
@@ -63,7 +62,7 @@ PBX_NeoHMG_Tip4 = "You can activate the shield by holding %s, it will then block
 PBX_Excavator_Tip1 = "The Excavator is a specialized projectile launcher that has two modes";
 PBX_Excavator_Tip2 = "Drill mode launches a projectile that burrows into the ground and come to the surfoce upon contact with enemies.";
 PBX_Excavator_Tip3 = "Drop mode launches a specialized rocket projectile that when detonated will drop into the ground.";
-PBX_Excavator_Tip4 = "Both modes deals high explosive damage, and can be manually detonated with %s.";
+PBX_Excavator_Tip4 = "Both modes deals high explosive damage, and can be manually detonated with %s";
 
 // CyberdemonRL
 PBX_CyberRL_Tip1 = "The Cyberdemon's Rocket Launcher has two modes, extreme explosion and piercing rockets, they have high pierce but deal less damage.";
@@ -71,9 +70,14 @@ PBX_CyberRL_Tip1 = "The Cyberdemon's Rocket Launcher has two modes, extreme expl
 // MastermindCG
 PBX_MastermindCG_Tip1 = "The Mastermind's Chaingun has two modes, standard explosive tracers and soul seeker tracers, they home in on enemies but deal less damage.";
 
+// Paingiver
+PBX_Paingiver_Tip1 = "The Paingiver Primary shoots normal Rockets while its Secondary fires three bursts of seeking rockets.";
+PBX_Paingiver_Tip2 = "The Paingiver Enraged State will make the Paingiver not take any ammo when shooting, gives 75% damage reduction, and increased fire rate.";
+PBX_Paingiver_Tip3 = "You can activate the Enraged State by pressing %s";
+
 //////////////////////////// SLOT 7 ///////////////////////////////////////////////////////////////////////////////
 PBX_BDPRailgun_Tip1 = "The Platinum Railgun is a branch of the experimental MK-III Railgun.";
-PBX_BDPRailgun_Tip2 = "Though it doesn't have the contact laser mode, this variant can project holograms that can be used as a decoy";
+PBX_BDPRailgun_Tip2 = "Though it doesn't have the contact laser mode, this variant can project holograms that can be used as a decoy.";
 PBX_BDPRailgun_Tip3 = "You can project the holograms using %s";
 
 //////////////////////////// SLOT 8 ///////////////////////////////////////////////////////////////////////////////
@@ -81,11 +85,18 @@ PBX_BDPRailgun_Tip3 = "You can project the holograms using %s";
 //////////////////////////// SLOT 9 ///////////////////////////////////////////////////////////////////////////////
 // Demonic Exterminator
 PBX_DemonExt_Tip1 = "By killing enemies with the Demonic Exterminator, you will earn souls.";
-PBX_DemonExt_Tip2 = "You can use the souls when in \cjSoul Lightning \c-Mode";
+PBX_DemonExt_Tip2 = "You can use the souls when in \cjSoul Lightning \c-Mode.";
 
 //////////////////////////// OTHERS ///////////////////////////////////////////////////////////////////////////////
 // SHARED
 PBX_DisableUpgrade = "You can bypass this requirement by disabling the upgrade in the Addon Spawner Settings.";
 
-PBX_MonsterWeapon1 = "You have picked up a Monster Weapon, they are very powerful weapons but has durability";
+PBX_MonsterWeapon1 = "You have picked up a Monster Weapon, they are very powerful weapons but has durability.";
 PBX_MonsterWeapon2 = "You can restore its durability by picking up the same weapon again.";
+
+PBX_DemonicWeapon1 = "You have picked up a Demonic Weapon, every demonic weapon has an enraged state.";
+PBX_DemonicWeapon2 = "Enraged State requires Soul Charges to activate, this can only be replenished using the Demonic Exterminator.";
+
+
+
+

@@ -21,6 +21,27 @@ class SeekerRocket : PB_ProjectileAlt
         Decal "Scorch";
     }
 
+    override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		let aux = HomingShots_Aux(GiveInventoryType("HomingShots_Aux"));
+		if (aux)
+		{
+			aux.level = 50; // adjusts how strong is the homing
+			aux.SetStateLabel("Homing");
+		}
+	}
+
+    override void OnDestroy()
+	{
+		Super.OnDestroy();
+
+		// Remove the homing aux if we die
+		Inventory aux = FindInventory("HomingShots_Aux");
+		if (aux) aux.Destroy();
+	}
+
 	States
 	{
         Spawn:
@@ -33,7 +54,7 @@ class SeekerRocket : PB_ProjectileAlt
             MISL A 0;
             M1SL ABCD 1 Bright {
                 A_SpawnItemEx("SeekerFlare");
-                A_SeekerMissile(7, 10, SMF_PRECISE|SMF_LOOK, 256, 10);
+                // A_SeekerMissile(7, 10, SMF_PRECISE|SMF_LOOK, 256, 10);
                 A_SpawnItemEx("SeekerRocketSmokeTrail",-14,0,0,0,FRandom(-0.5,0.5),FRandom(-0.5,0.5),0,0,64);
             }
             Loop;
