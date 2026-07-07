@@ -42,15 +42,14 @@ class PBXWeapons_TipsManager : PBXCore_TipsManager
     string weaponHelpCvar;
     string upgradeHelpCvar;
 
-    override void postbeginplay()
-	{
-        weaponHelpCvar = "PBXWeapons_WeaponHelpFlags";
-		upgradeHelpCvar = "PBXWeapons_UpgradeHelpFlags";
-		super.postbeginplay();
-	}
-
 	override bool HandlePickup(Inventory item)
 	{
+        bool returnValue = super.HandlePickup(item);
+        if(!pbxweapons_sendTip) return returnValue;
+
+        weaponHelpCvar = "PBXWeapons_WeaponHelpFlags";
+		upgradeHelpCvar = "PBXWeapons_UpgradeHelpFlags";
+
         switch(item.getClassName())
         {
             default:
@@ -232,7 +231,7 @@ class PBXWeapons_TipsManager : PBXCore_TipsManager
             break;
         }
 
-		return super.HandlePickup(item);
+		return returnValue;
 	}
 
     enum PBXWeapons_SpecialTip
