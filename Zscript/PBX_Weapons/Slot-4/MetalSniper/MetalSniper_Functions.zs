@@ -349,7 +349,7 @@ extend class PBX_MetalSniper
         PB_IncrementHeat(4, true);
         PB_FireOffset();
         PB_GunSmoke(0, 0, -2);
-        PB_WeaponRecoil(-5, frandom(-1.5, 1.5));
+        PB_WeaponRecoil(-1, frandom(-1.0, 1.0));
         PB_SpawnCasing("LMGCasingStandard", 26, 2, 28, 0, frandom(5, 8), frandom(1, 4));
     }
 

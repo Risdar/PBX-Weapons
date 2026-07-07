@@ -52,6 +52,7 @@ class PBX_NeoHMG : PB_WeaponBase
 	const HMG_SHIELDLAYER 		= -567;
 	const HMG_SHIELDSOUNDLAYER 	= 234;
 	const HMG_SHIELDSOUNDLAYER2 = 233;
+
 	const MAX_OVERHEAT	 		= 350;
 	const OVERHEAT_THRESHOLD	= 80;	// Overheat threshold for firing the special rounds
 	const OVERHEATCOOLING_RATE 	= 4;
@@ -92,7 +93,13 @@ class PBX_NeoHMG : PB_WeaponBase
 		Spawn:
             HG0W A -1;
             Stop;
+
         Deselect:
+			TNT1 A 0 {
+				invoker.shieldwasactive = false;
+				A_ClearOverlays(OVERHEATCOOLING_LAYER,OVERHEATCOOLING_LAYER);
+				A_ClearOverlays(HMG_SHIELDLAYER,HMG_SHIELDLAYER);
+			}
             HG0D ABCD 1;
 			TNT1 A 0 A_lower(120);	
 			wait;
@@ -103,6 +110,9 @@ class PBX_NeoHMG : PB_WeaponBase
 
 		Select:
 			TNT1 A 0 {
+				invoker.shieldwasactive = false;
+				A_ClearOverlays(OVERHEATCOOLING_LAYER,OVERHEATCOOLING_LAYER);
+				A_ClearOverlays(HMG_SHIELDLAYER,HMG_SHIELDLAYER);
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 				PB_HandleCrosshair(52);

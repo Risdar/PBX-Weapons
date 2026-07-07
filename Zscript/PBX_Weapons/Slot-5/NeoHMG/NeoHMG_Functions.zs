@@ -52,7 +52,7 @@ extend class PBX_NeoHMG
 		{
 			Shieldactive = false;
 			owner.bnoblood = false;
-			If(shieldwasactive)
+			If(shieldwasactive && owner.player.readyweapon is "PBX_NeoHMG")
 			{
 				owner.Player.SetPSprite(HMG_SHIELDLAYER,resolvestate("HMGShieldBreak"));
 				owner.A_startsound("HMGSHLD4",HMG_SHIELDSOUNDLAYER);
@@ -77,10 +77,9 @@ extend class PBX_NeoHMG
 				shieldready = true;
 				
 				If(owner.player && owner.player.readyweapon is "PBX_NeoHMG")
-					{
-						owner.A_startsound("HMGSHLD",HMG_SHIELDSOUNDLAYER2);
-						
-					}
+				{
+					owner.A_startsound("HMGSHLD",HMG_SHIELDSOUNDLAYER2);
+				}
 			}
 			If(ShieldTimer < 1)
 			{
