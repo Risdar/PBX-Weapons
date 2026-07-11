@@ -1,5 +1,60 @@
+enum PBXWeapons_eUpgradeTipFlags
+{
+	// UPGRADES
+    PBX_TIP_METALSNIPER_UPGRADE = 1 << 0,
+    PBX_TIP_BATTLERIFLE_UPGRADE = 1 << 1,
+    PBX_TIP_CROSSBOW_UPGRADE    = 1 << 2,
+    PBX_TIP_CSSG_UPGRADE        = 1 << 3,
+    PBX_TIP_EXCAVATOR_UPGRADE   = 1 << 4,
+    // OTHERS
+    PBX_TIP_DISABLE_UPGRADE     = 1 << 31
+}
 //////////////////////////// SLOT 3 ////////////////////////////////////////////////////////////////////////////////////
 // CSSG
+class CSSGUpgradeBase : PBXCore_UpgradeBase
+{
+	Default
+	{
+		Inventory.Pickupsound "misc/shellbox_PickUp";
+	}
+
+    override bool TryPickup(in out Actor toucher)
+    {
+        bool pickup = Super.TryPickup(toucher);
+        if (pickup && pbxweapons_sendTip)
+		{
+			toucher.A_giveinventory("PB_Shell",10);
+			Array<String> tips;
+			tips.Push("$PBX_CSSGUpgrade_Tip1");
+			tips.Push("$PBX_CSSGUpgrade_Tip2");
+			PBXCore_TipsManager.SendTipArrayIfNeeded(tips, "PBXWeapons_UpgradeHelpFlags", PBX_TIP_CSSG_UPGRADE);
+		}
+        return pickup;
+    }
+
+    override void PBX_SetUpgradeSprite()
+    {
+        name s;
+
+        switch(upgradetype)
+		{
+			case 'ExplosiveUpgrade': 		s = "XHEL"; break;
+			case 'WhitePhosphorusUpgrade': 	s = "PHEL"; break;
+			case 'TripleDoomUpgrade':		s = "DHEL"; break;
+			case 'DanmakuUpgrade': 			s = "THEL"; break;
+			case 'SubZeroUpgrade': 			s = "FHEL"; break;
+            default:                        s = "TNT1"; break;
+		}
+        sprite = GetSpriteIndex(s);
+    }
+
+    States
+	{
+		LoadSprites:
+			XHEL A 0; PHEL A 0; DHEL A 0; THEL A 0; FHEL A 0;
+	}
+}
+
 Class ExplosiveShellsUpgrade : CSSGUpgradeBase
 {
 	default
@@ -78,10 +133,20 @@ class BattleRifle_Upgrade : PB_UpgradeItem
 
 	override bool TryPickup(in out Actor toucher) 
 	{
-		if(toucher.FindInventory("PBX_BDPBattleRifle") && toucher.FindInventory("BattleRifle_Upgraded") && toucher.CountInv("PB_HighCalMag") == toucher.GetAmmoCapacity("PB_HighCalMag")) {
+		if(toucher.FindInventory("PBX_BDPBattleRifle") 
+			&& toucher.FindInventory("BattleRifle_Upgraded") 
+			&& toucher.CountInv("PB_HighCalMag") == toucher.GetAmmoCapacity("PB_HighCalMag")) {
 			return false;
 		}
-		return super.TryPickup(toucher);
+        bool pickup = Super.TryPickup(toucher);
+		if(pickup && pbxweapons_sendTip)
+		{
+			Array<String> tips;
+			tips.Push("$PBX_BattleRifleUpgrade_Tip1");
+			tips.Push("$PBX_BattleRifleUpgrade_Tip2");
+			PBXCore_TipsManager.SendTipArrayIfNeeded(tips,"PBXWeapons_UpgradeHelpFlags", PBX_TIP_BATTLERIFLE_UPGRADE);
+		}
+		return pickup;
 	}
 
 	States
@@ -123,10 +188,21 @@ class MetalSniper_Upgrade : PB_UpgradeItem
 
 	override bool TryPickup(in out Actor toucher) 
 	{
-		if(toucher.FindInventory("PBX_MetalSniper") && toucher.FindInventory("MetalSniperUpgraded") && toucher.CountInv("PB_HighCalMag") == toucher.GetAmmoCapacity("PB_HighCalMag")) {
+		if(toucher.FindInventory("PBX_MetalSniper") 
+			&& toucher.FindInventory("MetalSniperUpgraded") 
+			&& toucher.CountInv("PB_HighCalMag") == toucher.GetAmmoCapacity("PB_HighCalMag")) {
 			return false;
 		}
-		return super.TryPickup(toucher);
+        bool pickup = Super.TryPickup(toucher);
+		if(pickup && pbxweapons_sendTip)
+		{
+			Array<String> tips;
+			tips.Push("$PBX_MetalSniperUpgrade_Tip1");
+			tips.Push("$PBX_MetalSniperUpgrade_Tip2");
+			tips.Push("$PBX_MetalSniperUpgrade_Tip3");
+			PBXCore_TipsManager.SendTipArrayIfNeeded(tips,"PBXWeapons_UpgradeHelpFlags", PBX_TIP_METALSNIPER_UPGRADE);
+		}
+		return pickup;
 	}
 
 	States
@@ -162,10 +238,21 @@ class PBX_DemonicBallistaUpgrade : PB_UpgradeItem
 
 	override bool TryPickup(in out Actor toucher) 
 	{
-		if(toucher.FindInventory("PBX_Prosurv_Ballista") && toucher.FindInventory("Crossbow_Upgraded") && toucher.CountInv("PB_DTech") == toucher.GetAmmoCapacity("PB_DTech")) {
+		if(toucher.FindInventory("PBX_Prosurv_Ballista") 
+			&& toucher.FindInventory("Crossbow_Upgraded") 
+			&& toucher.CountInv("PB_DTech") == toucher.GetAmmoCapacity("PB_DTech")) {
 			return false;
 		}
-		return super.TryPickup(toucher);
+		bool pickup = Super.TryPickup(toucher);
+		if(pickup && pbxweapons_sendTip)
+		{
+			Array<String> tips;
+			tips.Push("$PBX_DemonicBallista_Tip1");
+			tips.Push("$PBX_DemonicBallista_Tip2");
+			tips.Push(string.format(StringTable.Localize("$PBX_DemonicBallista_Tip3"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+pb_specialwheel")));
+			PBXCore_TipsManager.SendTipArrayIfNeeded(tips,"PBXWeapons_UpgradeHelpFlags", PBX_TIP_CROSSBOW_UPGRADE);
+		}
+		return pickup;
 	}
 
     States
@@ -215,7 +302,16 @@ class PBX_ExcavatorUpgrade : PB_UpgradeItem
 		&& toucher.CountInv("PB_Fuel") == toucher.GetAmmoCapacity("PB_Fuel")) {
 			return false;
 		}
-		return super.TryPickup(toucher);
+		bool pickup = Super.TryPickup(toucher);
+		if(pickup && pbxweapons_sendTip)
+		{
+			Array<String> tips;
+			tips.Push("$PBX_ExcavatorUpgrade_Tip1");
+			tips.Push("$PBX_ExcavatorUpgrade_Tip2");
+			tips.Push("$PBX_ExcavatorUpgrade_Tip3");
+			PBXCore_TipsManager.SendTipArrayIfNeeded(tips,"PBXWeapons_UpgradeHelpFlags", PBX_TIP_EXCAVATOR_UPGRADE);
+		}
+		return pickup;
 	}
 
 	States

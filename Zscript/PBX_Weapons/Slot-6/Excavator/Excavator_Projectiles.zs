@@ -165,7 +165,7 @@ class ExcavatorBola : PB_ProjectileAlt
 				// else {A_CustomMissile ("BUBULZ", 0, 0, random (0, 360), 2, random (0, 180));}
 				A_SpawnItem("RedFlareSmall",0,0);
 			}
-			EX_V ABCDEFGHIJGFEDCBA 2 Bright Light("SGL_STICKY") A_JumpIfInventory("GrenadeDetonator",1,"Detonate",AAPTR_TARGET);
+			EX_V ABCDEFGHIJGFEDCBA 2 Bright Light("SGL_STICKY");
 			Loop;
 			
 		Bounce:
@@ -291,7 +291,7 @@ class ExcavatorGrenade  : PB_ProjectileAlt
 				// else {A_CustomMissile ("BUBULZ", 0, 0, random (0, 360), 2, random (0, 180));}
 				A_SpawnItem("RedFlareSmall",0,0);
 			}
-			GRNP A 1 Bright Light("SGL_STICKY") A_JumpIfInventory("GrenadeDetonator",1,"Detonate",AAPTR_TARGET) ;
+			GRNP A 1 Bright Light("SGL_STICKY");
 			Loop;
 			
 		Bounce:

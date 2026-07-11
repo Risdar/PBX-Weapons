@@ -26,22 +26,12 @@ enum PBXWeapons_eWeaponTipFlags
     PBX_TIP_DEMONEXT            = 1 << 16,
     // OTHERS
     PBX_TIP_MONSTERWEAPON       = 1 << 30,
-    PBX_TIP_DEMONICWEAPON       = 1 << 31,
-    
-    // UPGRADES
-    PBX_TIP_METALSNIPER_UPGRADE = 1 << 0,
-    PBX_TIP_BATTLERIFLE_UPGRADE = 1 << 1,
-    PBX_TIP_CROSSBOW_UPGRADE    = 1 << 2,
-    PBX_TIP_CSSG_UPGRADE        = 1 << 3,
-    PBX_TIP_EXCAVATOR_UPGRADE   = 1 << 4,
-    // OTHERS
-    PBX_TIP_DISABLE_UPGRADE     = 1 << 31
+    PBX_TIP_DEMONICWEAPON       = 1 << 31
 }
 
 class PBXWeapons_TipsManager : PBXCore_TipsManager
 {
     string weaponHelpCvar;
-    string upgradeHelpCvar;
 
 	override bool HandlePickup(Inventory item)
 	{
@@ -49,7 +39,6 @@ class PBXWeapons_TipsManager : PBXCore_TipsManager
         if(!pbxweapons_sendTip) return returnValue;
 
         weaponHelpCvar = "PBXWeapons_WeaponHelpFlags";
-		upgradeHelpCvar = "PBXWeapons_UpgradeHelpFlags";
 
         switch(item.getClassName())
         {
@@ -193,54 +182,7 @@ class PBXWeapons_TipsManager : PBXCore_TipsManager
                 PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_DEMONEXT);
             }
             break;
-
-            // UPGRADES
-            case 'ResonanceAmmo_Upgrade':
-            {
-                Array<String> tips;
-                tips.Push("$PBX_MetalSniperUpgrade_Tip1");
-                tips.Push("$PBX_MetalSniperUpgrade_Tip2");
-                tips.Push("$PBX_MetalSniperUpgrade_Tip3");
-                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_METALSNIPER_UPGRADE);
-            }
-            break;
-            case 'BattleRifle_Upgrade':
-            {
-                Array<String> tips;
-                tips.Push("$PBX_BattleRifleUpgrade_Tip1");
-                tips.Push("$PBX_BattleRifleUpgrade_Tip2");
-                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_BATTLERIFLE_UPGRADE);
-            }
-            break;
-            case 'PBX_DemonicBallistaUpgrade':
-            {
-                Array<String> tips;
-                tips.Push("$PBX_DemonicBallista_Tip1");
-                tips.Push("$PBX_DemonicBallista_Tip2");
-                tips.Push(string.format(StringTable.Localize("$PBX_DemonicBallista_Tip3"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+pb_specialwheel")));
-                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_CROSSBOW_UPGRADE);
-            }
-            break;
-            case 'PBX_ExcavatorUpgrade':
-            {
-                Array<String> tips;
-                tips.Push("$PBX_ExcavatorUpgrade_Tip1");
-                tips.Push("$PBX_ExcavatorUpgrade_Tip2");
-                tips.Push("$PBX_ExcavatorUpgrade_Tip3");
-                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_EXCAVATOR_UPGRADE);
-            }
-            break;
-            case 'SubZeroShellsUpgrade': case 'ExplosiveShellsUpgrade': case 'WPShellsUpgrade':
-            case 'DoomShellsUpgrade':    case 'DanmakuShellsUpgrade':
-            {
-                Array<String> tips;
-                tips.Push("$PBX_CSSGUpgrade_Tip1");
-                tips.Push("$PBX_CSSGUpgrade_Tip2");
-                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_CSSG_UPGRADE);
-            }
-            break;
         }
-
 		return returnValue;
 	}
 
@@ -277,7 +219,7 @@ class PBXWeapons_TipsManager : PBXCore_TipsManager
             {
                 Array<String> tips;
                 tips.Push("$PBX_DisableUpgrade");
-                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_DISABLE_UPGRADE);
+                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, "PBXWeapons_UpgradeHelpFlags", PBX_TIP_DISABLE_UPGRADE);
             }
             break;
         }

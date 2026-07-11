@@ -29,45 +29,6 @@ Class CSSGUpgradetokens : inventory
 	}
 }
 
-//the item that gives you the upgrades
-class CSSGUpgradeBase : PBXCore_UpgradeBase
-{
-	Default
-	{
-		Inventory.Pickupsound "misc/shellbox_PickUp";
-	}
-
-    override bool TryPickup(in out Actor toucher)
-    {
-        bool pickup = Super.TryPickup(toucher);
-        if (pickup)
-			toucher.A_giveinventory("PB_Shell",10);
-        return pickup;
-    }
-
-    override void PBX_SetUpgradeSprite()
-    {
-        name s;
-
-        switch(upgradetype)
-		{
-			case 'ExplosiveUpgrade': 		s = "XHEL"; break;
-			case 'WhitePhosphorusUpgrade': 	s = "PHEL"; break;
-			case 'TripleDoomUpgrade':		s = "DHEL"; break;
-			case 'DanmakuUpgrade': 			s = "THEL"; break;
-			case 'SubZeroUpgrade': 			s = "FHEL"; break;
-            default:                        s = "TNT1"; break;
-		}
-        sprite = GetSpriteIndex(s);
-    }
-
-    States
-	{
-		LoadSprites:
-			XHEL A 0; PHEL A 0; DHEL A 0; THEL A 0; FHEL A 0;
-	}
-}
-
 // Casings
 Class ShellCasingBase : ShotgunCasing  
 {	

@@ -65,7 +65,7 @@ PBX_Excavator_Tip3 = "Drop mode launches a specialized rocket projectile that wh
 PBX_Excavator_Tip4 = "Both modes deals high explosive damage, and can be manually detonated with %s";
 
 PBX_ExcavatorUpgrade_Tip1 = "The Excavator Upgrade adds 2 new projectile types on top of the normal Drill and Drop Charges.";
-PBX_ExcavatorUpgrade_Tip2 = "The Explosive Bolas mode will launch sticky bolas to enemies that detonates after a while, the AltFire will shoot 4 burst of Grenades.";
+PBX_ExcavatorUpgrade_Tip2 = "The Explosive Bolas mode will launch sticky bolas to enemies that detonates after a while, the AltFire will shoot 4 burst of Sticky Grenades.";
 PBX_ExcavatorUpgrade_Tip3 = "The Razorblade mode will launch saw blades that ricochet, the AltFire will charge the Razorblade for incresed damage.";
 
 
