@@ -329,6 +329,7 @@ class PBX_ExcavatorUpgrade : PB_UpgradeItem
 				let weap = PBX_Excavator(FindInventory("PBX_Excavator"));
 				if(weap) {
 					weap.isUpgraded = true;
+					weap.AltHudIcon = TexMan.CheckForTexture("EX_ZA0");
 				}
                 A_SetWeaponTag("PBX_Excavator","$PBX_Excavator_UpgradeTag");
             }
