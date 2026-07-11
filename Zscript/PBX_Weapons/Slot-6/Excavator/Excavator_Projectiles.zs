@@ -8,7 +8,7 @@ class Razorblade : PB_ProjectileAlt
         Height 8;
         Scale 0.75;
         Speed 60;
-        PB_Projectile.BaseDamage 50;
+        PB_Projectile.BaseDamage 80;
 		PB_Projectile.RipperCount 5;
 		PB_Projectile.PenetrationCount 3;
 		+PB_PROJECTILE.NOCRITICALS
@@ -369,7 +369,7 @@ class HeatedRazorblade : Razorblade
 		height 8;
 		Scale 0.75;
 		speed 60;
-		PB_Projectile.BaseDamage 80;
+		PB_Projectile.BaseDamage 120;
 		+PB_PROJECTILE.NOCRITICALS
 		seesound "";
 		deathsound "";

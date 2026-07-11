@@ -10,7 +10,7 @@ extend class PBX_Excavator
             EX_F A 0; EX_G A 0; EX_H A 0; EX_I A 0;
 
 		WeaponRespect_UpgradedStart:
-            8DKF DCBA 5 A_DoPBWeaponAction();
+            8DKF DDDCBAAA 1 A_DoPBWeaponAction();
         WeaponRespect_Upgraded:
 			TNT1 A 0 A_PlaySound("RLANDRAW");
 			TNT1 A 5 A_DoPBWeaponAction();
@@ -244,7 +244,12 @@ extend class PBX_Excavator
 			EX_E UVW 1 changeModeSprite("EX_E","EX_G");
             EX_E X 1 {
                 changeModeSprite("EX_E","EX_G");
-                PB_AmmoIntoMag(invoker.ammo2.getclassname(), invoker.ammo1.getclassname(), MAGAZINE_SIZE, invoker.ReserveToMagAmmoFactor);
+                PB_AmmoIntoMag(
+					invoker.ammo2.getclassname(), 
+					invoker.ammo1.getclassname(), 
+					MAGAZINE_SIZE, 
+					invoker.ReserveToMagAmmoFactor
+				);
                 PB_SetMagUnloaded(false);
                 PB_SetChamberEmpty(false);
                 PB_SetMagEmpty(false);
