@@ -10,7 +10,7 @@ extend class PBX_Excavator
             EX_F A 0; EX_G A 0; EX_H A 0; EX_I A 0;
 
 		WeaponRespect_UpgradedStart:
-            8DKF DDDCBAAA 1 A_DoPBWeaponAction();
+		    5DKF EFGHI 1 A_DoPBWeaponAction();
         WeaponRespect_Upgraded:
 			TNT1 A 0 A_PlaySound("RLANDRAW");
 			TNT1 A 5 A_DoPBWeaponAction();

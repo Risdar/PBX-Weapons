@@ -94,6 +94,7 @@ class PBX_Excavator : PB_WeaponBase
         WeaponRespect_Normal:
 			5DKF IHGF 1 A_DoPBWeaponAction();
 			5DKF E 15 A_DoPBWeaponAction();
+            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"WeaponRespect_UpgradedStart");
 			6DKF A 1 A_PlaySound("Ironsights", 15);
             TNT1 A 0 PB_SetRoll(roll-0.6);
             6DKF BCDEF 1 A_DoPBWeaponAction();
@@ -104,7 +105,6 @@ class PBX_Excavator : PB_WeaponBase
             TNT1 A 0 A_PlaySound("RLCYCLE2", 13);
             TNT1 A 0 PB_SetRoll(0);
             6DKF KKKKK 1 A_DoPBWeaponAction();
-            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"WeaponRespect_UpgradedStart");
             TNT1 A 0 A_PlaySound("weapons/minigun/respect1", 13);
             TNT1 A 0 PB_SetRoll(roll-0.5);
             6DKF LMNOPQRS 1 A_DoPBWeaponAction();
