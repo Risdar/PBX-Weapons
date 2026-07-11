@@ -123,4 +123,5 @@ AddOptionMenu "AddonAmmoSpawns" after "PACKT2"
 AddOptionMenu "AddonAmmoSpawns" after "PACKT3"
 {
     FlagOption    "Metal Sniper Upgrade",           "PBXWeapons_backpack_filter",    "OffOn", 1
+    FlagOption    "Excavator Upgrade",              "PBXWeapons_backpack_filter",    "OffOn", 5
 }

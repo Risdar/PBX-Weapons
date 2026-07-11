@@ -110,6 +110,13 @@ PBX_Excavator_Pickup                = "Excavator (Slot 6)";
 PBX_Excavator_Tag                   = "UAC-M2 Excavator Launcher";
 PBX_Excavator_DrillMode             = "\cdDrill Charge \c-Mode";
 PBX_Excavator_DropMode              = "\ciDrop Charge \c-Mode";
+PBX_Excavator_BolaMode              = "\crExplosive Bolas \c-Mode";
+PBX_Excavator_SawMode               = "\ckRazor Blade \c-Mode";
+
+PBX_Excavator_TryDrillorDrop        = "Drill and Drop Mode Requires The Excavator to be in Bola Mode";
+PBX_ExcavatorUpgrade_Pickup         = "Excavator Upgrade (Slot 6)";
+PBX_Excavator_UpgradeTag            = "Excavator Universal Demolition Tool (UDT)";
+
 
 // CyberdemonRL
 PBX_CyberdemonRL_Pickup             = "You got the Cyberdemon's missile launcher! Holy shit, that thing's heavy... (Slot 6)";

@@ -1,4 +1,4 @@
-class RailgunProjectile : PB_JavelinProjectile_Hot
+class RailgunProjectile : PB_MGNail
 {
 	int user_railangle;
 	Default
@@ -28,44 +28,40 @@ class RailgunProjectile : PB_JavelinProjectile_Hot
 	}
 	States
 	{
-	DM:
-		RAIL A 0;
-		RAIL A 0 A_ChangeFLag("THRUSPECIES", 0);
-		RAIL A 0 A_ChangeFLag("MTHRUSPECIES", 0);
-		Goto Spawn1;
-	Spawn:
-		TNT1 A 0;
-		RAIL A 0 A_FaceTarget;
-		RAIL A 0 {user_railangle = angle;}
-		RAIL A 0 A_SpawnItem("WhiteShockwave");
-		// RAIL A 0 ACS_NamedExecuteAlways("CheckIfDM", 0, 0, 0, 0);//Check if Coop
-		TNT1 C 1 BRIGHT A_SpawnItem("WhiteShockwave");
-	Spawn1:
-		TNT1 C 1 BRIGHT A_SpawnItem("WhiteShockwave");
-		RAIL A 0 A_SpawnItem("WhiteShockwave");
-		RAIL A 0 A_CheckFloor("Death");
-		RAIL A 0 A_CustomMissile ("OldschoolRocketSmokeTrail2", 2, 0, random (160, 210), 2, random (-30, 30));
-		Loop;
-	Death:
-	Melee:
-	Xdeath:
-		TNT1 AAAA 0 A_SpawnItemEx("BluePlasmaParticleSpawner", 0, 0, 0, 0, 0, 0, 0, 128);
-		TNT1 AA 0 A_SpawnItem("WhiteShockwave");
-		TNT1 AAAAAAAAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 180));
-		TNT1 AAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 360));
-		TNT1 AAAAAAAAA 0 A_CustomMissile ("ExplosionParticleVeryFast", 0, 0, random (0, 360), 2, random (0, 360));
-		EXPL AAAAA 0 A_CustomMissile ("ExplosionSmokeFast22", 0, 0, random (0, 360), 2, random (0, 360));
-		TNT1 AAAA 0 A_CustomMissile ("FireworkSFXType2", 2, 0, random (0, 360), 2, random (10, 80));
-		RAIL A 0 A_SpawnItemEx ("DetectFloorCraterSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-		RAIL A 0 A_SpawnItemEx ("DetectCeilCraterSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-		RAIL A 0 A_CustomMissile ("BluePlasmaFire", 0, 0, random (0, 360), 2, random (0, 360));
-		TNT1 AAAAA 0 A_CustomMissile ("BluePlasmaParticle", 0, 0, random (0, 360), 2, random (0, 360));
-		TNT1 ABE 0 BRIGHT A_SpawnItem("BlueFlare" ,0);
+		DM:
+			RAIL A 0;
+			RAIL A 0 A_ChangeFLag("THRUSPECIES", 0);
+			RAIL A 0 A_ChangeFLag("MTHRUSPECIES", 0);
+			Goto Spawn1;
+		Spawn:
+			TNT1 A 0;
+			RAIL A 0 A_FaceTarget;
+			RAIL A 0 {user_railangle = angle;}
+			RAIL A 0 A_SpawnItem("WhiteShockwave");
+			// RAIL A 0 ACS_NamedExecuteAlways("CheckIfDM", 0, 0, 0, 0);//Check if Coop
+			TNT1 C 1 BRIGHT A_SpawnItem("WhiteShockwave");
+		Spawn1:
+			TNT1 C 1 BRIGHT A_SpawnItem("WhiteShockwave");
+			RAIL A 0 A_SpawnItem("WhiteShockwave");
+			RAIL A 0 A_CheckFloor("Death");
+			RAIL A 0 A_CustomMissile ("OldschoolRocketSmokeTrail2", 2, 0, random (160, 210), 2, random (-30, 30));
+			Loop;
 		Death:
-	Melee:
-	Xdeath:
-		Stop;
-		Stop;
+		Melee:
+		Xdeath:
+			TNT1 AAAA 0 A_SpawnItemEx("BluePlasmaParticleSpawner", 0, 0, 0, 0, 0, 0, 0, 128);
+			TNT1 AA 0 A_SpawnItem("WhiteShockwave");
+			TNT1 AAAAAAAAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 180));
+			TNT1 AAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 360));
+			TNT1 AAAAAAAAA 0 A_CustomMissile ("ExplosionParticleVeryFast", 0, 0, random (0, 360), 2, random (0, 360));
+			EXPL AAAAA 0 A_CustomMissile ("ExplosionSmokeFast22", 0, 0, random (0, 360), 2, random (0, 360));
+			TNT1 AAAA 0 A_CustomMissile ("FireworkSFXType2", 2, 0, random (0, 360), 2, random (10, 80));
+			RAIL A 0 A_SpawnItemEx ("DetectFloorCraterSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+			RAIL A 0 A_SpawnItemEx ("DetectCeilCraterSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+			RAIL A 0 A_CustomMissile ("BluePlasmaFire", 0, 0, random (0, 360), 2, random (0, 360));
+			TNT1 AAAAA 0 A_CustomMissile ("BluePlasmaParticle", 0, 0, random (0, 360), 2, random (0, 360));
+			TNT1 ABE 0 BRIGHT A_SpawnItem("BlueFlare" ,0);
+			Stop;
 	}
 }
 
@@ -103,21 +99,21 @@ class NailgunGib1 : Actor
 
 	States
 	{
-	Spawn:
-		NAIL B 1 {
-			A_SetRoll(roll + 6, SPF_INTERPOLATE);
-			lifetime--;
-			if(lifetime <= 0) return resolvestate("Death");
-			else return resolvestate(null);
-		}
-		Loop;
-	Death:
-		NAIL B 70;
-		NAIL BBBBBBBBBBBBBBBBBBBB 1 A_FadeOut(0.05);
-		stop;
-	Bounce:
-		TNT1 A 0;
-		Goto Spawn;
+		Spawn:
+			NAIL B 1 {
+				A_SetRoll(roll + 6, SPF_INTERPOLATE);
+				lifetime--;
+				if(lifetime <= 0) return resolvestate("Death");
+				else return resolvestate(null);
+			}
+			Loop;
+		Death:
+			NAIL B 70;
+			NAIL BBBBBBBBBBBBBBBBBBBB 1 A_FadeOut(0.05);
+			stop;
+		Bounce:
+			TNT1 A 0;
+			Goto Spawn;
 	}
 }
 
@@ -218,8 +214,11 @@ CLASS RailgunRail : Actor
 				A_startsound("RICMET",2);
 				A_spraydecal("RailLightning",36);
 				Actor Core = spawn("railgunrail2",pos);
-				core.angle = angle;
-				core.pitch = pitch;
+				if(core)
+				{
+					core.angle = angle;
+					core.pitch = pitch;
+				}
 			}
 			MODL A 35 BRIGHT;
 		TimeToFade:
@@ -245,11 +244,11 @@ CLASS RailgunRail2 : Actor
 		Spawn:
 			MODL A 225 NODELAY;
 		Death:
-			TNT1 AAAAAAAA 0 {
-			A_startsound("BONECRACK",1);
-			// A_spawnitemex("Nailgungib1",frandom(-1,1),frandom(-3,-20),frandom(-1,1),frandom(-7,-3),frandom(-1,1),frandom(-10,10));
-			// A_spawnitemex("Nailgungib2",frandom(-1,1),frandom(-3,-20),frandom(-1,1),frandom(-7,-3),frandom(-1,1),frandom(-10,10));
-			// A_spawnitemex("Nailgungib3",frandom(-1,1),frandom(-3,-20),frandom(-1,1),frandom(-7,-3),frandom(-1,1),frandom(-10,10));
+			TNT1 A 0 {
+				A_startsound("BONECRACK",1);
+				A_spawnitemex("Nailgungib1",frandom(-1,1),frandom(-3,-20),frandom(-1,1),frandom(-7,-3),frandom(-1,1),frandom(-10,10));
+				// A_spawnitemex("Nailgungib2",frandom(-1,1),frandom(-3,-20),frandom(-1,1),frandom(-7,-3),frandom(-1,1),frandom(-10,10));
+				// A_spawnitemex("Nailgungib3",frandom(-1,1),frandom(-3,-20),frandom(-1,1),frandom(-7,-3),frandom(-1,1),frandom(-10,10));
 			}
 			Stop;
 			

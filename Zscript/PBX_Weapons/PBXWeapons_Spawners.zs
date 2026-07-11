@@ -6,6 +6,7 @@ enum PBXWeapons_eWeaponSpecialSpawns
 	DisablePBX_BattleRifleUpgrade			= 1 << 2,
 	DisablePBX_CrossbowBallistaUpgrade		= 1 << 3,
 	DisablePBX_UACBackpack					= 1 << 4,
+	DisablePBX_ExcavatorUpgrade				= 1 << 5,
 ////// Monster Drops /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// SLOT 6
 	DisablePBX_CyberdemonRL			        = 1 << 0,
@@ -220,6 +221,15 @@ class PBXUpgrades_Injector : PBInjector
 		{
 			handler.InjectSpawn('PB_ShotSpawnerT2', 'PBX_DemonicBallistaUpgrade', 255, 1);
 			handler.InjectSpawn('PB_UpgradeSpawnerT2', 'PBX_DemonicBallistaUpgrade', 255, 1);
+		}
+
+		// Crossbow Ballista Upgrades
+		if(!(pbxweapons_backpack_filter & DisablePBX_ExcavatorUpgrade))
+		{
+			handler.InjectSpawn('PB_RLSpawnerT3', 'PBX_ExcavatorUpgrade', 255, 1);
+			handler.InjectSpawn('PB_RLSpawnerT4', 'PBX_ExcavatorUpgrade', 255, 1);
+			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'PBX_ExcavatorUpgrade', 255, 1);
+			handler.InjectSpawn('PB_UpgradeSpawnerT4', 'PBX_ExcavatorUpgrade', 255, 1);
 		}
     }
 }

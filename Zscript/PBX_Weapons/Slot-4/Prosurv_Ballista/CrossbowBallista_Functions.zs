@@ -126,45 +126,6 @@ extend class PBX_Prosurv_Ballista
         return ResolveState(null);
     }
 
-	// action state HandleWheel()
-	// {
-	// 	bool selectNormal = FindInventory("CB_Select_NormalMode");
-	// 	bool selectDemonic = FindInventory("CB_Select_DemonicMode");
-	// 	bool selectNo = FindInventory("CB_Select_NO");
-
-	// 	// If you dont have the upgrade
-	// 	if (selectNo)
-    //     {
-    //         cleanmodetokens();
-    //         A_Print("$PBX_AmmoNotAvailable");
-    //         return resolvestate("Ready3");
-    //     }
-
-	// 	// If you select the current mode again
-    //     if (selectNormal && !isDemonicBallistaMode
-	// 		|| selectDemonic && isDemonicBallistaMode)
-    //     {
-    //         cleanmodetokens();
-    //         A_Print("$PBX_AlreadySelected");
-    //         return resolvestate("Ready3");
-    //     }
-
-	// 	// Actual mode change
-	// 	if(selectNormal)
-	// 	{
-    //         // cleanmodetokens();
-	// 		A_Print("$PBX_Crossbow_Standard");
-    //         return resolvestate("Unload");
-	// 	}
-	// 	if(selectDemonic)
-	// 	{
-    //         // cleanmodetokens();
-	// 		A_Print("$PBX_Crossbow_Demonic");
-    //         return resolvestate("Unload");
-	// 	}
-    //     return resolvestate(null);
-	// }
-
 	action state checkAltfire(bool demonicmode = false)
 	{
 		if(!demonicmode)

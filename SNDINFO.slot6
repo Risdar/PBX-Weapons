@@ -17,6 +17,14 @@ XEXPL_7 XEXPL7
 XEXPL_8 XEXPL8
 $rolloff excavator/explode 1300 1800
 
+excavator_grenadelaunch "Sounds/Weapons/Slot-6/Excavator/excavator_grenadelaunch.ogg"
+excavator_bolalaunch "Sounds/Weapons/Slot-6/Excavator/excavator_bolalaunch.ogg"
+excavator_bolafly_loop "Sounds/Weapons/Slot-6/Excavator/excavator_bolafly_loop.ogg"
+excavator_fire_razor "Sounds/Weapons/Slot-6/Excavator/excavator_fire_razor.ogg"
+excavator_sawcharge "Sounds/Weapons/Slot-6/Excavator/excavator_sawcharge.ogg"
+excavator_sawcharge_loop "Sounds/Weapons/Slot-6/Excavator/excavator_sawcharge_loop.ogg"
+excavator_magslap "Sounds/Weapons/Slot-6/Excavator/excavator_magslap.ogg"
+
 // Mastermind Chaingun
 RMNGSHOT RMNGSHOT
 

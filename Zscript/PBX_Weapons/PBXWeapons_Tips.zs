@@ -33,6 +33,7 @@ enum PBXWeapons_eWeaponTipFlags
     PBX_TIP_BATTLERIFLE_UPGRADE = 1 << 1,
     PBX_TIP_CROSSBOW_UPGRADE    = 1 << 2,
     PBX_TIP_CSSG_UPGRADE        = 1 << 3,
+    PBX_TIP_EXCAVATOR_UPGRADE   = 1 << 4,
     // OTHERS
     PBX_TIP_DISABLE_UPGRADE     = 1 << 31
 }
@@ -218,6 +219,15 @@ class PBXWeapons_TipsManager : PBXCore_TipsManager
                 tips.Push("$PBX_DemonicBallista_Tip2");
                 tips.Push(string.format(StringTable.Localize("$PBX_DemonicBallista_Tip3"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+pb_specialwheel")));
                 PBXCore_TipsManager.SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_CROSSBOW_UPGRADE);
+            }
+            break;
+            case 'PBX_ExcavatorUpgrade':
+            {
+                Array<String> tips;
+                tips.Push("$PBX_ExcavatorUpgrade_Tip1");
+                tips.Push("$PBX_ExcavatorUpgrade_Tip2");
+                tips.Push("$PBX_ExcavatorUpgrade_Tip3");
+                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, upgradeHelpCvar, PBX_TIP_EXCAVATOR_UPGRADE);
             }
             break;
             case 'SubZeroShellsUpgrade': case 'ExplosiveShellsUpgrade': case 'WPShellsUpgrade':

@@ -1,3 +1,465 @@
+class BolaStuckOnMonster : inventory{default{inventory.maxamount 1;}}
+
+class Razorblade : PB_ProjectileAlt
+{
+    Default
+    {
+        Radius 6;
+        Height 8;
+        Scale 0.75;
+        Speed 60;
+        PB_Projectile.BaseDamage 50;
+		PB_Projectile.RipperCount 5;
+		PB_Projectile.PenetrationCount 3;
+		+PB_PROJECTILE.NOCRITICALS
+        SeeSound "";
+        DeathSound "";
+        Obituary "%o's guts were shredded by %k's flying blade.";
+        DamageType "Cut";
+        Gravity 0;
+        WallBounceFactor 1;
+        BounceFactor 1;
+        BounceCount 10;
+        BounceSound "sawblade/ricochet";
+        +BOUNCEONWALLS;
+        +BOUNCEONFLOORS;
+        +BOUNCEONCEILINGS;
+        +BOUNCEONACTORS;
+        +CANBOUNCEWATER;
+        +USEBOUNCESTATE;
+        +MISSILE;
+        +RIPPER;
+        -NOGRAVITY;
+    }
+
+    States
+    {
+        Spawn:
+            CRBA A 0 NoDelay;
+            CRBA CC 1 Bright {
+                A_SpawnItemEx("RazorbladeTrail", 0, 0, 0, 0, 0, 0, 0, SXF_CLIENTSIDE);
+                A_CustomMissile("ShotgunParticles", 0, 0, random(-160, -200), 2, random(0, 160));
+                A_CustomMissile("SparkX", 0, 0, random(-160, -200), 2, random(30, 170));
+                A_CustomMissile("SparkX", 0, 0, random(-160, -200), 2, random(30, 170));
+                A_CustomMissile("SparkX", 0, 0, random(-160, -200), 2, random(30, 170));
+            }
+            CRBA LL 1 Bright
+            {
+                A_SpawnItemEx("RazorbladeTrail", 0, 0, 0, 0, 0, 0, 0, SXF_CLIENTSIDE);
+                A_CustomMissile("ShotgunParticles", 0, 0, random(-160, -200), 2, random(0, 160));
+                A_CustomMissile("SparkX", 0, 0, random(-160, -200), 2, random(30, 170));
+                A_CustomMissile("SparkX", 0, 0, random(-160, -200), 2, random(30, 170));
+                A_CustomMissile("SparkX", 0, 0, random(-160, -200), 2, random(30, 170));
+            }
+            TNT1 A 0 { bHITOWNER = true; }
+            Loop;
+
+        Bounce:
+            TNT1 A 0 A_SpawnItemEx("RicoChet", 0, 0, -5, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0);
+            TNT1 AAAAAAAAAAAAAAAA 0 A_CustomMissile("SparkX", 2, 0, random(0, 360), 2, random(30, 170));
+            TNT1 AAAA 0 A_CustomMissile("HitSpark", 2, 0, frandom(0, 1) * frandom(0, 360), 2, frandom(0, 1) * frandom(30, 360));
+            TNT1 AAAA 0 A_CustomMissile("HitSpark22", 2, 0, frandom(0, 1) * frandom(0, 360), 2, frandom(0, 1) * frandom(30, 360));
+            TNT1 AAAA 0 A_CustomMissile("HitSpark23", 2, 0, frandom(0, 1) * frandom(0, 360), 2, frandom(0, 1) * frandom(30, 360));
+            CRBA DD 1 Bright A_SpawnItemEx("RazorbladeTrail", 0, 0, 0, 0, 0, 0, 0, SXF_CLIENTSIDE);
+            Goto Spawn;
+
+        Death:
+            TNT1 A 0 {
+                A_Stop();
+                A_PlaySoundEx("weapons/ballista/razor", "Auto");
+                A_SetGravity(1.0);
+            }
+            TNT1 A 0 A_SpawnItemEx("RicoChet", 0, 0, -5, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0);
+            CRBA EFGHIJK 1 Bright;
+            CRBA L 38 Bright;
+            TNT1 A 0 A_PlaySoundEx("RAILIMP", "Auto");
+            TNT1 A 0 A_SpawnItem("ExplosionParticleSpawner");
+            //TNT1 A 0 A_SpawnItemEx("SmallUnderwaterExplosion", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0);
+            TNT1 A 0 A_SpawnItemEx("DetectFloorCraterSmall", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0);
+            TNT1 A 0 A_SpawnItemEx("DetectCeilCraterSmall", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0);
+            TNT1 A 0 A_CustomMissile("PBExplosionparticlesSmall", 8, 0, random(0, 180), 2, random(40, 90));
+            Stop;
+
+        XDeath:
+            TNT1 A 0 {
+                A_Stop();
+                A_PlaySoundEx("weapons/ballista/razor", "Auto");
+                A_SetGravity(1.0);
+            }
+            CRBA EFGHIJK 1 Bright;
+            CRBA L 38 Bright;
+            TNT1 A 0 A_PlaySoundEx("RAILIMP", "Auto");
+            TNT1 A 0 A_SpawnItem("ExplosionParticleSpawner");
+            //TNT1 A 0 A_SpawnItemEx("SmallUnderwaterExplosion", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0);
+            TNT1 A 0 A_SpawnItemEx("DetectFloorCraterSmall", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0);
+            TNT1 A 0 A_SpawnItemEx("DetectCeilCraterSmall", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0);
+            TNT1 A 0 A_CustomMissile("PBExplosionparticlesSmall", 8, 0, random(0, 180), 2, random(40, 90));
+            Stop;
+    }
+}
+
+class RazorBladeTrail : actor
+{
+    Default
+    {
+        radius 6;
+        height 8;
+        Scale 0.95;
+        Alpha 0.95;
+        +NOCLIP;
+        +NOINTERACTION;
+        Renderstyle "Translucent";
+    }
+
+    States
+    {
+        Spawn:
+			CRBA CCCCCCCCCCCCCCC 1 A_FadeOut(0.15);
+			Stop;
+    }
+}
+
+class ExcavatorBola : PB_ProjectileAlt
+{
+	Default
+	{
+		DamageType "Explosive";
+		+MISSILE
+		+BLOODSPLATTER
+		+EXTREMEDEATH
+		+FORCEXYBILLBOARD
+		+DONTBOUNCEONSHOOTABLES
+		-EXPLODEONWATER
+		-NOEXTREMEDEATH
+		+CANBOUNCEWATER
+		+SOLID
+		+BOUNCEONWALLS
+		+BOUNCEONFLOORS
+		+BOUNCEONCEILINGS
+		+MOVEWITHSECTOR
+		+USEBOUNCESTATE
+		+DONTSPLASH
+		+HITTRACER
+		Gravity 0.5;
+		Scale 0.35;
+        PB_Projectile.BaseDamage 50;
+		+PB_PROJECTILE.NOCRITICALS
+		BounceFactor 0.1;
+		Radius 5;
+		Height 2;
+		speed 35;
+		Damagetype "ExplosiveImpact";
+		DeathSound "";
+	}
+	int user_stickycounter;
+	int user_stuckEnemy;
+
+	States
+	{
+		Spawn:
+			TNT1 A 0;
+			TNT1 A 0 A_Startsound("excavator_bolafly_loop",6,CHANF_LOOP);
+		Fly:
+			TNT1 A 0 {
+				// if(waterlevel > 1) {A_SpawnItem ("RocketSmokeTrail52"); }
+				// else {A_CustomMissile ("BUBULZ", 0, 0, random (0, 360), 2, random (0, 180));}
+				A_SpawnItem("RedFlareSmall",0,0);
+			}
+			EX_V ABCDEFGHIJGFEDCBA 2 Bright Light("SGL_STICKY") A_JumpIfInventory("GrenadeDetonator",1,"Detonate",AAPTR_TARGET);
+			Loop;
+			
+		Bounce:
+		Death:
+		Crash:
+			TNT1 A 0 {
+				A_NoGravity();
+				A_ScaleVelocity(0);
+				A_StopSound(6);
+			}
+			EX_V CCCCCCCCCC 1 BRIGHT;
+			GoTo Detonate;
+	
+		XDeath:
+		Bounce.Creature:
+			EX_V D 1 {
+				A_StopSound(6);
+				A_Changeflag("THRUACTORS", 1);
+				A_Changeflag("Solid", 1);
+				A_Stop();
+			}
+			EX_V D 1 {
+				A_Changeflag("THRUACTORS", 0);
+				A_Changeflag("Solid", 0);
+				A_GiveInventory("BolaStuckOnMonster",1);
+			}
+			EX_V KKKKKKKKKK 1 BRIGHT A_Warp(AAPTR_TRACER,0,0,20,0,WARPF_NOCHECKPOSITION);
+			Goto DetonateMonster;
+			
+		Detonate:
+			TNT1 A 0 A_JumpIfInventory("BolaStuckOnMonster",1,"DetonateMonster");
+			TNT1 A 0 A_PlaySound("StunGrenadeDetonate", 6);
+			EX_V CCCCC 1 BRIGHT ;
+			TNT1 A 0 A_SpawnItem("RedFlareSmall",0,0);
+			EX_V CCCC 1 BRIGHT ;
+			TNT1 A 0 A_SpawnItem("RedFlareSmall",0,0);
+			EX_V CCC 1 BRIGHT ;
+			TNT1 A 0 A_SpawnItem("RedFlareSmall",0,0);
+			EX_V CC 1 BRIGHT ;
+			TNT1 A 0 A_SpawnItem("RedFlareSmall",0,0);
+			EX_V C 1 BRIGHT ;
+			Goto Explosion;
+		DetonateMonster:
+			TNT1 A 0 A_PlaySound("StunGrenadeDetonate", 6);
+			EX_V KKKKKKKKKK 1 BRIGHT A_Warp(AAPTR_TRACER,0,0,20,0,WARPF_NOCHECKPOSITION);
+			TNT1 A 0 A_SpawnItem("RedFlareSmall",0,32);
+			EX_V KKKKK 1 BRIGHT A_Warp(AAPTR_TRACER,0,0,20,0,WARPF_NOCHECKPOSITION);
+			TNT1 A 0 A_SpawnItem("RedFlareSmall",0,32);
+			EX_V KKKK 1 BRIGHT A_Warp(AAPTR_TRACER,0,0,20,0,WARPF_NOCHECKPOSITION);
+			TNT1 A 0 A_SpawnItem("RedFlareSmall",0,32);
+			EX_V KKK 1 BRIGHT A_Warp(AAPTR_TRACER,0,0,20,0,WARPF_NOCHECKPOSITION);
+			TNT1 A 0 A_SpawnItem("RedFlareSmall",0,32);
+			EX_V KK 1 BRIGHT A_Warp(AAPTR_TRACER,0,0,20,0,WARPF_NOCHECKPOSITION);
+			TNT1 A 0 A_SpawnItem("RedFlareSmall",0,32);
+			EX_V K 1 BRIGHT A_Warp(AAPTR_TRACER,0,0,20,0,WARPF_NOCHECKPOSITION);
+			Goto Explosion;
+		Explosion:
+			TNT1 A 0 A_SpawnItem("RedFlareSmall",0,0);
+			TNT1 A 0 A_SpawnItem("RedFlareSmall",0,0);
+			TNT1 A 0 A_SpawnItem("RedFlareSmall",0,0);
+			EXPL A 0 Radius_Quake (3, 24, 0, 15, 0);//(intensity, duration, damrad, tremrad, tid)
+			// TNT1 A 0 A_CustomMissile("BigRicoChet");
+			// TNT1 A 0 A_SpawnItem ("BigRicoChet", 0, -30);
+			TNT1 A 0 A_SpawnItemEx ("DetectFloorCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+			TNT1 A 0 A_SpawnItemEx ("DetectCeilCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+			// TNT1 A 0 A_SpawnItemEx ("UnderwaterExplosion",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+			TNT1 A 0 A_SpawnItemEx ("ExplosionFlareSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+			TNT1 A 0 A_SpawnItemEx ("NewGroundExplosionSmoke",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+			TNT1 AAAA 0 A_CustomMissile ("FireworkSFXType2", 0, 0, random (0, 360), 2, random (30, 60));
+			TNT1 AAAAAAAAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 180));
+			TNT1 AAAAAAAAA 0 A_CustomMissile ("ExplosionParticleVeryFast", 0, 0, random (0, 360), 2, random (0, 360));
+			TNT1 AAAAA 0 A_CustomMissile ("MediumExplosionFlames", 0, 0, random (0, 360), 2, random (0, 360));
+			EXPL AAAAA 0 A_CustomMissile ("ExplosionSmokeFast22", 0, 0, random (0, 360), 2, random (0, 360));
+			TNT1 A 0 A_SpawnItemEx ("LiquidExplosionEffectSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+			TNT1 A 0 A_CustomMissile ("ExcavatorExploFX", random(1,5), random(-10,10), random (0, 360), 2, random (0, 360));
+			TNT1 A 0 A_SpawnItemEx ("ExcavatorExplosion",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+			TNT1 A 0 A_Playsound("excavator/explode", 1);
+			TNT1 A 0 A_PlaySound("FAREXPL", 3);
+			Stop;
+	}
+}
+
+class ExcavatorGrenade  : PB_ProjectileAlt
+{
+	Default
+	{
+		DamageType "Explosive";
+		+MISSILE;
+		+BLOODSPLATTER;
+		+EXTREMEDEATH;
+		+FORCEXYBILLBOARD;
+		+DONTBOUNCEONSHOOTABLES;
+		-EXPLODEONWATER;
+		-NOEXTREMEDEATH;
+		+CANBOUNCEWATER;
+		+SOLID;
+		+BOUNCEONWALLS;
+		+BOUNCEONFLOORS;
+		+BOUNCEONCEILINGS;
+		+MOVEWITHSECTOR;
+		+USEBOUNCESTATE;
+		+DONTSPLASH;
+		+HITTRACER;
+		Gravity 0.5;
+		Scale 0.35;
+        PB_Projectile.BaseDamage 15;
+		+PB_PROJECTILE.NOCRITICALS
+		BounceFactor 0.1;
+		Radius 2;
+		Height 2;
+		speed 35;
+		Damagetype "ExplosiveImpact";
+		DeathSound "";
+	}
+	int user_stickycounter;
+	int user_stuckEnemy;
+
+	States
+	{
+		Spawn:
+			TNT1 A 0 {
+				// if(waterlevel > 1) {A_SpawnItem ("RocketSmokeTrail52"); }
+				// else {A_CustomMissile ("BUBULZ", 0, 0, random (0, 360), 2, random (0, 180));}
+				A_SpawnItem("RedFlareSmall",0,0);
+			}
+			GRNP A 1 Bright Light("SGL_STICKY") A_JumpIfInventory("GrenadeDetonator",1,"Detonate",AAPTR_TARGET) ;
+			Loop;
+			
+		Bounce:
+		Death:
+		Crash:
+			TNT1 A 0 {
+				user_stickycounter = 0;
+				A_NoGravity();
+				A_ScaleVelocity(0);
+			}
+		Stuck:
+			TNT1 A 0 A_Playsound ("RAILR1");
+			GRNP AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 BRIGHT Light("SGL_STICKY") {
+				if(user_stuckEnemy == 1) {
+
+					if(AAPTR_TRACER) {
+						A_Warp(AAPTR_TRACER,0,0,20,0,WARPF_NOCHECKPOSITION);
+					}
+					else {
+						A_Fall();
+					}
+				return resolvestate(null);
+			}
+			return resolvestate(null);
+		}
+			TNT1 A 0 {
+				A_SpawnItem("RedFlareSmall",0,0);
+				user_stickycounter++;
+			}
+			TNT1 A 0 A_JumpIf(user_stickycounter < 1, "Stuck");
+			TNT1 A 0 A_PlaySound("StunGrenadeDetonate", 6);
+			TNT1 A 0 A_JumpIf(user_stickycounter > 1, "Detonate");
+			GoTo Detonate;
+	
+		XDeath:
+		Bounce.Creature:
+			GRNP A 1 {
+				A_Changeflag("THRUACTORS", 1);
+				A_Changeflag("Solid", 1);
+				user_stuckEnemy = 1;
+				A_Stop();
+			}
+			GRNP A 1 {
+				A_Changeflag("THRUACTORS", 0);
+				A_Changeflag("Solid", 0);
+			}
+			Goto Stuck;
+			
+		Detonate:
+			TNT1 A 0 A_StopSound(6);
+			TNT1 A 0 A_PlaySound("Explosion",4);
+			// TNT1 A 0 A_SpawnItem ("BigRicoChet", 0, -30);
+			TNT1 AAA 0 A_CustomMissile ("ExplosionSmoke", 22, 0, random (0, 360), 2, random (0, 360));
+			TNT1 A 0 A_SpawnItemEx ("ExplosionFlareSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+			TNT1 A 0 A_SpawnItemEx ("DetectFloorCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+			TNT1 A 0 A_SpawnItemEx ("DetectCeilCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+			TNT1 A 0 A_SpawnItemEx ("StickyExplosion",0,0,-2,0,0,0,0,SXF_NOCHECKPOSITION,0);
+			TNT1 A 0 A_SpawnItemEx ("NewRocketExploFX", 0, 0, 0);
+			TNT1 AAAAAAAAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 360));
+			TNT1 AAAAAAAAA 0 A_CustomMissile ("ExplosionParticleVeryFast", 0, 0, random (0, 360), 2, random (0, 360));
+			XXXX A 0 A_CustomMissile ("ExplosionQuake", 1, 0, random (0, 360), 2, random (0, 160));
+			TNT1 AAAAAAAAA 0 A_CustomMissile ("MediumExplosionFlames", 0, 0, random (0, 360), 2, random (0, 360));
+			TNT1 A 0 A_Playsound("excavator/explode", 1);
+			TNT1 A 0 A_PlaySound("FAREXPL",3);
+			EXPL AAA 0 A_CustomMissile ("ExplosionSmoke", 0, 0, random (0, 360), 2, random (0, 360))  ;
+			Stop;
+	}
+}
+				
+class HeatedRazorblade : Razorblade 
+{
+	Default
+	{
+		radius 6;
+		height 8;
+		Scale 0.75;
+		speed 60;
+		PB_Projectile.BaseDamage 80;
+		+PB_PROJECTILE.NOCRITICALS
+		seesound "";
+		deathsound "";
+		DamageType "Saw";
+		Gravity 0;
+		WallBounceFactor 1;
+		BounceFactor 1;
+		Bouncecount 10;
+		Bouncesound "sawblade/ricochet";
+		+BounceOnWalls;
+		+BounceOnFloors;
+		+BounceOnCeilings;
+		+BounceOnActors;
+		+CanBounceWater;
+		+UseBounceState;
+		PROJECTILE;
+		+RIPPER;
+		-NOGRAVITY
+	}
+
+	states 
+	{
+		Spawn:
+			EX_V N 0 NoDelay;
+			EX_V NN 1 BRIGHT {
+				A_SpawnItemEx("HeatedRazorbladeTrail",0,0,0,0,0,0,0,SXF_CLIENTSIDE);
+				A_CustomMissile("ShotgunParticles", 0, 0, random (-160, -200), 2, random (0, 160));
+				A_CustomMissile ("SparkX", 0, 0, random (-160, -200), 2, random (30, 170));
+				A_CustomMissile ("SparkX", 0, 0, random (-160, -200), 2, random (30, 170));
+				A_CustomMissile ("SparkX", 0, 0, random (-160, -200), 2, random (30, 170));
+			}
+			EX_V OO 1 BRIGHT {
+				A_SpawnItemEx("HeatedRazorbladeTrail",0,0,0,0,0,0,0,SXF_CLIENTSIDE);
+				A_CustomMissile("ShotgunParticles", 0, 0, random (-160, -200), 2, random (0, 160));
+				A_CustomMissile ("SparkX", 0, 0, random (-160, -200), 2, random (30, 170));
+				A_CustomMissile ("SparkX", 0, 0, random (-160, -200), 2, random (30, 170));
+				A_CustomMissile ("SparkX", 0, 0, random (-160, -200), 2, random (30, 170));
+			}
+			TNT1 A 0 A_ChangeFlag("HitOwner",1);
+			Loop;
+		Bounce:
+			TNT1 A 0 A_SpawnItemEx ("RicoChet",0,0,-5,0,0,0,0,SXF_NOCHECKPOSITION,0);
+			TNT1 AAAAAAAAAAAAAAAA 0 A_CustomMissile ("SparkX", 2, 0, random (0, 360), 2, random (30, 170));
+			TNT1 AAAA 0 A_CustomMissile ("HitSpark", 2, 0, frandom(0,1)*frandom (0, 360), 2, frandom(0,1)*frandom (30, 360));
+			TNT1 AAAA 0 A_CustomMissile ("HitSpark22", 2, 0, frandom(0,1)*frandom (0, 360), 2, frandom(0,1)*frandom (30, 360));
+			TNT1 AAAA 0 A_CustomMissile ("HitSpark23", 2, 0, frandom(0,1)*frandom (0, 360), 2, frandom(0,1)*frandom (30, 360));
+			EX_V PP 1 BRIGHT A_SpawnItemEx("RazorbladeTrail",0,0,0,0,0,0,0,SXF_CLIENTSIDE);
+			Goto Spawn;
+		Death:
+			TNT1 A 0 {
+				A_PlaySoundEx("weapons/ballista/razor","Auto");
+				A_SetGravity(1.0);
+			}
+			TNT1 A 0 A_SpawnItemEx ("RicoChet",0,0,-5,0,0,0,0,SXF_NOCHECKPOSITION,0);
+			EX_V N 100 BRIGHT;
+			EX_V NNNNNNNNNNNNNNN 1 A_FadeOut(0.15);
+			Stop;
+		XDeath:
+			TNT1 A 0 {
+				A_Stop();
+				A_PlaySoundEx("weapons/ballista/razor","Auto");
+				A_SetGravity(1.0);
+			}
+			EX_V N 100 BRIGHT;
+			EX_V NNNNNNNNNNNNNNN 1 A_FadeOut(0.15);
+			Stop;	
+	}
+}
+
+class HeatedRazorbladeTrail : actor 
+{
+	Default
+	{
+		radius 6;
+		height 8;
+		Scale 0.95;
+		Alpha 0.95;
+		+NOCLIP;
+		+NOINTERACTION;
+		Renderstyle "Translucent";
+	}
+
+	States 
+	{
+		Spawn:
+		EX_V NNNNNNNNNNNNNNN 1 A_FadeOut(0.15);
+		Stop;	
+	}
+}
+
 Class DiggerTrail : Actor
 {
 	Default
@@ -260,7 +722,7 @@ Class ExcavatorDrill : PB_ProjectileAlt
 		Radius 6;
 		Height 6;
 		Gravity 1.25;
-		PB_Projectile.BaseDamage 250;
+		PB_Projectile.BaseDamage 15;
 		+PB_PROJECTILE.NOCRITICALS
 		DamageType "ExplosiveImpact";
 		Decal "Scorch";
@@ -332,7 +794,7 @@ Class ExcavatorDropShot : PB_ProjectileAlt
 		Speed 35;
 		Radius 6;
 		Height 6;
-		PB_Projectile.BaseDamage 50;
+		PB_Projectile.BaseDamage 15;
 		+PB_PROJECTILE.NOCRITICALS
 		Scale 1.15;
 		DamageType "ExplosiveImpact";

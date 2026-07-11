@@ -402,9 +402,11 @@ class PBXHUDService_PBX_Excavator : service
         let data = PBXHUDData(new("PBXHUDData"));
         if (!data) return null;
         data.Handled = true;
-        data.SkipAutoDraw = false;
+        data.SkipAutoDraw = true;
 
-        data.Image1 = "";       // Weapon Icon
+        bool isUpgraded = PBXCore_HUDHandler.PBX_PlayerHasInventory("Excavator_Upgraded");
+
+        data.Image1 = isUpgraded ? "EX_ZA0" : "5DUNA0";       // Weapon Icon
         data.Image2 = "";       // Weapon Mode Icon
         data.Image3 = "";       // Weapon Mode 2 Icon (For example the CryoRifle has 2 modes at the same time)
 
