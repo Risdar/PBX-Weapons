@@ -138,12 +138,14 @@ extend class PBX_Prosurv_LeverAction
 		switch(mode)
 		{
 			case LA_444Marlin:
-				A_SetInventory(invoker.ammotype2,invoker.ammo2.amount / 2);
+				A_SetInventory(invoker.ammotype2,invoker.ammo2.amount/2);
 				SetAmmoCapacity(invoker.ammotype2,MAGAZINE_SIZE/2);
+				invoker.ammo2.backpackmaxamount =  MAGAZINE_SIZE/2;
 				break;
 			case LA_357Magnum:
 				SetAmmoCapacity(invoker.ammotype2,MAGAZINE_SIZE);
-				A_SetInventory(invoker.ammotype2,invoker.ammo2.amount * 2);
+				A_SetInventory(invoker.ammotype2,invoker.ammo2.amount*2);
+				invoker.ammo2.backpackmaxamount =  MAGAZINE_SIZE;
 				break;
 		}
 		PB_SetChamberEmpty(true);
