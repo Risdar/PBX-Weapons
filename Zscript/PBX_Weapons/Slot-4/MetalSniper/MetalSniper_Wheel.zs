@@ -7,6 +7,12 @@ Class MetalSniperWheel : wheelinfocontainer
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
 	{
+		if(!spw || !requester)
+			return;
+			
+		let weap = PBX_MetalSniper(requester.player.readyweapon);
+        if(!weap) return;
+
 		super.GetSpecials(spw,requester);
 
 		vector2 iconScale = (0.7, 0.7);
@@ -40,9 +46,8 @@ Class MetalSniperWheel : wheelinfocontainer
 		if(disableUpgrade)
 			disabled = disableUpgrade.getint() & DisablePBX_MetalSniperUpgrade;
 
-		let weap = PBX_MetalSniper(requester.player.readyweapon);
-
 		iconScale = (1.0, 1.0);
+
 		PB_SpecialWheel_Mode MS_Laser = new ("PB_SpecialWheel_Mode");
 		if(weap.laserActive) {
 			MS_Laser.Alias = "$PBX_LaserOff";
@@ -106,10 +111,15 @@ Class MS_Zoomed_Wheel : wheelinfocontainer
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
 	{
+		if(!spw || !requester)
+			return;
+			
+		let weap = PBX_MetalSniper(requester.player.readyweapon);
+        if(!weap) return;
+
 		super.GetSpecials(spw,requester);
 
 		vector2 iconScale = (1.0, 1.0);
-		let weap = PBX_MetalSniper(requester.player.readyweapon);
 
 		// Laser
 		PB_SpecialWheel_Mode MS_Laser = new ("PB_SpecialWheel_Mode");

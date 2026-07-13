@@ -5,8 +5,8 @@
 #include "./ExcavatorUpgraded.zs"
 
 // Tokens
-class EX_Select_DropMode : inventory{default{inventory.maxamount 1;}}
 class EX_Select_DrillMode : inventory{default{inventory.maxamount 1;}}
+class EX_Select_DropMode : inventory{default{inventory.maxamount 1;}}
 class EX_Select_BolaMode : inventory{default{inventory.maxamount 1;}}
 class EX_Select_SawMode : inventory{default{inventory.maxamount 1;}}
 class EX_Select_No : inventory{default{inventory.maxamount 1;}}
@@ -58,16 +58,20 @@ class PBX_Excavator : PB_WeaponBase
 	}
 	
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
+    bool isUpgraded;
     int excavatorMode;
+    int burstCount; // used in the bola mode altfire
     const MAGAZINE_SIZE = 6;
     const AMMO_TAKE_NORMAL = 2;
     const AMMO_TAKE_SAW = 5;
     enum excMode
     {
+        eNoUpgrade,
+        eCloseWheel,
         eDrillChargeMode,
         eDropShotMode,
         eBolaMode,
-        eSawMode,
+        eSawMode
     }
     
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////

@@ -25,7 +25,11 @@ Class CSSGWeaponWheel : wheelinfocontainer
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
 	{
+		if(!spw || !requester)
+			return;
+			
 		super.GetSpecials(spw,requester);
+		
 		vector2 iconScale = (0.5, 0.5);
 
 		PB_SpecialWheel_Mode Weapon_Close = new ("PB_SpecialWheel_Mode");

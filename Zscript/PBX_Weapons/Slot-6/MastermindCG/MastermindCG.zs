@@ -24,7 +24,6 @@ class PBX_MastermindChaingun : PB_WeaponBase
 		Scale 0.9;
 //////////////////////////// AMMO ///-/////////////////////////////////////////////////////////////////////////////////
 		Weapon.AmmoType1 "PB_RocketAmmo";
-		// Weapon.AmmoType2 "MastermindCGDurability";
 	    Weapon.AmmoGive1 50;
 		
 //////////////////////////// MESSAGES & SOUNDS ////////////////////////////////////////////////////////////////////////////////////
@@ -46,6 +45,7 @@ class PBX_MastermindChaingun : PB_WeaponBase
 	bool SoulSeekerMode;
 	const ammoTake = 1; // How many rockets does it take for one point of durability
 	const DURABILITY = 200; // Durability Amount
+	const DURABILITY_NAME = "MastermindCGDurability"; 
       
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
 	States

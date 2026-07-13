@@ -163,25 +163,52 @@ extend class PBX_MetalSniper
     {
         int amount = invoker.currentMaxAmmo;
         if (PB_GetChamberEmpty()) amount--;
-        PB_AmmoIntoMag(invoker.ammo2.GetClassName(), invoker.ammo1.GetClassName(), amount, invoker.ReserveToMagAmmoFactor);
+        PB_AmmoIntoMag(
+            invoker.ammo2.GetClassName(), 
+            invoker.ammo1.GetClassName(), 
+            amount, 
+            invoker.ReserveToMagAmmoFactor
+        );
     }
 
     action void MS_UnloadMag(bool UnloadChamber = false)
     {
         int goal = UnloadChamber ? 0 : 1;
 		string rounds = isResonance() ? "PBX_ResoRound" : "PB_HigherCalRound";
-        PB_UnloadMag(invoker.ammotype2, invoker.ammotype1, invoker.ReserveToMagAmmoFactor, 1, 0, goal, rounds);
+        PB_UnloadMag(
+            invoker.ammotype2, 
+            invoker.ammotype1, 
+            invoker.ReserveToMagAmmoFactor, 
+            1, 
+            0, 
+            goal, 
+            rounds
+        );
     }
 
     action void MS_AmmoCapacity()
     {
-        bool res      = invoker.resonanceAmmoLoaded;
+        int capacity;
+        int amount;
+
         // these are 3 because the ammo couunter already counts 2 reserve as 1 in the ammo bar
-        int  capacity = res ? MAGAZINE_SIZE / 3 : MAGAZINE_SIZE;
-        int  amount   = res ? invoker.ammo2.amount / 3 : invoker.ammo2.amount * 3;
+        if(invoker.resonanceAmmoLoaded)
+        {
+            capacity = MAGAZINE_SIZE / 3;
+            amount = invoker.ammo2.amount / 3;
+            invoker.ReserveToMagAmmoFactor = AMMO_TAKE_RESONANCE;
+            invoker.ammo2.backpackmaxamount = MAGAZINE_SIZE / 3;
+        }
+        else
+        {
+            capacity = MAGAZINE_SIZE;
+            amount = invoker.ammo2.amount * 3;
+            invoker.ReserveToMagAmmoFactor = AMMO_TAKE_NORMAL;
+            invoker.ammo2.backpackmaxamount = MAGAZINE_SIZE;
+        }
+
         A_SetInventory(invoker.ammotype2, amount);
         SetAmmoCapacity(invoker.ammotype2, capacity);
-        invoker.ReserveToMagAmmoFactor = res ? AMMO_TAKE_RESONANCE : AMMO_TAKE_NORMAL;
         invoker.currentMaxAmmo = capacity;
     }
 

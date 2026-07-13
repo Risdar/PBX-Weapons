@@ -10,11 +10,11 @@ extend class PBX_CyberdemonRL
 
 	// override bool Use(bool pickup)
 	// {
-	// 	// if(owner.CountInv("CyberRLDurability") < DURABILITY)
+	// 	// if(owner.CountInv(DURABILITY_NAME) < DURABILITY)
 	// 	console.printf("Use Overide Initiated");
 	// 	if(owner)
 	// 	{
-	// 		owner.mo.A_SetInventory("CyberRLDurability",25);
+	// 		owner.mo.A_SetInventory(DURABILITY_NAME,25);
 	// 		console.printf("Durability Given");
 	// 	}
 	// 	return false;
@@ -36,7 +36,7 @@ extend class PBX_CyberdemonRL
 				PB_LowAmmoSoundWarning("default", invoker.ammotype1.getclassname());
 				// PB_TakeAmmo(invoker.ammotype2,1);
 				A_TakeInventory(invoker.AmmoType1, invoker.ammoTake, TIF_NOTAKEINFINITE);
-				A_TakeInventory("CyberRLDurability",1,TIF_NOTAKEINFINITE);
+				A_TakeInventory(DURABILITY_NAME,1,TIF_NOTAKEINFINITE);
 				PB_FireBullets(tofire, 1, 0, 0, 0, 0.5);
 				PB_IncrementHeat(4);
 				break;
@@ -50,7 +50,7 @@ extend class PBX_CyberdemonRL
 
 	action state CyberRL_HandleAmmo()
 	{
-		if (CountInv("CyberRLDurability") < 1) 	return ResolveState("WeaponBreak");
+		if (CountInv(DURABILITY_NAME) < 1) 	return ResolveState("WeaponBreak");
 		if (invoker.ammo1.amount < ammoTake) 	return ResolveState("NoAmmo");
 		return ResolveState(null);
 	}

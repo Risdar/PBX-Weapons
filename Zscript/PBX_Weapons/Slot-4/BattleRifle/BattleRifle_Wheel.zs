@@ -19,10 +19,13 @@ Class BattleRifleWheel : wheelinfocontainer
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
 	{
-		super.GetSpecials(spw,requester);
-
+		if(!spw || !requester)
+			return;
+			
 		let battleRifle = PBX_BDPBattleRifle(requester.player.readyweapon);
-		if (!battleRifle) return;
+        if(!battleRifle) return;
+
+		super.GetSpecials(spw,requester);
 
 		bool hasUpgrade = requester.FindInventory("BattleRifle_Upgraded");
 		bool isZooming  = requester.FindInventory("Zoomed");

@@ -7,12 +7,15 @@ Class LeverActionWheel : wheelinfocontainer
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
 	{
+		if(!spw || !requester)
+			return;
+			
+		let la = PBX_Prosurv_LeverAction(requester.player.readyweapon);
+        if(!la) return;
+
 		super.GetSpecials(spw,requester);
 
 		vector2 iconscale = (0.6,0.6);
-		
-		let la = PBX_Prosurv_LeverAction(requester.player.readyweapon);
-		if(!la) return;
 
 		PB_SpecialWheel_Mode Weapon_Close = new ("PB_SpecialWheel_Mode");
 		Weapon_Close.img = "graphics/WeaponWheel/CloseMenu.png";

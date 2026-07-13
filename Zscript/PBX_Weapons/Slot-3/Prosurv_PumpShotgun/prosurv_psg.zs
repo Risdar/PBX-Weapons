@@ -1,7 +1,16 @@
 // Includes
 #include "./ProsurvPSG_Functions.zs"
-// #include "./PlasmaBlaster_Wheel.zs"
-// #include "./ProsurvPSG_helpers.zs"
+#include "./ProsurvPSG_Wheel.zs"
+#include "./ProsurvPSG_helpers.zs"
+
+// Tokens
+class PSG_Select_Laser : inventory {default{inventory.maxamount 1;}}
+class PSG_Select_Tripmine : inventory {default{inventory.maxamount 1;}}
+class PSG_Select_LaserCharge : inventory {default{inventory.maxamount 1;}}
+class PSG_Select_AcidCharge : inventory {default{inventory.maxamount 1;}}
+class PSG_Select_SwarmCharge : inventory {default{inventory.maxamount 1;}}
+class PSG_Select_Detonator : inventory {default{inventory.maxamount 1;}}
+class RemoteChargeDetonator : inventory {default{inventory.maxamount 1;}}
 
 // Actual Weapon
 class PBX_ProSurvPSG : PB_Weapon
@@ -16,12 +25,14 @@ class PBX_ProSurvPSG : PB_Weapon
         Weapon.SlotNumber 3;
         Weapon.AmmoGive1 18;
         Weapon.AmmoGive2 9;
-        Scale 0.45;
+        Scale 0.7;
         Weapon.AmmoType1 "PB_Shell";
         Weapon.AmmoType2 "PumpShotgunAmmo";
         Inventory.PickupMessage "$PBX_PSG_PICKUP";
         Inventory.PickupSound "weapons/sgpump";
 	    Inventory.AltHUDIcon "AUSXA0";
+		PB_WeaponBase.UsesWheel true;
+		PB_WeaponBase.WheelInfo "PSGWheel";
         Damagetype "Shotgun";
         Obituary "%k Opened %o with a Pump Shotgun";
         AttackSound "None";
@@ -34,7 +45,28 @@ class PBX_ProSurvPSG : PB_Weapon
     }
 
 	bool laserActive;
+	const ROCKET_AMMO = "PB_RocketAmmo";
 	const MAGAZINE_SIZE = 9;
+	const SPECIAL_LAYER = 15;
+
+	enum psgSpecials
+	{
+		CLOSE_WHEEL,
+		TOGGLE_LASER,
+		TRY_TRIPMINE,
+		LASERCHARGE,
+		ACIDCHARGE,
+		SWARMCHARGE,
+		DETONATOR
+	}
+
+	enum specialsAmmoTake
+	{
+		TRIPMINE_TAKE 		= 5,
+		LASERCHARGE_TAKE 	= 8,
+		ACIDCHARGE_TAKE 	= 3,
+		SWARMCHARGE_TAKE 	= 12
+	}
 
     States
     {
@@ -138,6 +170,8 @@ class PBX_ProSurvPSG : PB_Weapon
 		Ready3:
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"Ready2");
 			TNT1 A 0 {
+				A_ZoomFactor(1.0);
+                PB_HandleCrosshair(46);
 				A_SetInventory("PB_LockScreenTilt",0);
 				A_SetInventory("CantWeaponSpecial",0);
 				A_SetInventory("CantDoAction",0);
@@ -145,20 +179,19 @@ class PBX_ProSurvPSG : PB_Weapon
 		ReadytoFire:
             XG10 H 1 {
 				PB_CoolDownBarrel(0,0,-4);
-                PB_HandleCrosshair(46);
                 return PB_ReadyFire();
             }
             Loop;
 
         Ready2:
 			TNT1 A 0 {
+				A_ZoomFactor(1.5);
 				A_SetCrosshair(-1);
 				A_SetInventory("PB_LockScreenTilt",0);
 				A_SetInventory("CantDoAction",0);
 			}
 		ReadytoFire2:
             ASS1 E 1 {
-				A_SetCrosshair(-1);
 				PB_CoolDownBarrel(0,-2,6);
 				return PB_ReadyFire(ads:true);
 			}
@@ -170,13 +203,52 @@ class PBX_ProSurvPSG : PB_Weapon
 				A_GiveInventory("PB_LockScreenTilt",1);
 				PB_HandleCrosshair(46);
 			}
-			TNT1 A 0 {
-				if(invoker.laserActive) invoker.laserActive = false;
-				else invoker.laserActive = true;
-            	A_StartSound("MS/Button", CHAN_AUTO, CHANF_OVERLAP);
-				A_Print(invoker.laserActive ? "$PBX_LaserOn" : "$PBX_LaserOff");
-			}
+			TNT1 A 0 handleSpecial();
 			Goto Ready3;
+
+		DetonatorOverlay:
+			DETO ABCD 1;
+			TNT1 A 0 {
+                A_startsound("bepbep",6);
+				A_GiveInventory("RemoteChargeDetonator",1);
+			}
+			DETO E 6;
+			TNT1 A 0 A_TakeInventory("RemoteChargeDetonator",1);
+			DETO DCBA 1;
+			Stop;
+
+		CacheSprites:
+			LSRC A 0; REMT A 0; SWRM A 0;
+		ThrowCharges:
+			REMT ABCD 1 throwChargesSprite();
+			REMT EFG 1 throwChargesSprite();
+			REMT HIJKLMNOPQ 1 throwChargesSprite();
+			THRO ABCD 1;
+			TNT1 A 0 throwCharges();
+			THRO EEEEFGHI 1;
+			Goto SelectAnimation;
+
+		TripMineOverlay:
+			TRPM FEDCBBBB 1;
+			TRPM B 1 {
+				FLineTraceData wallinmyway;
+				invoker.owner.LineTrace(invoker.owner.angle, 64, invoker.owner.pitch, 0, offsetz: 12, data: wallinmyway);
+				if (wallinmyway.HitType == TRACE_HitWall)
+				{
+					A_fireprojectile("TripMineProjectile",0,true,0,-4);
+					A_TakeInventory(ROCKET_AMMO,TRIPMINE_TAKE);
+					return ResolveState("Placedsuccesfully");
+				}
+				Return resolvestate(null);
+			}
+			TRPM BBBMNOPQ 1;
+			//TNT1 A 10;
+			Stop;
+			
+		Placedsuccesfully:
+			TRPM GGGGGHIJKL 1;
+			//TNT1 A 10;
+			Stop;
 
         Fire:
 			TNT1 A 0 {
@@ -379,13 +451,6 @@ class PBX_ProSurvPSG : PB_Weapon
 			XG51 GFEDCBA 1;
 			Goto Ready3;
 			
-		FlashPunchingMagazine:
-			XG51 AB 1;
-			AG5M ABCDE 1;
-			AG5M EDCBA 1;
-			XG51 BA 1;
-			Goto Ready3;
-
 		FlashKicking:
 			XG50 ABCDEF 1;
 			XG50 G 2;

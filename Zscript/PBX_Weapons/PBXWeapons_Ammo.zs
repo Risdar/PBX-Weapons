@@ -120,6 +120,69 @@ class PumpShotgunAmmo : Ammo
     }
 }
 
+class PBX_LaserCharge : PB_RocketAmmo
+{
+    Default
+    {
+        Inventory.Amount PBX_ProSurvPSG.LASERCHARGE_TAKE;
+        Inventory.PickupSound "Ammocase/Open";
+        // Inventory.Icon "LSRCS0";
+    }
+
+    override void PB_SetAmmoSprite()
+    {
+        sprite = GetSpriteIndex("LSRCS0");
+    }
+
+	States
+    {
+        CacheSprites:
+            LSRC S 0;
+    }
+}
+
+class PBX_AcidCharge : PB_RocketAmmo
+{
+    Default
+    {
+        Inventory.Amount PBX_ProSurvPSG.ACIDCHARGE_TAKE;
+        Inventory.PickupSound "Ammocase/Open";
+        // Inventory.Icon "REMTS0";
+    }
+
+    override void PB_SetAmmoSprite()
+    {
+        sprite = GetSpriteIndex("REMTS0");
+    }
+
+	States
+    {
+        CacheSprites:
+            REMT S 0;
+    }
+}
+
+class PBX_SwarmCharge : PB_RocketAmmo
+{
+    Default
+    {
+        Inventory.Amount PBX_ProSurvPSG.SWARMCHARGE_TAKE;
+        Inventory.PickupSound "Ammocase/Open";
+        // Inventory.Icon "SWRMR0";
+    }
+
+    override void PB_SetAmmoSprite()
+    {
+        sprite = GetSpriteIndex("SWRMS0");
+    }
+
+	States
+    {
+        CacheSprites:
+            SWRM S 0;
+    }
+}
+
 //////////////////////////// SLOT 4 ////////////////////////////////////////////////////////////////////////////////////
 // Battle Rifle
 class BR_Ammo : Ammo

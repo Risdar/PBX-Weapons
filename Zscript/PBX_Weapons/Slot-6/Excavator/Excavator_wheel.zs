@@ -7,6 +7,9 @@ Class ExcavatorWheel : wheelinfocontainer
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
 	{
+		if(!spw || !requester)
+			return;
+		
 		super.GetSpecials(spw,requester);
 
 		double iconScale = 0.6;

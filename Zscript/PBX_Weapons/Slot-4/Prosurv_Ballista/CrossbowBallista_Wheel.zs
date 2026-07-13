@@ -7,6 +7,9 @@ Class CrossbowBallistaWheel : wheelinfocontainer
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
 	{
+		if(!spw || !requester)
+			return;
+			
 		super.GetSpecials(spw,requester);
 		
 		vector2 iconScale = (0.7, 0.7);

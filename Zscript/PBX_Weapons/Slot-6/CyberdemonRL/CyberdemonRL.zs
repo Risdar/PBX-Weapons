@@ -18,9 +18,7 @@ class PBX_CyberdemonRL : PB_WeaponBase
 		
 //////////////////////////// AMMO ////////////////////////////////////////////////////////////////////////////////////
 		Weapon.AmmoType1 "PB_RocketAmmo";
-		// Weapon.AmmoType2 "CyberRLDurability";
 	    Weapon.AmmoGive1 30;
-	    // Weapon.AmmoGive2 DURABILITY; // Picking up a new launcher fully repairs it
 		
 //////////////////////////// MESSAGES & SOUNDS ////////////////////////////////////////////////////////////////////////////////////
 		Obituary "%o was blown up by %k's Cyberdemon missile launcher. Ouch!";
@@ -44,6 +42,7 @@ class PBX_CyberdemonRL : PB_WeaponBase
 	int shotCount;
 	const ammoTake = 3; // How many rockets does it take for one point of durability
 	const DURABILITY = 75; // Durability Amount
+	const DURABILITY_NAME = "CyberRLDurability"; 
       
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
 	States

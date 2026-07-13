@@ -1,5 +1,11 @@
 extend class PBX_ProSurvPSG
 {
+	override void PostBeginPlay()
+    {
+        laserActive = false;
+        Super.PostBeginPlay();
+    }
+
     override void DoEffect() 
 	{
 		super.DoEffect();
@@ -49,6 +55,148 @@ extend class PBX_ProSurvPSG
 		}
     }
 
+	action void cleanmodetokens()
+	{
+		A_SetInventory("PBX_CloseWheel",0);
+		A_SetInventory("PSG_Select_Laser",0);
+		A_SetInventory("PSG_Select_Tripmine",0);
+		A_SetInventory("PSG_Select_LaserCharge",0);
+		A_SetInventory("PSG_Select_AcidCharge",0);
+		A_SetInventory("PSG_Select_SwarmCharge",0);
+		A_SetInventory("PSG_Select_Detonator",0);
+	}
+
+	action int getTokens() 
+	{
+		if(FindInventory("PSG_Select_Laser")) 
+			return TOGGLE_LASER;
+		else if(FindInventory("PSG_Select_Tripmine"))
+			return TRY_TRIPMINE;
+		else if(FindInventory("PSG_Select_LaserCharge"))
+			return LASERCHARGE;
+		else if(FindInventory("PSG_Select_AcidCharge"))
+			return ACIDCHARGE;
+		else if(FindInventory("PSG_Select_SwarmCharge"))
+			return SWARMCHARGE;
+		else if(FindInventory("PSG_Select_Detonator"))
+			return DETONATOR;
+		else
+			return CLOSE_WHEEL;
+	}
+
+	action state handleSpecial()
+	{
+		int tokens = getTokens();
+
+		switch(tokens)
+		{
+			case CLOSE_WHEEL:
+				cleanmodetokens();
+				if(PB_GetZoom())
+					return resolvestate("ready2");
+				return resolvestate("ready3");
+				break;
+
+			case TOGGLE_LASER:
+				if(invoker.laserActive) invoker.laserActive = false;
+				else invoker.laserActive = true;
+				A_Print(invoker.laserActive ? "$PBX_LaserOn" : "$PBX_LaserOff");
+				break;
+
+			case TRY_TRIPMINE:
+				cleanmodetokens();
+				if(!hasEnoughRockets(tokens))
+				{
+					if(PB_GetZoom())
+						return resolvestate("ready2");
+					return resolvestate("ready3");
+				}
+				PB_SetZoom(false);
+				A_ZoomFactor(1.0);
+				A_overlay(SPECIAL_LAYER,"TripMineOverlay");
+				return resolvestate("FlashPunching");
+				break;
+
+			case LASERCHARGE: case ACIDCHARGE: case SWARMCHARGE:
+				if(!hasEnoughRockets(tokens))
+				{
+					cleanmodetokens();
+					if(PB_GetZoom())
+						return resolvestate("ready2");
+					return resolvestate("ready3");
+				}
+				PB_SetZoom(false);
+				A_ZoomFactor(1.0);
+				return resolvestate("ThrowCharges");
+				break;
+
+			case DETONATOR:
+				PB_SetZoom(false);
+				A_ZoomFactor(1.0);
+				A_overlay(SPECIAL_LAYER,"DetonatorOverlay");
+				return resolvestate("FlashPunching");
+				break;
+		}
+		cleanmodetokens();
+		return resolvestate(null);
+	}
+
+	action void throwCharges()
+	{
+		A_PlaySound("charge/place/remote", 3);
+		
+		string projectile;
+		int amount;
+
+		switch(getTokens())
+		{
+			case LASERCHARGE: 	projectile = "ThrownLaserCharge"; 	amount = LASERCHARGE_TAKE;	break;
+			case ACIDCHARGE: 	projectile = "ThrownAcidCharge";	amount = ACIDCHARGE_TAKE; 	break;
+			case SWARMCHARGE: 	projectile = "ThrownSwarmCharge"; 	amount = SWARMCHARGE_TAKE;	break;
+		}
+		A_TakeInventory(ROCKET_AMMO,amount);
+		A_FireCustomMissile(projectile,0,0,0,-1);
+		cleanmodetokens();
+	}
+
+	action bool hasEnoughRockets(int mode)
+	{
+		int toCheck;
+		switch(mode)
+		{
+			case TRY_TRIPMINE: 	toCheck = TRIPMINE_TAKE; 		break;
+			case LASERCHARGE: 	toCheck = LASERCHARGE_TAKE; 	break;
+			case ACIDCHARGE: 	toCheck = ACIDCHARGE_TAKE; 		break;
+			case SWARMCHARGE: 	toCheck = SWARMCHARGE_TAKE; 	break;
+		}
+
+		if(countinv(ROCKET_AMMO) < toCheck)
+		{
+			A_Print("$PBX_PSG_NOROCKETS");
+			return false;
+		}
+
+		return true;
+	}
+
+	action void throwChargesSprite()
+	{
+		name sprite;
+		switch(getTokens())
+		{
+			case LASERCHARGE:
+				sprite = "LSRC";
+				break;
+			case ACIDCHARGE:
+				sprite = "REMT";
+				break;
+			case SWARMCHARGE:
+				sprite = "SWRM";
+				break;
+		}
+		A_SetWeaponSpriteEx(sprite);
+	}
+
 	action void SG_Fire(int tic)
 	{
 		bool ads = PB_GetZoom();
@@ -61,13 +209,6 @@ extend class PBX_ProSurvPSG
 		double zoomC        = ads ? 1.50  : 1.0;
 		int    wadOfsY      = ads ? -3    : -4;
 
-		// Berserk halves recoil
-		if (invoker.OwnerHasBerserk())
-		{
-			recoilX *= 0.5;
-			recoilY *= 0.5;
-		}
-
 		switch(tic)
 		{
 			case 1:
@@ -79,7 +220,7 @@ extend class PBX_ProSurvPSG
 
 				A_FireProjectile("ShotgunWad", random(-2,2), 0, random(-2,2), wadOfsY, FPF_NOAUTOAIM, random(-2,2));
 				PB_LowAmmoSoundWarning("shotgun");
-				PB_TakeAmmo(invoker.ammo2.getClassName(), 1, 0);
+				PB_TakeAmmo(invoker.ammo2.getClassName());
 				A_AlertMonsters();
 				A_PlaySoundEx("FLAKFIRE", "Weapon");
 				PB_IncrementHeat();

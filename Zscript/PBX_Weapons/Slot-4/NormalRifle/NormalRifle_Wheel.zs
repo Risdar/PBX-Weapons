@@ -7,10 +7,14 @@ Class NormalRifleWheel : wheelinfocontainer
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
 	{
+		if(!spw || !requester)
+			return;
+			
 		let nr = PBX_NormalRifle(requester.player.readyweapon);
-
+        if(!nr) return;
+		
 		super.GetSpecials(spw,requester);
-        
+
         vector2 scale = (0.8,0.8);
 
 		PB_SpecialWheel_Mode Weapon_Close = new ("PB_SpecialWheel_Mode");

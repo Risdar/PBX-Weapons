@@ -1,8 +1,5 @@
 extend class PBX_Excavator
 {
-    bool isUpgraded;
-    int burstCount; // used in the bola mode altfire
-
     States
     {
         CacheSprites:

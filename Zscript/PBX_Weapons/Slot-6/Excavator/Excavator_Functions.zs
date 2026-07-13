@@ -2,7 +2,8 @@ extend class PBX_Excavator
 {
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
     
-	Override void DoEffect(){
+	Override void DoEffect()
+	{
 		if (!owner || !owner.player)
         	return;
 
@@ -75,6 +76,22 @@ extend class PBX_Excavator
 		return hasUpgraded || isDisabled || invoker.isUpgraded;
 	}
 
+	action int getTokens() 
+	{
+		if(FindInventory("EX_Select_DrillMode")) 
+			return eDrillChargeMode;
+		else if(FindInventory("EX_Select_DropMode")) 
+			return eDropShotMode;
+		else if(FindInventory("EX_Select_BolaMode")) 
+			return eBolaMode;
+		else if(FindInventory("EX_Select_SawMode")) 
+			return eSawMode;
+		else if(FindInventory("EX_Select_No")) 
+			return eNoUpgrade;
+		else 
+			return eCloseWheel;
+	}
+
     action int getExcavatorMode()
 	{
 		return invoker.excavatorMode;
@@ -91,44 +108,37 @@ extend class PBX_Excavator
 		A_takeinventory("EX_Select_DropMode",1);
 		A_takeinventory("EX_Select_BolaMode",1);
 		A_takeinventory("EX_Select_SawMode",1);
+		A_takeinventory("PBX_CloseWheel",1);
 		A_takeinventory("EX_Select_No",1);
 	}
 
 	action void actualModeChange()
 	{
-		bool goDrop			= countinv("EX_Select_DropMode")  > 0;
-		bool goDrill		= countinv("EX_Select_DrillMode") > 0;
-		bool goSaw 			= countinv("EX_Select_SawMode")   > 0;
-		if(goSaw)
+		int tokens = getTokens();
+
+		if(tokens != eSawMode)
 		{
-			setExcavatorMode(eSawMode);
-			invoker.ReserveToMagAmmoFactor = AMMO_TAKE_SAW;
-			invoker.ammo1 = Ammo(FindInventory("PB_Fuel"));
-		}
-		else
-		{
-			setExcavatorMode(goDrop ? eDropShotMode    :
-							goDrill ? eDrillChargeMode :
-							eBolaMode);
 			invoker.ReserveToMagAmmoFactor = AMMO_TAKE_NORMAL;
 			invoker.ammo1 = Ammo(FindInventory("PB_RocketAmmo"));
 		}
+		else
+		{
+			invoker.ReserveToMagAmmoFactor = AMMO_TAKE_SAW;
+			invoker.ammo1 = Ammo(FindInventory("PB_Fuel"));
+		}
+		setExcavatorMode(tokens);
 		cleanmodetokens(); // Clear tokens
 	}
 
 	// This is called in Unload
 	action state handleModeChange()
 	{
-		int mode			= getExcavatorMode();
-		bool goDrop			= countinv("EX_Select_DropMode")  > 0;
-		bool goDrill		= countinv("EX_Select_DrillMode") > 0;
-		bool goBola			= countinv("EX_Select_BolaMode") > 0;
-		bool goSaw			= countinv("EX_Select_SawMode") > 0;
+		int tokens	= getTokens();
 
-		if(PB_GetMagUnloaded() && (goBola || goDrop || goDrill))
+		if(PB_GetMagUnloaded() && (tokens != eSawMode))
 			return resolvestate("SwitchToBola");
 
-		if(PB_GetMagUnloaded() && goSaw)
+		else if(PB_GetMagUnloaded())
 			return resolvestate("SwitchToSaw");
 
 		return resolvestate(null);
@@ -140,28 +150,20 @@ extend class PBX_Excavator
 		A_ZoomFactor(1.0);
 
 		// Setup Variables
-		int mode			= getExcavatorMode();
-		bool goDrop			= countinv("EX_Select_DropMode")  > 0;
-		bool goDrill		= countinv("EX_Select_DrillMode") > 0;
-		bool goBola			= countinv("EX_Select_BolaMode") > 0;
-		bool goSaw			= countinv("EX_Select_SawMode") > 0;
-		bool alreadySelected =
-		   (goDrop  && mode == eDropShotMode)
-		|| (goDrill && mode == eDrillChargeMode)
-		|| (goBola  && mode == eBolaMode)
-		|| (goSaw   && mode == eSawMode);
+		int mode	= getExcavatorMode();
+		int tokens	= getTokens();
 
 		// Handlle Close Wheel
-		if(countinv("PBX_CloseWheel") > 0)
+		if(tokens == eCloseWheel)
 		{
-			A_TakeInventory("PBX_CloseWheel",1);
+			cleanmodetokens();
 			if(isExcavatorUpgraded())
 				return resolvestate("ready2");
 			return resolvestate("Ready3");
 		}
 
 		// Handle Non-Upgraded
-		if(countinv("EX_Select_No") > 0)
+		if(tokens == eNoUpgrade)
 		{
 			A_TakeInventory("EX_Select_No",1);
 			A_Print("$PBX_ModeNotAvailable");
@@ -169,7 +171,7 @@ extend class PBX_Excavator
 		}
 
 		// Handle Already Selected
-		if(alreadySelected)
+		if(tokens == mode)
 		{
 			A_print("$PBX_AlreadySelected");
 			cleanmodetokens();
@@ -179,9 +181,9 @@ extend class PBX_Excavator
 		}
 
 		// If its from drop/drill and going to bola, just play a sound and go to ready2
-		if(goBola && (mode == eDropShotMode || mode == eDrillChargeMode))
+		if(tokens == eBolaMode && (mode == eDropShotMode || mode == eDrillChargeMode))
 		{
-			setExcavatorMode(eBolaMode);
+			setExcavatorMode(tokens);
 			A_PlaySound("excavator/switch");
 			A_Print("$PBX_Excavator_BolaMode");
 			cleanmodetokens();
@@ -190,25 +192,27 @@ extend class PBX_Excavator
 
 		// If it goes to Bola or Saw mode, go to unload
 		// the actual mode change is handled there
-		if(goBola || goSaw)
+		if(tokens == eBolaMode || tokens == eSawMode)
 		{
-			A_Print(goBola ? "$PBX_Excavator_BolaMode" : "$PBX_Excavator_SawMode");
+			A_Print(tokens == eBolaMode ? "$PBX_Excavator_BolaMode" : "$PBX_Excavator_SawMode");
 			return resolvestate("Unload_Upgraded");
 		}
 		
 		// If its in saw mode and going to drop/drill
 		// go to unload so it plays the saw to bola animation
-		if(mode == eSawMode && (goDrop || goDrill))
+		if(mode == eSawMode && (tokens == eDropShotMode || tokens == eDrillChargeMode))
 		{
 			return resolvestate("Unload_Upgraded");
 		}
 
 		// Handle drop/drill mode
-		if(goDrop || goDrill)
+		if(tokens == eDropShotMode || tokens == eDrillChargeMode)
 		{
-			setExcavatorMode(goDrop ? eDropShotMode : eDrillChargeMode);
-			A_Print(goDrop ? "$PBX_Excavator_DropMode" : "$PBX_Excavator_DrillMode");
+			setExcavatorMode(tokens);
+			A_Print(tokens == eDropShotMode ? "$PBX_Excavator_DropMode" : "$PBX_Excavator_DrillMode");
 			cleanmodetokens();
+
+			// Play a sound and early return if its upgraded
 			if(isExcavatorUpgraded())
 			{
 				A_PlaySound("excavator/switch");
@@ -229,12 +233,9 @@ extend class PBX_Excavator
 		if(!isExcavatorUpgraded())
 			return resolvestate("ready3");
 
-		if(mode == eBolaMode || mode == eSawMode)
-			return resolvestate(null);
-
 		if(mode == eDrillChargeMode || mode == eDropShotMode)
 			return resolvestate("ready2");
-			
+	
 		return resolvestate(null);
 	}
 	

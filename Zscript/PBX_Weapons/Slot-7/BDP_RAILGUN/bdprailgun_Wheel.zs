@@ -7,11 +7,15 @@ Class BDPRailgun_Wheel : wheelinfocontainer
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
 	{
+		if(!spw || !requester)
+			return;
+			
+		let weap = PBX_BDPRailgun(requester.player.readyweapon);
+        if(!weap) return;
+
 		super.GetSpecials(spw,requester);
 
 		vector2 iconScale = (1.0, 1.0);
-		let weap = PBX_BDPRailgun(requester.player.readyweapon);
-		if(!weap) return;
 
 		PB_SpecialWheel_Mode Weapon_Close = new ("PB_SpecialWheel_Mode");
 		Weapon_Close.img = "graphics/WeaponWheel/CloseMenu.png";
