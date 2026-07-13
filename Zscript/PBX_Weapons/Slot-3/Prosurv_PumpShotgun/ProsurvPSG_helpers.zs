@@ -747,16 +747,9 @@ CLASS TripMine : actor
 	{
 		+wallsprite;
 		radius 10;
-		//height 20;
 		Scale 0.08;
-		//+nointeraction;
 		Height 1;
-		//+shootable;
-		//+noblood;
-		//+Shootable;
-		//Health 100; 
 		+nogravity;
-	
 	}
 
 	actor beam;
@@ -770,7 +763,6 @@ CLASS TripMine : actor
                 LineTrace(angle, 1284, 0, TRF_THRUACTORS, offsetz: 3, data: wallangle);
                 if (wallangle.HitType == TRACE_HitWall)
                 {
-                //	A_logint(wallangle.lineside);
                     angle = atan2(wallangle.hitline.delta.y, wallangle.hitline.delta.x) - 90;
                 }   
                 
@@ -778,24 +770,6 @@ CLASS TripMine : actor
                 {
                     Angle = (angle - 180);
                 }
-                /*
-                    FLineTraceData walllengthfront;
-                LineTrace(angle, 9999, 0, TRF_THRUACTORS, offsetz: 3, data: walllengthfront);
-                
-                    FLineTraceData walllengthback;
-                LineTrace(-angle, 9999, 0, TRF_THRUACTORS, offsetz: 3, data: walllengthback);
-                
-                If(walllengthback.distance > walllengthfront.distance)
-                {
-                LaserAngle = -angle;
-                
-                }
-                Else
-                {
-                LaserAngle = angle;
-                
-                }
-                */
                 A_startsound("bepbep",6);
             }
         Spawn2:
@@ -803,7 +777,6 @@ CLASS TripMine : actor
             TRPM A 1 {
                 FLineTraceData stillonwall;
                 LineTrace((angle - 180), 12, 0, TRF_THRUACTORS, offsetz: 3, data: stillonwall);
-            //	 LineTrace(-angle, 12, 0, TRF_THRUACTORS, offsetz: 3, data: wallangle);
                 If(stillonwall.HitType != TRACE_HitWall)
                 {
                     return resolvestate("onfloornow");
@@ -815,20 +788,20 @@ CLASS TripMine : actor
                 {
                     return ResolveState("Sight");
                 }
-
+                
                 beam = Spawn("TripMineparticle", (pos.x,pos.y,pos.z + 3));
                 if (beam)
                 {
                     beam.angle = angle;
                     beam.pitch = 0;
                     beam.scale.y = peopleinmyway.Distance;
-                    beam.pitch = 90;
+                    beam.pitch = -90;
                 }
                 return ResolveState(null);
             }
             wait;	   
-            
-        Onfloornow:
+		
+		Onfloornow:
             TRPM R 1 {
                 bwallsprite = false;
                 bflatsprite = true;
@@ -839,7 +812,7 @@ CLASS TripMine : actor
                 {
                     return ResolveState("Sightonfloor");
                 }
-
+                
                 beam = Spawn("TripMineparticle", (pos.x,pos.y,pos.z));
                 if (beam)
                 {
@@ -851,12 +824,13 @@ CLASS TripMine : actor
                 return ResolveState(null);
             }
             wait;
-            
+		
         Sight:
             TNT1 A 0 A_startsound("BEEEP",8);
             TRPM AAAAAAAAAAA 1 {
                 FLineTraceData peopleinmyway;
                 LineTrace(angle, 5000, 0, 0, offsetz: 7, data: peopleinmyway);
+                    
                 beam = Spawn("TripMineparticle", (pos.x,pos.y,pos.z + 3));
                 if (beam)
                 {
@@ -873,7 +847,8 @@ CLASS TripMine : actor
             TRPM RRRRRRRRRRR 1 {
                 FLineTraceData peopleinmyway;
                 LineTrace(0, 5000, -90, 0, offsetz: 0, data: peopleinmyway);
-                beam = Spawn("TripMineparticle", (pos.x,pos.y,pos.z));
+                    
+                beam = Spawn("TripMineparticle", (pos.x,pos.y,pos.z));            
                 if (beam)
                 {
                     beam.angle = angle;
@@ -882,28 +857,74 @@ CLASS TripMine : actor
                     beam.pitch = 180;
                 }
             }
-		Death:
-		/*
-		 TRPM A 1
-		{
-		   
-			FLineTraceData peopleinmyway;
-			LineTrace(angle, 5000, 0, 0, offsetz: 7, data: peopleinmyway);
-			  if (peopleinmyway.HitType != TRACE_Hitnone)
-			{
-			   spawn("tripmineexplosion",peopleinmyway.hitlocation);
-			}
-			Else
-			{
-			 A_spawnitemex("TripMineexplosion",60);
-			}
-			
-		}
-		*/
+        Death:
             TNT1 A 0 A_spawnitemex("TripMineexplosion",60);
             TNT1 A 10;
-            stop;	   		
+            stop;	   
+            
+        }
+}
+
+
+CLASS Tripmineparticle : actor
+{
+    Default
+    {
+        +noblockmap;
+        +forcexybillboard;
+        scale 1.0;
+        alpha 0.9;
+        +nogravity;
+        +thruactors;
+        +NOTONAUTOMAP;
+        Renderstyle "Add";
+    }
+
+    States
+    {
+        Spawn:
+            TNT1 A 0;
+            L2NR A 1 BRIGHT ;
+            Stop;
+    }
+}
+
+
+CLASS TripPuff : actor
+{
+	Default
+	{
+		height 1;
+		Radius 1;
+		//+puffonactors;
+		+bloodlessimpact;
+		+nointeraction;
 	}
+}
+
+CLASS tripmineprojectile : actor
+{
+	Default
+    {
+        Height 2;
+        Radius 2;
+        Speed 20;
+        Scale 0.08;
+        Projectile;
+    }
+		
+	States
+    {
+        Spawn:
+            TRPM A 1;
+            LOOP;
+            
+        Death:
+        Xdeath:
+            TNT1 A 1 A_spawnitemex("tripmine",1,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
+            TNT1 A 1;
+            STOP;
+    }
 }
 
 class TripMineExplosion : actor
@@ -966,68 +987,4 @@ class TripMineExplosion : actor
             TNT1 A 0;
             Stop;
 	}
-}
-
-CLASS Tripmineparticle : actor
-{
-    Default
-    {
-        +noblockmap;
-        +forcexybillboard;
-        scale 1.0;
-        alpha 0.9;
-        +nogravity;
-        +thruactors;
-        +NOTONAUTOMAP;
-        Renderstyle "Add";
-    }
-
-    States
-    {
-        Spawn:
-            TNT1 A 0;
-            //TNT1 A 0 A_setpitch(90);
-            LXNR A 1 BRIGHT;
-            //{
-            //Pitch = -90;
-            //}
-            Stop;
-    }
-}
-
-CLASS TripPuff : actor
-{
-	Default
-	{
-		height 1;
-		Radius 1;
-		//+puffonactors;
-		+bloodlessimpact;
-		+nointeraction;
-	}
-}
-
-CLASS tripmineprojectile : actor
-{
-	Default
-    {
-		Height 2;
-		Radius 2;
-		Speed 20;
-		Scale 0.08;
-		Projectile;
-    }
-		
-	States
-    {
-        Spawn:
-            TRPM A 1;
-            LOOP;
-            
-        Death:
-        Xdeath:
-            TNT1 A 1 A_spawnitemex("tripmine",1,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
-            TNT1 A 1;
-            STOP;
-    }
 }
