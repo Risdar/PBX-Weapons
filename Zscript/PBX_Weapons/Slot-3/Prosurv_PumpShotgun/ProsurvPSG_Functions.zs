@@ -98,9 +98,12 @@ extend class PBX_ProSurvPSG
 				break;
 
 			case TOGGLE_LASER:
-				if(invoker.laserActive) invoker.laserActive = false;
-				else invoker.laserActive = true;
+				cleanmodetokens();
+				invoker.laserActive = !invoker.laserActive;
 				A_Print(invoker.laserActive ? "$PBX_LaserOn" : "$PBX_LaserOff");
+				if(PB_GetZoom())
+					return resolvestate("ready2");
+				return resolvestate("ready3");
 				break;
 
 			case TRY_TRIPMINE:
@@ -131,13 +134,13 @@ extend class PBX_ProSurvPSG
 				break;
 
 			case DETONATOR:
+				cleanmodetokens();
 				PB_SetZoom(false);
 				A_ZoomFactor(1.0);
 				A_overlay(SPECIAL_LAYER,"DetonatorOverlay");
 				return resolvestate("FlashPunching");
 				break;
 		}
-		cleanmodetokens();
 		return resolvestate(null);
 	}
 

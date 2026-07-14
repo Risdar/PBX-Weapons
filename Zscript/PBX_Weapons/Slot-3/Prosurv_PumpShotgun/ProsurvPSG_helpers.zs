@@ -777,7 +777,11 @@ CLASS TripMine : actor
                 return resolvestate(null);
             }
         Spawn2:
-            TRPM A 65 A_JumpIfInventory("RemoteChargeDetonator",1,"Death",AAPTR_TARGET);
+            TRPM A 65 {
+                if(CountInv("RemoteChargeDetonator", AAPTR_TARGET) == 1)
+                    return resolvestate("Death");
+                return resolvestate(null);
+            }
             TRPM A 1 {
                 if(CountInv("RemoteChargeDetonator", AAPTR_TARGET) == 1)
                     return resolvestate("Death");

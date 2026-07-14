@@ -295,9 +295,12 @@ class PBX_CommandPack : CustomInventory
             Stop; 
 
         Pickup:
-            TNT1 A 0 A_GiveInventory("PB_Backpack",1);
-            TNT1 A 0 A_GiveInventory("PBX_NormalRifle",1);
-            TNT1 A 0 A_GiveInventory("PBX_ProSurvPSG",1);
+            TNT1 A 0 {
+				A_GiveInventory("PB_Backpack",1);
+				A_GiveInventory("PBX_NormalRifle",1);
+				A_GiveInventory("PBX_ProSurvPSG",1);
+				A_GiveInventory("PB_RocketAmmo",20);
+			}
             Stop;
     }
 }

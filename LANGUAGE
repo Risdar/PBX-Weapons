@@ -124,7 +124,6 @@ PBX_Excavator_TryDrillorDrop        = "Drill and Drop Mode Requires The Excavato
 PBX_ExcavatorUpgrade_Pickup         = "Excavator Upgrade (Slot 6)";
 PBX_Excavator_UpgradeTag            = "Excavator Universal Demolition Tool (UDT)";
 
-
 // CyberdemonRL
 PBX_CyberdemonRL_Pickup             = "You got the Cyberdemon's missile launcher! Holy shit, that thing's heavy... (Slot 6)";
 PBX_CyberdemonRL_Tag                = "Cyberdemon's Missile Launcher";

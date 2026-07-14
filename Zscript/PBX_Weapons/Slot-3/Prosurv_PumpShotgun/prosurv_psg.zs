@@ -60,7 +60,7 @@ class PBX_ProSurvPSG : PB_Weapon
 		DETONATOR
 	}
 
-	enum specialsAmmoTake
+	enum specialsAmmoTake : int
 	{
 		TRIPMINE_TAKE 		= 5,
 		LASERCHARGE_TAKE 	= 8,

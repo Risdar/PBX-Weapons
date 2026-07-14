@@ -5,7 +5,7 @@ enum PBXWeapons_eWeaponTipFlags
     PBX_TIP_LEVERACTION         = 1 << 1,
     // SLOT 3
     PBX_TIP_CSSG                = 1 << 2,
-    PBX_TIP_HASG                = 1 << 3,
+    PBX_TIP_PSG                 = 1 << 3,
     // SLOT 4
     PBX_TIP_BATTLERIFLE         = 1 << 4,
     PBX_TIP_METALSNIPER         = 1 << 5,
@@ -25,6 +25,7 @@ enum PBXWeapons_eWeaponTipFlags
     PBX_TIP_DEMONMINIGUN        = 1 << 15,
     PBX_TIP_DEMONEXT            = 1 << 16,
     // OTHERS
+    PBX_TIP_COMMANDERWEAPON     = 1 << 29,
     PBX_TIP_MONSTERWEAPON       = 1 << 30,
     PBX_TIP_DEMONICWEAPON       = 1 << 31
 }
@@ -69,11 +70,29 @@ class PBXWeapons_TipsManager : PBXCore_TipsManager
             case 'PBX_CSSG':
             {
                 Array<String> tips;
+                TryGiveSpecialTip(COMMANDER_WEAPON);
                 tips.Push("$PBX_CSSG_Tip1");
                 tips.Push("$PBX_CSSG_Tip2");
                 tips.Push(string.format(StringTable.Localize("$PBX_CSSG_Tip3"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+pb_specialwheel")));
                 TryGiveSpecialTip(DISABLE_UPGRADE);
                 PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_CSSG);
+            }
+            break;
+
+            case 'PBX_ProSurvPSG':
+            {
+                Array<String> tips;
+                TryGiveSpecialTip(COMMANDER_WEAPON);
+                tips.Push("$PBX_PSG_Tip1");
+                tips.Push(string.format(
+                    StringTable.Localize("$PBX_PSG_Tip2"),
+                    PBX_ProSurvPSG.TRIPMINE_TAKE,
+                    PBX_ProSurvPSG.LASERCHARGE_TAKE,
+                    PBX_ProSurvPSG.ACIDCHARGE_TAKE,
+                    PBX_ProSurvPSG.SWARMCHARGE_TAKE
+                ));
+                tips.Push(string.format(StringTable.Localize("$PBX_PSG_Tip3"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+pb_specialwheel")));
+                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_PSG);
             }
             break;
 
@@ -190,6 +209,7 @@ class PBXWeapons_TipsManager : PBXCore_TipsManager
     {
         MONSTER_WEAPON,
         DEMONIC_WEAPON,
+        COMMANDER_WEAPON,
         DISABLE_UPGRADE
     }
 
@@ -197,7 +217,7 @@ class PBXWeapons_TipsManager : PBXCore_TipsManager
     {
         switch(whatToSend)
         {
-            case 'MONSTER_WEAPON':
+            case MONSTER_WEAPON:
             {
                 Array<String> tips;
                 tips.Push("$PBX_MonsterWeapon1");
@@ -206,7 +226,7 @@ class PBXWeapons_TipsManager : PBXCore_TipsManager
             }
             break;
 
-            case 'DEMONIC_WEAPON':
+            case DEMONIC_WEAPON:
             {
                 Array<String> tips;
                 tips.Push("$PBX_DemonicWeapon1");
@@ -215,7 +235,16 @@ class PBXWeapons_TipsManager : PBXCore_TipsManager
             }
             break;
 
-            case 'DISABLE_UPGRADE':
+            case COMMANDER_WEAPON:
+            {
+                Array<String> tips;
+                tips.Push("$PBX_CommanderWeapon1");
+                tips.Push("$PBX_CommanderWeapon2");
+                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_COMMANDERWEAPON);
+            }
+            break;
+
+            case DISABLE_UPGRADE:
             {
                 Array<String> tips;
                 tips.Push("$PBX_DisableUpgrade");
