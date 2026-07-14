@@ -151,7 +151,7 @@ class PBXHUDService_PBX_PSG : service
         data.Image2 = "";       // Weapon Mode Icon
         data.Image3 = "";       // Weapon Mode 2 Icon (For example the CryoRifle has 2 modes at the same time)
 
-        data.Offset1 = psg.laserActive ? (13,13) : (-5, 15); 
+        data.Offset1 = psg.laserActive ? (13,-9) : (-5, -7); 
         data.Offset2 = (0,0);   // Weapon Mode Icon Position
 
         data.Scale1 = psg.laserActive ? 0.8 : 1.1;

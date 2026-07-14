@@ -107,6 +107,18 @@ class PBXWeapons_HUDHandler : EventHandler
                 );
                 break;
 
+            // Draw rocket ammo
+            case 'PBX_ProSurvPSG':
+                PBXCore_HUDHandler.PBX_DrawAmmoBar(
+                    phud,
+                    PBXCore_HUDHandler.DRAW_THIRD_BAR,
+                    "BARBACR3",
+                    "ABAR4",
+                    "PB_RocketAmmo",
+                    Font.CR_RED
+                );
+                break;
+
             // Draw the durability bar
             case 'PBX_CyberdemonRL':
                 PBXCore_HUDHandler.PBX_DrawAmmoBar(
