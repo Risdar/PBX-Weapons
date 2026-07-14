@@ -76,8 +76,8 @@ Class PSGWheel : wheelinfocontainer
 		PSG_Detonator.img = "graphics/WeaponWheel/ProsurvPSG/Detonator.png";
 		PSG_Detonator.Alias = "$PBX_PSG_DETONATOR";
 		PSG_Detonator.tokentogive = "PSG_Select_Detonator";
-		PSG_Detonator.scalex = 0.6;
-		PSG_Detonator.scaley = 0.6;
+		PSG_Detonator.scalex = 0.9;
+		PSG_Detonator.scaley = 0.9;
 		spw.push(PSG_Detonator);
 
 	}

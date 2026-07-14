@@ -45,3 +45,27 @@ Model tripmineparticle // Name of actor in DECORATE
    pitchoffset 90
    FrameIndex L2NR A 0 0 // The sprite lump, sprite frame, model index, frame number
 }
+
+Model PBX_RailGunRail // Name of actor in DECORATE
+{ 
+   Path "Models/RailgunProjectile" // Path to model in PK3
+   SKIN 0 "RAIL.lmp" // Model index, model file
+   MODEL 0 "RAIL.md3" // Model index, texture (can be in any format supported by GZDoom)
+   Scale 1.0 0.05 0.05 // Scale values
+   angleoffset 90
+   useactorpitch
+   offset -25 0 0
+   FrameIndex MODL A 0 0 // The sprite lump, sprite frame, model index, frame number
+}
+
+Model PBX_RailGunRail2 // Name of actor in DECORATE
+{ 
+   Path "Models/RailgunProjectile" // Path to model in PK3
+   SKIN 0 "RAIL2.lmp" // Model index, model file
+   MODEL 0 "RAIL.md3" // Model index, texture (can be in any format supported by GZDoom)
+   Scale 0.999 0.0499 0.0499 // Scale values
+   angleoffset 90
+   useactorpitch
+   offset -25 0 0
+   FrameIndex MODL A 0 0 // The sprite lump, sprite frame, model index, frame number
+}

@@ -47,6 +47,7 @@ class PBX_MarlinRound : PB_LowCalMag // What the PB_Unload uses
     {
         Inventory.Amount PBX_Prosurv_LeverAction.AMMO_TAKE_MARLIN;
         Inventory.PickupSound "weapons/casing";
+        Inventory.Icon "4LVMA0";
     }
 
     override void PB_SetAmmoSprite()
@@ -67,6 +68,7 @@ class PBX_MagnumRound : PB_LowCalMag
     {
         Inventory.Amount PBX_Prosurv_LeverAction.AMMO_TAKE_MAGNUM;
         Inventory.PickupSound "weapons/casing";
+        Inventory.Icon "4M35A0";
     }
 
     override void PB_SetAmmoSprite()
@@ -126,12 +128,14 @@ class PBX_LaserCharge : PB_RocketAmmo
     {
         Inventory.Amount PBX_ProSurvPSG.LASERCHARGE_TAKE;
         Inventory.PickupSound "Ammocase/Open";
-        // Inventory.Icon "LSRCS0";
+        Inventory.Icon "LSRCS0";
+        Scale .45;
     }
 
     override void PB_SetAmmoSprite()
     {
         sprite = GetSpriteIndex("LSRCS0");
+        frame = 18;
     }
 
 	States
@@ -147,12 +151,14 @@ class PBX_AcidCharge : PB_RocketAmmo
     {
         Inventory.Amount PBX_ProSurvPSG.ACIDCHARGE_TAKE;
         Inventory.PickupSound "Ammocase/Open";
-        // Inventory.Icon "REMTS0";
+        Inventory.Icon "REMTS0";
+        Scale .45;
     }
 
     override void PB_SetAmmoSprite()
     {
         sprite = GetSpriteIndex("REMTS0");
+        frame = 18;
     }
 
 	States
@@ -168,12 +174,14 @@ class PBX_SwarmCharge : PB_RocketAmmo
     {
         Inventory.Amount PBX_ProSurvPSG.SWARMCHARGE_TAKE;
         Inventory.PickupSound "Ammocase/Open";
-        // Inventory.Icon "SWRMR0";
+        Inventory.Icon "SWRMS0";
+        Scale .45;
     }
 
     override void PB_SetAmmoSprite()
     {
         sprite = GetSpriteIndex("SWRMS0");
+        frame = 18;
     }
 
 	States

@@ -1,4 +1,4 @@
-class BallistaBolt : PB_MGNail 
+class BallistaBolt : PB_NailgunGlue 
 {
     Default
     {
@@ -14,7 +14,7 @@ class BallistaBolt : PB_MGNail
         Damagetype "Nail";
         Projectile;
         +MISSILE;
-        +NOGRAVITY;
+        -NOGRAVITY;
         +BLOODSPLATTER;
         +THRUSPECIES;
         +MTHRUSPECIES;
@@ -37,17 +37,18 @@ class BallistaBolt : PB_MGNail
 			Loop;
 		Crash:
 		Death:
-			TNT1 A 0 { 
+			CRBA A 1 { 
 				LIFETIME = CVar.GetCVar("pb_naillifetime").GetInt(); 
 				A_StopSound(CHAN_BODY);
 				A_SpawnItemEx("HitPuff");
 				A_Stop();
+                StickToWall();
 			}
-		Hanging:
+		DeathLoop:
 			CRBA A 35 A_JumpIf(LIFETIME <= 0, "Fade");
 			TNT1 A 0 {
 				LIFETIME--;
-				return A_CheckBlock("Hanging", 0, 0, (RADIUS / 2) + 1);
+				return A_CheckBlock("DeathLoop", 0, 0, (RADIUS / 2) + 1);
 			}
 		Drop:
 			TNT1 A 0 {
@@ -58,11 +59,13 @@ class BallistaBolt : PB_MGNail
 		Fade:
             CRBA A 1 A_SpawnItemEx ("BoltPickup",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
 			stop;
+
 		XDeath:
-			TNT1 A 0 { 
+			CRBA A 1 { 
 				LIFETIME = CVar.GetCVar("pb_naillifetime").GetInt(); 
 				A_StopSound(CHAN_BODY);
 				A_StartSound("Weapons/NailHitBleed");
+                StickToWall();
 			}
 		XDeathloop:
 			CRBA A 35 A_JumpIf(LIFETIME <= 0, "Fade");
@@ -94,25 +97,20 @@ class ExplosiveBolt : BallistaBolt
 
         Death:
         Crash:
-            TNT1 A 0
-            {
+            CRBA A 1 {
                 user_stickycounter = 0;
                 A_NoGravity();
                 A_ScaleVelocity(0);
+                StickToWall();
             }
-
         Stuck:
             CRBA AAAAAAA 1 {
                 if (user_stuckEnemy == 1)
                 {
                     if (tracer)
-                    {
                         A_Warp(AAPTR_TRACER, 0, 0, 20, 0, WARPF_NOCHECKPOSITION);
-                    }
                     else
-                    {
                         A_Fall();
-                    }
                 }
                 return ResolveState(null);
             }
@@ -177,7 +175,7 @@ class ExplosiveBolt : BallistaBolt
     }
 }
 
-class DemonicBolt : PB_ProjectileAlt
+class DemonicBolt : PB_NailgunGlue
 {
     Default
     {
@@ -188,7 +186,7 @@ class DemonicBolt : PB_ProjectileAlt
         PB_Projectile.BaseDamage 100;
 		PB_Projectile.RipperCount 5;
 		PB_Projectile.PenetrationCount 3;
-        DamageType "Railgun";
+        DamageType "Nail";
         Scale 1.0;
         Decal "Scorch";
         +MISSILE;
@@ -220,14 +218,7 @@ class DemonicBolt : PB_ProjectileAlt
         Death:
             TNT1 A 0 A_SpawnItemEx("RicoChet", 0, 0, -5, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0);
             CRBA B 45 Bright;
-            TNT1 A 0 A_PlaySoundEx("RAILIMP", "Auto");
-            TNT1 A 0 A_SpawnItem("ExplosionParticleSpawner");
-            //TNT1 A 0 A_SpawnItemEx("SmallUnderwaterExplosion", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0);
-            TNT1 A 0 A_SpawnItemEx("DetectFloorCraterSmall", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0);
-            TNT1 A 0 A_SpawnItemEx("DetectCeilCraterSmall", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0);
-            TNT1 A 0 A_CustomMissile("PBExplosionparticlesSmall", 8, 0, random(0, 180), 2, random(40, 90));
-            Stop;
-
+            CRBA A 1 StickToWall();
         XDeath:
             TNT1 A 0 A_PlaySoundEx("RAILIMP", "Auto");
             TNT1 A 0 A_SpawnItem("ExplosionParticleSpawner");
@@ -236,6 +227,7 @@ class DemonicBolt : PB_ProjectileAlt
             TNT1 A 0 A_SpawnItemEx("DetectCeilCraterSmall", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0);
             TNT1 A 0 A_CustomMissile("PBExplosionparticlesSmall", 8, 0, random(0, 180), 2, random(40, 90));
             Stop;
+
     }
 }
 

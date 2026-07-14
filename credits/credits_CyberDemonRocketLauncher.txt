@@ -6,3 +6,5 @@ SgtMarkIV, TypicalSF, Acclaim Entertainment and Probe Entertainment - muzzle fla
 Dox778 -  Original Brutal Doom Addon Creator
 
 Jenny - Port to PB (maybe?)
+
+Pickup sprite is from Brutal Doom Arthur Edition by arthoriusb2593

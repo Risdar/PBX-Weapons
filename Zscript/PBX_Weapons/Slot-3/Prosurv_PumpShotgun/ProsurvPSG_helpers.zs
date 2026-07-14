@@ -218,9 +218,10 @@ class ThrownLaserCharge : SwitchableDecoration
                     else 
                         A_Fall();
                 }
-                if(CountInv("RemoteChargeDetonator", AAPTR_TARGET) == 1) {
+
+                if(CountInv("RemoteChargeDetonator", AAPTR_TARGET) == 1)
                     return resolvestate("Death");
-                }
+
                 return resolvestate(null);
             }
             TNT1 A 0 {
@@ -316,20 +317,20 @@ class ThrownAcidCharge : SwitchableDecoration
                 if(waterlevel > 1) {A_SpawnItem ("RocketSmokeTrail52"); }
                 A_SpawnItemEx ("GreenFlareSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
             }
-            REMT R 1 Bright A_JumpIfInventory("RemoteChargeDetonator",1,"Death",AAPTR_TARGET);
+            REMT S 1 Bright A_JumpIfInventory("RemoteChargeDetonator",1,"Death",AAPTR_TARGET);
             Loop;
 
         Active:
             TNT1 A 0 A_PlaySound ("charge/beep/remote");
             TNT1 A 0 A_SpawnItemEx ("GreenFlareSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-            REMT R 6 Bright;
+            REMT S 6 Bright;
             TNT1 A 0 A_SpawnItemEx ("GreenFlareSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
             TNT1 A 0 A_PlaySound ("charge/beep/remote");
-            REMT R 6 Bright;
+            REMT S 6 Bright;
             TNT1 A 0 A_PlaySound ("charge/beep/remote");
             TNT1 A 0 A_SpawnItemEx ("GreenFlareSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-            REMT R 6 Bright;
-            REMT R 4 ;
+            REMT S 6 Bright;
+            REMT S 4 ;
             TNT1 A 0 A_NoBlocking();
             TNT1 A 0 A_ChangeFLag ("SHOOTABLE", 0);
             TNT1 A 0 A_SpawnItemEx ("PBX_AcidCharge",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
@@ -345,7 +346,7 @@ class ThrownAcidCharge : SwitchableDecoration
                 A_ChangeFlag("SHOOTABLE",1);
             }
         Stuck:
-            REMT RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR 1 BRIGHT {
+            REMT S 42 BRIGHT {
                 //A_Fire(22);
                 if(user_stuckEnemy == 1) {
                     if(AAPTR_TRACER) 
@@ -353,9 +354,10 @@ class ThrownAcidCharge : SwitchableDecoration
                     else 
                         A_Fall();
                 }
-                if(CountInv("RemoteChargeDetonator", AAPTR_TARGET) == 1) {
+
+                if(CountInv("RemoteChargeDetonator", AAPTR_TARGET) == 1)
                     return resolvestate("Death");
-                }
+
                 return resolvestate(null);
             }
             TNT1 A 0 {
@@ -369,13 +371,13 @@ class ThrownAcidCharge : SwitchableDecoration
 
         XDeath:
         Bounce.Creature:
-            REMT R 1 {
+            REMT S 1 {
                 A_Changeflag("THRUACTORS", 1);
                 A_Changeflag("Solid", 1);
                 user_stuckEnemy = 1;
                 A_Stop();
             }
-            REMT R 1 {
+            REMT S 1 {
                 A_Changeflag("THRUACTORS", 0);
                 A_Changeflag("Solid", 0);
             }
@@ -387,7 +389,7 @@ class ThrownAcidCharge : SwitchableDecoration
             TNT1 A 0 A_ChangeFlag ("FLOORCLIP", 0);
             TNT1 A 0 A_Changeflag("THRUACTORS", 1);
             TNT1 A 0 A_PlaySound("charge/activate/remote", 6);
-            REMT R 10 Bright;
+            REMT S 10 Bright;
             EXPL A 0 Radius_Quake (2, 54, 0, 15, 0);
             TNT1 A 0 A_ChangeFlag ("FLOORCLIP", 0);
             TNT1 A 0 A_AlertMonsters();
@@ -555,9 +557,10 @@ class ThrownSwarmCharge : SwitchableDecoration
 					else 
 						A_Fall();
 				}
-				if(CountInv("RemoteChargeDetonator", AAPTR_TARGET) == 1) {
+
+				if(CountInv("RemoteChargeDetonator", AAPTR_TARGET) == 1) 
 					return resolvestate("Death");
-				}
+
 				return resolvestate(null);
 			}
 			TNT1 A 0 {
@@ -759,35 +762,35 @@ CLASS TripMine : actor
 	{
         Spawn:
             TRPM A 1 NoDelay {		   
+                if(CountInv("RemoteChargeDetonator", AAPTR_TARGET) == 1)
+                    return resolvestate("Death");
+
                 FLineTraceData wallangle;
                 LineTrace(angle, 1284, 0, TRF_THRUACTORS, offsetz: 3, data: wallangle);
                 if (wallangle.HitType == TRACE_HitWall)
-                {
                     angle = atan2(wallangle.hitline.delta.y, wallangle.hitline.delta.x) - 90;
-                }   
                 
                 If (wallangle.lineside == 1)
-                {
                     Angle = (angle - 180);
-                }
+
                 A_startsound("bepbep",6);
+                return resolvestate(null);
             }
         Spawn2:
-            TRPM A 65;
+            TRPM A 65 A_JumpIfInventory("RemoteChargeDetonator",1,"Death",AAPTR_TARGET);
             TRPM A 1 {
+                if(CountInv("RemoteChargeDetonator", AAPTR_TARGET) == 1)
+                    return resolvestate("Death");
+
                 FLineTraceData stillonwall;
                 LineTrace((angle - 180), 12, 0, TRF_THRUACTORS, offsetz: 3, data: stillonwall);
                 If(stillonwall.HitType != TRACE_HitWall)
-                {
                     return resolvestate("onfloornow");
-                }
                 
                 FLineTraceData peopleinmyway;
                 LineTrace(angle, 5000, 0, 0, offsetz: 7, data: peopleinmyway);
                 if (peopleinmyway.HitActor)
-                {
                     return ResolveState("Sight");
-                }
                 
                 beam = Spawn("TripMineparticle", (pos.x,pos.y,pos.z + 3));
                 if (beam)
@@ -806,12 +809,14 @@ CLASS TripMine : actor
                 bwallsprite = false;
                 bflatsprite = true;
                 bnogravity = false;
+
+                if(CountInv("RemoteChargeDetonator", AAPTR_TARGET) == 1)
+                    return resolvestate("Death");
+
                 FLineTraceData peopleinmyway;
                 LineTrace(0, 5000, -90, 0, offsetz: 0, data: peopleinmyway);
                 if (peopleinmyway.HitActor)
-                {
                     return ResolveState("Sightonfloor");
-                }
                 
                 beam = Spawn("TripMineparticle", (pos.x,pos.y,pos.z));
                 if (beam)
@@ -862,7 +867,7 @@ CLASS TripMine : actor
             TNT1 A 10;
             stop;	   
             
-        }
+    }
 }
 
 
@@ -902,7 +907,7 @@ CLASS TripPuff : actor
 	}
 }
 
-CLASS tripmineprojectile : actor
+CLASS TripmineProjectile : actor
 {
 	Default
     {

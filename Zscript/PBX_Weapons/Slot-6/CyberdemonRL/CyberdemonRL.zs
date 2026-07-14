@@ -13,7 +13,7 @@ class PBX_CyberdemonRL : PB_WeaponBase
 		Weapon.SlotNumber 6;
 		Weapon.SlotPriority 0;
 	    Weapon.SelectionOrder 3800;
-        Inventory.AltHudIcon "HND7E0";
+        Inventory.AltHudIcon "CYBFV0";
 		PB_WeaponBase.ReserveToMagAmmoFactor 3;
 		
 //////////////////////////// AMMO ////////////////////////////////////////////////////////////////////////////////////
@@ -51,6 +51,7 @@ class PBX_CyberdemonRL : PB_WeaponBase
 		Spawn:
             HND7 E -1;
             Stop;
+
         Deselect:
            TNT1 A 0 {
 				A_WeaponOffset(0,32);

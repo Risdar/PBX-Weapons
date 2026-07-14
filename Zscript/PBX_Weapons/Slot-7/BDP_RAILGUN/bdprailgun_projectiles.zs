@@ -1,6 +1,7 @@
 class RailgunProjectile : PB_MGNail
 {
 	int user_railangle;
+
 	Default
 	{
 		Radius 2;
@@ -17,7 +18,6 @@ class RailgunProjectile : PB_MGNail
 		+PB_PROJECTILE.NOCRITICALS
 		Species "Marines";
 		Scale 1.0;
-		
 		renderstyle 'ADD';
 		alpha 0.90;
 		Scale 0.10;
@@ -186,7 +186,7 @@ class BDP_RailgunTrail : VisualThinker
 	}
 }
 
-CLASS RailgunRail : Actor
+CLASS PBX_RailgunRail : Actor
 {
 	Default
 	{
@@ -208,12 +208,12 @@ CLASS RailgunRail : Actor
 			TNT1 AAAAAAAA 0 A_spawnprojectile ("ExplosionParticleHeavy", 5, 0, random (0, 360), 2, random (0, -180));
 			TNT1 AAAAAAAAAA 0 A_spawnprojectile ("ExplosionParticleHeavy", 5, 0, random (0, 360), 2, random (0, 360));
 			TNT1 AAAAAAAAA 0 A_spawnprojectile ("ExplosionParticleVeryFast", 5, 0, random (0, 360), 2, random (0, 360));
-			MODL A 1 BRIGHT{
+			MODL A 1 BRIGHT {
 				Radius_Quake(3, 8, 0, 15, 0);
 				A_startsound("BONECRACK",1);
 				A_startsound("RICMET",2);
 				A_spraydecal("RailLightning",36);
-				Actor Core = spawn("railgunrail2",pos);
+				Actor Core = spawn("PBX_RailgunRail2",pos);
 				if(core)
 				{
 					core.angle = angle;
@@ -229,7 +229,7 @@ CLASS RailgunRail : Actor
 	}
 }
 
-CLASS RailgunRail2 : Actor
+CLASS PBX_RailgunRail2 : Actor
 {
 	Default
 	{

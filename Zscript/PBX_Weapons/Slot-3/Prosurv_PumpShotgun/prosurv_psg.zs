@@ -47,7 +47,7 @@ class PBX_ProSurvPSG : PB_Weapon
 	bool laserActive;
 	const ROCKET_AMMO = "PB_RocketAmmo";
 	const MAGAZINE_SIZE = 9;
-	const SPECIAL_LAYER = 15;
+	const SPECIAL_LAYER = -15;
 
 	enum psgSpecials
 	{
@@ -235,19 +235,17 @@ class PBX_ProSurvPSG : PB_Weapon
 				invoker.owner.LineTrace(invoker.owner.angle, 64, invoker.owner.pitch, 0, offsetz: 12, data: wallinmyway);
 				if (wallinmyway.HitType == TRACE_HitWall)
 				{
-					A_fireprojectile("TripMineProjectile",0,true,0,-4);
+					A_fireprojectile("TripMineProjectile",spawnofs_xy:0,spawnheight:-4);
 					A_TakeInventory(ROCKET_AMMO,TRIPMINE_TAKE);
 					return ResolveState("Placedsuccesfully");
 				}
 				Return resolvestate(null);
 			}
 			TRPM BBBMNOPQ 1;
-			//TNT1 A 10;
 			Stop;
 			
 		Placedsuccesfully:
 			TRPM GGGGGHIJKL 1;
-			//TNT1 A 10;
 			Stop;
 
         Fire:

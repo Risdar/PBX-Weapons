@@ -265,7 +265,7 @@ extend class PBX_BDPRailgun
                 targetpos += (wallnormal * 3);
             }
 
-            actor beam = Spawn("railgunrail", targetpos);
+            actor beam = Spawn("PBX_RailgunRail", targetpos);
             if (beam)
             {
                 beam.angle = angle;
