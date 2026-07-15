@@ -84,14 +84,16 @@ class PBXWeapons_TipsManager : PBXCore_TipsManager
                 Array<String> tips;
                 TryGiveSpecialTip(COMMANDER_WEAPON);
                 tips.Push("$PBX_PSG_Tip1");
+                tips.Push("$PBX_PSG_Tip2");
                 tips.Push(string.format(
-                    StringTable.Localize("$PBX_PSG_Tip2"),
+                    StringTable.Localize("$PBX_PSG_Tip3"),
                     PBX_ProSurvPSG.TRIPMINE_TAKE,
                     PBX_ProSurvPSG.LASERCHARGE_TAKE,
                     PBX_ProSurvPSG.ACIDCHARGE_TAKE,
                     PBX_ProSurvPSG.SWARMCHARGE_TAKE
                 ));
-                tips.Push(string.format(StringTable.Localize("$PBX_PSG_Tip3"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+pb_specialwheel")));
+                tips.Push(string.format(StringTable.Localize("$PBX_PSG_Tip4"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+pb_specialwheel")));
+                tips.Push(string.format(StringTable.Localize("$PBX_PSG_Tip5"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+USE")));
                 PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_PSG);
             }
             break;

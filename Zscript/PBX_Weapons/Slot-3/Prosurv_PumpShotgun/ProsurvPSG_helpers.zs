@@ -165,6 +165,15 @@ class ThrownLaserCharge : SwitchableDecoration
 	int user_stickycounter;
 	int user_stuckEnemy;
 
+    override void Tick()
+    {
+        Super.Tick();
+        if(IsFrozen()) return;
+        
+        if(target.FindInventory("RemoteChargeDetonator"))
+            SetStateLabel("Death");
+    }
+
     States 
     {
         Spawn:
@@ -172,7 +181,7 @@ class ThrownLaserCharge : SwitchableDecoration
                 if(waterlevel > 1) {A_SpawnItem ("RocketSmokeTrail52"); }
                 A_SpawnItemEx ("RedFlareSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
             }
-            LSRC S 1 Bright A_JumpIfInventory("RemoteChargeDetonator",1,"Death",AAPTR_TARGET) ;
+            LSRC S 1 Bright;
             Loop;
 
         Active:
@@ -188,16 +197,7 @@ class ThrownLaserCharge : SwitchableDecoration
             LSRC S 4 ;
             TNT1 A 0 A_NoBlocking;
             TNT1 A 0 A_ChangeFLag ("SHOOTABLE", 0);
-            //TNT1 A 0 A_GiveToTarget("GrabbedObject", 1);
-            //TNT1 A 0 A_TakeFromTarget("MineAmmo",1);
             TNT1 A 0 A_SpawnItemEx ("PBX_LaserCharge",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-            //TNT1 A 0 A_GiveToTarget("LaserChargeAmmo",1) ;
-            //TNT1 A 0 A_TakeFromTarget("SwarmChargeAmmo",1);
-            //TNT1 A 0 A_TakeFromTarget("PickedUpRemoteCharge",1) ;
-            //TNT1 A 0 A_GiveToTarget("PickedUpLaserCharge",1) ;
-            //TNT1 A 0 A_TakeFromTarget("PickedUpSwarmCharge",1);
-            //TNT1 A 0 A_GiveToTarget("PrepLaserCharge",1) ;
-            //TNT1 A 0 A_GiveToTarget("CycleEquipment",1);
             TNT1 A 0;
             Stop;
 
@@ -210,7 +210,7 @@ class ThrownLaserCharge : SwitchableDecoration
                 A_ChangeFlag("SHOOTABLE",1);
             }
         Stuck:
-            LSRC SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS 1 BRIGHT {
+            LSRC S 41 BRIGHT {
                 //A_Fire(22);
                 if(user_stuckEnemy == 1) {
                     if(AAPTR_TRACER) 
@@ -218,19 +218,19 @@ class ThrownLaserCharge : SwitchableDecoration
                     else 
                         A_Fall();
                 }
-
-                if(CountInv("RemoteChargeDetonator", AAPTR_TARGET) == 1)
-                    return resolvestate("Death");
-
-                return resolvestate(null);
             }
             TNT1 A 0 {
                 A_SpawnItem("RedFlareSmall",0,0);
                 A_PlaySound("charge/beep/laser", 4);
                 user_stickycounter++;
             }
-            TNT1 A 0 A_JumpIf(user_stickycounter < 10, "Stuck");
-            TNT1 A 0 A_JumpIf(user_stickycounter > 10, "Death");
+            TNT1 A 0 {
+                if(user_stickycounter < 10)
+                    return resolvestate("stuck");
+                if(user_stickycounter > 10)
+                    return resolvestate("death");
+                return resolvestate(null);
+            }
             Loop;
 
         XDeath:
@@ -309,6 +309,15 @@ class ThrownAcidCharge : SwitchableDecoration
 
 	int user_stickycounter;
 	int user_stuckEnemy;
+
+    override void Tick()
+    {
+        Super.Tick();
+        if(IsFrozen()) return;
+        
+        if(target.FindInventory("RemoteChargeDetonator"))
+            SetStateLabel("Death");
+    }
 		
     States 
     {
@@ -317,7 +326,7 @@ class ThrownAcidCharge : SwitchableDecoration
                 if(waterlevel > 1) {A_SpawnItem ("RocketSmokeTrail52"); }
                 A_SpawnItemEx ("GreenFlareSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
             }
-            REMT S 1 Bright A_JumpIfInventory("RemoteChargeDetonator",1,"Death",AAPTR_TARGET);
+            REMT S 1 Bright;
             Loop;
 
         Active:
@@ -347,26 +356,25 @@ class ThrownAcidCharge : SwitchableDecoration
             }
         Stuck:
             REMT S 42 BRIGHT {
-                //A_Fire(22);
                 if(user_stuckEnemy == 1) {
                     if(AAPTR_TRACER) 
                         A_Warp(AAPTR_TRACER,0,0,20,0,WARPF_NOCHECKPOSITION);
                     else 
                         A_Fall();
                 }
-
-                if(CountInv("RemoteChargeDetonator", AAPTR_TARGET) == 1)
-                    return resolvestate("Death");
-
-                return resolvestate(null);
             }
             TNT1 A 0 {
                 A_SpawnItem("GreenFlareSmall",0,0);
                 A_PlaySound("charge/beep/remote", 4);
                 user_stickycounter++;
             }
-            TNT1 A 0 A_JumpIf(user_stickycounter < 10, "Stuck");
-            TNT1 A 0 A_JumpIf(user_stickycounter > 10, "Death");
+            TNT1 A 0 {
+                if(user_stickycounter < 10)
+                    return resolvestate("stuck");
+                if(user_stickycounter > 10)
+                    return resolvestate("death");
+                return resolvestate(null);
+            }
             Loop;
 
         XDeath:
@@ -382,6 +390,7 @@ class ThrownAcidCharge : SwitchableDecoration
                 A_Changeflag("Solid", 0);
             }
             Goto Stuck;
+
         Death:
             TNT1 A 0 A_ChangeFlag ("NOCLIP", 1);
             TNT1 A 0 A_Changeflag("NOBLOCKMAP", 1);
@@ -393,38 +402,22 @@ class ThrownAcidCharge : SwitchableDecoration
             EXPL A 0 Radius_Quake (2, 54, 0, 15, 0);
             TNT1 A 0 A_ChangeFlag ("FLOORCLIP", 0);
             TNT1 A 0 A_AlertMonsters();
-            //TNT1 A 0 A_PlaySound("Explosion",3);
             TNT1 A 0 A_SpawnItemEx ("DetectFloorCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
             TNT1 A 0 A_SpawnItemEx ("DetectCeilCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-            //TNT1 A 0 A_SpawnItemEx ("ExplosionFlareSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-            //TNT1 A 0 A_SpawnItemEx ("MineExplosion",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-            //TNT1 A 0 A_SpawnItemEx ("NewGroundExplosionSmoke",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-            //TNT1 AAAA 0 A_CustomMissile ("FireworkSFXType2", 0, 0, random (0, 360), 2, random (30, 60));
-            //TNT1 AAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 180));
             TNT1 AAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 360));
             TNT1 AAAAAAAAA 0 A_CustomMissile ("ExplosionParticleVeryFast", 0, 0, random (0, 360), 2, random (0, 360));
-            //TNT1 AAAAAAA 0 A_CustomMissile ("MediumExplosionFlames", 0, 0, random (0, 360), 2, random (0, 360));
             EXPL AAAAAA 0 A_CustomMissile ("ExplosionSmokeFast22", 0, 0, random (0, 360), 2, random (0, 360));
-            TNT1 A 0;
             TNT1 A 0 A_Explode(210,310, XF_HURTSOURCE);
             TNT1 A 0 A_Explode(190,170, XF_HURTSOURCE);
-            //TNT1 A 0 A_SpawnItem ("BigRicoChet", 0, -15);
-            //TNT1 A 0 A_SpawnItemEx ("BarrelExplosion",0,0,30,0,0,0,0,SXF_NOCHECKPOSITION,0);
-            //TNT1 A 0 A_SpawnItemEx ("BarrelKaboom",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-            //TNT1 AAAAAAA 0 A_CustomMissile ("ExplosionFlames", 0, 0, random (0, 360), 2, random (0, 360));
             TNT1 A 0 A_SpawnItem("BFGAltShockWave",0,0);
             TNT1 A 0 A_SpawnItem("ACIDFOG", 0, 0);
-            //EXPL A 0 Radius_Quake (2, 24, 0, 15, 0);
             //BEXP B 0 BRIGHT A_Scream;
-            TNT1 A 0 A_ALertMonsters();
             TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("ShrapnelParticle2", 0, 0, random (0, 360), 2, random (5, 90));
             TNT1 A 0 A_PlaySound("FAREXPL", 3);
-            //TNT1 A 0 A_Playsound("excavator/explode", 1);
-            //TNT1 A 0 A_SpawnItem("BarrelExplosionSmokeColumn");
             TNT1 AAAAA 1 A_CustomMissile ("ExplosionSmoke", 1, 0, random (0, 360), 2, random (50, 130));
             TNT1 A 0;
             TNT1 A 1 A_Stop();
-            Stop	;
+            Stop;
     }
 }
 
@@ -478,6 +471,15 @@ class ThrownSwarmCharge : SwitchableDecoration
 	int user_stickycounter;
 	int user_stuckEnemy;
 
+    override void Tick()
+    {
+        Super.Tick();
+        if(IsFrozen()) return;
+        
+        if(target.FindInventory("RemoteChargeDetonator"))
+            SetStateLabel("Death");
+    }
+
 	States
 	{
 		Spawn:
@@ -485,35 +487,8 @@ class ThrownSwarmCharge : SwitchableDecoration
 				if(waterlevel > 1) {A_SpawnItem ("RocketSmokeTrail52"); }
 				A_SpawnItemEx ("OrangeFlareSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
 			}
-			SWRM S 1 Bright A_JumpIfInventory("RemoteChargeDetonator",1,"Death",AAPTR_TARGET);
+			SWRM S 1 Bright;
 			Loop;
-			
-			/*
-			TNT1 A 0
-			SWRM S 10
-			TNT1 A 0 A_ChangeFlag ("SHOOTABLE",1)
-			//TNT1 A 0 A_JumpIf(waterlevel > 1, "Death")
-			SWRM S 1 Bright A_JumpIfInventory("RemoteChargeDetonator",1,"Death",AAPTR_TARGET)
-			SWRM SSS 8 A_LookEx(LOF_NOSOUNDCHECK,0,160,0,0,"Death")
-			TNT1 A 0 A_PlaySound ("Weapons/StickyBombTick")
-			TNT1 A 0 A_SpawnItem ("OrangeFlareSmall",0,6)
-			SWRM S 1 A_LookEx(LOF_NOSOUNDCHECK,0,160,0,0,"Death")
-			TNT1 A 0 A_SpawnItem ("OrangeFlareSmall",0,6)
-			SWRM S 1 A_LookEx(LOF_NOSOUNDCHECK,0,160,0,0,"Death")
-			TNT1 A 0 A_SpawnItem ("OrangeFlareSmall",0,6)
-			SWRM S 1 A_LookEx(LOF_NOSOUNDCHECK,0,160,0,0,"Death")
-			TNT1 A 0 A_SpawnItem ("OrangeFlareSmall",0,6)
-			SWRM S 1 A_LookEx(LOF_NOSOUNDCHECK,0,160,0,0,"Death")
-			TNT1 A 0 A_SpawnItem ("OrangeFlareSmall",0,6)
-			SWRM S 1 A_LookEx(LOF_NOSOUNDCHECK,0,160,0,0,"Death")
-			TNT1 A 0 A_SpawnItem ("OrangeFlareSmall",0,6)
-			SWRM S 1 A_LookEx(LOF_NOSOUNDCHECK,0,160,0,0,"Death")
-			TNT1 A 0 A_SpawnItem ("OrangeFlareSmall",0,6)
-			SWRM S 1 A_LookEx(LOF_NOSOUNDCHECK,0,160,0,0,"Death")
-			TNT1 A 0 A_SpawnItem ("OrangeFlareSmall",0,6)
-			SWRM S 1 A_LookEx(LOF_NOSOUNDCHECK,0,160,0,0,"Death")
-			Goto Spawn+3
-			*/
 			
 		Active:
 			TNT1 A 0 A_PlaySound ("charge/beep/swarm");
@@ -528,18 +503,10 @@ class ThrownSwarmCharge : SwitchableDecoration
 			SWRM S 4 ;
 			TNT1 A 0 A_NoBlocking();
 			TNT1 A 0 A_ChangeFLag ("SHOOTABLE", 0);
-			//TNT1 A 0 A_GiveToTarget("GrabbedObject", 1);
-			//TNT1 A 0 A_TakeFromTarget("MineAmmo",1) ;
-			//TNT1 A 0 A_TakeFromTarget("LaserChargeAmmo",1);
 			TNT1 A 0 A_SpawnItemEx ("PBX_SwarmCharge",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-			//TNT1 A 0 A_GiveToTarget("SwarmerAmmo",1)   ;
-			//TNT1 A 0 A_TakeFromTarget("PickedUpRemoteCharge",1) ;
-			//TNT1 A 0 A_TakeFromTarget("PickedUpLaserCharge",1) ;
-			//TNT1 A 0 A_GiveToTarget("PickedUpSwarmCharge",1);
-			//TNT1 A 0 A_GiveToTarget("PrepSwarmCharge",1) ;
-			//TNT1 A 0 A_GiveToTarget("CycleEquipment",1);
 			TNT1 A 0;
 			Stop;
+
 		Bounce:
 			TNT1 A 0 {
 				user_stickycounter = 0;
@@ -549,7 +516,7 @@ class ThrownSwarmCharge : SwitchableDecoration
 				A_ChangeFlag("SHOOTABLE",1);
 			}
 		Stuck:
-			SWRM SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS 1 BRIGHT {
+			SWRM S 40 BRIGHT {
 				//A_Fire(22);
 				if(user_stuckEnemy == 1) {
 					if(AAPTR_TRACER) 
@@ -557,19 +524,19 @@ class ThrownSwarmCharge : SwitchableDecoration
 					else 
 						A_Fall();
 				}
-
-				if(CountInv("RemoteChargeDetonator", AAPTR_TARGET) == 1) 
-					return resolvestate("Death");
-
-				return resolvestate(null);
 			}
 			TNT1 A 0 {
 				A_SpawnItem("RedFlareSmall",0,0);
 				A_PlaySound("charge/beep/swarm", 4);
 				user_stickycounter++;
 			}
-			TNT1 A 0 A_JumpIf(user_stickycounter < 10, "Stuck");
-			TNT1 A 0 A_JumpIf(user_stickycounter > 10, "Death");
+			TNT1 A 0 {
+                if(user_stickycounter < 10)
+                    return resolvestate("stuck");
+                if(user_stickycounter > 10)
+                    return resolvestate("death");
+                return resolvestate(null);
+            }
 			Loop;
 
 		XDeath:
@@ -744,27 +711,89 @@ class SwarmDroneAttack : PB_ProjectileAlt
 }
 
 ////// Tripmine /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CLASS TripMine : actor
+CLASS TripMine : SwitchableDecoration
 {
 	Default
 	{
-		+wallsprite;
+        +wallsprite;
 		radius 10;
 		Scale 0.08;
 		Height 1;
 		+nogravity;
+
+        speed 24;
+        Damage 0;
+        Health 2;
+        DamageType "Explosive";
+        +MISSILE;
+        +USESPECIAL;
+        +NOBLOOD;
+        -EXPLODEONWATER;
+        -NOEXTREMEDEATH;
+        +BLOODSPLATTER;
+        +EXTREMEDEATH;
+        +FORCEXYBILLBOARD;
+        +CANBOUNCEWATER;
+        +DONTBOUNCEONSHOOTABLES;
+        +USEBOUNCESTATE;
+        +BOUNCEONWALLS;
+        +BOUNCEONFLOORS;
+        +BOUNCEONCEILINGS;
+        +MOVEWITHSECTOR;
+        +DONTSPLASH;
+        +HITTRACER;
+        Bouncetype "Doom";
+        BounceFactor 0.0;
+        BounceCount 300;
+        Gravity 0.7;
+        Decal "Scorch";
+        SeeSound "weapon/grenade";
+        BounceSound "weapon/grenade";
+        DeathSound "Explosion";
+        Obituary "$OB_MPROCKET";
+        Damagetype "ExplosiveImpact";
+        DeathSound "";
+        damagefactor "Kick", 0;
+        damagefactor "ExtremePunches", 0;
+        damagefactor "Melee", 0;
+        damagefactor "Trample", 0;
+        Activation THINGSPEC_Activate | THINGSPEC_ThingTargets | THINGSPEC_NoDeathSpecial;
 	}
 
 	actor beam;
 	int laserangle;
 
+    override void Tick()
+    {
+        Super.Tick();
+        if(IsFrozen()) return;
+        
+        if(target.FindInventory("RemoteChargeDetonator"))
+            SetStateLabel("Death");
+    }
+
 	States
 	{
+
+        Active:
+            TNT1 A 0 A_PlaySound ("bep");
+            TNT1 A 0 A_SpawnItemEx ("RedFlareSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+            TRPM A 6 Bright;
+            TNT1 A 0 A_SpawnItemEx ("RedFlareSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+            TNT1 A 0 A_PlaySound ("bep");
+            TRPM A 6 Bright;
+            TNT1 A 0 A_PlaySound ("bep");
+            TNT1 A 0 A_SpawnItemEx ("RedFlareSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+            TRPM A 6 Bright;
+            TRPM A 4 ;
+            TNT1 A 0 A_NoBlocking;
+            TNT1 A 0 A_ChangeFLag ("SHOOTABLE", 0);
+            TNT1 A 0 A_SpawnItemEx ("PBX_Tripmine",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+            TNT1 A 0;
+            Stop;
+
         Spawn:
             TRPM A 1 NoDelay {		   
-                if(CountInv("RemoteChargeDetonator", AAPTR_TARGET) == 1)
-                    return resolvestate("Death");
-
                 FLineTraceData wallangle;
                 LineTrace(angle, 1284, 0, TRF_THRUACTORS, offsetz: 3, data: wallangle);
                 if (wallangle.HitType == TRACE_HitWall)
@@ -777,15 +806,8 @@ CLASS TripMine : actor
                 return resolvestate(null);
             }
         Spawn2:
-            TRPM A 65 {
-                if(CountInv("RemoteChargeDetonator", AAPTR_TARGET) == 1)
-                    return resolvestate("Death");
-                return resolvestate(null);
-            }
+            TRPM A 65;
             TRPM A 1 {
-                if(CountInv("RemoteChargeDetonator", AAPTR_TARGET) == 1)
-                    return resolvestate("Death");
-
                 FLineTraceData stillonwall;
                 LineTrace((angle - 180), 12, 0, TRF_THRUACTORS, offsetz: 3, data: stillonwall);
                 If(stillonwall.HitType != TRACE_HitWall)
@@ -813,9 +835,6 @@ CLASS TripMine : actor
                 bwallsprite = false;
                 bflatsprite = true;
                 bnogravity = false;
-
-                if(CountInv("RemoteChargeDetonator", AAPTR_TARGET) == 1)
-                    return resolvestate("Death");
 
                 FLineTraceData peopleinmyway;
                 LineTrace(0, 5000, -90, 0, offsetz: 0, data: peopleinmyway);

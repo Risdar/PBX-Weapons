@@ -24,8 +24,10 @@ PBX_CSSGUpgrade_Tip2 = "Gotta catch 'em all.";
 
 // PSG
 PBX_PSG_Tip1 = "The Commander Pump Shotgun focuses on setting up traps and has various equipments at its disposal.";
-PBX_PSG_Tip2 = "Each equipment uses different amounts of rocket ammo, Tripmine uses %d, Laser Charge uses %d, Acid Charge uses %d, and Swarm Charge uses %d.";
-PBX_PSG_Tip3 = "Every equipment can be remotely detonated by selecting the Detonator in the Weapon Special Wheel using %s.";
+PBX_PSG_Tip2 = "Each equipment uses different amounts of rocket ammo.";
+PBX_PSG_Tip3 = "Tripmine uses %d, Laser Charge uses %d, Acid Charge uses %d, and Swarm Charge uses %d.";
+PBX_PSG_Tip4 = "Every equipment can be remotely detonated by selecting the Detonator in the Weapon Special Wheel by using %s.";
+PBX_PSG_Tip5 = "You can recover any thrown equipment by coming near and pressing %s.";
 
 //////////////////////////// SLOT 4 ///////////////////////////////////////////////////////////////////////////////
 // BattleRifle 

@@ -191,6 +191,28 @@ class PBX_SwarmCharge : PB_RocketAmmo
     }
 }
 
+class PBX_Tripmine : PB_RocketAmmo
+{
+    Default
+    {
+        Inventory.Amount PBX_ProSurvPSG.TRIPMINE_TAKE;
+        Inventory.PickupSound "Ammocase/Open";
+        Inventory.Icon "TRPMA0";
+		Scale 0.08;
+    }
+
+    override void PB_SetAmmoSprite()
+    {
+        sprite = GetSpriteIndex("TRPMA0");
+    }
+
+	States
+    {
+        CacheSprites:
+            TRPM A 0;
+    }
+}
+
 //////////////////////////// SLOT 4 ////////////////////////////////////////////////////////////////////////////////////
 // Battle Rifle
 class BR_Ammo : Ammo
