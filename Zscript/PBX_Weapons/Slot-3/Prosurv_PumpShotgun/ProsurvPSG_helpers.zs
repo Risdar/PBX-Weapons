@@ -689,7 +689,7 @@ class SwarmDroneAttack : PB_ProjectileAlt
         Projectile ;
         Speed 15;
         +RANDOMIZE;
-        PB_Projectile.BaseDamage 10;
+        PB_Projectile.BaseDamage 50;
 		+PB_PROJECTILE.NOCRITICALS
         // Damage 10;
         +RIPPER;

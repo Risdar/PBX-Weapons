@@ -207,14 +207,14 @@ class PBX_ProSurvPSG : PB_Weapon
 			Goto Ready3;
 
 		DetonatorOverlay:
-			DETO ABCD 1;
+			DETO ABCDE 1;
 			TNT1 A 0 {
                 A_startsound("bepbep",6);
 				A_GiveInventory("RemoteChargeDetonator",1);
 			}
-			DETO E 6;
+			DETO FG 3;
 			TNT1 A 0 A_TakeInventory("RemoteChargeDetonator",1);
-			DETO DCBA 1;
+			DETO EDCBA 1;
 			Stop;
 
 		CacheSprites:
