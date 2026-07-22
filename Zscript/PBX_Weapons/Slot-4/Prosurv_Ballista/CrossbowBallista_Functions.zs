@@ -3,211 +3,174 @@ extend class PBX_Prosurv_Ballista
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
 	override void postbeginplay()
 	{
-		demonicBallistaMode = false;
+		currentMode = NORMAL_BOLT;
+		unwindString = false;
 		super.postbeginplay();
 	}
 
-	// When you select the demonic mode when you dont have the dtech ammo (this can be done with the disable upgrade option)
-	// The game will crash and gives a read from zero
-	// This fixes that
-	override void attachtoowner(actor other)
+	override void AttachToOwner(Actor other)
 	{
-		if(other && other.player)
-		{
-			if(other.countinv("PB_DTech") < 0)
-			{
-				other.A_giveinventory("PB_DTech", 5);
-			}
-		}
-		super.attachtoowner(other);
+		if (!other || !other.player) return;
+		other.A_GiveInventory("PB_RocketAmmo", ROCKET_AMMO_GIVE);
+		super.AttachToOwner(other);
 	}
 
 //////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
-	action int getCurrentAmmoTake()
+	action void setCrossbowSprite(name unloaded, name bolt, name explosive, name demonic)
 	{
-		return invoker.currentTakeAmmo;
-    }
+		int mode = getCrossbowMode();
+		name spriteToUse = "TNT1";
+		
+		switch(mode)
+		{
+			case NORMAL_BOLT: 	  spriteToUse = bolt;		break;
+			case EXPLOSIVE_BOLT:  spriteToUse = explosive;	break;
+			case DEMONIC_BOLT: 	  spriteToUse = demonic;	break;
+		}
 
-    action bool isDemonicBallistaMode()
-	{
-		return invoker.demonicBallistaMode;
+		if(PB_GetChamberEmpty())
+			spriteToUse = unloaded;
+
+		if(spriteToUse != "TNT1")
+			A_SetWeaponSpriteEx(spriteToUse);
 	}
 
-	action void setDemonicBallistaMode(bool value)
+	action int getCrossbowMode()
 	{
-		invoker.demonicBallistaMode = value;
+		return invoker.currentMode;
 	}
 
-	action state genericChecker(statelabel stateEmpty, statelabel stateUpgraded)
+	action void setCrossbowMode(int mode)
 	{
-		if(PB_GetChamberEmpty() || invoker.ammo2.amount < 1)
-			return ResolveState(stateEmpty);
-		else if(isDemonicBallistaMode()) 
-			return ResolveState(stateUpgraded);
+		invoker.currentMode = mode;
+	}
+
+	action int getTokens()
+	{
+		if(FindInventory("CB_Select_DemonicMode"))
+			return DEMONIC_BOLT;
+		else if (FindInventory("CB_Select_ExplosiveMode"))
+			return EXPLOSIVE_BOLT;
+		else if (FindInventory("CB_Select_NormalMode"))
+			return NORMAL_BOLT;
+		else if (FindInventory("CB_Select_NO"))
+			return NO_UPGRADE;
 		else
-			return ResolveState(null);
+			return CLOSE_WHEEL;
 	}
-
-    action state actualModeChange()
-    {
-        // Check tokens
-        bool selectNormal = FindInventory("CB_Select_NormalMode");
-        bool selectDemonic = FindInventory("CB_Select_DemonicMode");
-
-        // Switch to Normal
-        if(selectNormal && invoker.demonicBallistaMode)
-        {
-            invoker.demonicBallistaMode = false;
-            invoker.currentTakeAmmo = ammoTakeNormal;
-            invoker.ReserveToMagAmmoFactor = ammoTakeNormal;
-            invoker.ammo1 = Ammo(FindInventory("PB_HighCalMag"));
-            
-            cleanmodetokens(); // Clear tokens
-            return ResolveState("StandardReload"); // Jump to the specific reload
-        }
-        
-        // Switch to Demonic Mode
-        else if(selectDemonic && !invoker.demonicBallistaMode)
-        {
-            invoker.demonicBallistaMode = true;
-            invoker.currentTakeAmmo = ammoTakeDemonic;
-            invoker.ReserveToMagAmmoFactor = ammoTakeDemonic;
-            invoker.ammo1 = Ammo(FindInventory("PB_DTech"));
-            
-            cleanmodetokens();
-            return ResolveState("ReloadDemonic"); // Jump to the specific reload
-        }
-
-        // Fall through
-        cleanmodetokens();
-        return ResolveState("FinishUnload"); 
-    }
 
     action state HandleWheel()
     {
-        bool selectNormal = FindInventory("CB_Select_NormalMode");
-        bool selectDemonic = FindInventory("CB_Select_DemonicMode");
-        bool selectNo = FindInventory("CB_Select_No");
+		int tokens = getTokens();
+		int mode = getCrossbowMode();
+		bool alreadySelected = tokens == mode;
+		bool notUpgraded = tokens == NO_UPGRADE;
 
-		if(countinv("PBX_CloseWheel") > 0)
+		if(countinv("PBX_CloseWheel") > 0 || alreadySelected || notUpgraded)
 		{
-			A_TakeInventory("PBX_CloseWheel",1);
-			return resolvestate("Ready3");
+			cleanmodetokens();
+			if(alreadySelected || notUpgraded)
+            	A_Print(alreadySelected ? "$PBX_AlreadySelected" : "$PBX_AmmoNotAvailable");
+
+			if(PB_GetZoom())
+				return resolvestate("Ready2");
+			else
+				return resolvestate("Ready3");
 		}
 
-        if (selectNo)
-        {
-            cleanmodetokens();
-            A_Print("$PBX_AmmoNotAvailable");
-            return ResolveState("Ready3");
-        }
+		switch(tokens)
+		{
+			case NORMAL_BOLT: 		A_Print("$PBX_Crossbow_Standard"); 		break;
+			case EXPLOSIVE_BOLT: 	A_Print("$PBX_Crossbow_Explosive"); 	break;
+			case DEMONIC_BOLT: 		A_Print("$PBX_Crossbow_Demonic"); 		break;
+		}
 
-        // Check if we are trying to switch to the mode we ALREADY HAVE
-        if ((selectNormal && !isDemonicBallistaMode()) || (selectDemonic && isDemonicBallistaMode()))
-        {
-            cleanmodetokens();
-            A_Print("$PBX_AlreadySelected");
-            return ResolveState("Ready3");
-        }
-
-        // If we reached here, a valid mode change is requested.
-        // DO NOT clean tokens here yet, because actualModeChange() needs them!
-        if(selectNormal)
-        {
-            A_Print("$PBX_Crossbow_Standard");
-            return ResolveState("Unload");
-        }
-        if(selectDemonic)
-        {
-            A_Print("$PBX_Crossbow_Demonic");
-            return ResolveState("Unload");
-        }
+		// Very specific case where you've already unloaded and mode switch
+		if(PB_GetMagUnloaded())
+		{
+			handleModeChange();
+        	return ResolveState("Reload");
+		}
 
         return ResolveState(null);
     }
 
-	action state checkAltfire(bool demonicmode = false)
+	action bool checkTokens()
 	{
-		if(!demonicmode)
-		{
-			if(CountInv("PB_RocketAmmo") < ammoTakeNormalAlt)
-			{
-				A_Print("$PBX_NotEnoughAmmo");
-				return resolvestate("Ready3");
-			}
-		}
-		else
-		{
-			if(CountInv("PB_Fuel") < ammoTakeDemonicAlt)
-			{
-				A_Print("$PBX_NotEnoughAmmo");
-				return resolvestate("Ready3");
-			}
-		}
-		return resolvestate(null);
+		int mode = getTokens();
+		return mode == NORMAL_BOLT || mode == EXPLOSIVE_BOLT || mode == DEMONIC_BOLT;
 	}
 
-	action void FireWeapon(int weaponSide, int ticCount)
+	action state handleModeChange()
 	{
-		switch (ticCount)
+		// Setup Variables
+		int mode = getTokens();
+		int ammoTake;
+		name ammo;
+		name icon;
+
+		if(!checkTokens())
+			return resolvestate(null);
+
+		// Check what mode is selected
+		switch(mode)
 		{
-			double recoilPitch = isDemonicBallistaMode() ? 3.5 : 1.5;
-
-			//Tic 1
-			default:
-			case 1:
-				// SETUP
-				A_WeaponOffset(0,32);
-				PB_SetRoll(0);
-				A_TakeInventory("PB_LockScreenTilt",1);
-				A_AlertMonsters();
-		        A_ZoomFactor(0.98);
-
-				// What is being fired?
-				switch (weaponSide)
-				{
-					default:
-					// Normal Fire
-					case 0:
-						A_StartSound("weapons/ballista/firebolt", CHAN_WEAPON, CHANF_OVERLAP, 1.0, pitch: 1.2);
-                		PB_FireBullets("BallistaBolt", 1, 0, 0, 0, 3);
-                        break;
-					// Demonic Fire
-					case 1:
-						A_StartSound("weapons/ballista/firedemonic", CHAN_WEAPON, CHANF_OVERLAP, 1.0, pitch: 1.2);
-                		PB_FireBullets("DemonicBolt", 1, 0, 0, 0, 3);
-                        break;
-					// Normal Alt Fire
-					case 2:
-						A_StartSound("weapons/ballista/firebolt", CHAN_WEAPON, CHANF_OVERLAP, 1.0, pitch: 1.2);
-                		PB_FireBullets("ExplosiveBolt", 1, 0, 0, 0, 3);
-						A_TakeInventory("PB_RocketAmmo",ammoTakeNormalAlt,TIF_NOTAKEINFINITE);
-						break;
-					// Demonic Alt Fire
-					case 3:
-						A_StartSound("weapons/ballista/firerazor", CHAN_WEAPON, CHANF_OVERLAP, 1.0, pitch: 1.2);
-                		PB_FireBullets("RazorBlade", 1, 0, 0, 0, 3);
-						A_TakeInventory("PB_Fuel",ammoTakeDemonicAlt,TIF_NOTAKEINFINITE);
-						break;
-				}
-				PB_FireOffset();
-				pb_takeammo(invoker.ammotype2,1,0); // Whatever the case always take the loaded arrow
-				break;
-
-			//Tic 2
-			case 2:
-				PB_WeaponRecoil(-recoilPitch,0);
-				A_ZoomFactor(1.0, SPF_INTERPOLATE);
-				break;
-			case 3: case 4: case 5:
-				PB_WeaponRecoil(ticCount == 5 ? -0.5 : -1.0,0);
-				break;
+			case NORMAL_BOLT: 	  ammoTake = ammoTakeNormal;  ammo = "PB_HighCalMag"; 	icon = "CB_ZA0"; 	break;
+			case EXPLOSIVE_BOLT:  ammoTake = ammoTakeNormal;  ammo = "PB_RocketAmmo";	icon = "CB_ZB0";	break;
+			case DEMONIC_BOLT: 	  ammoTake = ammoTakeDemonic; ammo = "PB_DTech";	 	icon = "CB_ZC0";	break;
 		}
+
+		// Get a pointer to the ammo type being selected
+		let ammoType = FindInventory(ammo);
+		if(ammoType)
+		{
+			// If it exists, do mode change
+			setCrossbowMode(mode);
+			invoker.ReserveToMagAmmoFactor = ammoTake;
+			invoker.ammo1 = Ammo(FindInventory(ammo));
+			invoker.AltHudIcon = TexMan.CheckForTexture(icon);
+		}
+		else if(mode == DEMONIC_BOLT)
+			self.A_Print("$PBX_Crossbow_DemonicNoAmmo"); // If it gets to this then the player doesnt have any dtech ammo
+		else
+			self.A_Print("$PBX_AmmoNotFound"); // This means the ammo being chosen does not exist
+		
+		// always clear tokens and go to continue reload
+		cleanmodetokens();
+		return resolvestate("ContinueReload");
+	}
+
+	action state readyCheck(StateLabel demonic, StateLabel explosive)
+	{
+		int mode = getCrossbowMode();
+		if(PB_GetChamberEmpty())
+			return resolvestate(null);
+		else if(mode == DEMONIC_BOLT)
+			return resolvestate(demonic);
+		else if(mode == EXPLOSIVE_BOLT)
+			return resolvestate(explosive);
+		else
+			return resolvestate(null);
+	}
+
+	action void FireWeapon()
+	{
+		string projectile;
+		switch (getCrossbowMode())
+		{
+			case NORMAL_BOLT: 		projectile = "BallistaBolt"; 	break;
+			case EXPLOSIVE_BOLT: 	projectile = "ExplosiveBolt"; 	break;
+			case DEMONIC_BOLT: 		projectile = "DemonicBolt"; 	break;
+		}
+		PB_FireBullets(projectile, 1, 0, 0, 0, PB_GetZoom() ? 1 : 3);
+		pb_takeammo(invoker.ammotype2,invoker.ReserveToMagAmmoFactor,0);
 	}	
 	
 	action void cleanmodetokens()
 	{
+        A_SetInventory("PBX_CloseWheel", 0);
         A_SetInventory("CB_Select_NormalMode", 0);
+        A_SetInventory("CB_Select_ExplosiveMode", 0);
         A_SetInventory("CB_Select_DemonicMode", 0);
         A_SetInventory("CB_Select_NO", 0);
 	}

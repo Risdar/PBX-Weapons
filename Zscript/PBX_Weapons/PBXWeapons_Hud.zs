@@ -76,25 +76,6 @@ class PBXWeapons_HUDHandler : EventHandler
                 }
                 break;
                 
-            // Draw bars for specific modes and the current weapon
-            case 'PBX_Prosurv_Ballista':
-                let crossbow = PBX_Prosurv_Ballista(pbWeap);
-                // Show Fuel if Demonic Mode, Show Rocket if Standard Mode
-                if(!crossbow) return;
-
-                bool dbMode = crossbow.demonicBallistaMode;
-
-                PBXCore_HUDHandler.PBX_DrawAmmoBar(
-                    phud,
-                    PBXCore_HUDHandler.DRAW_THIRD_BAR,
-                    dbMode ? "BARBACD3"     : "BARBACR3",
-                    dbMode ? "ABAR6"        : "ABAR4",
-                    dbMode ? "PB_Fuel"      : "PB_RocketAmmo",
-                    dbMode ? Font.CR_RED    : Font.FindFontColor("PB_Fuel")
-                );
-                    
-                break;
-
             // Draw bar for the shield durability
             case 'PBX_NeoHMG':
                 PBXCore_HUDHandler.PBX_DrawAmmoBar(

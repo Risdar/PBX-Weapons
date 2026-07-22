@@ -48,10 +48,9 @@ PBX_MetalSniperUpgrade_Tip2 = "Shooting it at an Arachnotron shield will ignite 
 PBX_MetalSniperUpgrade_Tip3 = "Every shot has a high chance to stun the target.";
 
 // Crossbow Ballista 
-PBX_ProsurvBallista_Tip1 = "The Ballista is a simple crossbow that deals high piercing damage.";
-PBX_ProsurvBallista_Tip2 = "The Altfire shoots an arrow that detonates after a while.";
-PBX_ProsurvBallista_Tip3 = "Shot arrows can be picked back up.";
-PBX_ProsurvBallista_Tip4 = "You can get the Demonic Ballista by picking it's upgrade that spawn on Tier 2 backpacks.";
+PBX_ProsurvBallista_Tip1 = "The Ballista is a precision weapon that has multiple arrow types.";
+PBX_ProsurvBallista_Tip2 = "You can switch arrow types by using %s.";
+PBX_ProsurvBallista_Tip3 = "You can get the Demonic Ballista by picking it's upgrade that spawn on Tier 2 backpacks.";
 
 PBX_DemonicBallista_Tip1 = "You just picked up the Demonic Ballista.";
 PBX_DemonicBallista_Tip2 = "Every shot will now deal fire damage and the Altfire shoots a flaming razorblade";

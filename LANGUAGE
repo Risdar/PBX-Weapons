@@ -1,7 +1,7 @@
 [enu default]
 //////////////////////////// GENERAL ///////////////////////////////////////////////////////////////////////////////
 PBXWeapons_Settings                 = "\cg⟁\c- PBX - Weapons Settings";
-PBXWeapons_Version                  = "\cgPBX - Weapons Version: 2.6";
+PBXWeapons_Version                  = "\cgPBX - Weapons Version: 2.8";
 TIP_pbxweapons_normalriflereplace   = "Start the game with the Platinum Rifle on top of the Standard PB DMR";
 TIP_pbxweapons_startwithblaster     = "Start the game with the Pistol Blaster, a very weak pistol that has infinite ammo";
 
@@ -29,8 +29,8 @@ PBX_LeverAction_Magnum              = "\cd.357 Magnum \c-Mode";
 
 //////////////////////////// SLOT 3 ///////////////////////////////////////////////////////////////////////////////
 // PSG
-PBX_PSG_PICKUP                      = "Pump Shotgun (Slot 3)";
-PBX_PSG_TAG                         = "Pump Shotgun";
+PBX_PSG_PICKUP                      = "Commander Pump Shotgun (Slot 3)";
+PBX_PSG_TAG                         = "Commander Pump Shotgun";
 
 PBX_PSG_NOROCKETS                   = "You Don't Have Enough Rocket Ammo";
 PBX_PSG_TRIPMINE                    = "Tripmine";
@@ -98,7 +98,10 @@ PBX_CrossbowBallista_Pickup         = "Ballista (Slot 4)";
 PBX_CrossbowBallista_Tag            = "Composite Crossbow";
 
 PBX_Crossbow_Standard               = "\cdNormal Arrow \c-Loaded";
+PBX_Crossbow_Explosive              = "\crExplosive Arrow \c-Loaded";
 PBX_Crossbow_Demonic                = "\caDemonic Ballista \c-Mode";
+
+PBX_Crossbow_DemonicNoAmmo          = "You Don't Have Any Demonic Ammo";
 
 PBX_DemonicBallistaUpgrade_Pickup   = "Demonic Ballista Upgrade (Slot 4)";
 PBX_Prosurv_Ballista_UpgradeTag     = "Ballista Upgrade";
@@ -174,6 +177,7 @@ PBX_AmmoNotAvailable                = "Ammo Type Not Available";
 PBX_ModeNotAvailable                = "Mode Not Available";
 PBX_NoSpecial                       = "No Weapon Special Available";
 PBX_NotEnoughAmmo                   = "Not Enough Ammo";
+PBX_AmmoNotFound                    = "Ammo Not Found";
 // Targeting system
 PBX_LaserOn                         = "\cdLaser Sight \c-Activated";
 PBX_LaserOff                        = "\ciLaser Sight \c-Deactivated";

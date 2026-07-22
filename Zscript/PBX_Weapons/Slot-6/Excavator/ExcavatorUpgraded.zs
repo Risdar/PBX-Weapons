@@ -200,6 +200,7 @@ extend class PBX_Excavator
 				PB_SetRoll(0);
 				A_SetInventory("PB_LockScreenTilt",0);
 			}
+            TNT1 A 0 A_JumpIf(invoker.ammo1.amount < invoker.ReserveToMagAmmoFactor, "Ready2");
             TNT1 A 0 PB_CheckReload(
 				"RaiseFromEmpty_Upgraded", 
 				null, 

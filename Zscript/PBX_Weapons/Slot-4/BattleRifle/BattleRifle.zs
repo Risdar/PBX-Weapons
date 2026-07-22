@@ -163,7 +163,8 @@ class PBX_BDPBattleRifle : PB_WeaponBase
 
 		BurstDone:
 			TNT1 A 0 { invoker.burstcount = 0; }
-			BR45 DEFGH 1 {
+			BR45 DEF 1;
+			BR45 GH 1 {
 				// Track button release
 				if (!(player.cmd.buttons & BT_ATTACK))
 					invoker.semiclear = true;

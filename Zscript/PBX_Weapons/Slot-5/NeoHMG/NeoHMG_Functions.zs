@@ -30,11 +30,18 @@ extend class PBX_NeoHMG
 	override void DoEffect() 
 	{
 		super.DoEffect();
-		If(	owner.player 
-			&& owner.player.readyweapon is "PBX_NeoHMG" 
-			&& owner.player.cmd.buttons & BT_ALTATTACK 
-			&& shieldready 
-			&& countinv("HMGShield") > 0)
+
+		if(!owner || !owner.player) 
+			return;
+
+		bool isWeapon = owner.player.readyweapon is "PBX_NeoHMG";
+		bool isPressingAlt = owner.player.cmd.buttons & BT_ALTATTACK;
+		bool hasShieldCharge = countinv("HMGShield") > 0;
+		bool isNotOverheating = overheat < MAX_OVERHEAT-5;
+
+		bool shouldEnable = isWeapon && isPressingAlt && shieldready && hasShieldCharge && isNotOverheating;
+
+		If(shouldEnable)
 		{
 			owner.Player.SetPSprite(HMG_SHIELDLAYER,resolvestate("HMGShield"));
 			If(!shieldwasactive)
@@ -52,7 +59,7 @@ extend class PBX_NeoHMG
 		{
 			Shieldactive = false;
 			owner.bnoblood = false;
-			If(shieldwasactive && owner.player.readyweapon is "PBX_NeoHMG")
+			If(shieldwasactive && isWeapon)
 			{
 				owner.Player.SetPSprite(HMG_SHIELDLAYER,resolvestate("HMGShieldBreak"));
 				owner.A_startsound("HMGSHLD4",HMG_SHIELDSOUNDLAYER);
@@ -76,7 +83,7 @@ extend class PBX_NeoHMG
 			{
 				shieldready = true;
 				
-				If(owner.player && owner.player.readyweapon is "PBX_NeoHMG")
+				If(isWeapon)
 				{
 					owner.A_startsound("HMGSHLD",HMG_SHIELDSOUNDLAYER2);
 				}
@@ -97,7 +104,7 @@ extend class PBX_NeoHMG
 					ShieldBroken = false;
 					ShieldReady = true;
 					// ChangeAmmoIcon2("ASGSA0");
-					If(owner.player && owner.player.readyweapon is "PBX_NeoHMG")
+					If(isWeapon)
 					{
 						owner.A_startsound("HMGSHLD",HMG_SHIELDSOUNDLAYER2);
 					}

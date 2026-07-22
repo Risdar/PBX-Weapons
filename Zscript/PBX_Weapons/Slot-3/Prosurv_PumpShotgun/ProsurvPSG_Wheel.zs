@@ -44,8 +44,8 @@ Class PSGWheel : wheelinfocontainer
 		PSG_Tripmine.img = "graphics/WeaponWheel/ProsurvPSG/Tripmine.png";
 		PSG_Tripmine.Alias = "$PBX_PSG_TRIPMINE";
 		PSG_Tripmine.tokentogive = "PSG_Select_Tripmine";
-		PSG_Tripmine.scalex = 0.6;
-		PSG_Tripmine.scaley = 0.6;
+		PSG_Tripmine.scalex = 0.8;
+		PSG_Tripmine.scaley = 0.8;
 		spw.push(PSG_Tripmine);
 
         PB_SpecialWheel_Mode PSG_LaserCharge = new ("PB_SpecialWheel_Mode");

@@ -247,16 +247,13 @@ class PBXHUDService_PBX_Crossbow : service
         let data = PBXHUDData(new("PBXHUDData"));
         if (!data) return null;
         data.Handled = true;
-        data.SkipAutoDraw = true;
+        data.SkipAutoDraw = false;
 
-        let crossbow = PBX_Prosurv_Ballista(objectArg);
-        if(!crossbow) return null;
-
-        data.Image1 = crossbow.demonicBallistaMode ? "CBOWT0" : "CBOWS0";
+        data.Image1 = "";
         data.Image2 = "";       // Weapon Mode Icon
         data.Image3 = "";       // Weapon Mode 2 Icon (For example the CryoRifle has 2 modes at the same time)
 
-        data.Offset1 = (-10, -8);   // Weapon Icon Position
+        data.Offset1 = (-10, 10);   // Weapon Icon Position
         data.Offset2 = (0,0);   // Weapon Mode Icon Position
 
         data.Scale1 = 1.0;      // Weapon Icon Scale

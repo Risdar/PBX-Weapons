@@ -611,7 +611,7 @@ class SwarmDrone : actor
         -BLOODSPLATTER;
         +NOBLOOD;
         +NOGRAVITY;
-        +DONTHURTSPECIES;
+        // +DONTHURTSPECIES;
         +DONTHARMSPECIES;
     }
 

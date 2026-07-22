@@ -29,6 +29,14 @@ Class CrossbowBallistaWheel : wheelinfocontainer
 		CB_Normal.scalex = iconscale.x;
 		CB_Normal.scaley = iconscale.y;
 		spw.push(CB_Normal);
+
+		PB_SpecialWheel_Mode CB_Explosive = new ("PB_SpecialWheel_Mode");
+		CB_Explosive.img = "graphics/WeaponWheel/ProsurvBallista/ExplosiveBallista.png";
+		CB_Explosive.Alias = "$PBX_Crossbow_Explosive";
+		CB_Explosive.tokentogive = "CB_Select_ExplosiveMode";
+		CB_Explosive.scalex = iconscale.x;
+		CB_Explosive.scaley = iconscale.y;
+		spw.push(CB_Explosive);
 		
         bool disabled;
 		let disableUpgrade = Cvar.GetCvar('PBXWeapons_backpack_filter', requester.player);

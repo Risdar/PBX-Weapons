@@ -74,8 +74,8 @@ class PBXWeapons_TipsManager : PBXCore_TipsManager
                 tips.Push("$PBX_CSSG_Tip1");
                 tips.Push("$PBX_CSSG_Tip2");
                 tips.Push(string.format(StringTable.Localize("$PBX_CSSG_Tip3"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+pb_specialwheel")));
-                TryGiveSpecialTip(DISABLE_UPGRADE);
                 PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_CSSG);
+                TryGiveSpecialTip(DISABLE_UPGRADE);
             }
             break;
 
@@ -104,8 +104,8 @@ class PBXWeapons_TipsManager : PBXCore_TipsManager
                 Array<String> tips;
                 tips.Push(string.format(StringTable.Localize("$PBX_BattleRifle_Tip1"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+pb_specialwheel")));
                 tips.Push("$PBX_BattleRifle_Tip2");
-                TryGiveSpecialTip(DISABLE_UPGRADE);
                 PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_BATTLERIFLE);
+                TryGiveSpecialTip(DISABLE_UPGRADE);
             }
             break;
             
@@ -116,8 +116,8 @@ class PBXWeapons_TipsManager : PBXCore_TipsManager
                 tips.Push(string.format(StringTable.Localize("$PBX_MetalSniper_Tip2"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+ALTATTACK"), PB_HelpNotificationsHandler.PB_FormatKeybinds("+ATTACK")));
                 tips.Push(string.format(StringTable.Localize("$PBX_MetalSniper_Tip3"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+pb_specialwheel")));
                 tips.Push("$PBX_MetalSniper_Tip4");
-                TryGiveSpecialTip(DISABLE_UPGRADE);
                 PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_METALSNIPER);
+                TryGiveSpecialTip(DISABLE_UPGRADE);
             }
             break;
 
@@ -125,11 +125,10 @@ class PBXWeapons_TipsManager : PBXCore_TipsManager
             {
                 Array<String> tips;
                 tips.Push("$PBX_ProsurvBallista_Tip1");
-                tips.Push("$PBX_ProsurvBallista_Tip2");
+                tips.Push(string.format(StringTable.Localize("$PBX_ProsurvBallista_Tip2"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+pb_specialwheel")));
                 tips.Push("$PBX_ProsurvBallista_Tip3");
-                tips.Push("$PBX_ProsurvBallista_Tip4");
-                TryGiveSpecialTip(DISABLE_UPGRADE);
                 PBXCore_TipsManager.SendTipArrayIfNeeded(tips, weaponHelpCvar, PBX_TIP_CROSSBOW);
+                TryGiveSpecialTip(DISABLE_UPGRADE);
             }
             break;
 

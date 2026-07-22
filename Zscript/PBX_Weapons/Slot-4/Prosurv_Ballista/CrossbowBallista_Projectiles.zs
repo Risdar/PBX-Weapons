@@ -83,7 +83,7 @@ class ExplosiveBolt : BallistaBolt
     {
         PB_Projectile.BaseDamage 70;
 		PB_Projectile.RipperCount 1;
-        DamageType "Explosive";
+        DamageType "Nail";
         +DONTBOUNCEONSHOOTABLES;
         +USEBOUNCESTATE;
         +HITTRACER;
@@ -92,19 +92,19 @@ class ExplosiveBolt : BallistaBolt
     States
     {
         Fly:
-            CRBA A 2 A_SpawnItemEx("BoltTrail", 0, 0, 0, 1, 0, 0, 180, 128);
+            CRBZ D 2 A_SpawnItemEx("BoltTrail", 0, 0, 0, 1, 0, 0, 180, 128);
             Loop;
 
         Death:
         Crash:
-            CRBA A 1 {
+            CRBZ D 1 {
                 user_stickycounter = 0;
                 A_NoGravity();
                 A_ScaleVelocity(0);
                 StickToWall();
             }
         Stuck:
-            CRBA AAAAAAA 1 {
+            CRBZ DDDDDDD 1 {
                 if (user_stuckEnemy == 1)
                 {
                     if (tracer)
@@ -121,19 +121,19 @@ class ExplosiveBolt : BallistaBolt
             }
             TNT1 A 0 A_JumpIf(user_stickycounter < 4, "Stuck");
             TNT1 A 0 A_PlaySoundEx("RA1IF1", "Auto");
-            CRBA AAAAA 1;
+            CRBZ DDDDD 1;
             TNT1 A 0 {
                 A_SpawnItem("GreenFlareSmall", 0, 0);
                 A_PlaySound("BEP", CHAN_BODY);
                 A_Warp(AAPTR_TRACER, 0, 0, 20, 0, WARPF_NOCHECKPOSITION);
             }
-            CRBA AAAA 1;
+            CRBZ DDDD 1;
             TNT1 A 0 {
                 A_SpawnItem("GreenFlareSmall", 0, 0);
                 A_PlaySound("BEP", CHAN_BODY);
                 A_Warp(AAPTR_TRACER, 0, 0, 20, 0, WARPF_NOCHECKPOSITION);
             }
-            CRBA AA 1;
+            CRBZ DD 1;
             TNT1 A 0 {
                 A_SpawnItem("GreenFlareSmall", 0, 0);
                 A_PlaySound("BEP", CHAN_BODY);
@@ -144,13 +144,13 @@ class ExplosiveBolt : BallistaBolt
 
         XDeath:
         Bounce.Creature:
-            CRBA A 1 {
+            CRBZ D 1 {
                 bTHRUACTORS = true;
                 bSOLID = true;
                 user_stuckEnemy = 1;
                 A_Stop();
             }
-            CRBA A 1 {
+            CRBZ D 1 {
                 bTHRUACTORS = false;
                 bSOLID = false;
             }

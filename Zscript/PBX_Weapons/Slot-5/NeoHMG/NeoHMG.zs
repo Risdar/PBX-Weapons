@@ -48,12 +48,12 @@ class PBX_NeoHMG : PB_WeaponBase
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
 	// Constants
 	const MAGAZINE_SIZE 		= 80;
-	const SHIELD_MAXCHARGE 		= 100;
+	const SHIELD_MAXCHARGE 		= 120;
 	const HMG_SHIELDLAYER 		= -567;
 	const HMG_SHIELDSOUNDLAYER 	= 234;
 	const HMG_SHIELDSOUNDLAYER2 = 233;
 
-	const MAX_OVERHEAT	 		= 350;
+	const MAX_OVERHEAT	 		= 300;
 	const OVERHEAT_THRESHOLD	= 80;	// Overheat threshold for firing the special rounds
 	const OVERHEATCOOLING_RATE 	= 4;
 	const OVERHEATCOOLING_LAYER = 3;
@@ -72,7 +72,7 @@ class PBX_NeoHMG : PB_WeaponBase
 	int shieldDrain;
 
 	// Shield Values
-	const shieldProtectionMultiplier = 2; // How many shield charges are consumed per point of damage (Multiplier)
+	const shieldProtectionMultiplier = 1; // How many shield charges are consumed per point of damage (Multiplier)
 	const shieldRechargeSpeed = 5; // How many tics before giving the shield charge
 	const shieldRechargeRate = 5; // How many shield charges to give each tic
 	const shieldCooldown = 15; // How many tics before shield is available again
@@ -172,6 +172,17 @@ class PBX_NeoHMG : PB_WeaponBase
 				invoker.isOverheating = false;
 				HMG_CoolDownBarrel();
 				cooldownOverheat();
+			}
+			TNT1 A 0 {
+				invoker.Shieldtimer = shieldCooldown;
+				invoker.shieldready = false;
+				invoker.shieldbroken = true;
+				invoker.shieldwasactive = false;
+				A_SetInventory("HMGShield",0);
+				a_startsound("StickyGrenade/Hit",125,0,0.5);
+				A_startsound("HMGSHLD1",HMG_SHIELDSOUNDLAYER);
+				A_Overlay(HMG_SHIELDLAYER,"HMGShieldBroken",true);
+				EventHandler.SendInterfaceEvent(PlayerNumber(), "PB_HUDInterference", 20);
 			}
 			HG0F A 45 {
 				setMagSprite("XH04","XH03","XH02","XH01");
