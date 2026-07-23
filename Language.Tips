@@ -83,7 +83,7 @@ PBX_MastermindCG_Tip1 = "The Mastermind's Chaingun has two modes, standard explo
 
 // Paingiver
 PBX_Paingiver_Tip1 = "The Paingiver Primary shoots normal Rockets while its Secondary fires three bursts of seeking rockets.";
-PBX_Paingiver_Tip2 = "The Paingiver Enraged State will make the Paingiver not take any ammo when shooting, gives 75% damage reduction, and increased fire rate.";
+PBX_Paingiver_Tip2 = "The Paingiver Enraged State will make the Paingiver not take any ammo when shooting, gives 75 Percent damage reduction, and increased fire rate.";
 PBX_Paingiver_Tip3 = "You can activate the Enraged State by pressing %s";
 
 //////////////////////////// SLOT 7 ///////////////////////////////////////////////////////////////////////////////
