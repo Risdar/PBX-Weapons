@@ -342,7 +342,7 @@ class PBX_Prosurv_Ballista : PB_WeaponBase
                 PB_SetZoom(false);
             }
             TNT1 A 0 A_JumpIf(invoker.ammo1.amount < invoker.ReserveToMagAmmoFactor, "Ready3");
-            TNT1 A 0 A_JumpIf(invoker.unwindString, "ContinueUnload");
+            TNT1 A 0 A_JumpIf(invoker.unwindString, "ContinueReload");
             TNT1 A 0 PB_CheckReload(null, null, null, "Ready3", "Ready3", ARROW_AMOUNT, invoker.ReserveToMagAmmoFactor);
         StandardReload:
             TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
