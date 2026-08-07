@@ -52,6 +52,37 @@ class PBXWeapons_Handler : EventHandler
     }
 }
 
+// Laser sight
+// Call in DoEffect()
+mixin class PBX_LaserSight
+{
+    void PBX_SpawnLaserSight(name laser = "PBX_RedDot", StateLabel defaultReadyState = "Ready3", int laserRange = 4096)
+    {
+		let psp = owner.player.FindPSprite(PSP_WEAPON);
+		if(!psp) return;
+
+        for (int i = 0; i < blockedLaserStates.Size(); i++)
+        {
+            if (InStateSequence(psp.curstate, ResolveState(blockedLaserStates[i])) 
+                && !InStateSequence(psp.curstate, ResolveState(defaultReadyState)))
+                return;
+        }
+
+        double pz = owner.height * 0.5 - owner.floorclip + owner.player.mo.AttackZOffset * owner.player.crouchFactor;
+
+        FLineTraceData lasersight;
+        owner.LineTrace(
+			owner.angle, 
+			laserRange, 
+			owner.pitch, 
+            TRF_SOLIDACTORS|TRF_THRUHITSCAN, 
+			offsetz: pz, 
+			data: lasersight);
+
+        Spawn(laser, lasersight.HitLocation);
+    }
+}
+
 // This is from Doom Deluxe, all credits goes to Dox778 and the Doom Deluxe team
 // This handles the target analysis system
 class PBXWeapons_ScopeHandler : EventHandler
@@ -163,6 +194,10 @@ Class PBXWeapons_CheatsHandler : Eventhandler
 
 			// Crossbow Ballista
 			pm.giveinventory("PBX_DemonicBallistaUpgrade",1);
+
+			// Excavator Upgrade
+			pm.giveinventory("PBX_ExcavatorUpgrade",1);
+
 		}
 		
 	}

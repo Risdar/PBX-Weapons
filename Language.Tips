@@ -15,9 +15,9 @@ PBX_LeverAction_Tip3 = "While the .357 Magnum rounds deal less damage but has %d
 
 //////////////////////////// SLOT 3 ///////////////////////////////////////////////////////////////////////////////
 // CSSG 
-PBX_CSSG_Tip1 = "The Commander Super Shotgun has many different types of Ammo.";
+PBX_CSSG_Tip1 = "The Commander Super Shotgun has many different types of Ammo and a Meat Hook.";
 PBX_CSSG_Tip2 = "The different types of shells starts spawning in Tier 2 Backpacks.";
-PBX_CSSG_Tip3 = "You can switch shell types by using %s";
+PBX_CSSG_Tip3 = "You can switch shell types and Altfire modes by using %s";
 
 PBX_CSSGUpgrade_Tip1 = "You just picked up one of the many CSSG Upgrades.";
 PBX_CSSGUpgrade_Tip2 = "Gotta catch 'em all.";

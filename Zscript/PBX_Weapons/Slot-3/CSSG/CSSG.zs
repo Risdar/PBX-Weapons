@@ -27,6 +27,11 @@ Class PBX_CSSG : PB_WeaponBase
 	
 	int shellsmode;
 	int oldshells;
+	int hookCooldown;
+
+	bool meathookMode;
+
+	const HOOK_COOLDOWN = 3; // In seconds
 	const BARREL_CAPACITY = 2;
 	
 	enum CM_ShellTypes {
@@ -140,6 +145,14 @@ Class PBX_CSSG : PB_WeaponBase
 			goto reload;
 		
 		AltFire:
+			TNT1 A 0 {
+				if(invoker.meathookMode)
+				{
+					A_trymeathook(1600);
+					return resolvestate("Ready");
+				}
+				return resolvestate(null);
+			}
 			TNT1 A 0 PB_JumpIfNoAmmo("LeftFire",2,true,true);
 			TNT1 A 0 CM_HandleCrosshair();
 		RightFire:
@@ -273,20 +286,9 @@ Class PBX_CSSG : PB_WeaponBase
 			TNT1 A 0 A_takeinventory("GoWeaponSpecialAbility",1);
 			TNT1 A 0 {
 				A_Takeinventory("GoWeaponSpecialAbility",1);
-				A_Takeinventory("Zoomed",1);
-				A_Takeinventory("ADSmode",1);
-				A_ZoomFactor(1.0);
-				A_ClearOverlays(10,11);
+				PB_SetZoom(false);
 			}
-			goto HandleUpgradeSpecial;
-		
-		CancelWheel:
-			TNT1 A 0 ClearCssgTokens();
-			goto ready3;
-		
-		HandleUpgradeSpecial:
 			TNT1 A 0 CSSG_HandleWheel();
-			
 		EndSelection:
 			TNT1 A 0 ClearCssgTokens();
 			C0HO ABC 1;

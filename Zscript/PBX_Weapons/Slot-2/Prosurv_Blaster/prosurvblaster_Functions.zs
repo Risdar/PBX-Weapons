@@ -1,5 +1,12 @@
 extend class PBX_ProsurvBlaster
 {
+    mixin PBX_LaserSight;
+
+    static const StateLabel blockedLaserStates[] = {
+        "Reload", "Recharge","WeaponRespect", "Deselect", "SelectAnimation",
+        "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
+    };
+
     override void DoEffect() 
 	{
 		super.DoEffect();
@@ -18,37 +25,8 @@ extend class PBX_ProsurvBlaster
             if(weap.ammo1.amount < MAXCHARGE)
                 giveBlasterCharge(psp,weap);
             if(weap.laserActive)
-                spawnLaser(psp);
+                PBX_SpawnLaserSight("PBX_BlueDot");
         }
-    }
-
-    void spawnLaser(PSprite psp)
-    {
-        // Dont spawn the laser sight if the weapon is in one of these states
-        static const StateLabel blockedStates[] = {
-            "Reload", "Recharge","WeaponRespect", "Deselect", "SelectAnimation",
-            "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
-        };
-
-        for (int i = 0; i < blockedStates.Size(); i++)
-        {
-            if (InStateSequence(psp.curstate, ResolveState(blockedStates[i])) && !InStateSequence(psp.curstate, ResolveState("Ready3"))) 
-                return;
-        }
-
-        // Spawn the laser sight
-        double pz = owner.height * 0.5 - owner.floorclip + owner.player.mo.AttackZOffset*owner.player.crouchFactor;
-        FLineTraceData lasersight;
-        owner.LineTrace(owner.angle, 
-            4096, 
-            owner.pitch, 
-            TRF_SOLIDACTORS|TRF_THRUHITSCAN, 
-            offsetz: pz, 
-            // offsetz: owner.player.viewz - pos.z, 
-            data: lasersight
-        );
-
-        Spawn("PBX_BlueDot", lasersight.HitLocation);
     }
 
     void giveBlasterCharge(PSprite psp, PBX_ProsurvBlaster weap)

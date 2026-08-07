@@ -1,7 +1,7 @@
 enum PBXWeapons_eWeaponSpecialSpawns
 {
 ////// Backpacks / Upgrades /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	DisablePBX_CSSGUpgrades			        = 1 << 0,
+	DisablePBX_CSSGUpgrades			        = 1 << 0, // Actually spawns on the ShellBox spawner
 	DisablePBX_MetalSniperUpgrade			= 1 << 1,
 	DisablePBX_BattleRifleUpgrade			= 1 << 2,
 	DisablePBX_CrossbowBallistaUpgrade		= 1 << 3,
@@ -194,11 +194,11 @@ class PBXUpgrades_Injector : PBInjector
 		// CSSG Upgrades
 		if(!(pbxweapons_backpack_filter & DisablePBX_CSSGUpgrades))
 		{
-			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'DanmakuShellsUpgrade', 255, 1);
-			handler.InjectSpawn('PB_UpgradeSpawnerT2', 'WPShellsUpgrade', 255, 1);
-			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'SubZeroShellsUpgrade', 255, 1);
-			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'ExplosiveShellsUpgrade', 255, 1);
-			handler.InjectSpawn('PB_UpgradeSpawnerT4', 'DoomShellsUpgrade', 255, 1);
+			handler.InjectSpawn('PB_ShellboxSpawnerT2', 'WPShellsUpgrade', 255, 1);
+			handler.InjectSpawn('PB_ShellboxSpawnerT2', 'SubZeroShellsUpgrade', 255, 1);
+			handler.InjectSpawn('PB_ShellboxSpawnerT3', 'DanmakuShellsUpgrade', 255, 1);
+			handler.InjectSpawn('PB_ShellboxSpawnerT3', 'ExplosiveShellsUpgrade', 255, 1);
+			handler.InjectSpawn('PB_ShellboxSpawnerT4', 'DoomShellsUpgrade', 255, 1);
 		}
 		
 		// Metal Sniper Upgrade

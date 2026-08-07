@@ -1,5 +1,28 @@
 extend class PBX_NormalRifle
 {
+    mixin PBX_LaserSight;
+
+    // Dont spawn the laser sight if the weapon is in one of these states
+    static const StateLabel blockedLaserStates[] = {
+        "Deselect", "NormalDeselect", "DualWieldDeselect", "FinishDeselect",
+
+        "SelectAnimationDualWield", "SelectAnimation",
+
+        "SwitchToDualWield", "StopDualWield",
+
+        "RaiseFromEmpty","Reload","ContinueReload","FinishReload","Rechamber",
+
+        "ReloadUnloadRight","ReloadUnloadLeft","ReloadDualWield","ContinueReloadRight",
+        "ReloadLeft","ContinueReloadLeft",
+
+        "Unload","UnloadChamber","UnloadDualWield","UnloadLeft",
+
+        "FlashKickingAkimbo","FlashAirKickingAkimbo","FlashSlideKickingAkimbo","FlashSlideKickingStopAkimbo",
+
+        "WeaponRespect",
+        "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
+    };
+
     override void PostBeginPlay()
     {
         doBurst = false;
@@ -12,7 +35,6 @@ extend class PBX_NormalRifle
     override void DoEffect() 
 	{
 		super.DoEffect();
-
         if (level.isFrozen()) return;
         
         // Check if the player exists and if the current weapon they're using is the blaster
@@ -20,53 +42,8 @@ extend class PBX_NormalRifle
         {
             // Get a pointer to it
             let weap = PBX_NormalRifle(owner.player.readyweapon);
-            if(!weap) return;
-
-			// Get a pointer to PSprite
-			let psp = owner.player.FindPSprite(PSP_WEAPON);
-			if(!psp) return;
-
-            if(!weap.laserActive) return;
-
-            // Dont spawn the laser sight if the weapon is in one of these states
-            static const StateLabel blockedStates[] = {
-                "Deselect", "NormalDeselect", "DualWieldDeselect", "FinishDeselect",
-
-                "SelectAnimationDualWield", "SelectAnimation",
-
-                "SwitchToDualWield", "StopDualWield",
-
-                "RaiseFromEmpty","Reload","ContinueReload","FinishReload","Rechamber",
-
-                "ReloadUnloadRight","ReloadUnloadLeft","ReloadDualWield","ContinueReloadRight",
-                "ReloadLeft","ContinueReloadLeft",
-
-                "Unload","UnloadChamber","UnloadDualWield","UnloadLeft",
-
-                "FlashKickingAkimbo","FlashAirKickingAkimbo","FlashSlideKickingAkimbo","FlashSlideKickingStopAkimbo"
-
-                "WeaponRespect",
-                "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
-            };
-
-            for (int i = 0; i < blockedStates.Size(); i++)
-            {
-                if (InStateSequence(psp.curstate, ResolveState(blockedStates[i])) && !InStateSequence(psp.curstate, ResolveState("Ready3"))) 
-                    return;
-            }
-
-            // Spawn the laser sight
-            double pz = owner.height * 0.5 - owner.floorclip + owner.player.mo.AttackZOffset*owner.player.crouchFactor;
-            FLineTraceData lasersight;
-            owner.LineTrace(owner.angle, 
-                4096, 
-                owner.pitch, 
-                TRF_SOLIDACTORS|TRF_THRUHITSCAN, 
-                offsetz: pz, 
-                data: lasersight
-            );
-
-            Spawn("PBX_RedDot", lasersight.HitLocation);
+            if(!weap || !weap.laserActive) return;
+            PBX_SpawnLaserSight("PBX_RedDot");
 		}
     }
 

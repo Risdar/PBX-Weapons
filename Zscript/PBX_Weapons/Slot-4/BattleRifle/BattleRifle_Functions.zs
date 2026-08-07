@@ -1,5 +1,13 @@
 extend class PBX_BDPBattleRifle
 {
+    mixin PBX_LaserSight;
+
+	static const StateLabel blockedLaserStates[] = {
+		"Reload", "ReloadFromADS", "ContinueReload", "RaiseFromEmpty",
+		"Unload", "SwitchAnimation","WeaponRespect", "Deselect", "SelectAnimation",
+		"FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
+	};
+
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
 	override void postbeginplay()
 	{
@@ -23,39 +31,8 @@ extend class PBX_BDPBattleRifle
         {
             // Get a pointer to it
             let weap = PBX_BDPBattleRifle(owner.player.readyweapon);
-            if(!weap) return;
-
-			// Get a pointer to PSprite
-			let psp = owner.player.FindPSprite(PSP_WEAPON);
-			if(!psp) return;
-
-            if(!weap.laserActive) return;
-
-            // Dont spawn the laser sight if the weapon is in one of these states
-            static const StateLabel blockedStates[] = {
-                "Reload", "ReloadFromADS", "ContinueReload", "RaiseFromEmpty",
-                "Unload", "SwitchAnimation","WeaponRespect", "Deselect", "SelectAnimation",
-                "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
-            };
-
-            for (int i = 0; i < blockedStates.Size(); i++)
-            {
-                if (InStateSequence(psp.curstate, ResolveState(blockedStates[i])) && !InStateSequence(psp.curstate, ResolveState("Ready3"))) 
-                    return;
-            }
-
-            // Spawn the laser sight
-            double pz = owner.height * 0.5 - owner.floorclip + owner.player.mo.AttackZOffset*owner.player.crouchFactor;
-            FLineTraceData lasersight;
-            owner.LineTrace(owner.angle, 
-                4096, 
-                owner.pitch, 
-                TRF_SOLIDACTORS|TRF_THRUHITSCAN, 
-                offsetz: pz, 
-                data: lasersight
-            );
-
-            Spawn("PBX_GreenDot", lasersight.HitLocation);
+            if(!weap || !weap.laserActive) return;
+           	PBX_SpawnLaserSight("PBX_GreenDot");
 		}
     }
     

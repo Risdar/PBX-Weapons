@@ -1,5 +1,16 @@
 extend class PBX_MetalSniper
 {
+    mixin PBX_LaserSight;
+
+    static const StateLabel blockedLaserStates[] = {
+        "Reload", "Reload_Grenade", "StandardReload", "WeaponRespect",
+        "TakeMagStandard", "TakeMagResonance", "InsertMag", "ReloadFromSpecial", "Deselect",
+        "FinishReload", "RaiseFromEmpty", "Start_Rechamber", "Rechamber", "ChangeAnim",
+        "UnloadFromSpecial","Unload","UnloadRaise","UnloadMagStandard", "UnloadMagEmpty",
+        "UnloadMagResonance", "UnloadChamber", "FinishUnload", "StartUnloadChamber", "SelectAnimation",
+        "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
+    };
+
     // ── Overrides ──────────────────────────────────────────────────────────────────
     override void PostBeginPlay()
     {
@@ -16,7 +27,6 @@ extend class PBX_MetalSniper
     override void DoEffect() 
 	{
 		super.DoEffect();
-
         if (level.isFrozen()) return;
         
         // Check if the player exists and if the current weapon they're using is the blaster
@@ -24,42 +34,8 @@ extend class PBX_MetalSniper
         {
             // Get a pointer to it
             let weap = PBX_MetalSniper(owner.player.readyweapon);
-            if(!weap) return;
-
-			// Get a pointer to PSprite
-			let psp = owner.player.FindPSprite(PSP_WEAPON);
-			if(!psp) return;
-
-            if(!weap.laserActive) return;
-
-            // Dont spawn the laser sight if the weapon is in one of these states
-            static const StateLabel blockedStates[] = {
-                "Reload", "Reload_Grenade", "StandardReload", "WeaponRespect",
-                "TakeMagStandard", "TakeMagResonance", "InsertMag", "ReloadFromSpecial", "Deselect",
-                "FinishReload", "RaiseFromEmpty", "Start_Rechamber", "Rechamber", "ChangeAnim",
-                "UnloadFromSpecial","Unload","UnloadRaise","UnloadMagStandard", "UnloadMagEmpty",
-                "UnloadMagResonance", "UnloadChamber", "FinishUnload", "StartUnloadChamber", "SelectAnimation",
-                "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
-            };
-
-            for (int i = 0; i < blockedStates.Size(); i++)
-            {
-                if (InStateSequence(psp.curstate, ResolveState(blockedStates[i])) && !InStateSequence(psp.curstate, ResolveState("Ready3"))) 
-                    return;
-            }
-
-            // Spawn the laser sight
-            double pz = owner.height * 0.5 - owner.floorclip + owner.player.mo.AttackZOffset*owner.player.crouchFactor;
-            FLineTraceData lasersight;
-            owner.LineTrace(owner.angle, 
-                4096, 
-                owner.pitch, 
-                TRF_SOLIDACTORS|TRF_THRUHITSCAN, 
-                offsetz: pz, 
-                data: lasersight
-            );
-
-            Spawn("PBX_GreenDot", lasersight.HitLocation);
+            if(!weap || !weap.laserActive) return;
+            PBX_SpawnLaserSight("PBX_GreenDot");
 		}
     }
 

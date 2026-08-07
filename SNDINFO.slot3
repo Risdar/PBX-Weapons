@@ -21,6 +21,17 @@ CSSGPHOS CSSGPHOS
 CSSGPHOF CSSGPHOF
 weapons/cssg/in CSSGIN
 
+//MEATHOOK
+MHKLOOP MHKLOOP
+MHKSTP MHKSTP
+$random MHKSTRT { MHOOK1 MHOOK2 MHOOK3 }
+MHOOK1 MHOOK1
+MHOOK2 MHOOK2
+MHOOK3 MHOOK3
+
+MHKEXT MHKEXT
+MHKRTRCT MHKRTRCT
+
 // PSG
 harge/place/remote	"Sounds/Weapons/Slot-3/Prosurv_PumpShotgun/charge_place_remote.ogg"
 charge/beep/remote	"Sounds/Weapons/Slot-3/Prosurv_PumpShotgun/charge_beep_remote.ogg"

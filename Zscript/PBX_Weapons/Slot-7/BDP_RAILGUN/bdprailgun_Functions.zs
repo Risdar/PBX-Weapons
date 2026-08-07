@@ -1,5 +1,16 @@
 extend class PBX_BDPRailgun
 {
+    mixin PBX_LaserSight;
+
+    static const StateLabel blockedLaserStates[] = {
+        "Pumping", "FinishPump", "FinishPump2", "Reload",
+        "ShellChecker", "ReloadFinished", "ReloadFromPump", "ReloadFromPumpInsertShells",
+        "FinishReloadFromPump", 
+
+        "WeaponRespect", "Deselect", "SelectAnimation",
+        "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
+    };
+
     override void PostBeginPlay()
     {
         LockedOn = false;
@@ -12,50 +23,22 @@ extend class PBX_BDPRailgun
     override void DoEffect() 
 	{
 		super.DoEffect();
-
         if (level.isFrozen()) return;
         
         // Check if the player exists and if the current weapon they're using is the blaster
 		If(	owner.player && owner.player.readyweapon.GetClass() is self.GetClass())
         {
+            if(hologramCooldown > 0 && level.time % TICRATE == 0)
+			{
+				hologramCooldown--;
+				if(hologramCooldown == 0)
+					owner.A_StartSound("BEPBEP", CHAN_WEAPON, pitch:1.4);
+			}
+            
             // Get a pointer to it
             let weap = PBX_BDPRailgun(owner.player.readyweapon);
-            if(!weap) return;
-
-			// Get a pointer to PSprite
-			let psp = owner.player.FindPSprite(PSP_WEAPON);
-			if(!psp) return;
-
-            if(!weap.laserActive) return;
-
-            // Dont spawn the laser sight if the weapon is in one of these states
-            static const StateLabel blockedStates[] = {
-                "Pumping", "FinishPump", "FinishPump2", "Reload",
-                "ShellChecker", "ReloadFinished", "ReloadFromPump", "ReloadFromPumpInsertShells",
-                "FinishReloadFromPump", 
-
-                "WeaponRespect", "Deselect", "SelectAnimation",
-                "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
-            };
-
-            for (int i = 0; i < blockedStates.Size(); i++)
-            {
-                if (InStateSequence(psp.curstate, ResolveState(blockedStates[i])) && !InStateSequence(psp.curstate, ResolveState("Ready3"))) 
-                    return;
-            }
-
-            // Spawn the laser sight
-            double pz = owner.height * 0.5 - owner.floorclip + owner.player.mo.AttackZOffset*owner.player.crouchFactor;
-            FLineTraceData lasersight;
-            owner.LineTrace(owner.angle, 
-                4096, 
-                owner.pitch, 
-                TRF_SOLIDACTORS|TRF_THRUHITSCAN, 
-                offsetz: pz, 
-                data: lasersight
-            );
-
-            Spawn("PBX_BlueDot", lasersight.HitLocation);
+            if(!weap || !weap.laserActive) return;
+            PBX_SpawnLaserSight("PBX_BlueDot");
 		}
     }
 
@@ -225,6 +208,15 @@ extend class PBX_BDPRailgun
 
     Action void a_spawnhologram()
 	{
+        if(invoker.hologramCooldown > 0)
+        {
+            A_startsound("weapons/carbine/respectbeep",4);
+            A_Print("$PBX_BDPRailgun_NoHologram");
+            return;
+        }
+
+        invoker.hologramCooldown = HOLOGRAM_COOLDOWN;
+
 		A_radiusgive("KillHologram",10000,RGF_MONSTERS | RGF_NOSIGHT,1,"HoloPlayer");
 		FLineTraceData lasersight;
         LineTrace(angle, 4096, pitch, TRF_SOLIDACTORS|TRF_THRUHITSCAN, offsetz: player.viewz - pos.z, data: lasersight);

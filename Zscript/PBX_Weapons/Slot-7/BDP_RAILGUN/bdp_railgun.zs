@@ -34,12 +34,13 @@ Class PBX_BDPRailgun : PB_WeaponBase
         scale 1.0;
     }
 
-	// bool steam;
 	bool laserActive;
 	bool lockedOn;
     bool nvgActive;
     int scopeMode;
+    int hologramCooldown;
     double zoomstrength;
+    const HOLOGRAM_COOLDOWN = 3; // In seconds
     const MAGAZINE_SIZE = 5;
     const bdpraildamage = 500;
     const LOWZOOM = 3.0;

@@ -1,14 +1,50 @@
+class MeatHookExtended : Inventory {Default {Inventory.MaxAmount 1;}}
+
 extend class PBX_CSSG
 {
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
 	override void postbeginplay()
 	{
-		shellsmode = 1;
-		oldshells = 0;
+		meathookMode = false;
+		shellsmode = Shell_Buck;
 		super.postbeginplay();
 	}
 
+    override void DoEffect() 
+	{
+		super.DoEffect();
+		If(	owner.player && owner.player.readyweapon.GetClass() is self.GetClass())
+		{
+			if(hookCooldown > 0 && level.time % TICRATE == 0)
+			{
+				hookCooldown--;
+				if(hookCooldown == 0)
+					owner.a_startsound("MHKSTRT",193,CHANF_DEFAULT,1,ATTN_NONE);
+			}
+		}
+	}
+
 //////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
+	action void A_trymeathook(int meathookrange = 256)
+	{
+		let pbxplr = PBXCore_Player(invoker.owner);
+		if(pbxplr.aimActor2 && invoker.hookCooldown <= 0)
+		{
+			target = pbxplr.aimActor2;
+			A_spawnprojectile("hook",32);
+			A_takeinventory("meathook",1);
+			a_startsound("MHKSTRT",193,CHANF_DEFAULT,1,ATTN_NONE);
+			invoker.hookCooldown = HOOK_COOLDOWN;
+			return;
+		}
+		else
+		{
+			if(invoker.hookCooldown > 0)
+				A_Print("$PBX_CSSG_NOHOOK");
+			A_StartSound("weapons/empty",190,CHANF_DEFAULT,1,ATTN_NONE);
+		}
+	}
+
     static const string CSSG_ShellsType[] = {
 		"\cgBuckshot\c- ","\cdSlug\c- ","\cjFlechette\c- ",
 		"\chFlak\c- ","\ciDragon Breath's\c- ","\cuExplosive\c- ",
@@ -599,20 +635,30 @@ extend class PBX_CSSG
 			A_TakeInventory("PBX_CloseWheel",1);
 			return resolvestate("Ready3");
 		}
+
+		if(countinv("SelectCSG_SwitchAlt") > 0)
+		{
+			A_TakeInventory("SelectCSG_SwitchAlt",1);
+			invoker.meathookMode = !invoker.meathookMode;
+			A_print(invoker.meathookMode ? "$PBX_CSSG_HOOK" : "$PBX_CSSG_SINGLE");
+			a_startsound(invoker.meathookMode ? "MHKSTRT" : "weapons/cssg/in",193,CHANF_DEFAULT,1,ATTN_NONE);
+			return resolvestate("Ready3");
+		}
 		
 		// If you dont have an upgrade token, cancel wheel
 		if(countinv("SelectCSG_No") > 0)
 		{
 			A_TakeInventory("SelectCSG_No",1);
 			A_Print("$PBX_AmmoNotAvailable");
-			return resolvestate("CancelWheel");
+			return resolvestate("Ready3");
 		}
 
 		// If you've already selected the same shell type, cancel wheel
 		if(countinv(PBX_CSSG.CSSG_ShellsToken1[actmode]) > 0)
 		{
 			A_Print(String.format(StringTable.Localize("$PBX_CSSG_ALR"),PBX_CSSG.CSSG_ShellsType[actmode]));
-			return resolvestate("CancelWheel");
+			ClearCssgTokens();
+			return resolvestate("Ready3");
 		}
 		
 		// Actual handling of the wheel

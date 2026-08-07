@@ -43,6 +43,11 @@ PBX_PSG_DETONATOR                   = "Detonator";
 PBX_CSSG_PICKUP                     = "Commander Super Shotgun (Slot 3)";
 PBX_CSSG_TAG                        = "Commander Super Shotgun";
 
+PBX_CSSG_SINGLE                     = "Single Barrel AltFire";
+PBX_CSSG_HOOK                       = "Meat Hook AltFire";
+
+PBX_CSSG_NOHOOK                     = "Meat Hook Not Ready";
+
 PBX_CM_BUCKLD                       = "\cgBuckshot \c- Shells";
 PBX_CM_SLUGLD                       = "\cdSlugs \c- Shells";
 PBX_CM_DGBTLD                       = "\ciDragon Breath \c- Shells";
@@ -153,6 +158,7 @@ PBX_BDPRailgun_Pickup               = "Platinum Railgun (Slot 7)";
 PBX_BDPRailgun_Tag                  = "UAC MK-III 'Platinum' Railgun";
 
 PBX_BDPRailgun_SpawnHologram        = "Spawn Hologram";
+PBX_BDPRailgun_NoHologram           = "Hologram is Charging";
 
 //////////////////////////// SLOT 8 ///////////////////////////////////////////////////////////////////////////////
 

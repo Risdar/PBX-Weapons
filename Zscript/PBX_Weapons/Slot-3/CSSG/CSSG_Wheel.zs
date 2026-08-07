@@ -5,28 +5,16 @@ Class CSSGWeaponWheel : wheelinfocontainer
 {
 	override int GetSPCount(actor requester)
 	{
-		// int sp = 4;	//total amount of specials available for this weapon
-		
-		// //basically, add one if the requester has the respective item
-		// if(requester.FindInventory("DragonBreathUpgrade"))
-		// 	sp++;
-		// if(requester.FindInventory("ExplosiveUpgrade"))
-		// 	sp++;
-		// if(requester.FindInventory("WhitePhosphorusUpgrade"))
-		// 	sp++;
-		// if(requester.FindInventory("TripleDoomUpgrade"))
-		// 	sp++;
-		// if(requester.FindInventory("DanmakuUpgrade")) 
-		// 	sp++;
-		
-		// return sp;
-		return 11;
+		return 12;
 	}
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
 	{
 		if(!spw || !requester)
 			return;
+
+		let cssg = PBX_CSSG(requester.player.readyweapon);
+        if(!cssg) return;
 			
 		super.GetSpecials(spw,requester);
 		
@@ -39,6 +27,22 @@ Class CSSGWeaponWheel : wheelinfocontainer
 		Weapon_Close.scalex = WHEEL_CLOSEMENU_SCALE;
 		Weapon_Close.scaley = WHEEL_CLOSEMENU_SCALE;
 		spw.Push(Weapon_Close);
+
+		PB_SpecialWheel_Mode CSSG_Switch = new ("PB_SpecialWheel_Mode");
+		if(!cssg.meathookMode)
+		{
+			CSSG_Switch.img = "graphics/WeaponWheel/CSSG/SG_Meathook.png";
+			CSSG_Switch.Alias = "$PBX_CSSG_HOOK";
+		}
+		else
+		{
+			CSSG_Switch.img = "graphics/WeaponWheel/CSSG/SG_SingleFire.png";
+			CSSG_Switch.Alias = "$PBX_CSSG_SINGLE";
+		}
+		CSSG_Switch.tokentogive = "SelectCSG_SwitchAlt";
+		CSSG_Switch.scalex = iconscale.x;
+		CSSG_Switch.scaley = iconscale.y;
+		spw.Push(CSSG_Switch);
 		
 		PB_SpecialWheel_Mode CSSG_BuckShot = new ("PB_SpecialWheel_Mode");
 		CSSG_BuckShot.img = "graphics/WeaponWheel/CSSG/SG_Buck.png";

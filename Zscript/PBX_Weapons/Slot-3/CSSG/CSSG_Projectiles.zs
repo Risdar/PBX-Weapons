@@ -27,20 +27,16 @@ class ExplosiveProjectile : PB_Projectile
 		Spawn:
 			TNT1 A 1;
 		Fly:
-			DBAC A 1 bright Light("ROCKET")
-			{
-				if(waterlevel < 1) {
+			DBAC A 1 bright Light("ROCKET") {
+				if(waterlevel < 1)
 					spawnFirespark(pos);
-					//A_SpawnItemEx("RocketTrailSparks",-10,0,0,-5,0,0);
-				}
 			}
 			loop;
 		Crash:
 		XDeath:
 		Death:
 			TNT1 A 0;
-			TNT1 A 0
-			{
+			TNT1 A 0 {
 				A_Explode(60,128,XF_HURTSOURCE|RTF_THRUSTZ, 0, 64);
 				A_StopSound(105);
 				A_StartSound("FAREXPL", CHAN_AUTO,CHANF_OVERLAP,0.5,0,1.1);
