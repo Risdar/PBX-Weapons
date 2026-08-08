@@ -162,15 +162,9 @@ extend class PBX_ProSurvPSG
 		name sprite;
 		switch(getTokens())
 		{
-			case LASERCHARGE:
-				sprite = "LSRC";
-				break;
-			case ACIDCHARGE:
-				sprite = "REMT";
-				break;
-			case SWARMCHARGE:
-				sprite = "SWRM";
-				break;
+			case LASERCHARGE:	sprite = "LSRC";	break;
+			case ACIDCHARGE:	sprite = "REMT";	break;
+			case SWARMCHARGE:	sprite = "SWRM";	break;
 		}
 		A_SetWeaponSpriteEx(sprite);
 	}
@@ -182,10 +176,10 @@ extend class PBX_ProSurvPSG
 		// Shared variables
 		double recoilX      = ads ? -0.62 : -1.64;
 		double recoilY      = ads ? +0.24 : +0.88;
-		double zoomA        = ads ? 1.48  : 0.98;
-		double zoomB        = ads ? 1.49  : 0.99;
-		double zoomC        = ads ? 1.50  : 1.0;
-		int    wadOfsY      = ads ? -3    : -4;
+		double zoomA        = ads ?  1.4  :  0.98;
+		double zoomB        = ads ?  1.49 :  0.99;
+		double zoomC        = ads ?  1.50 :  1.0 ;
+		int    wadOfsY      = ads ?    -3 :    -4;
 
 		switch(tic)
 		{
@@ -198,9 +192,9 @@ extend class PBX_ProSurvPSG
 
 				A_FireProjectile("ShotgunWad", random(-2,2), 0, random(-2,2), wadOfsY, FPF_NOAUTOAIM, random(-2,2));
 				PB_LowAmmoSoundWarning("shotgun");
-				PB_TakeAmmo(invoker.ammo2.getClassName());
+				PB_TakeAmmo(invoker.ammo2.getClassName(),1,0);
 				A_AlertMonsters();
-				A_PlaySoundEx("FLAKFIRE", "Weapon");
+				A_StartSound("weapons/sg", CHAN_WEAPON, pitch:frandom(0.95, 1.05));
 				PB_IncrementHeat();
 				A_FireCustomMissile("YellowFlareSpawn", 0, 0, 0, 0);
 				_SpawnMuzzleSparksSG(0, 0, -4);

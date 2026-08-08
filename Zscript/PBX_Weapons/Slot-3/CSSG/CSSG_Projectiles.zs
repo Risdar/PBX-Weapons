@@ -69,6 +69,9 @@ class ExplosiveProjectile : PB_Projectile
 	
 	void spawnFirespark(vector3 position)
 	{
+		if(position.x == 0 || position.y == 0 || position.z == 0)
+			return;
+			
 		FSpawnParticleParams DBSPK;
 		DBSPK.Texture = TexMan.CheckForTexture("REXPA0");
 		DBSPK.Color1 = "FFFFFF";//"FF8400";
@@ -83,6 +86,7 @@ class ExplosiveProjectile : PB_Projectile
 		DBSPK.SizeStep = -2;
 		DBSPK.Lifetime = random(4,8); 
 		DBSPK.Pos = position;
+		// console.printf("Projectile spawned");
 		Level.SpawnParticle(DBSPK);
 	}
 }

@@ -6,7 +6,7 @@ extend class PBX_CSSG
 	override void postbeginplay()
 	{
 		meathookMode = false;
-		shellsmode = Shell_Buck;
+		shellsmode = 0;
 		super.postbeginplay();
 	}
 
@@ -28,6 +28,11 @@ extend class PBX_CSSG
 	action void A_trymeathook(int meathookrange = 256)
 	{
 		let pbxplr = PBXCore_Player(invoker.owner);
+		if(!pbxplr)
+		{
+			A_Print("$PBX_CSSG_NOPLAYER");
+			return;
+		}
 		if(pbxplr.aimActor2 && invoker.hookCooldown <= 0)
 		{
 			target = pbxplr.aimActor2;

@@ -127,7 +127,12 @@ extend class PBX_DemonExt{
 	action void UNM_FireLasers()
 	{
 		int lv = Player.ReFire%3*5+5;
-		for(int i = -lv; i <= lv; i += lv) A_RailAttack(LASER_DAMAGE, 0, 0, "none", "red", RGF_SILENT | RGF_FULLBRIGHT | RGF_EXPLICITANGLE | RGF_NORANDOMPUFFZ, 0, "Unmaker64Puff", i, 0, 0, 0, 5, 2, "UnmakerLaser64Spark", -1,270,1);
+		for(int i = -lv; i <= lv; i += lv) 
+			A_RailAttack(
+				LASER_DAMAGE, 0, 0, 
+				"", "red", 
+				RGF_SILENT | RGF_FULLBRIGHT | RGF_EXPLICITANGLE | RGF_NORANDOMPUFFZ, 
+				0, "Unmaker64Puff", i, 0, 0, 0, 5, 2, "UnmakerLaser64Spark", -1,270,1);
 	}
 	
 	action void UNM_FireStorm(int stormLayers = 2, int distanceIntervals = 40)

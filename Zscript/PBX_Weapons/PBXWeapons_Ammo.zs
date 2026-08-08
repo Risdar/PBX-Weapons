@@ -213,6 +213,20 @@ class PBX_Tripmine : PB_RocketAmmo
     }
 }
 
+// SPAS 12
+class PBX_SPAS12Mag : Ammo
+{
+    Default
+    {
+        Inventory.Amount 0;
+        Inventory.MaxAmount PBX_SPAS12.MAGAZINE_SIZE;
+        Ammo.BackpackAmount 0;
+        Ammo.BackpackMaxAmount PBX_SPAS12.MAGAZINE_SIZE;
+        Inventory.Icon "AUSCA0";
+        +INVENTORY.IGNORESKILL;
+    }
+}
+
 //////////////////////////// SLOT 4 ////////////////////////////////////////////////////////////////////////////////////
 // Battle Rifle
 class BR_Ammo : Ammo

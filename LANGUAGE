@@ -47,6 +47,7 @@ PBX_CSSG_SINGLE                     = "Single Barrel AltFire";
 PBX_CSSG_HOOK                       = "Meat Hook AltFire";
 
 PBX_CSSG_NOHOOK                     = "Meat Hook Not Ready";
+PBX_CSSG_NOPLAYER                   = "Hook Failed, Are you using an old save?";
 
 PBX_CM_BUCKLD                       = "\cgBuckshot \c- Shells";
 PBX_CM_SLUGLD                       = "\cdSlugs \c- Shells";
@@ -65,6 +66,10 @@ PBX_PICKUP_EXPL                     = "Got the Explosive shell upgrade!";
 PBX_PICKUP_WPSP                     = "Got the White phosphorus shell upgrade!";
 PBX_PICKUP_DOOM                     = "Got the Triple Doom shell upgrade!";
 PBX_PICKUP_DNMK                     = "You got the Danmaku Shell Upgrade!!!";
+
+// SPAS 12
+PBX_SPAS12_PICKUP                   = "SPAS-12 (Slot 3)";
+PBX_SPAS12_TAG                      = "Franchi SPAS-12 Combat Shotgun";
 
 //////////////////////////// SLOT 4 ///////////////////////////////////////////////////////////////////////////////
 // BattleRifle 

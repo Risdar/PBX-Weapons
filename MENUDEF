@@ -43,12 +43,18 @@ AddOptionMenu "AddonWeaponSpawns" after "SHOT1"
     FlagOption    "Plasma BLaster",         "PBXWeapons_shotgun_filter",    "OffOn", 1
     FlagOption    "Lever Action Rifle",     "PBXWeapons_shotgun_filter",    "OffOn", 0
         // SLOT 4
-    FlagOption    "Crossbow Ballista",      "PBXWeapons_shotgun_filter",    "OffOn", 2
+    FlagOption    "Crossbow Ballista",      "PBXWeapons_shotgun_filter",    "OffOn", 3
+}
+    // TIER 2
+AddOptionMenu "AddonWeaponSpawns" after "SHOT1"
+{
+        // SLOT 3
+    FlagOption    "SPAS-12",                "PBXWeapons_shotgun_filter",    "OffOn", 2
 }
 
 // SSG /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // TIER 2
-AddOptionMenu "AddonWeaponSpawns" after "SSGT2"
+AddOptionMenu "AddonWeaponSpawns" after "SSGT3"
 {
         // SLOT 3
     FlagOption    "Commander Shotgun",    "PBXWeapons_ssg_filter",    "OffOn", 0
@@ -107,7 +113,7 @@ AddOptionMenu "AddonWeaponSpawns" after "BFGT4"
     FlagOption    "Demonic Exterminator",    "PBXWeapons_bfg_filter",    "OffOn", 0
 }
 
-// Backpacks /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Backpacks and Upgrades /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 AddOptionMenu "AddonAmmoSpawns" after "PACKT1"
 {
     FlagOption    "UAC Commander's Backpack",       "PBXWeapons_backpack_filter",    "OffOn", 4
@@ -116,7 +122,6 @@ AddOptionMenu "AddonAmmoSpawns" after "PACKT1"
 AddOptionMenu "AddonAmmoSpawns" after "PACKT2"
 {
     FlagOption    "Battle Rifle Upgrade",           "PBXWeapons_backpack_filter",    "OffOn", 2
-    FlagOption    "CSSG Upgrades",                  "PBXWeapons_backpack_filter",    "OffOn", 0
     FlagOption    "Crossbow Ballista Upgrade",      "PBXWeapons_backpack_filter",    "OffOn", 3
 }
 
@@ -124,4 +129,9 @@ AddOptionMenu "AddonAmmoSpawns" after "PACKT3"
 {
     FlagOption    "Metal Sniper Upgrade",           "PBXWeapons_backpack_filter",    "OffOn", 1
     FlagOption    "Excavator Upgrade",              "PBXWeapons_backpack_filter",    "OffOn", 5
+}
+
+AddOptionMenu "AddonAmmoSpawns" after "SBOXT1"
+{
+    FlagOption    "CSSG Upgrades",                  "PBXWeapons_backpack_filter",    "OffOn", 0
 }

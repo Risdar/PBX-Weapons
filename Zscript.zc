@@ -21,6 +21,7 @@ Version 4.13
 // Slot 3
 #include "Zscript/PBX_Weapons/Slot-3/CSSG/CSSG.zs" // CSSG
 #include "Zscript/PBX_Weapons/Slot-3/Prosurv_PumpShotgun/prosurv_psg.zs" // CSSG
+#include "Zscript/PBX_Weapons/Slot-3/SPAS12/Spas12.zs" // SPAS 12 My Beloved
 
 // Slot 4
 #include "Zscript/PBX_Weapons/Slot-4/NormalRifle/NormalRifle.zs" // Normal Rifle

@@ -147,7 +147,6 @@ class PBX_ProSurvPSG : PB_Weapon
 				A_TakeInventory("PB_LockScreenTilt",1);
                 A_ZoomFactor(1.0);
                 PB_SetZoom(false);
-                PB_ClearDualWield();
 			}
 			XG10 FEDCBA 1;
 			TNT1 A 0 A_Lower();
@@ -157,7 +156,6 @@ class PBX_ProSurvPSG : PB_Weapon
             TNT1 A 0 {
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
-                PB_ClearDualWield();
 			    PB_HandleCrosshair(46);
 				A_SetInventory("PB_LockScreenTilt",0);
                 PB_WeaponRaise("weapons/autoshotgun/respect1");
@@ -323,7 +321,6 @@ class PBX_ProSurvPSG : PB_Weapon
 			TNT1 A 0 {
                 PB_SetZoom(true);
                 A_SetCrosshair(-1);
-                A_WeaponReady(WRF_NOSECONDARY);
 			}
 			Goto Ready2;
 			
@@ -334,7 +331,6 @@ class PBX_ProSurvPSG : PB_Weapon
             }
 			ASS1 CBA 1;
 			TNT1 A 0 PB_SetZoom(false);
-			TNT1 A 0 A_WeaponReady(WRF_NOSECONDARY);
 			Goto Ready3;
         
         Reload:

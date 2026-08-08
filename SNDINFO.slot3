@@ -61,3 +61,21 @@ swarmdrone/burnout "Sounds/Weapons/Slot-3/Prosurv_PumpShotgun/swarmdrone_burnout
 $random swarmdrone/idle  { swarmdrone/idle1 swarmdrone/idle2 }
 swarmdrone/idle1 "Sounds/Weapons/Slot-3/Prosurv_PumpShotgun/swarmdrone_idle1.ogg"
 swarmdrone/idle2 "Sounds/Weapons/Slot-3/Prosurv_PumpShotgun/swarmdrone_idle2.ogg"
+
+// SPAS 12
+$random weapons/spas12/raise { spasraise1 spasraise2 }
+spasraise1 "sounds/Weapons/Slot-3/SPAS12/SPAS12.ogg"
+spasraise2 "sounds/Weapons/Slot-3/SPAS12/SPAS12B.wav"
+
+$random weapons/spas12/insert { spas12r1 spas12r2 }
+spas12r1 "sounds/Weapons/Slot-3/SPAS12/SPASLR00.wav"
+spas12r2 "sounds/Weapons/Slot-3/SPAS12/SPASLR01.wav"
+
+// These are unused
+// weapons/spas12/pump "sounds/Weapons/Slot-3/SPAS12/SPASLR03.ogg"
+/* $random weapons/spas12/fire { spas12f1 spas12f2 DRBTFIRE}
+spas12f1 "sounds/Weapons/Slot-3/SPAS12/SPASFIRE2.wav"
+spas12f2 "sounds/Weapons/Slot-3/SPAS12/SPASFIRE3.wav"
+$rolloff weapons/spas12/fire 200 1800
+$volume weapons/spas12/fire 1.0  */
+

@@ -18,8 +18,10 @@ enum PBXWeapons_eShotgunSpawns
 ////// SLOT 2  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	DisablePBX_LeverActionRifle				= 1 << 0,
 	DisablePBX_PlasmaBlaster				= 1 << 1,
+////// SLOT 3  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	DisablePBX_SPAS12						= 1 << 2,
 ////// SLOT 4  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	DisablePBX_CrossbowBallista				= 1 << 2
+	DisablePBX_CrossbowBallista				= 1 << 3
 }
 
 enum PBXWeapons_eSSGSpawns
@@ -80,6 +82,12 @@ class PBXShotgun_Injector : PBInjector
 
 			// handler.InjectSpawn('PB_MGSpawnerT1', 'PBX_Prosurv_LeverAction', 255, 1);
 		}
+		// SPAS12
+		if(!(pbxweapons_shotgun_filter & DisablePBX_SPAS12))
+		{
+			handler.InjectSpawn('PB_ShotSpawnerT2', 'PBX_SPAS12', 255, 1);
+			handler.InjectSpawn('PB_ShotSpawnerT3', 'PBX_SPAS12', 255, 1);
+		}
 		// Crossbow Ballista
 		if(!(pbxweapons_shotgun_filter & DisablePBX_CrossbowBallista))
 		{
@@ -97,7 +105,6 @@ class PBXSSG_Injector : PBInjector
 		// CSSG
 		if(!(pbxweapons_ssg_filter & DisablePBX_CSSG))
 		{
-			handler.InjectSpawn('PB_SSGSpawnerT2', 'PBX_CSSG', 255, 1);
 			handler.InjectSpawn('PB_SSGSpawnerT3', 'PBX_CSSG', 255, 1);
 			handler.InjectSpawn('PB_SSGSpawnerT4', 'PBX_CSSG', 255, 1);
 		}

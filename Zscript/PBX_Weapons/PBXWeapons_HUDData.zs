@@ -161,6 +161,35 @@ class PBXHUDService_PBX_PSG : service
     }
 }
 
+class PBXHUDService_PBX_SPAS12 : service
+{
+    override Object GetObjectUI(String request,String stringArg,int intArg,double doubleArg,Object objectArg)
+    {
+        if(request != "PBX_HUD") return null;
+        let weapon = PB_WeaponBase(objectArg); // Get a pointer to the weapon here so you can do stuff with the weapon
+        if(!weapon) return null;
+
+        if(weapon.GetClassName() != 'PBX_SPAS12')return null;
+
+        let data = PBXHUDData(new("PBXHUDData"));
+        if (!data) return null;
+        data.Handled = true;
+        data.SkipAutoDraw = false;
+
+        data.Image1 = "";
+        data.Image2 = "";       // Weapon Mode Icon
+        data.Image3 = "";       // Weapon Mode 2 Icon (For example the CryoRifle has 2 modes at the same time)
+
+        data.Offset1 = (-10,10); 
+        data.Offset2 = (0,0);   // Weapon Mode Icon Position
+
+        data.Scale1 = 0.65;
+        data.Scale2 = 1.0;      // Weapon Mode Icon Scale
+
+        return data;
+    }
+}
+
 //////////////// SLOT 4 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class PBXHUDService_PBX_BattleRifle : service
 {
