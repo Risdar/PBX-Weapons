@@ -33,6 +33,7 @@ class PBX_SPAS12 : PB_WeaponBase
 		+WEAPON.NOALERT;
 	}
 
+    bool dualfiremode;
     const MAGAZINE_SIZE = 9;
 
     action void SPAS_Fire(int tic)
@@ -43,7 +44,6 @@ class PBX_SPAS12 : PB_WeaponBase
                 A_Recoil(3);
                 A_SetPitch(pitch - 4.0);
 
-                // PB_FireBullets("PB_12GAPellet", 9, 1.5, 0, 0, 1.5);
                 PB_FireBullets("PB_DragonsBreathTracer", 9, 1.5, 0, 0, 1.5);
 
 				A_FireProjectile("ShotgunWad", random(-2,2), 0, random(-2,2), -3, FPF_NOAUTOAIM, random(-2,2));
@@ -51,7 +51,6 @@ class PBX_SPAS12 : PB_WeaponBase
 				PB_TakeAmmo(invoker.ammo2.getClassName(),1,0);
 				A_AlertMonsters();
                 A_StartSound("DRBTFIRE", CHAN_WEAPON, pitch:frandom(0.95, 1.05));
-                // A_StartSound("weapons/spas12/fire", CHAN_WEAPON, pitch:frandom(0.95, 1.05));
 				PB_IncrementHeat();
 				A_FireCustomMissile("YellowFlareSpawn", 0, 0, 0, 0);
 				_SpawnMuzzleSparksSG(0, 0, -4);
@@ -74,14 +73,29 @@ class PBX_SPAS12 : PB_WeaponBase
                 break;
 
             case 5:
-                // A_PlaySound("weapons/spas12/pump", CHAN_AUTO);
 				PB_SpawnCasing("ShotgunCasing",15,-5,26,0,3,3);
-                A_PlaySound("H4SGCOCK", CHAN_AUTO);
+                // A_PlaySound("H4SGCOCK", CHAN_AUTO);
 				if(!PB_GetMagEmpty()) PB_SetChamberEmpty(false);
                 A_ZoomFactor(PB_GetZoom() ? 1.48 : 1.0);
                 break;
 
         }
+    }
+
+    action state SPAS_HandleAlt()
+    {
+        PB_SetRoll(0);
+            PB_HandleCrosshair(46);
+            A_TakeInventory("PB_LockScreenTilt",1);
+
+        if(invoker.dualfiremode)
+            return ResolveState("HL2Fire");
+
+        A_StartSound("IronSights", 0);
+        if(PB_GetZoom())
+            return ResolveState("Zoomout");
+            
+        return ResolveState(null);
     }
 
 	States
@@ -155,26 +169,24 @@ class PBX_SPAS12 : PB_WeaponBase
             Loop;
 
         WeaponSpecial:
+            TNT1 A 0 A_JumpIf(PB_GetZoom(),"Zoomout");
             TNT1 A 0 {
 				A_Takeinventory("GoWeaponSpecialAbility",1);
 				A_GiveInventory("PB_LockScreenTilt",1);
-				PB_HandleCrosshair(46);
-                A_Print("$PBX_NoSpecial");
 			}
+            TNT1 A 0 {
+                invoker.dualfiremode = !invoker.dualfiremode;
+                A_StartSound("MS/Button", CHAN_AUTO, CHANF_OVERLAP);
+                A_Print(invoker.dualfiremode ? "$PBX_SPAS12_DUALFIRE" : "$PBX_SPAS12_ADS");
+            }
             Goto Ready3;
 
 
         AltFire:
-            TNT1 A 0 {
-				PB_SetRoll(0);
-				PB_HandleCrosshair(46);
-				A_TakeInventory("PB_LockScreenTilt",1);
-			}
-            TNT1 A 0 A_StartSound("IronSights", 0);
-			TNT1 A 0 A_JumpIf(PB_GetZoom(),"Zoomout");
-			TNT1 A 0 A_ZoomFactor(1.5);
+			TNT1 A 0 SPAS_HandleAlt();
             S12X ABCDEF 1;
             TNT1 A 0 {
+                A_ZoomFactor(1.5);
                 PB_SetZoom(true);
                 A_SetCrosshair(-1);
 			}
@@ -184,9 +196,37 @@ class PBX_SPAS12 : PB_WeaponBase
             TNT1 A 0 {	
 				PB_HandleCrosshair(46);
 				A_ZoomFactor(1.0);
+                PB_SetZoom(false);
             }
             S12X FEDCBA 1;
-			TNT1 A 0 PB_SetZoom(false);
+            TNT1 A 0 A_JumpIfInventory("GoWeaponSpecialAbility",1,"WeaponSpecial");
+            Goto Ready3;
+
+        HL2Fire:
+			TNT1 A 0 PB_jumpIfNoAmmo(min:2);
+            S12G B 1 Bright {
+                SPAS_Fire(1);
+                PB_WeaponRecoil(-1.50, +1.0);
+                PB_FireBullets("PB_12GAPellet", 9, 1.5, 0, 0, 1.5);
+				A_FireProjectile("ShotgunWad", random(-2,2), 0, random(-2,2), -3, FPF_NOAUTOAIM, random(-2,2));
+				PB_TakeAmmo(invoker.ammo2.getClassName(),1,0);
+                A_StartSound("weapons/sg", CHAN_WEAPON, CHANF_OVERLAP, 1.0, pitch: 1.2);
+            }
+            S12G C 1 SPAS_Fire(2);
+            S12G D 1 SPAS_Fire(3);
+            S12G E 1 SPAS_Fire(4);
+        PumpSlow:
+            S12P ABCDEFGH 1;
+            TNT1 A 0 A_PlaySound("weapons/spas12/pumpback", CHAN_AUTO); 
+            S12P IJKLM 1;
+            S12P N 1 A_ZoomFactor(0.98);
+            S12P O 16 {
+                SPAS_Fire(5);
+				PB_SpawnCasing("ShotgunCasing",15,-5,26,0,3,3);
+            }
+            TNT1 A 0 A_PlaySound("weapons/spas12/pumpforward", CHAN_AUTO); 
+            S12P NMLKJI 1;
+            S12P HGFEDCBA 1;
             Goto Ready3;
 
         Fire:
@@ -207,6 +247,7 @@ class PBX_SPAS12 : PB_WeaponBase
 		PumpBegin:
             S12P IJKLM 1 PB_SetReloading(true); 
             S12P N 1 A_ZoomFactor(0.98);
+            TNT1 A 0 A_PlaySound("weapons/spas12/pump", CHAN_AUTO);
             S12P O 1        SPAS_Fire(5);
             S12P NMLKJI 1;
 		PumpEnd:
@@ -231,6 +272,7 @@ class PBX_SPAS12 : PB_WeaponBase
 		Pump2:
             S1PZ ABCDEF 1;
             S1PZ G 2;
+            TNT1 A 0 A_PlaySound("weapons/spas12/pump", CHAN_AUTO);
             S1PZ H 1        SPAS_Fire(5);
             S1PZ HHHHGFEDCBA 1 {
 				if(JustPressed(BT_ATTACK) && invoker.ammo2.amount > 0) return ResolveState("Fire2");
@@ -275,7 +317,7 @@ class PBX_SPAS12 : PB_WeaponBase
             S12P IJKLM 1 A_DoPBWeaponAction(WRF_NOBOB);
             S12P N 1 A_ZoomFactor(0.98);
             S12P O 1 {
-                A_PlaySound("H4SGCOCK", CHAN_AUTO);
+                A_PlaySound("weapons/spas12/pump", CHAN_AUTO);
                 A_ZoomFactor(1.0);
                 PB_SetChamberEmpty(false);
 				PB_SetMagEmpty(false);
@@ -306,7 +348,7 @@ class PBX_SPAS12 : PB_WeaponBase
 			TNT1 A 0 {
 				A_Takeinventory(invoker.ammo2.getclassname(),1);
 				A_Giveinventory(invoker.ammo1.getclassname(),1);
-				A_PlaysoundEx("H4SGCOCK", "Weapon");
+                A_PlaySound("weapons/spas12/pump", CHAN_AUTO);
 			}
 			S12P IJKLLL 1 A_DoPBWeaponAction();
 			S12P MNO 1 A_DoPBWeaponAction();
@@ -322,12 +364,27 @@ class PBX_SPAS12 : PB_WeaponBase
             }
 			Goto Ready3;
 
-        FlashPunching:
         FlashKicking:
-        FlashAirKicking:
-        FlashSlideKicking:
-        FlashSlideKickingStop:
             S12P ABCDEFGHGFEDCBA 1;
+            Goto Ready3;
+
+        FlashAirKicking:
+            S12P ABCDEFGHHGFEDCBA 1;
+            Goto Ready3;
+
+        FlashPunching:
+            S12P ABCDEFG 1;
+            S12P GFEDCBA 1;
+            Goto Ready3;
+
+        FlashSlideKicking:
+            S12P ABCDEFG 1;
+            S12P H 12;
+            S12P GFEDCBA 1;
+            Goto Ready3;
+
+        FlashSlideKickingStop:
+            S12P GFEDCBA 1;
             Goto Ready3;
 
 	}

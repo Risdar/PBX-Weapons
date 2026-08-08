@@ -67,12 +67,15 @@ $random weapons/spas12/raise { spasraise1 spasraise2 }
 spasraise1 "sounds/Weapons/Slot-3/SPAS12/SPAS12.ogg"
 spasraise2 "sounds/Weapons/Slot-3/SPAS12/SPAS12B.wav"
 
+weapons/spas12/pump "sounds/Weapons/Slot-3/SPAS12/SPASLR03.wav"
+weapons/spas12/pumpback "sounds/Weapons/Slot-3/SPAS12/SPASLR04.wav"
+weapons/spas12/pumpforward "sounds/Weapons/Slot-3/SPAS12/SPASLR05.wav"
+
 $random weapons/spas12/insert { spas12r1 spas12r2 }
 spas12r1 "sounds/Weapons/Slot-3/SPAS12/SPASLR00.wav"
 spas12r2 "sounds/Weapons/Slot-3/SPAS12/SPASLR01.wav"
 
 // These are unused
-// weapons/spas12/pump "sounds/Weapons/Slot-3/SPAS12/SPASLR03.ogg"
 /* $random weapons/spas12/fire { spas12f1 spas12f2 DRBTFIRE}
 spas12f1 "sounds/Weapons/Slot-3/SPAS12/SPASFIRE2.wav"
 spas12f2 "sounds/Weapons/Slot-3/SPAS12/SPASFIRE3.wav"

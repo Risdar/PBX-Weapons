@@ -49,14 +49,14 @@ PBX_CSSG_HOOK                       = "Meat Hook AltFire";
 PBX_CSSG_NOHOOK                     = "Meat Hook Not Ready";
 PBX_CSSG_NOPLAYER                   = "Hook Failed, Are you using an old save?";
 
-PBX_CM_BUCKLD                       = "\cgBuckshot \c- Shells";
-PBX_CM_SLUGLD                       = "\cdSlugs \c- Shells";
-PBX_CM_DGBTLD                       = "\ciDragon Breath \c- Shells";
+PBX_CM_BUCKLD                       = "\cgBuckshot \c-Shells";
+PBX_CM_SLUGLD                       = "\cdSlugs \c-Shells";
+PBX_CM_DGBTLD                       = "\ciDragon Breath \c-Shells";
 PBX_CM_FLAKLD                       = "\chFlak \c-Shells";
 PBX_CM_FLCHLD                       = "\cjFlechette \c-Shells";
 PBX_CM_EXPLLD                       = "\cuExplosive \c-Shells";
-PBX_CM_WPLOAD                       = "\c[WPBronze]White Phosphorus\c- Shells";
-PBX_CM_DOOMLD                       = "\ctTriple Doom\c- Shells";
+PBX_CM_WPLOAD                       = "\c[WPBronze]White Phosphorus \c-Shells";
+PBX_CM_DOOMLD                       = "\ctTriple Doom \c-Shells";
 PBX_CM_DNMKULD                      = "\c[DanmakuYellow]Danmaku \c-Shells";   
 PBX_CM_SUBZRLD                      = "\cnSub-Zero \c-Shells";   
 
@@ -70,6 +70,9 @@ PBX_PICKUP_DNMK                     = "You got the Danmaku Shell Upgrade!!!";
 // SPAS 12
 PBX_SPAS12_PICKUP                   = "SPAS-12 (Slot 3)";
 PBX_SPAS12_TAG                      = "Franchi SPAS-12 Combat Shotgun";
+
+PBX_SPAS12_ADS                      = "\chZoom \c-AltFire";
+PBX_SPAS12_DUALFIRE                 = "\cgDouble Barrel \c-AltFire";
 
 //////////////////////////// SLOT 4 ///////////////////////////////////////////////////////////////////////////////
 // BattleRifle 
