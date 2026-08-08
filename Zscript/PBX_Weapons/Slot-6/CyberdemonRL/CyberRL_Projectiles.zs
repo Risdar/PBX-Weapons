@@ -4,7 +4,7 @@ class CRL_NormalRockets : PB_ProjectileAlt
     {
 		PB_Projectile.BaseDamage 350;
 		+PB_PROJECTILE.NOCRITICALS
-        DamageType "ExplosiveImpact";
+        DamageType "Explosive";
         Decal "Scorch";
         RenderStyle "Add";
         Radius 10;
