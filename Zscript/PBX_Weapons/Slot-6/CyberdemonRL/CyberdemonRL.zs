@@ -64,6 +64,7 @@ class PBX_CyberdemonRL : PB_WeaponBase
 			CYBF LMNO 1 BRIGHT;
 			TNT1 A 0 A_Lower();
 			Wait;
+			
 		Select:
 			TNT1 A 0 {
 				A_WeaponOffset(0,32);
