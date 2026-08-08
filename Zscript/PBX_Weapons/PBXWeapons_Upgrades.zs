@@ -232,7 +232,7 @@ class PBX_DemonicBallistaUpgrade : PB_UpgradeItem
 		-COUNTITEM;
         Inventory.PickupMessage "$PBX_DemonicBallistaUpgrade_Pickup";
         Inventory.PickupSound "weapons/ballista/drawstring";
-		Inventory.althudicon "CBOWT0";
+		Inventory.althudicon "CB_ZC0";
 		Tag "$PBX_Prosurv_Ballista_UpgradeTag";
     }
 
@@ -258,7 +258,7 @@ class PBX_DemonicBallistaUpgrade : PB_UpgradeItem
     States
 	{
         Spawn:
-            CBOW T -1;
+            CB_Z C -1;
             Stop;
 
         Pickup:
