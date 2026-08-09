@@ -10,7 +10,9 @@ enum PBXWeapons_eWeaponSpecialSpawns
 ////// Monster Drops /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// SLOT 6
 	DisablePBX_CyberdemonRL			        = 1 << 0,
-	DisablePBX_MastermindCG			        = 1 << 1
+	DisablePBX_MastermindCG			        = 1 << 1,
+////// Power Weapons /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	DisablePBX_EternalChaingun			    = 1 << 0  // Spawns on Megaspheres
 }
 
 enum PBXWeapons_eShotgunSpawns
@@ -242,6 +244,19 @@ class PBXUpgrades_Injector : PBInjector
 }
 
 //////////////////////////// OTHER TYPES ////////////////////////////////////////////////////////////////////////////////////
+class PBXWeapons_SpecialInjector : PBInjector
+{
+    override void Init(PB_EventHandler handler)
+    {
+		// Eternal Chaingun
+		if(!(PBXWeapons_specialdrop_filter & DisablePBX_EternalChaingun))
+		{
+		   handler.InjectSpawn("PB_MegaSpawnerT3","PBX_EternalMinigun",255,1);
+		   handler.InjectSpawn("PB_MegaSpawnerT4","PBX_EternalMinigun",255,1);
+		}
+    }
+}
+
 class PBXWeapons_WeaponSpawner : EventHandler
 {
 	override void WorldThingSpawned (WorldEvent e)
@@ -253,7 +268,7 @@ class PBXWeapons_WeaponSpawner : EventHandler
         switch(actor.GetClassName())
         {
             case 'XDeathCyberdemonGun':
-                if(!(pbxweapons_specialdrop_filter & DisablePBX_CyberdemonRL))
+                if(!(PBXWeapons_monsterdrop_filter & DisablePBX_CyberdemonRL))
                 { 
 					// console.printf("Spawning CyberdemonRL from %s", actor.GetClassName());
                    	actor.spawn("CyberRLPickup", actor.pos);
@@ -262,7 +277,7 @@ class PBXWeapons_WeaponSpawner : EventHandler
                 break;
 
 			case 'XDeathSpiderPart6':
-                if(!(pbxweapons_specialdrop_filter & DisablePBX_MastermindCG))
+                if(!(PBXWeapons_monsterdrop_filter & DisablePBX_MastermindCG))
                 { 
                    	actor.spawn("MastermindCGPickup", actor.pos);
                     actor.destroy(); 

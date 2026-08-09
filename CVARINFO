@@ -24,4 +24,5 @@ server int PBXWeapons_bfg_filter = 0;
 server int PBXWeapons_backpack_filter = 0;
 
 server int PBXWeapons_specialdrop_filter = 0;
+server int PBXWeapons_monsterdrop_filter = 0;
 

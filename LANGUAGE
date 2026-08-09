@@ -127,6 +127,12 @@ PBX_NeoHMG_Tag                      = "UAC PB-3 Heavy Machine Gun";
 PBX_NeoHMG_Heated                   = "\caHeated \c-Rounds";
 PBX_NeoHMG_Charged                  = "\cnCharged \c-Rounds";
 
+// Eternal Chaingun
+PBX_EternalChaingun_Pickup          = "Eternal Chaingun (Slot 5)";
+PBX_EternalChaingun_Tag             = "UAC BD Eternal Chaingun";
+
+PBX_EternalChaingun_NoBerserk       = "You need \cgBerserk\c- to Use this Weapon";
+
 //////////////////////////// SLOT 6 ///////////////////////////////////////////////////////////////////////////////
 // Excavator
 PBX_Excavator_Pickup                = "Excavator (Slot 6)";

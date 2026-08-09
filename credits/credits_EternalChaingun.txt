@@ -1,0 +1,6 @@
+The Eternal Chaingun is from a BD Addon (https://www.moddb.com/mods/brutal-doom/addons/doom-eternal-chaingun-for-brutal-doom-v21)
+
+Here are the Credits:
+D_Boi (Original Author of the BD Addon)
+TypicalSF (Base Sprite)
+Sergeant_Mark_IV (BD code used as a Base)

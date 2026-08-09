@@ -22,3 +22,7 @@ DIBSTART DIBSTART
 weapons/chagan/spin CG_MOTOR
 weapons/chagan/stop CG_WINDD
 weapons/chagan/start CG_WINDU
+
+// Eternal Chaingun
+weapon/EternalChaingun/Shoot "sounds/weapons/Slot-5/EternalChaingun/ETRCHSHO.wav"
+weapon/EternalChaingun/Stop "sounds/weapons/Slot-5/EternalChaingun/ETRCHSTO.ogg"

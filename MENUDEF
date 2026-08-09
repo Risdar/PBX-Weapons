@@ -7,7 +7,7 @@ AddOptionMenu "PBXCore_Menu"
 {
     StaticText	"--------- PBX Weapons Settings ---------", 1
     Option "Enable Weapon Tooltips", "pbxweapons_sendTip", "OnOff","PBXCore_SendTip"
-    SafeCommand "Enable All PBX Spawners", "set PBXWeapons_chainsaw_filter 0; set PBXWeapons_pistol_filter 0; set PBXWeapons_shotgun_filter 0; set PBXWeapons_ssg_filter 0; set PBXWeapons_chaingun_filter 0; set PBXWeapons_rocketlauncher_filter 0; set PBXWeapons_plasmarifle_filter 0; set PBXWeapons_bfg_filter 0;set pbxweapons_backpack_filter 0"
+    SafeCommand "Enable All PBX Spawners", "set PBXWeapons_chainsaw_filter 0; set PBXWeapons_pistol_filter 0; set PBXWeapons_shotgun_filter 0; set PBXWeapons_ssg_filter 0; set PBXWeapons_chaingun_filter 0; set PBXWeapons_rocketlauncher_filter 0; set PBXWeapons_plasmarifle_filter 0; set PBXWeapons_bfg_filter 0;set pbxweapons_backpack_filter 0;set PBXWeapons_monsterdrop_filter 0;set PBXWeapons_specialdrop_filter 0"
     SafeCommand "Reset PB Tool Tips", "set pb_helpflags 0"
     SafeCommand "Reset PBX Weapons Tool Tips", "set PBXWeapons_WeaponHelpFlags 0; set PBXWeapons_UpgradeHelpFlags 0"
     StaticText "$PBXWeapons_Version",red
@@ -25,7 +25,7 @@ OptionMenu "PBXWeapons_Menu"
     Option "Start with the BDP Rifle", "pbxweapons_normalriflereplace", "OnOff"
     Option "Start with the Pistol Blaster", "pbxweapons_startwithblaster", "OnOff"
     StaticText " "
-    SafeCommand "Enable All PBX Spawners", "set PBXWeapons_chainsaw_filter 0; set PBXWeapons_pistol_filter 0; set PBXWeapons_shotgun_filter 0; set PBXWeapons_ssg_filter 0; set PBXWeapons_chaingun_filter 0; set PBXWeapons_rocketlauncher_filter 0; set PBXWeapons_plasmarifle_filter 0; set PBXWeapons_bfg_filter 0;set pbxweapons_backpack_filter 0"
+    SafeCommand "Enable All PBX Spawners", "set PBXWeapons_chainsaw_filter 0; set PBXWeapons_pistol_filter 0; set PBXWeapons_shotgun_filter 0; set PBXWeapons_ssg_filter 0; set PBXWeapons_chaingun_filter 0; set PBXWeapons_rocketlauncher_filter 0; set PBXWeapons_plasmarifle_filter 0; set PBXWeapons_bfg_filter 0;set pbxweapons_backpack_filter 0;set PBXWeapons_monsterdrop_filter 0;set PBXWeapons_specialdrop_filter 0"
     SafeCommand "Reset PB Tool Tips", "set pb_helpflags 0"
     SafeCommand "Reset PBX Weapons Tool Tips", "set PBXWeapons_WeaponHelpFlags 0; set PBXWeapons_UpgradeHelpFlags 0"
 	/* Option "Enable Experimental Features",	"pbxweapons_experimental",	"YesNo" */    
@@ -94,8 +94,8 @@ AddOptionMenu "AddonWeaponSpawns" after "LAUT3"
     FlagOption    "Excavator",                              "PBXWeapons_rocketlauncher_filter",    "OffOn", 0
     FlagOption    "Paingiver",                              "PBXWeapons_rocketlauncher_filter",    "OffOn", 1
         // SPECIAL
-    FlagOption    "Cyberdemon drop their Weapon",           "PBXWeapons_specialdrop_filter",    "OffOn", 0
-    FlagOption    "Spider Mastermind drop their Weapon",    "PBXWeapons_specialdrop_filter",    "OffOn", 1
+    FlagOption    "Cyberdemon drop their Weapon",           "PBXWeapons_monsterdrop_filter",    "OffOn", 0
+    FlagOption    "Spider Mastermind drop their Weapon",    "PBXWeapons_monsterdrop_filter",    "OffOn", 1
 }
 // PLASMA /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // TIER 3
@@ -113,7 +113,7 @@ AddOptionMenu "AddonWeaponSpawns" after "BFGT4"
     FlagOption    "Demonic Exterminator",    "PBXWeapons_bfg_filter",    "OffOn", 0
 }
 
-// Backpacks and Upgrades /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Backpacks/Upgrades/Others /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 AddOptionMenu "AddonAmmoSpawns" after "PACKT1"
 {
     FlagOption    "UAC Commander's Backpack",       "PBXWeapons_backpack_filter",    "OffOn", 4
@@ -134,4 +134,9 @@ AddOptionMenu "AddonAmmoSpawns" after "PACKT3"
 AddOptionMenu "AddonAmmoSpawns" after "SBOXT1"
 {
     FlagOption    "CSSG Upgrades",                  "PBXWeapons_backpack_filter",    "OffOn", 0
+}
+
+AddOptionMenu "AddonHealthArmorSpawns" after "MEGAT3"
+{
+    FlagOption    "Eternal Chaingun",       "PBXWeapons_specialdrop_filter",    "OffOn", 0
 }
