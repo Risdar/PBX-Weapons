@@ -75,13 +75,14 @@ class PBXShotgun_Injector : PBInjector
 		{
 			handler.InjectSpawn('PB_ShotSpawnerT2', 'PBX_PlasmaBlaster', 255, 1);
 			handler.InjectSpawn('PB_ShotSpawnerT3', 'PBX_PlasmaBlaster', 255, 1);
+			handler.InjectSpawn('PB_ShotSpawnerT4', 'PBX_PlasmaBlaster', 255, 1);
 		}
 		// Lever Action
 		if(!(pbxweapons_shotgun_filter & DisablePBX_LeverActionRifle))
 		{
 			handler.InjectSpawn('PB_ShotSpawnerT1', 'PBX_Prosurv_LeverAction', 255, 1);
 			handler.InjectSpawn('PB_ShotSpawnerT2', 'PBX_Prosurv_LeverAction', 255, 1);
-
+			handler.InjectSpawn('PB_ShotSpawnerT3', 'PBX_Prosurv_LeverAction', 255, 1);
 			// handler.InjectSpawn('PB_MGSpawnerT1', 'PBX_Prosurv_LeverAction', 255, 1);
 		}
 		// SPAS12
@@ -89,12 +90,14 @@ class PBXShotgun_Injector : PBInjector
 		{
 			handler.InjectSpawn('PB_ShotSpawnerT2', 'PBX_SPAS12', 255, 1);
 			handler.InjectSpawn('PB_ShotSpawnerT3', 'PBX_SPAS12', 255, 1);
+			handler.InjectSpawn('PB_ShotSpawnerT4', 'PBX_SPAS12', 255, 1);
 		}
 		// Crossbow Ballista
 		if(!(pbxweapons_shotgun_filter & DisablePBX_CrossbowBallista))
 		{
 			handler.InjectSpawn('PB_ShotSpawnerT1', 'PBX_Prosurv_Ballista', 255, 1);
 			handler.InjectSpawn('PB_ShotSpawnerT2', 'PBX_Prosurv_Ballista', 255, 1);
+			handler.InjectSpawn('PB_ShotSpawnerT3', 'PBX_Prosurv_Ballista', 255, 1);
 		}
 	}
 }

@@ -46,7 +46,7 @@ AddOptionMenu "AddonWeaponSpawns" after "SHOT1"
     FlagOption    "Crossbow Ballista",      "PBXWeapons_shotgun_filter",    "OffOn", 3
 }
     // TIER 2
-AddOptionMenu "AddonWeaponSpawns" after "SHOT1"
+AddOptionMenu "AddonWeaponSpawns" after "SHOT2"
 {
         // SLOT 3
     FlagOption    "SPAS-12",                "PBXWeapons_shotgun_filter",    "OffOn", 2
@@ -99,7 +99,7 @@ AddOptionMenu "AddonWeaponSpawns" after "LAUT3"
 }
 // PLASMA /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // TIER 3
-AddOptionMenu "AddonWeaponSpawns" after "LAUT3"
+AddOptionMenu "AddonWeaponSpawns" after "PLST3"
 {
         // SLOT 7
     FlagOption    "Platinum Railgun",                       "PBXWeapons_plasmarifle_filter",    "OffOn", 0
