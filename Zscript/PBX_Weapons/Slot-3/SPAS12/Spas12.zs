@@ -14,6 +14,7 @@ class PBX_SPAS12 : PB_WeaponBase
 		Weapon.BobSpeed 2.4;
 		Weapon.SelectionOrder 1250;
 		Weapon.AmmoType1 "PB_Shell";
+		weapon.ammogive1 10;
 		Weapon.AmmoType2 "PBX_SPAS12Mag";
 		Inventory.PickupMessage "$PBX_SPAS12_PICKUP";
 		Inventory.PickupSound "weapons/spas12/raise";
