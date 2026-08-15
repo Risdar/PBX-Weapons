@@ -59,6 +59,26 @@ extend class PBX_Prosurv_Ballista
 			return CLOSE_WHEEL;
 	}
 
+	action void unloadCrossbow()
+	{
+		name mToUnload;
+		switch(invoker.currentMode)
+		{
+			case NORMAL_BOLT: 	 mToUnload = "PBX_BoltPickup"; 			break;
+			case EXPLOSIVE_BOLT: mToUnload = "PBX_ExplosiveBoltPickup"; break;
+			case DEMONIC_BOLT: 	 mToUnload = "PB_DTech"; 				break;
+		}
+		PB_UnloadMag(
+			invoker.ammo2.getclassname(),
+			invoker.ammo1.getclassname(),
+			invoker.ReserveToMagAmmoFactor,
+			ARROW_AMOUNT,
+			invoker.ReserveToMagAmmoFactor,
+			0,
+			mToUnload
+		);
+	}
+
     action state HandleWheel()
     {
 		int tokens = getTokens();

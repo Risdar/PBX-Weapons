@@ -97,16 +97,16 @@ Class CSSGShellsIn : Ammo
         +INVENTORY.IGNORESKILL;
 	}
 }
-class PBX_CSSG_BuckShell : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZCG8A0");}}
+class PBX_CSSG_BuckShell          : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZCG8A0");}}
 class PBX_CSSG_DragonsBreathShell : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZC10A0");}}
-class PBX_CSSG_SlugShell : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZCG9A0");}}
-class PBX_CSSG_FlechetteShell : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZCG1A0");}}
-class PBX_CSSG_FlakShell : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZCG2A0");}}
-class PBX_CSSG_ExplosiveShell : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZCG7A0");}}
-class PBX_CSSG_WPShell : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZCG6A0");}}
-class PBX_CSSG_TDoomShell : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZCG5A0");}}
-class PBX_CSSG_DanmakuShell : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZCG4A0");}}
-class PBX_CSSG_SubZeroShell : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZCG3A0");}}
+class PBX_CSSG_SlugShell          : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZCG9A0");}}
+class PBX_CSSG_FlechetteShell     : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZCG1A0");}}
+class PBX_CSSG_FlakShell          : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZCG2A0");}}
+class PBX_CSSG_ExplosiveShell     : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZCG7A0");}}
+class PBX_CSSG_WPShell            : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZCG6A0");}}
+class PBX_CSSG_TDoomShell         : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZCG5A0");}}
+class PBX_CSSG_DanmakuShell       : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZCG4A0");}}
+class PBX_CSSG_SubZeroShell       : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZCG3A0");}}
 
 // PSG
 class PumpShotgunAmmo : Ammo
@@ -314,7 +314,7 @@ class CrossbowBallistaAmmo : Ammo
     }
 }
 
-class BoltPickup : PB_HighCalMag
+class PBX_BoltPickup : PB_HighCalMag
 {
     Default
     {
@@ -331,6 +331,27 @@ class BoltPickup : PB_HighCalMag
     {
         CacheSprites:
             CRBA A 0;
+    }
+}
+
+class PBX_ExplosiveBoltPickup : PB_RocketAmmo
+{
+    Default
+    {
+        Inventory.Amount 1;
+        Inventory.PickupSound "Ammocase/Open";
+    }
+
+    override void PB_SetAmmoSprite()
+    {
+        sprite = GetSpriteIndex("CRBZD0");
+        frame = 3;
+    }
+
+	States
+    {
+        CacheSprites:
+            CRBZ D 0;
     }
 }
 
@@ -428,3 +449,22 @@ Class SoulCharge: PB_Ammo
     }
 }
 
+// Nuke Ammo
+class PBX_NukeAmmo : PB_Ammo
+{
+	Default
+	{
+		//$Title Nuclear Warhead
+		//$Category Project Brutality/Ammunition
+		//$Sprite MBLKA0
+		//Scale 0.13;
+		Tag "$PB_LOWCALMAG_TAG";
+		Inventory.Amount 1;
+		Inventory.MaxAmount 1;
+		Inventory.PickupSound "misc/rockboxa";
+		Ammo.BackpackAmount 1;
+		Ammo.BackpackMaxAmount 1;
+		// PB_Ammo.ammotype "lowcal";
+        PB_Ammo.HUDGraphics "BARBACY1", "BARBACY2", "BARBACY3", "BARBACY4", "ABAR1", "AMMOIC12", "Yellow";
+	}
+}

@@ -24,11 +24,16 @@ OptionMenu "PBXWeapons_Menu"
     Option "Enable Weapon Tooltips", "pbxweapons_sendTip", "OnOff","PBXCore_SendTip"
     Option "Start with the BDP Rifle", "pbxweapons_normalriflereplace", "OnOff"
     Option "Start with the Pistol Blaster", "pbxweapons_startwithblaster", "OnOff"
+    Option "Enable Secret Weapons", "pbxweapons_enablesecretweapon", "OnOff"
     StaticText " "
     SafeCommand "Enable All PBX Spawners", "set PBXWeapons_chainsaw_filter 0; set PBXWeapons_pistol_filter 0; set PBXWeapons_shotgun_filter 0; set PBXWeapons_ssg_filter 0; set PBXWeapons_chaingun_filter 0; set PBXWeapons_rocketlauncher_filter 0; set PBXWeapons_plasmarifle_filter 0; set PBXWeapons_bfg_filter 0;set pbxweapons_backpack_filter 0;set PBXWeapons_monsterdrop_filter 0;set PBXWeapons_specialdrop_filter 0"
     SafeCommand "Reset PB Tool Tips", "set pb_helpflags 0"
     SafeCommand "Reset PBX Weapons Tool Tips", "set PBXWeapons_WeaponHelpFlags 0; set PBXWeapons_UpgradeHelpFlags 0"
 	/* Option "Enable Experimental Features",	"pbxweapons_experimental",	"YesNo" */    
+    StaticText " "
+    StaticText	"--------- Weapon Settings ---------", 1
+    Slider "Eternal Chaingun Power Time Duration",  "pbxweapons_echaingun_duration",     1, 500, 1
+    SafeCommand "Reset PBX Weapons Durations", "resetcvar pbxweapons_echaingun_duration"
     StaticText " "
 
     StaticText "$PBXWeapons_Version",red
@@ -111,6 +116,7 @@ AddOptionMenu "AddonWeaponSpawns" after "BFGT4"
 {
         // SLOT 9
     FlagOption    "Demonic Exterminator",    "PBXWeapons_bfg_filter",    "OffOn", 0
+    FlagOption    "Nuke Launcher",    "PBXWeapons_specialdrop_filter",    "OffOn", 1 // I dont know where else to put this
 }
 
 // Backpacks/Upgrades/Others /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

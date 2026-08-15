@@ -45,7 +45,7 @@ class PBX_SPAS12 : PB_WeaponBase
                 A_Recoil(3);
                 A_SetPitch(pitch - 4.0);
 
-                PB_FireBullets("PB_DragonsBreathTracer", 9, 1.5, 0, 0, 1.5);
+                PB_FireBullets("PB_12GAPellet", 9, 1.5, 0, 0, 1.5);
 
 				A_FireProjectile("ShotgunWad", random(-2,2), 0, random(-2,2), -3, FPF_NOAUTOAIM, random(-2,2));
 				PB_LowAmmoSoundWarning("shotgun");
@@ -208,7 +208,7 @@ class PBX_SPAS12 : PB_WeaponBase
             S12G B 1 Bright {
                 SPAS_Fire(1);
                 PB_WeaponRecoil(-1.50, +1.0);
-                PB_FireBullets("PB_12GAPellet", 9, 1.5, 0, 0, 1.5);
+                PB_FireBullets("PB_DragonsBreathTracer", 9, 1.5, 0, 0, 1.5);
 				A_FireProjectile("ShotgunWad", random(-2,2), 0, random(-2,2), -3, FPF_NOAUTOAIM, random(-2,2));
 				PB_TakeAmmo(invoker.ammo2.getClassName(),1,0);
                 A_StartSound("weapons/sg", CHAN_WEAPON, CHANF_OVERLAP, 1.0, pitch: 1.2);

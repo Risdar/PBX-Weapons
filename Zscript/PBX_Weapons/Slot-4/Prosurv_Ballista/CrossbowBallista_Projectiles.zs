@@ -57,7 +57,7 @@ class BallistaBolt : PB_NailgunGlue
 				bTHRUACTORS = true;
 			}
 		Fade:
-            CRBA A 1 A_SpawnItemEx ("BoltPickup",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+            CRBA A 1 A_SpawnItemEx("PBX_BoltPickup",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
 			stop;
 
 		XDeath:
@@ -81,7 +81,7 @@ class ExplosiveBolt : BallistaBolt
 
     Default
     {
-        PB_Projectile.BaseDamage 70;
+        PB_Projectile.BaseDamage 60;
 		PB_Projectile.RipperCount 1;
         DamageType "Nail";
         +DONTBOUNCEONSHOOTABLES;
@@ -159,11 +159,13 @@ class ExplosiveBolt : BallistaBolt
         Detonate:
             TNT1 A 0 A_StopSound();
             TNT1 A 0 A_PlaySound("Explosion", CHAN_BODY);
-            TNT1 A 0 A_Explode(250, 150);
             TNT1 AAA 0 A_CustomMissile("ExplosionSmoke", 22, 0, random(0, 360), 2, random(0, 360));
             TNT1 A 0 A_SpawnItemEx("ExplosionFlareSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0);
             TNT1 A 0 A_SpawnItemEx("DetectFloorCraterSmall", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0);
             TNT1 A 0 A_SpawnItemEx("DetectCeilCraterSmall", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0);
+            // StickyExplosion is what deals damage, below are the definitions
+            // TNT1 A 0 A_Explode(250, 10, 0, 0,10,0,0,"BulletPuff","Explosive")
+            // TNT1 A 0 A_Explode(200,200)
             TNT1 A 0 A_SpawnItemEx("StickyExplosion", 0, 0, -2, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0);
             TNT1 A 0 A_SpawnItemEx("NewRocketExploFX", 0, 0, 0);
             TNT1 AAAAA 0 A_CustomMissile("ExplosionParticleVeryFast", 0, 0, random(0, 360), 2, random(0, 360));

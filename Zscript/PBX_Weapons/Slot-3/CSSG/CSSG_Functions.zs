@@ -50,32 +50,27 @@ extend class PBX_CSSG
 		}
 	}
 
-    static const string CSSG_ShellsType[] = {
-		"\cgBuckshot\c- ","\cdSlug\c- ","\cjFlechette\c- ",
-		"\chFlak\c- ","\ciDragon Breath's\c- ","\cuExplosive\c- ",
-		"\c[WPBronze]White Phosphorous\c- ","\ctTriple Doom\c- ",
-		"\c[DanmakuYellow]Danmaku\c- ","\cnSub-Zero\c- "
+
+	static const string CSSG_ShellsType[] = {
+		"$PBX_CM_BUCKLD2",	"$PBX_CM_SLUGLD2",	"$PBX_CM_FLCHLD2",
+		"$PBX_CM_FLAKLD2",	"$PBX_CM_DGBTLD2",	"$PBX_CM_EXPLLD2",
+		"$PBX_CM_WPLOAD2",	"$PBX_CM_DOOMLD2",	"$PBX_CM_DNMKULD2",
+		"$PBX_CM_SUBZRLD2"
 	};
 	
 	static const string CSSG_ShellsToken1[] = {
-		"SelectCSG_Buckshot","SelectCSG_Slugshot","SelectCSG_Flechette","SelectCSG_Flak",
-		"SelectCSG_Dragonsbreath","SelectCSG_Explosive","SelectCSG_WPhosphorus",
-		"SelectCSG_Doom","SelectCSG_Danmaku","SelectCSG_SubZero"
+		"SelectCSG_Buckshot",		"SelectCSG_Slugshot",		"SelectCSG_Flechette",
+		"SelectCSG_Flak",			"SelectCSG_Dragonsbreath",	"SelectCSG_Explosive",	
+		"SelectCSG_WPhosphorus",	"SelectCSG_Doom",			"SelectCSG_Danmaku",
+		"SelectCSG_SubZero"
 	};
 	
 	static const string CSSG_ConfirmShell[] = {
-		"$PBX_CM_BUCKLD","$PBX_CM_SLUGLD","$PBX_CM_FLCHLD","$PBX_CM_FLAKLD","$PBX_CM_DGBTLD","$PBX_CM_EXPLLD",
-		"$PBX_CM_WPLOAD","$PBX_CM_DOOMLD","$PBX_CM_DNMKULD","$PBX_CM_SUBZRLD"
+		"$PBX_CM_BUCKLD",	"$PBX_CM_SLUGLD",	"$PBX_CM_FLCHLD",
+		"$PBX_CM_FLAKLD",	"$PBX_CM_DGBTLD",	"$PBX_CM_EXPLLD",
+		"$PBX_CM_WPLOAD",	"$PBX_CM_DOOMLD",	"$PBX_CM_DNMKULD",
+		"$PBX_CM_SUBZRLD"
 	};
-	
-	//for easier sprites manipulation
-	//gets a pointer to the asked layer and sets the defined sprite 
-	Action Void PB_ChangePsPrite(name spt,int layer = PSP_WEAPON)
-	{
-		let PS = player.findPSprite(layer);
-		if(PS)
-			PS.sprite = GetSpriteIndex(spt);
-	}
 	
 	//bascially, check wich shells is actually used, and change the sprite based on that
 	Action Void ChangeCSSGShellsLook(
@@ -95,108 +90,19 @@ extend class PBX_CSSG
 		wich++;
 		switch(wich)
 		{
-			case Shell_Buck: 	PB_ChangePsPrite(buck); 	break;
-			case Shell_Slug: 	PB_ChangePsPrite(slug); 	break;
-			case Shell_Flech: 	PB_ChangePsPrite(flech); 	break;
-			case Shell_Flak: 	PB_ChangePsPrite(flak); 	break;
-			case Shell_Drgn: 	PB_ChangePsPrite(dragons); 	break;
-			case Shell_EXPL: 	PB_ChangePsPrite(explo); 	break;
-			case Shell_WPSP: 	PB_ChangePsPrite(wp); 		break; 
-			case Shell_Doom: 	PB_ChangePsPrite(tds); 		break;
-			case Shell_Damn: 	PB_ChangePsPrite(dnm); 		break;
-			case Shell_SubZ: 	PB_ChangePsPrite(subz); 	break;
+			case Shell_Buck: 	A_SetWeaponSpriteEx(buck); 		break;
+			case Shell_Slug: 	A_SetWeaponSpriteEx(slug); 		break;
+			case Shell_Flech: 	A_SetWeaponSpriteEx(flech); 	break;
+			case Shell_Flak: 	A_SetWeaponSpriteEx(flak); 		break;
+			case Shell_Drgn: 	A_SetWeaponSpriteEx(dragons); 	break;
+			case Shell_EXPL: 	A_SetWeaponSpriteEx(explo); 	break;
+			case Shell_WPSP: 	A_SetWeaponSpriteEx(wp); 		break; 
+			case Shell_Doom: 	A_SetWeaponSpriteEx(tds); 		break;
+			case Shell_Damn: 	A_SetWeaponSpriteEx(dnm); 		break;
+			case Shell_SubZ: 	A_SetWeaponSpriteEx(subz); 		break;
 		}
 		
 	}
-	
-	//shells:
-	// 0-buckshot 1-slug 2-flechette
-	// 3-flak 4-dragon breath
-	// 5-explosive 6-white phosphorous 7-Doom shells
-	// 8-danmaku 9-subzero
-	
-	//to cycle shells ->
-	Action Void CycleShellFw()
-	{
-		//cycle to the right
-		int actmod = invoker.shellsmode;
-		invoker.oldshells = actmod;
-		A_startsound("menu/change",CHAN_AUTO);
-		actmod++;
-		
-		//dont need extra checks there
-		if(actmod < 4)
-		{
-			invoker.shellsmode = actmod;
-			//PrintCurrentShell();
-			return;
-		}
-		
-		//this is kinda weird, the idea is, if you DONT have the upgrade, add another, so it jumps to the next shell type
-		//if you dont have any upgrade, just go back to 0, wich means buckshot
-		//if got dragon breat upgrade
-		if(countinv("DragonBreathUpgrade")<1 && actmod == 4)
-			actmod++;
-		//if got Explosive upgrade
-		if(countinv("ExplosiveUpgrade")<1 && actmod == 5)
-			actmod++;
-		//if got White phosphoruos upgrade (dragon breath 2: this time its personal)
-		if(countinv("WhitePhosphorusUpgrade")<1 && actmod == 6)
-			actmod++;
-		if(countinv("TripleDoomUpgrade")<1 && actmod == 7)
-			actmod++;
-		if(countinv("DanmakuUpgrade")<1 && actmod == 8)
-			actmod++;
-			
-		if(actmod > 8)
-			actmod = 0;
-		
-		//clamps, so it never goes out from the types allowed
-		actmod = clamp(actmod,0,8);
-		invoker.shellsmode = actmod;
-		//PrintCurrentShell();
-		return;
-	}
-	
-	//to cycle shells <-
-	Action Void CycleShellBack()
-	{
-		//idk why it was harder to do the back cycling than the forward one
-		//console.printf("cicling back.");
-		int actmod = invoker.shellsmode;
-		invoker.oldshells = actmod;
-		A_startsound("menu/change",CHAN_AUTO);
-		
-		actmod--;
-		
-		if(actmod < 0)
-			actmod = 8;
-			
-		if(actmod < 4)
-		{
-			invoker.shellsmode = actmod;
-			//PrintCurrentShell();
-			return;
-		}
-		
-		//the same as the other functions but the other way around, decrements if you dont have that specific upgrade
-		if(countinv("DanmakuUpgrade")<1 && actmod == 8)
-			actmod--;
-		if(countinv("TripleDoomUpgrade")<1 && actmod == 7)
-			actmod--;
-		if(countinv("WhitePhosphorusUpgrade")<1 && actmod == 6)
-			actmod--;
-		if(countinv("ExplosiveUpgrade")<1 && actmod == 5)
-			actmod--;
-		if(countinv("DragonBreathUpgrade")<1 && actmod == 4)
-			actmod--;
-		
-		actmod = clamp(actmod,0,8);
-		invoker.shellsmode = actmod;
-		//PrintCurrentShell();
-		
-	}
-
 	
 	//this just prints the selected shell message
 	Action Void PrintSelectedShell()
@@ -204,38 +110,18 @@ extend class PBX_CSSG
 		int wich = invoker.shellsmode + 1;
 		switch(wich)
 		{
-			case Shell_Buck: A_Print("$PBX_CM_BUCKLD"); break;
-			case Shell_Slug: A_Print("$PBX_CM_SLUGLD"); break;
-			case Shell_Flech: A_Print("$PBX_CM_FLCHLD"); break;
-			case Shell_Flak: A_Print("$PBX_CM_FLAKLD"); break;
-			case Shell_Drgn: A_Print("$PBX_CM_DGBTLD"); break;
-			case Shell_EXPL: A_Print("$PBX_CM_EXPLLD"); break;
-			case Shell_WPSP: A_Print("$PBX_CM_WPLOAD"); break;
-			case Shell_Doom: A_Print("$PBX_CM_DOOMLD"); break;
-			case Shell_Damn: A_Print("$PBX_CM_DNMKULD"); break;
-			case Shell_SubZ: A_Print("$PBX_CM_SUBZRLD"); break;
+			case Shell_Buck:  A_Print("$PBX_CM_BUCKLD");  break;
+			case Shell_Slug:  A_Print("$PBX_CM_SLUGLD");  break;
+			case Shell_Flech: A_Print("$PBX_CM_FLCHLD");  break;
+			case Shell_Flak:  A_Print("$PBX_CM_FLAKLD");  break;
+			case Shell_Drgn:  A_Print("$PBX_CM_DGBTLD");  break;
+			case Shell_EXPL:  A_Print("$PBX_CM_EXPLLD");  break;
+			case Shell_WPSP:  A_Print("$PBX_CM_WPLOAD");  break;
+			case Shell_Doom:  A_Print("$PBX_CM_DOOMLD");  break;
+			case Shell_Damn:  A_Print("$PBX_CM_DNMKULD"); break;
+			case Shell_SubZ:  A_Print("$PBX_CM_SUBZRLD"); break;
 		}
 	}
-	
-	//this was just a debug thing
-	Action Void PrintCurrentShell()
-	{
-		int wich = invoker.shellsmode + 1;
-		switch(wich)
-		{
-			case Shell_Buck: console.printf("\cg Buckshot"); break;
-			case Shell_Slug: console.printf("\cd Slugs"); break;
-			case Shell_Flech: console.printf("\cjFlechette"); break;
-			case Shell_Flak: console.printf("\chFlak"); break;
-			case Shell_Drgn: console.printf("\ci Dragon Breath"); break;
-			case Shell_EXPL: console.printf("\cuExplosive"); break;
-			case Shell_WPSP: console.printf("\c[WPBronze]White Phosphorus"); break;
-			case Shell_Doom: console.printf("\ctDoom Shells"); break;
-			case Shell_Damn: console.printf("\c[DanmakuYellow]Danmaku Shells"); break;
-			case Shell_SubZ: console.printf("\cnSub-Zero Shells"); break;
-		}
-	}
-	
 	
 	//this function spawns the casing based on the current shell
 	Action Void A_spawnCSSGCasing(bool useprev = false)
@@ -257,8 +143,6 @@ extend class PBX_CSSG
 			case Shell_Damn: 	shelltype = "DanmakuCasing"; 			break;
 			case Shell_SubZ: 	shelltype = "SubZeroCasing"; 			break;
 		}
-		
-		
 		PB_SpawnCasing(shelltype,random(10,14),random(-1,3),random(26,28),random(1,3),random(-5,-2),random(4,7));
 	}
 	
@@ -299,7 +183,7 @@ extend class PBX_CSSG
 		switch(mode)
 		{
 			case Shell_Buck: 
-				PB_FireBullets("PB_10GAPellet",20,8,0,0,6);
+				PB_FireBullets("PB_10GAPellet",18,8,0,0,6);
 				PB_FireBullets("PB_10GAPellet_LP",1,0,0,0,0);
 				break;
 			case Shell_Slug:
@@ -337,60 +221,7 @@ extend class PBX_CSSG
 				A_SpawnItemEx("BlueFlareSpawn", 0, 0, -3);
 				A_SpawnItemEx("BlueFlareSpawn", 0, 0, 3);
 				PB_FireBullets("SubZeroProjectile",10,6,0,0,6);
-				// A_FireBullets (8, 6, 10, 18, "ShotKeeperPuff",FBF_NORANDOM,8192,"CSSG_FrozenTracer",-12);
          		A_FireBullets (8, 6, 10, 18, "SubZ_Puff",FBF_NORANDOM,8192,"CSSG_FrozenTracer",-12);
-				break;
-		}
-		
-	}
-	
-	action void FireCSSG()
-	{
-			FireCSSGFirst();
-			A_ZoomFactor(0.92);
-			PB_FireOffset();
-			A_takeinventory(invoker.ammotype2,2);
-			PB_WeaponRecoil(-7,frandom(-1.5,1.5));
-			PB_GunSmoke(2,0,-1);
-			PB_GunSmoke(-2,0,-1);
-			A_FireProjectile("ShotgunWad",random(-2,2),0,3,-4,FPF_NOAUTOAIM,random(-2,2));
-			A_FireProjectile("ShotgunWad",random(-2,2),0,-3,-4,FPF_NOAUTOAIM,random(-2,2));	
-	}
-	
-	Action Void CM_HandleCrosshair()
-	{
-		int mode = invoker.shellsmode + 1;
-		switch(mode)
-		{
-			case Shell_Buck: 
-				PB_HandleCrosshair(69);
-				break;
-			case Shell_Slug:
-				PB_HandleCrosshair(69);
-				break;
-			case Shell_Flech: 
-				PB_HandleCrosshair(70);
-				break;
-			case Shell_Flak: 
-				PB_HandleCrosshair(72);
-				break;
-			case Shell_Drgn: 
-				PB_HandleCrosshair(69);
-				break; 
-			case Shell_EXPL:
-				PB_HandleCrosshair(73);
-				break; 
-			case Shell_WPSP: 
-				PB_HandleCrosshair(74);
-				break;
-			case Shell_Doom:
-				PB_HandleCrosshair(11);
-				break;
-			case Shell_Damn:	
-				PB_HandleCrosshair(45);
-				break;
-			case Shell_SubZ:	
-				PB_HandleCrosshair(71);
 				break;
 		}
 		
@@ -442,7 +273,6 @@ extend class PBX_CSSG
 				break;
 		}
 		PB_IncrementHeat(4);
-		
 	}
 	
 	Action Void FireHalfCSSGLeft()
@@ -485,12 +315,43 @@ extend class PBX_CSSG
 				A_SpawnItemEx("BlueFlareSpawn", 0, 0, -3);
 				A_SpawnItemEx("BlueFlareSpawn", 0, 0, 3);
 				PB_FireBullets("SubZeroProjectile",5,6,0,0,6);
-				// A_FireBullets (8, 6, 10, 18, "ShotKeeperPuff",FBF_NORANDOM,8192,"CSSG_FrozenTracer",-12);
          		A_FireBullets (8, 6, 10, 18, "SubZ_Puff",FBF_NORANDOM,8192,"CSSG_FrozenTracer",-12);
 				break;
 		}
 		PB_IncrementHeat(4);
-		
+	}
+	
+	action void FireCSSG()
+	{
+		FireCSSGFirst();
+		A_ZoomFactor(0.92);
+		PB_FireOffset();
+		A_takeinventory(invoker.ammotype2,BARREL_CAPACITY);
+		PB_WeaponRecoil(-7,frandom(-1.5,1.5));
+		PB_GunSmoke(2,0,-1);
+		PB_GunSmoke(-2,0,-1);
+		A_FireProjectile("ShotgunWad",random(-2,2),0,3,-4,FPF_NOAUTOAIM,random(-2,2));
+		A_FireProjectile("ShotgunWad",random(-2,2),0,-3,-4,FPF_NOAUTOAIM,random(-2,2));	
+	}
+	
+	Action Void CM_HandleCrosshair()
+	{
+		int mode = invoker.shellsmode + 1;
+		int mCrosshair;
+		switch(mode)
+		{
+			case Shell_Buck: 	mCrosshair = 69;	break;
+			case Shell_Slug:	mCrosshair = 69;	break;
+			case Shell_Flech: 	mCrosshair = 70;	break;
+			case Shell_Flak: 	mCrosshair = 72;	break;
+			case Shell_Drgn: 	mCrosshair = 69;	break; 
+			case Shell_EXPL:	mCrosshair = 73;	break; 
+			case Shell_WPSP: 	mCrosshair = 74;	break;
+			case Shell_Doom:	mCrosshair = 11;	break;
+			case Shell_Damn:	mCrosshair = 45;	break;
+			case Shell_SubZ:	mCrosshair = 71;	break;
+		}
+		PB_HandleCrosshair(mCrosshair);
 	}
 	
 	Action Void CM_PlayFireSound()
@@ -590,36 +451,16 @@ extend class PBX_CSSG
 		name tounload;
 		switch(mode)
 		{
-			case Shell_Buck: 
-				tounload = 'PBX_CSSG_BuckShell';
-				break;
-			case Shell_Slug:
-				tounload = 'PBX_CSSG_SlugShell';
-				break;
-			case Shell_Flech: 
-				tounload = 'PBX_CSSG_FlechetteShell';
-				break;
-			case Shell_Flak: 
-				tounload = 'PBX_CSSG_FlakShell';
-				break;
-			case Shell_Drgn: 
-				tounload = 'PBX_CSSG_DragonsBreathShell';
-				break; 
-			case Shell_EXPL:
-				tounload = 'PBX_CSSG_ExplosiveShell';
-				break; 
-			case Shell_WPSP: 
-				tounload = 'PBX_CSSG_WPShell';
-				break;
-			case Shell_Doom:
-				tounload = 'PBX_CSSG_TDoomShell';
-				break;
-			case Shell_Damn:	
-				tounload = 'PBX_CSSG_DanmakuShell';
-				break;
-			case Shell_SubZ:	
-				tounload = 'PBX_CSSG_SubZeroShell';
-				break;
+			case Shell_Buck: 	tounload = 'PBX_CSSG_BuckShell';			break;
+			case Shell_Slug:	tounload = 'PBX_CSSG_SlugShell';			break;
+			case Shell_Flech: 	tounload = 'PBX_CSSG_FlechetteShell';		break;
+			case Shell_Flak: 	tounload = 'PBX_CSSG_FlakShell';			break;
+			case Shell_Drgn: 	tounload = 'PBX_CSSG_DragonsBreathShell';	break; 
+			case Shell_EXPL:	tounload = 'PBX_CSSG_ExplosiveShell';		break; 
+			case Shell_WPSP: 	tounload = 'PBX_CSSG_WPShell';				break;
+			case Shell_Doom:	tounload = 'PBX_CSSG_TDoomShell';			break;
+			case Shell_Damn:	tounload = 'PBX_CSSG_DanmakuShell';			break;
+			case Shell_SubZ:	tounload = 'PBX_CSSG_SubZeroShell';			break;
 		}
 
 		PB_UnloadMag(
@@ -661,7 +502,13 @@ extend class PBX_CSSG
 		// If you've already selected the same shell type, cancel wheel
 		if(countinv(PBX_CSSG.CSSG_ShellsToken1[actmode]) > 0)
 		{
-			A_Print(String.format(StringTable.Localize("$PBX_CSSG_ALR"),PBX_CSSG.CSSG_ShellsType[actmode]));
+			A_Print(
+				String.format(
+					StringTable.Localize("$PBX_CSSG_ALR"),
+					StringTable.Localize(PBX_CSSG.CSSG_ShellsType[actmode]
+					)
+				)
+			);
 			ClearCssgTokens();
 			return resolvestate("Ready3");
 		}

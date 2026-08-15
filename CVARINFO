@@ -5,6 +5,7 @@ server bool pbxweapons_sendTip = true;
 server bool pbxweapons_debug = false;
 server bool pbxweapons_normalriflereplace = false;
 server bool pbxweapons_startwithblaster = false;
+server bool pbxweapons_enablesecretweapon = true;
 
 // Tip Flags
 server int PBXWeapons_GeneralFlags = 0;
@@ -26,3 +27,5 @@ server int PBXWeapons_backpack_filter = 0;
 server int PBXWeapons_specialdrop_filter = 0;
 server int PBXWeapons_monsterdrop_filter = 0;
 
+// Powerup Times
+server int pbxweapons_echaingun_duration = 15;

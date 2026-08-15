@@ -52,6 +52,9 @@ class PBX_PlasmaBlaster : PB_WeaponBase
         SEC_CHARGE      = 1,
         TAKE_CHARGE     = 2   // Ammo take charge
     }
+//////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
     States
@@ -75,8 +78,8 @@ class PBX_PlasmaBlaster : PB_WeaponBase
 				PB_SetRoll(0);
 				PB_HandleCrosshair(39);
 				A_TakeInventory("PB_LockScreenTilt",1);
+                A_StopSound(1);
 			}
-			TNT1 A 0 A_StopSound(1);
 			AMGR ABCDEF 1;
 			TNT1 A 0 A_Lower();
 			Wait;
@@ -202,32 +205,31 @@ class PBX_PlasmaBlaster : PB_WeaponBase
 
 //////////////////////////// WEAPON SPECIAL ////////////////////////////////////////////////////////////////////////////////////
         WeaponSpecial:
-            TNT1 A 0 handleWeaponSpecial();
+            TNT1 A 0 A_TakeInventory("GoWeaponSpecialAbility", 1);
             Goto Ready3;
             
+//////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////// UNLOAD ////////////////////////////////////////////////////////////////////////////////////
+
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////
         FlashPunching:
-            TNT1 A 0 resetVariables();
             MSNQ ABCDEFGHFEDCBA 1;      // 14 frames
             goto Ready3;
 
         FlashKicking:
-            TNT1 A 0 resetVariables();
             MSNK ABCDEFGHGFEDCBA 1;     // 15 frames
             goto Ready3;
 
         FlashAirKicking:
-            TNT1 A 0 resetVariables();
             MSNQ ABCDEFGHHGFEDCBA 1;    // 16 frames
             goto Ready3;
 
         FlashSlideKicking:
-            TNT1 A 0 resetVariables();
             MSNK ABCDEFGHHHHHHHHHHHHHGFEDCBA 1; // 27 frames
             goto Ready3;
 
         FlashSlideKickingStop:
-            TNT1 A 0 resetVariables();
             MSNK GFEDCBA 1;             // 7 frames
             goto Ready3;
     }

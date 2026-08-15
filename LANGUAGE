@@ -4,6 +4,7 @@ PBXWeapons_Settings                 = "\cg⟁\c- PBX - Weapons Settings";
 PBXWeapons_Version                  = "\cgPBX - Weapons Version: 2.8";
 TIP_pbxweapons_normalriflereplace   = "Start the game with the Platinum Rifle on top of the Standard PB DMR";
 TIP_pbxweapons_startwithblaster     = "Start the game with the Pistol Blaster, a very weak pistol that has infinite ammo";
+TIP_pbxweapons_enablesecretweapon   = "Enable or disable the secret weapons in the game, Currently there's only the Nuke Launcher";
 
 //////////////////////////// SLOT 1 ///////////////////////////////////////////////////////////////////////////////
 
@@ -59,6 +60,17 @@ PBX_CM_WPLOAD                       = "\c[WPBronze]White Phosphorus \c-Shells";
 PBX_CM_DOOMLD                       = "\ctTriple Doom \c-Shells";
 PBX_CM_DNMKULD                      = "\c[DanmakuYellow]Danmaku \c-Shells";   
 PBX_CM_SUBZRLD                      = "\cnSub-Zero \c-Shells";   
+
+PBX_CM_BUCKLD2                      = "\cgBuckshot \c- ";
+PBX_CM_SLUGLD2                      = "\cdSlugs \c- ";
+PBX_CM_DGBTLD2                      = "\ciDragon Breath \c- ";
+PBX_CM_FLAKLD2                      = "\chFlak \c- ";
+PBX_CM_FLCHLD2                      = "\cjFlechette \c- ";
+PBX_CM_EXPLLD2                      = "\cuExplosive \c- ";
+PBX_CM_WPLOAD2                      = "\c[WPBronze]White Phosphorus \c- ";
+PBX_CM_DOOMLD2                      = "\ctTriple Doom \c- ";
+PBX_CM_DNMKULD2                     = "\c[DanmakuYellow]Danmaku \c- ";   
+PBX_CM_SUBZRLD2                     = "\cnSub-Zero \c- ";   
 
 PBX_CSSG_ALR                        = "Ammo type already selected: %s";
 
@@ -183,6 +195,10 @@ PBX_DemonExt_Tag                    = "UnMaker Extermination Type";
 PBX_DemonExt_Laser                  = "\caLaser \c-Mode";
 PBX_DemonExt_Incin                  = "\crDark Incinerator \c-Mode";
 PBX_DemonExt_Lightning              = "\cjSoul Lightning \c-Mode";
+
+// Nuke Launcher
+PBX_NukeLauncher_Pickup             = "You Have Found The Nuke Launcher! (Slot 9)";
+PBX_NukeLauncher_Tag                = "UAC Nuclear Warhead Launcher";
 
 //////////////////////////// OTHERS ///////////////////////////////////////////////////////////////////////////////
 // PBX Command Pack

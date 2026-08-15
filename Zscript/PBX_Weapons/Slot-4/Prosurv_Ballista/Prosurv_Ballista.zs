@@ -432,8 +432,7 @@ class PBX_Prosurv_Ballista : PB_WeaponBase
             }
             TNT1 A 0 A_PlaySoundEx("weapons/ballista/boltout","Auto");
             TNT1 A 0 {
-                A_TakeInventory(invoker.ammo2.getclassname(), ARROW_AMOUNT); // takes the chambered arrow back off
-                A_GiveInventory(invoker.ammo1.getclassname(), invoker.ReserveToMagAmmoFactor, TIF_NOTAKEINFINITE); // returns it to reserve
+                unloadCrossbow();
                 PB_SetChamberEmpty(true);
                 PB_SetMagEmpty(true);
                 PB_SetMagUnloaded(true);
@@ -465,8 +464,7 @@ class PBX_Prosurv_Ballista : PB_WeaponBase
             CB_H GG 1 PB_SetRoll(roll-.4);
             TNT1 A 0 A_PlaySoundEx("weapons/ballista/boltinoutdemonic","Auto");
             TNT1 A 0 {
-                A_TakeInventory(invoker.ammo2.getclassname(), ARROW_AMOUNT);
-                A_GiveInventory(invoker.ammo1.getclassname(), invoker.ReserveToMagAmmoFactor, TIF_NOTAKEINFINITE);
+                unloadCrossbow();
                 PB_SetChamberEmpty(true);
                 PB_SetMagEmpty(true);
                 PB_SetMagUnloaded(true);

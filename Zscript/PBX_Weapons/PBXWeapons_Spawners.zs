@@ -11,8 +11,9 @@ enum PBXWeapons_eWeaponSpecialSpawns
 	// SLOT 6
 	DisablePBX_CyberdemonRL			        = 1 << 0,
 	DisablePBX_MastermindCG			        = 1 << 1,
-////// Power Weapons /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	DisablePBX_EternalChaingun			    = 1 << 0  // Spawns on Megaspheres
+////// Power / Secret Weapons /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	DisablePBX_EternalChaingun			    = 1 << 0,  // Spawns on Megaspheres
+	DisablePBX_NukeLauncher					= 1 << 1   // Spawns on Secrets
 }
 
 enum PBXWeapons_eShotgunSpawns
@@ -262,6 +263,39 @@ class PBXWeapons_SpecialInjector : PBInjector
 
 class PBXWeapons_WeaponSpawner : EventHandler
 {
+	bool mSecretWeaponSpawned;
+
+	override void WorldLoaded(WorldEvent e)
+	{
+		// Only do it once
+		if(mSecretWeaponSpawned || !pbxweapons_enablesecretweapon) return;
+
+		int mSpawnChance = random(1,100);
+		if(mSpawnChance > 10) //10% chance of spawning 
+		{
+			// console.printf("PBX_SpecialWeaponSpawner not Spawned!, got %d",mSpawnChance);
+			return;
+		}
+
+		for (int i = 0; i < level.Sectors.Size(); ++i)
+		{
+			Sector CurrSec = level.Sectors[i];
+			vector3 SpawnPos = (CurrSec.centerspot.x, CurrSec.centerspot.y, CurrSec.floorplane.ZAtPoint(CurrSec.centerspot));
+
+			if (CurrSec.IsSecret() && !mSecretWeaponSpawned)
+			{
+				Actor.Spawn("PBX_SpecialWeaponSpawner", SpawnPos);
+                // console.printf("PBX_SpecialWeaponSpawner Spawned!");
+				mSecretWeaponSpawned = true;
+			}			
+		}
+	}
+
+	override void WorldUnloaded(WorldEvent e)
+	{
+		mSecretWeaponSpawned = false;
+	}
+
 	override void WorldThingSpawned (WorldEvent e)
     {
         if (!e || !e.thing) return;
@@ -298,6 +332,21 @@ class PBXWeapons_WeaponSpawner : EventHandler
     }
 
 	
+}
+
+class PBX_SpecialWeaponSpawner : PBRandomSpawner
+{
+	Default
+	{
+		DropItem 'PBX_NukeLauncher', 255, 1;
+	}
+
+	override bool HandleSpawnExceptions(name toSpawn)
+	{
+		if(toSpawn == "PBX_NukeLauncher" && (PBXWeapons_specialdrop_filter & DisablePBX_NukeLauncher))
+			return false;
+		return true;
+	}
 }
 
 class PBX_CommandPack : CustomInventory

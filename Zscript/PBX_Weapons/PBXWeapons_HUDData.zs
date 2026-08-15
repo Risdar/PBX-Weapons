@@ -107,8 +107,10 @@ class PBXHUDService_PBX_CSSG : service
         if(!cssg) return null;
         
         static const string cssgIcons[] = {
-            "buckhud", "slughud", "flcthud", "flakhud", "drgnhud", 
-            "explhud", "phoshud", "doomhud", "dnmkhud", "subzhud"
+            "buckhud", "slughud", "flcthud", 
+            "flakhud", "drgnhud", "explhud", 
+            "phoshud", "doomhud", "dnmkhud", 
+            "subzhud"
         };
         // Show what Ammo type is selected
         int cssgshell = clamp(cssg.shellsmode, 0, cssgIcons.Size() - 1);
@@ -562,6 +564,35 @@ class PBXHUDService_PBX_DemonExt : service
         data.Offset2 = (0,0);   // Weapon Mode Icon Position
 
         data.Scale1 = 1.3;      // Weapon Icon Scale
+        data.Scale2 = 1.0;      // Weapon Mode Icon Scale
+
+        return data;
+    }
+}
+
+class PBXHUDService_PBX_NukeLauncher : service
+{
+    override Object GetObjectUI(String request,String stringArg,int intArg,double doubleArg,Object objectArg)
+    {
+        if(request != "PBX_HUD") return null;
+        let weapon = PB_WeaponBase(objectArg); // Get a pointer to the weapon here so you can do stuff with the weapon
+        if(!weapon) return null;
+
+        if(weapon.GetClassName() != 'PBX_NukeLauncher')return null;
+
+        let data = PBXHUDData(new("PBXHUDData"));
+        if (!data) return null;
+        data.Handled = true;
+        data.SkipAutoDraw = false;
+
+        data.Image1 = "";       // Weapon Icon
+        data.Image2 = "";       // Weapon Mode Icon
+        data.Image3 = "";       // Weapon Mode 2 Icon (For example the CryoRifle has 2 modes at the same time)
+
+        data.Offset1 = (25,35);   // Weapon Icon Position
+        data.Offset2 = (0,0);   // Weapon Mode Icon Position
+
+        data.Scale1 = 1.5;      // Weapon Icon Scale
         data.Scale2 = 1.0;      // Weapon Mode Icon Scale
 
         return data;

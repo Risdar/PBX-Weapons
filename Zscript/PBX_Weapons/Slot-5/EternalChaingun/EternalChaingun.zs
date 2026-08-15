@@ -39,7 +39,7 @@ class PBX_EternalMinigun : PB_WeaponBase
 
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
     int firstTimeCooldown;
-    const ECHAINGUN_POWERTIME = 15; // How long the first pick up power mode lasts (in seconds)
+    int mPowerTime;
 
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
     override bool TryPickup(in out Actor toucher)
@@ -66,6 +66,12 @@ class PBX_EternalMinigun : PB_WeaponBase
             if(pb_newmugshot) toucher.A_SetMugshotState("MegasphereGrin");
         }
         return pickup;
+    }       
+
+    override void BeginPlay()
+    {
+        super.BeginPlay();
+        mPowerTime = PBXCore_Duration.GetByCVar("pbxweapons_echaingun_duration");
     }
 
     override void DoEffect() 
@@ -75,7 +81,7 @@ class PBX_EternalMinigun : PB_WeaponBase
         If(!owner || !owner.player || !owner.player.readyweapon) return;
 
         let weap = PBX_EternalMinigun(owner.FindInventory("PBX_EternalMinigun"));
-        if(!weap || weap.firstTimeCooldown >= ECHAINGUN_POWERTIME) return;
+        if(!weap || weap.firstTimeCooldown >= mPowerTime) return;
 
         // if(pb_newmugshot) owner.A_SetMugshotState("MegasphereGrin");
 
@@ -91,8 +97,8 @@ class PBX_EternalMinigun : PB_WeaponBase
     {
         if(isAlt)
         {
-            PB_FireBullets("MinigunTracer", 1, 3, 0, 0, 3);
-            PB_FireBullets("MinigunTracer", 1, 3, 0, 0, 3);
+            PB_FireBullets("EternalChaingunTracer", 1, 3, 0, 0, 3);
+            PB_FireBullets("EternalChaingunTracer", 1, 3, 0, 0, 3);
             PB_IncrementHeat();
             A_TakeInventory(invoker.ammo1.getClassName(), 1, TIF_NOTAKEINFINITE);
             PB_SpawnCasing("PB_EmptyBrass", 19,-13,24,0,-frandom(3,6),frandom(-1,1), false);
@@ -100,7 +106,7 @@ class PBX_EternalMinigun : PB_WeaponBase
             A_StartSound("weapon/EternalChaingun/Shoot", CHAN_AUTO, CHANF_OVERLAP);
         }
         
-        PB_FireBullets("MinigunTracer", 1, 3, 0, 0, 3);
+        PB_FireBullets("EternalChaingunTracer", 1, 3, 0, 0, 3);
         A_TakeInventory(invoker.ammo1.getClassName(), 1, TIF_NOTAKEINFINITE);
         PB_IncrementHeat();
         PB_GunSmoke_Basic(0,0,2);//A_FireCustomMissile("GunFireSmoke", 0, 0, 0, 0, 0, 0);
@@ -128,7 +134,7 @@ class PBX_EternalMinigun : PB_WeaponBase
 
     action bool EChaingun_IsInPowerMode()
     {
-        return invoker.firstTimeCooldown < ECHAINGUN_POWERTIME;
+        return invoker.firstTimeCooldown < invoker.mPowerTime;
     }
 
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
@@ -360,7 +366,7 @@ class PBX_EternalMinigun : PB_WeaponBase
     }
 }
 
-class MinigunTracer: PB_556x45mmAP
+class EternalChaingunTracer : PB_556x45mmAP
 {
 
     Default
@@ -386,23 +392,17 @@ class MinigunTracer: PB_556x45mmAP
 
 class PBXWeapons_InfiniteAmmo : PBX_InfiniteAmmoGiver 
 {
-    Default
+    override void BeginPlay()
     {
-        Powerup.Duration -PBX_EternalMinigun.ECHAINGUN_POWERTIME;
+        super.BeginPlay();
+        EffectTics  = PBXCore_Duration.GetByCVar("pbxweapons_echaingun_duration");
     }
 }
 class PBXWeapons_Drain : PBX_DrainGiver 
 {
-    Default
+    override void BeginPlay()
     {
-        Powerup.Duration -PBX_EternalMinigun.ECHAINGUN_POWERTIME;
+        super.BeginPlay();
+        EffectTics  = PBXCore_Duration.GetByCVar("pbxweapons_echaingun_duration");
     }
 } 
-
-class PBXWeapons_EChaingunStrength : PB_PowerStrength 
-{
-    Default
-    {
-        Powerup.Duration -PBX_EternalMinigun.ECHAINGUN_POWERTIME;
-    }
-}

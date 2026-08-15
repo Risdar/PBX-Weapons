@@ -46,5 +46,6 @@ Version 4.13
 
 // Slot 9
 #include "Zscript/PBX_Weapons/Slot-9/DemonicExterminator/DemonicExt.zs" // Demonic Exterminator
+#include "Zscript/PBX_Weapons/Slot-9/NukeLauncher/NukeLauncher.zs" // Nuke Launcher
 
 

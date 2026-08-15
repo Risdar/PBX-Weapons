@@ -347,8 +347,15 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 		RemoveBullets:
             TNT1 A 0 A_JumpIf(invoker.ammo2.amount <= 0,"FinishUnload");
 			TNT1 A 0 {
-				if (getLAMode() == LA_444Marlin) PB_UnloadMag(invoker.ammotype2,invoker.ammotype1,2,1,1,invoker.ammo2.amount - 1,"PBX_MarlinRound");
-				else PB_UnloadMag(invoker.ammotype2,invoker.ammotype1,1,1,1,invoker.ammo2.amount - 1,"PBX_MagnumRound");
+				name mToUnload = getLAMode() == LA_444Marlin ? "PBX_MarlinRound" : "PBX_MagnumRound";
+				PB_UnloadMag(
+					invoker.ammotype2,
+					invoker.ammotype1,
+					invoker.ReserveToMagAmmoFactor,1,
+					invoker.ReserveToMagAmmoFactor,
+					invoker.ammo2.amount - 1,
+					mToUnload
+				);
 				A_StartSound("weapons/leveraction/rechamber");
 			}
 			LVR2 POPQQQQ 1;

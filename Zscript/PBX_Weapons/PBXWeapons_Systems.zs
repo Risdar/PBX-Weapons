@@ -552,3 +552,91 @@ class PBX_RadiusVisualizer : Inventory
 // 	}
 // 	return super.HandlePickup(item);
 // }
+
+//shells:
+	// 0-buckshot 1-slug 2-flechette
+	// 3-flak 4-dragon breath
+	// 5-explosive 6-white phosphorous 7-Doom shells
+	// 8-danmaku 9-subzero
+	
+	//to cycle shells ->
+	// Action Void CycleShellFw()
+	// {
+	// 	//cycle to the right
+	// 	int actmod = invoker.shellsmode;
+	// 	invoker.oldshells = actmod;
+	// 	A_startsound("menu/change",CHAN_AUTO);
+	// 	actmod++;
+		
+	// 	//dont need extra checks there
+	// 	if(actmod < 4)
+	// 	{
+	// 		invoker.shellsmode = actmod;
+	// 		//PrintCurrentShell();
+	// 		return;
+	// 	}
+		
+	// 	//this is kinda weird, the idea is, if you DONT have the upgrade, add another, so it jumps to the next shell type
+	// 	//if you dont have any upgrade, just go back to 0, wich means buckshot
+	// 	//if got dragon breat upgrade
+	// 	if(countinv("DragonBreathUpgrade")<1 && actmod == 4)
+	// 		actmod++;
+	// 	//if got Explosive upgrade
+	// 	if(countinv("ExplosiveUpgrade")<1 && actmod == 5)
+	// 		actmod++;
+	// 	//if got White phosphoruos upgrade (dragon breath 2: this time its personal)
+	// 	if(countinv("WhitePhosphorusUpgrade")<1 && actmod == 6)
+	// 		actmod++;
+	// 	if(countinv("TripleDoomUpgrade")<1 && actmod == 7)
+	// 		actmod++;
+	// 	if(countinv("DanmakuUpgrade")<1 && actmod == 8)
+	// 		actmod++;
+			
+	// 	if(actmod > 8)
+	// 		actmod = 0;
+		
+	// 	//clamps, so it never goes out from the types allowed
+	// 	actmod = clamp(actmod,0,8);
+	// 	invoker.shellsmode = actmod;
+	// 	//PrintCurrentShell();
+	// 	return;
+	// }
+	
+	// //to cycle shells <-
+	// Action Void CycleShellBack()
+	// {
+	// 	//idk why it was harder to do the back cycling than the forward one
+	// 	//console.printf("cicling back.");
+	// 	int actmod = invoker.shellsmode;
+	// 	invoker.oldshells = actmod;
+	// 	A_startsound("menu/change",CHAN_AUTO);
+		
+	// 	actmod--;
+		
+	// 	if(actmod < 0)
+	// 		actmod = 8;
+			
+	// 	if(actmod < 4)
+	// 	{
+	// 		invoker.shellsmode = actmod;
+	// 		//PrintCurrentShell();
+	// 		return;
+	// 	}
+		
+	// 	//the same as the other functions but the other way around, decrements if you dont have that specific upgrade
+	// 	if(countinv("DanmakuUpgrade")<1 && actmod == 8)
+	// 		actmod--;
+	// 	if(countinv("TripleDoomUpgrade")<1 && actmod == 7)
+	// 		actmod--;
+	// 	if(countinv("WhitePhosphorusUpgrade")<1 && actmod == 6)
+	// 		actmod--;
+	// 	if(countinv("ExplosiveUpgrade")<1 && actmod == 5)
+	// 		actmod--;
+	// 	if(countinv("DragonBreathUpgrade")<1 && actmod == 4)
+	// 		actmod--;
+		
+	// 	actmod = clamp(actmod,0,8);
+	// 	invoker.shellsmode = actmod;
+	// 	//PrintCurrentShell();
+		
+	// }

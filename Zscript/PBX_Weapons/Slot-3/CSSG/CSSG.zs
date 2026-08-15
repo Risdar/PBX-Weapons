@@ -158,11 +158,12 @@ Class PBX_CSSG : PB_WeaponBase
 		RightFire:
 			TNT1 A 0 CM_PlayAltFireSound();
 			TNT1 A 0 A_overlay(-31,"MuzzleFlashRight");
-			C0FH AB 1 bright FireHalfCSSGRight();
-			TNT1 A 0 PB_TakeAmmo(invoker.ammotype2,1);
-			TNT1 A 0 A_ZoomFactor(0.975);
-			TNT1 A 0 PB_WeaponRecoil(-3,frandom(-0.5,0.5));
-			TNT1 A 0 {
+			C0FH AB 1 bright; 
+			TNT1 A 0 bright {
+				FireHalfCSSGRight();
+				PB_TakeAmmo(invoker.ammotype2,1);
+				A_ZoomFactor(0.975);
+				PB_WeaponRecoil(-3,frandom(-0.5,0.5));
 				PB_GunSmoke(-2,0,-1);
 				A_FireProjectile("ShotgunWad",random(-2,2),0,3,-4,FPF_NOAUTOAIM,random(-2,2));
 			}
@@ -182,11 +183,12 @@ Class PBX_CSSG : PB_WeaponBase
 			TNT1 A 0 PB_JumpIfNoAmmo();
 			TNT1 A 0 CM_PlayAltFireSound();
 			TNT1 A 0 A_overlay(-31,"MuzzleFlashLeft");
-			C0FH HI 1 bright FireHalfCSSGLeft();
-			TNT1 A 0 PB_TakeAmmo(invoker.ammotype2,1);
-			TNT1 A 0 A_ZoomFactor(0.975);
-			TNT1 A 0 PB_WeaponRecoil(-3,frandom(-0.5,0.5));
-			TNT1 A 0 {
+			C0FH HI 1 bright; 
+			TNT1 A 0 bright {
+				FireHalfCSSGLeft();
+				PB_TakeAmmo(invoker.ammotype2,1);
+				A_ZoomFactor(0.975);
+				PB_WeaponRecoil(-3,frandom(-0.5,0.5));
 				PB_GunSmoke(2,0,-1);
 				A_FireProjectile("ShotgunWad",random(-2,2),0,-3,-4,FPF_NOAUTOAIM,random(-2,2));
 			}
