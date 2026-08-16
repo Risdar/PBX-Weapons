@@ -215,7 +215,7 @@ extend class PBX_BDPRailgun
             return;
         }
 
-        invoker.hologramCooldown = HOLOGRAM_COOLDOWN;
+        invoker.hologramCooldown = PBXCore_Duration.GetByCVarInSeconds("pbxweapons_hologram_cooldown");
 
 		A_radiusgive("KillHologram",10000,RGF_MONSTERS | RGF_NOSIGHT,1,"HoloPlayer");
 		FLineTraceData lasersight;

@@ -1,0 +1,53 @@
+[enu default]
+//////////////////////////// GENERAL MENU ///////////////////////////////////////////////////////////////////////////////
+PBXWEAPONS_MENU_ENABLE_TOOLTIPS = "Enable Weapon Tooltips";
+PBXWEAPONS_MENU_ENABLE_SPAWNERS = "Enable All PBX Weapons Spawners";
+PBXWEAPONS_MENU_RESET_PBTOOLTIPS = "Reset PB Tool Tips";
+PBXWEAPONS_MENU_RESET_PBXWEAPONS_TOOLTIPS = "Reset PBX Weapons Tool Tips";
+
+PBXWEAPONS_START_WITH_BDP_RIFLE = "Start with the BDP Rifle";
+PBXWEAPONS_START_WITH_PISTOL_BLASTER = "Start with the Pistol Blaster";
+PBXWEAPONS_MENU_ENABLE_SECRET_WEAPONS = "Enable Secret Weapons";
+
+
+//////////////////////////// WEAPONS MENU ///////////////////////////////////////////////////////////////////////////////
+PBXWEAPONS_SECRETWEAPONS_SPAWNCHANCE = "Secret weapon spawn chance (in Percent)";
+PBXWEAPONS_ECHAINGUN_POWERTIME = "Eternal Chaingun's Power Time Duration";
+PBXWEAPONS_MEATHOOK_COOLDOWN = "CSSG's Meathook Cooldown";
+PBXWEAPONS_HOLOGRAM_COOLDOWN = "Platinum Railgun's Hologram Cooldown";
+PBXWEAPONS_HOLOGRAM_LIFETIME = "Platinum Railgun's Hologram Lifetime";
+PBXWEAPONS_MENU_RESET_WEAPON_DURATIONS = "Reset PBX Weapons Values";
+
+//////////////////////////// SPAWN MENU ///////////////////////////////////////////////////////////////////////////////
+PBXWEAPONS_PLASMA_BLASTER = "Enable Plasma Blaster";
+PBXWEAPONS_LEVER_ACTION_RIFLE = "Enable Lever Action Rifle";
+PBXWEAPONS_CROSSBOW_BALLISTA = "Enable Crossbow Ballista";
+
+PBXWEAPONS_SPAS12 = "Enable SPAS-12";
+PBXWEAPONS_COMMANDER_SHOTGUN = "Enable Commander Shotgun";
+PBXWEAPONS_BATTLE_RIFLE = "Enable Battle Rifle";
+PBXWEAPONS_METAL_SNIPER = "Enable Metal Sniper";
+PBXWEAPONS_NEOHMG = "Enable Neo HMG";
+
+PBXWEAPONS_EXCAVATOR = "Enable Excavator";
+PBXWEAPONS_PAINGIVER = "Enable Paingiver";
+
+PBXWEAPONS_CYBERRL = "Cyberdemon drop their Weapon";
+PBXWEAPONS_SPIDERCG = "Spider Mastermind drop their Weapon";
+
+PBXWEAPONS_PLATINUM_RAILGUN = "Enable Platinum Railgun"; 
+
+PBXWEAPONS_DEMONIC_EXTERMINATOR = "Enable Demonic Exterminator";
+PBXWEAPONS_NUKE_LAUNCHER = "Enable Nuke Launcher";
+
+PBXWEAPONS_UAC_COMMANDER_BACKPACK = "Enable UAC Commander's Backpack";
+
+PBXWEAPONS_BATTLE_RIFLE_UPGRADE = "Enable Battle Rifle Upgrade"; 
+PBXWEAPONS_CROSSBOW_BALLISTA_UPGRADE = "Enable Crossbow Ballista Upgrade";
+PBXWEAPONS_METAL_SNIPER_UPGRADE = "Enable Metal Sniper Upgrade";
+
+PBXWEAPONS_EXCAVATOR_UPGRADE = "Enable Excavator Upgrade";
+
+PBXWEAPONS_CSSG_UPGRADES = "Enable CSSG Upgrades";
+
+PBXWEAPONS_ETERNAL_CHAINGUN = "Enable Eternal Chaingun";

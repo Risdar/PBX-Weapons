@@ -1,9 +1,5 @@
 // Includes
-// #include "./PlasmaBlaster_Functions.zs"
-// #include "./PlasmaBlaster_Projectiles.zs"
-// #include "./PlasmaBlaster_Wheel.zs"
-
-// class Plasma_Select_Auto : inventory {default{inventory.maxamount 1;}}
+#include "./EternalChaingun_Functions.zs"
 
 // Actual Weapon
 class PBX_EternalMinigun : PB_WeaponBase
@@ -31,111 +27,14 @@ class PBX_EternalMinigun : PB_WeaponBase
         Scale 0.9;
 
 //////////////////////////// WEAPON FLAGS ////////////////////////////////////////////////////////////////////////////////////
-        +WEAPON.CHEATNOTWEAPON;
+        // +WEAPON.CHEATNOTWEAPON;
         +WEAPON.NOAUTOAIM;
         +WEAPON.NOAUTOFIRE;
         +WEAPON.NO_AUTO_SWITCH;
     }
 
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
-    int firstTimeCooldown;
     int mPowerTime;
-
-//////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
-    override bool TryPickup(in out Actor toucher)
-    {
-        bool pickup = Super.TryPickup(toucher);
-        // Resets the cooldown so the power mode is always triggered after every pickup
-        if(toucher.FindInventory("PBX_EternalMinigun"))
-        {
-            // console.printf("Weapon Found");
-            let weap = PBX_EternalMinigun(toucher.FindInventory("PBX_EternalMinigun"));
-            if(weap)
-            {
-                weap.firstTimeCooldown = 0;
-                if(toucher.player.readyweapon != weap)
-                    toucher.player.PendingWeapon = weap;
-                // console.printf("Cooldown Reset, %d",weap.firstTimeCooldown);
-            }
-        }
-        // Gives the powerups
-        if (pickup)
-        {
-            toucher.A_GiveInventory("PBXWeapons_InfiniteAmmo", 1);
-            toucher.A_GiveInventory("PBXWeapons_Drain", 1);
-            if(pb_newmugshot) toucher.A_SetMugshotState("MegasphereGrin");
-        }
-        return pickup;
-    }       
-
-    override void BeginPlay()
-    {
-        super.BeginPlay();
-        mPowerTime = PBXCore_Duration.GetByCVar("pbxweapons_echaingun_duration");
-    }
-
-    override void DoEffect() 
-	{
-		super.DoEffect();
-        if (level.isFrozen()) return;
-        If(!owner || !owner.player || !owner.player.readyweapon) return;
-
-        let weap = PBX_EternalMinigun(owner.FindInventory("PBX_EternalMinigun"));
-        if(!weap || weap.firstTimeCooldown >= mPowerTime) return;
-
-        // if(pb_newmugshot) owner.A_SetMugshotState("MegasphereGrin");
-
-        if(level.time % TICRATE == 0)
-        {
-            // console.printf("counting seconds %d",weap.firstTimeCooldown+1);
-            weap.firstTimeCooldown++;
-        }
-    }
-
-//////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
-    action void EChaingun_Fire(bool isAlt = false)
-    {
-        if(isAlt)
-        {
-            PB_FireBullets("EternalChaingunTracer", 1, 3, 0, 0, 3);
-            PB_FireBullets("EternalChaingunTracer", 1, 3, 0, 0, 3);
-            PB_IncrementHeat();
-            A_TakeInventory(invoker.ammo1.getClassName(), 1, TIF_NOTAKEINFINITE);
-            PB_SpawnCasing("PB_EmptyBrass", 19,-13,24,0,-frandom(3,6),frandom(-1,1), false);
-            PB_SpawnCasing("PB_EmptyBrass", 19,-13,24,0,-frandom(3,6),frandom(-1,1), false);
-            A_StartSound("weapon/EternalChaingun/Shoot", CHAN_AUTO, CHANF_OVERLAP);
-        }
-        
-        PB_FireBullets("EternalChaingunTracer", 1, 3, 0, 0, 3);
-        A_TakeInventory(invoker.ammo1.getClassName(), 1, TIF_NOTAKEINFINITE);
-        PB_IncrementHeat();
-        PB_GunSmoke_Basic(0,0,2);//A_FireCustomMissile("GunFireSmoke", 0, 0, 0, 0, 0, 0);
-        A_StartSound("weapon/EternalChaingun/Shoot", CHAN_AUTO);
-        PB_FireOffset();
-        PB_DynamicTail("lmg", "lmg");
-        A_AlertMonsters();
-        PB_SpawnCasing("PB_EmptyBrass", 19,-13,24,0,-frandom(3,6),frandom(-1,1), false);
-        PB_WeaponRecoil(-0.6,frandom(1.6, -1.6));
-        // A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
-    }
-
-    action state EChaingun_Ready()
-    {
-        if(EChaingun_IsInPowerMode())
-            return A_DoPBWeaponAction(WRF_NOSWITCH|WRF_DISABLESWITCH);
-        else
-            return A_DoPBWeaponAction();
-    }
-
-    action bool EChaingun_CanNotFire()
-    {
-        return !EChaingun_IsInPowerMode() && !invoker.OwnerHasBerserk();
-    }
-
-    action bool EChaingun_IsInPowerMode()
-    {
-        return invoker.firstTimeCooldown < invoker.mPowerTime;
-    }
 
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
     States
@@ -173,6 +72,13 @@ class PBX_EternalMinigun : PB_WeaponBase
 			Wait;
 
         Select:
+            TNT1 A 0 {
+                if(invoker.mPowerTime > 0)
+                {
+                    A_GiveInventory("PBXWeapons_InfiniteAmmo",1);
+                    A_GiveInventory("PBXWeapons_Drain",1);
+                }
+            }
             TNT1 A 0 {
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);

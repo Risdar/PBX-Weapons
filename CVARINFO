@@ -2,10 +2,10 @@
 /* server bool FirstTimeLoadingPBX = true; */
 /* server bool pbxweapons_experimental = false; */
 server bool pbxweapons_sendTip = true;
-server bool pbxweapons_debug = false;
 server bool pbxweapons_normalriflereplace = false;
 server bool pbxweapons_startwithblaster = false;
 server bool pbxweapons_enablesecretweapon = true;
+server int pbxweapons_secretweapon_spawnchance = 10;
 
 // Tip Flags
 server int PBXWeapons_GeneralFlags = 0;
@@ -27,5 +27,8 @@ server int PBXWeapons_backpack_filter = 0;
 server int PBXWeapons_specialdrop_filter = 0;
 server int PBXWeapons_monsterdrop_filter = 0;
 
-// Powerup Times
+// Powerup Times / Cooldowns
 server int pbxweapons_echaingun_duration = 15;
+server int pbxweapons_meathook_cooldown = 3;
+server int pbxweapons_hologram_cooldown = 3;
+server int pbxweapons_hologram_lifetime = 30;

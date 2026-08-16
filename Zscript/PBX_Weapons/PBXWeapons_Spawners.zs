@@ -271,9 +271,9 @@ class PBXWeapons_WeaponSpawner : EventHandler
 		if(mSecretWeaponSpawned || !pbxweapons_enablesecretweapon) return;
 
 		int mSpawnChance = random(1,100);
-		if(mSpawnChance > 10) //10% chance of spawning 
+		if(mSpawnChance > PBXCore_Duration.GetByCVar("pbxweapons_secretweapon_spawnchance")) //10% chance of spawning by default
 		{
-			// console.printf("PBX_SpecialWeaponSpawner not Spawned!, got %d",mSpawnChance);
+			if(PBXCore_Debug) console.printf("PBX_SpecialWeaponSpawner not Spawned!, got %d",mSpawnChance);
 			return;
 		}
 
@@ -285,7 +285,7 @@ class PBXWeapons_WeaponSpawner : EventHandler
 			if (CurrSec.IsSecret() && !mSecretWeaponSpawned)
 			{
 				Actor.Spawn("PBX_SpecialWeaponSpawner", SpawnPos);
-                // console.printf("PBX_SpecialWeaponSpawner Spawned!");
+                if(PBXCore_Debug) console.printf("PBX_SpecialWeaponSpawner Spawned!");
 				mSecretWeaponSpawned = true;
 			}			
 		}
@@ -307,7 +307,7 @@ class PBXWeapons_WeaponSpawner : EventHandler
             case 'XDeathCyberdemonGun':
                 if(!(PBXWeapons_monsterdrop_filter & DisablePBX_CyberdemonRL))
                 { 
-					// console.printf("Spawning CyberdemonRL from %s", actor.GetClassName());
+					if(PBXCore_Debug) console.printf("Spawning CyberdemonRL from %s", actor.GetClassName());
                    	actor.spawn("CyberRLPickup", actor.pos);
                     actor.destroy(); 
                 } 

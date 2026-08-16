@@ -31,7 +31,6 @@ Class PBX_CSSG : PB_WeaponBase
 
 	bool meathookMode;
 
-	const HOOK_COOLDOWN = 3; // In seconds
 	const BARREL_CAPACITY = 2;
 	
 	enum CM_ShellTypes {

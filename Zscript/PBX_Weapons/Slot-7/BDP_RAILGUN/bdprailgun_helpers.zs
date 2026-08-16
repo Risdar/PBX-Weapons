@@ -157,14 +157,26 @@ class HoloPlayer : PB_Monster
 		Mass 99999;
 		BloodType "HoloBlood";
 	}
+
+	int mLifeTime;
+
+    override void PostBeginPlay()
+	{
+		mLifeTime = PBXCore_Duration.GetByCVarInSeconds("pbxweapons_hologram_lifetime");
+        Super.PostBeginPlay();
+	}
+
 	Override void tick()
 	{
-		If ( !tracer || findinventory("KillHologram") )
-		{
+		If (!tracer || findinventory("KillHologram") || mLifeTime <= 0)
 			A_fadeout(0.05);
-		}
+		
+		if(mLifeTime > 0 && level.time % TICRATE == 0)
+			mLifeTime--;
+			
 		Super.tick();
 	}
+
 	Action void A_HoloGramAlert()
 	{
 		BlockThingsIterator CheckFortracers = BlockThingsIterator.create(Self,1000); //256 can be whatever range around the actor.
@@ -186,71 +198,68 @@ class HoloPlayer : PB_Monster
 
 	States
 	{
-	Spawn:
-		MARN AAABBBCCCBBB 1 {
-			A_facetracer();
-			vector3 movepos = Vec3Angle(6,angle,0);
-			If (checkmove(Vec2Angle(6,angle),PCM_NOACTORS))
-			{
-				setorigin(movepos,TRUE);
+		Spawn:
+			MARN AAABBBCCCBBB 1 {
+				A_facetracer();
+				vector3 movepos = Vec3Angle(6,angle,0);
+				If (checkmove(Vec2Angle(6,angle),PCM_NOACTORS))
+					setorigin(movepos,TRUE);
+				
+				A_hologramAlert();
+				If(tracer && distance2d(tracer) <= 32)
+					Return resolvestate("Spawn2");
+				
+				Return resolvestate(null);
 			}
-			A_hologramAlert();
-			If(tracer && distance2d(tracer) <= 32)
-			{
-				Return resolvestate("Spawn2");
-			}
+			LOOP;
+		Spawn2:
+			TNT1 A 0 A_jump(30,"Twerk","TeaBag","Moves1","Moves2","Moves3","TPose");
+			TNT1 A 0 A_jump(255,"Wave1","Wave2","Observe","Medkit");
+		Wave1:
+			MWAV IJK 1;
+		Wave1Continue:
+			MWAV LMNNML 3 A_hologramAlert();
+			LOOP;
+		Wave2:
+			MWAV ABCD 3;
+		Wave2Continue:
+			MWAV EEEEEEEFFFFFFF 1 A_HoloGramAlert();
+			LOOP;
+		Observe:
+			MR7S AAAAABBBBBACCCCCABBBBBAA 4 A_hologramalert();
+			LOOP;
+		MedKit:
+			MR8S AAAAAAABBBBBBB 2 A_HoloGramAlert();
+			LOOP;
+		TeaBag:
+			MARN AA 2 A_hologramalert();
+			PLYC AA 2 A_hologramalert();
+			LOOP;
+		Twerk:
+			TWRK CBA 2 A_hologramAlert();
+			LOOP;
+		Moves1:
+			2AKE ABCDEFGHIJKLMOPQR 4 A_hologramAlert();
+			LOOP;
+		Moves2:
+			3AKE ABCDEFGHIJKLMNO 4 A_hologramAlert();
+			LOOP;
+		Moves3:
+			JAKE ABCDEFGHIJKLMNOP 4 A_hologramAlert();
+			LOOP;
+		TPose:
+			TWRK D 4 A_hologramAlert();
+			LOOP;
 			
-			Return resolvestate(null);
-		}
-		LOOP;
-	Spawn2:
-		TNT1 A 0 A_jump(30,"Twerk","TeaBag","Moves1","Moves2","Moves3","TPose");
-		TNT1 A 0 A_jump(255,"Wave1","Wave2","Observe","Medkit");
-	Wave1:
-		MWAV IJK 1;
-	Wave1Continue:
-		MWAV LMNNML 3 A_hologramAlert();
-		LOOP;
-	Wave2:
-		MWAV ABCD 3;
-	Wave2Continue:
-		MWAV EEEEEEEFFFFFFF 1 A_HoloGramAlert();
-		LOOP;
-	Observe:
-		MR7S AAAAABBBBBACCCCCABBBBBAA 4 A_hologramalert();
-		LOOP;
-	MedKit:
-		MR8S AAAAAAABBBBBBB 2 A_HoloGramAlert();
-		LOOP;
-	TeaBag:
-		MARN AA 2 A_hologramalert();
-		PLYC AA 2 A_hologramalert();
-		LOOP;
-	Twerk:
-		TWRK CBA 2 A_hologramAlert();
-		LOOP;
-	Moves1:
-		2AKE ABCDEFGHIJKLMOPQR 4 A_hologramAlert();
-		LOOP;
-	Moves2:
-		3AKE ABCDEFGHIJKLMNO 4 A_hologramAlert();
-		LOOP;
-	Moves3:
-		JAKE ABCDEFGHIJKLMNOP 4 A_hologramAlert();
-		LOOP;
-	TPose:
-		TWRK D 4 A_hologramAlert();
-		LOOP;
+		Death:
+			PLAY O 5;
+			PLAY P 5 A_XScream();
+			PLAY Q 5;
+			PLAY RSTUV 5;
 		
-	Death:
-		PLAY O 5;
-		PLAY P 5 A_XScream();
-		PLAY Q 5;
-		PLAY RSTUV 5;
-	
-	Death2:
-		PLAY W 1 A_fadeout(0.05);
-		LOOP;
+		Death2:
+			PLAY W 1 A_fadeout(0.05);
+			LOOP;
 	}
 }
 
@@ -264,8 +273,7 @@ class HoloBlood : Actor
 	States
 	{
 		Spawn:
-			TNT1 AAA 0 NODELAY
-			{
+			TNT1 AAA 0 NODELAY {
 				A_spawnitemex("blueplasmaparticle",0,0,0,frandom(-5,5),frandom(-5,5),frandom(1,5));
 				A_startsound("StickyGrenade/hit");
 			}

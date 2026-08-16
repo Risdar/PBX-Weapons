@@ -289,7 +289,7 @@ class HomingShots_Aux : Inventory
 			);
 		}
 
-		if (owner.tracer != null && pbxweapons_debug)
+		if (owner.tracer != null && PBXCore_Debug)
 		{
 			if(owner.tracer.CountInv("PBX_RadiusVisualizer") < 1)
 			{
