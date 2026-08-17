@@ -181,6 +181,25 @@ class PBX_PlasmaBlaster : PB_WeaponBase
             }
             AMGR WXY 1;
             Goto Ready3;
+
+        Unload:
+			TNT1 A 0 A_Jumpif(pb_getmagunloaded(),"Ready3");
+            TNT1 A 0 A_ZoomFactor(1.0);
+            TNT1 A 0 A_PlaySound("weapons/smg_magfly1");
+            AMGR ABCDEF 1;
+            TNT1 A 0 A_PlaySound("weapons/smg_magfly2");
+            AMGR GHIJK 1;
+            TNT1 A 0 {
+                A_PlaySound("CELLOUT2", 5);
+                PB_UnloadMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname());
+                PB_SetMagEmpty(true);
+                PB_SetMagUnloaded(true);
+                PB_SetChamberEmpty(true);
+            }
+            AMGR LMNOPQ 1;
+            AMGZ CBA 1;
+            AMGR DCBA 1;
+            Goto Ready3;
         
         RaiseFromEmpty:
             AMGR ABCD 1;

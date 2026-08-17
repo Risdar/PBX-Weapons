@@ -55,7 +55,8 @@ class PBX_NeoHMG : PB_WeaponBase
 
 	const MAX_OVERHEAT	 		= 300;
 	const OVERHEAT_THRESHOLD	= 80;	// Overheat threshold for firing the special rounds
-	const OVERHEATCOOLING_RATE 	= 4;
+	const OVERHEATCOOLING_RATE 	= 4;	// How many tics before removing 5 overheat when not selected
+	const OVERHEATCOOLING_RATE2 = -5;	// Same as above but when the weapon is selected
 	const OVERHEATCOOLING_LAYER = 3;
 	const OVERHEAT_GIVE_OVR 	= 12;	// How much heat given when over Threshold
 	const OVERHEAT_GIVE_NORM	= 10;	// How much heat given when normal fire
@@ -122,7 +123,6 @@ class PBX_NeoHMG : PB_WeaponBase
 			    return PB_RespectIfNeeded();
 			}
 		SelectAnimation:
-			TNT1 A 0 {if(PB_GetOverheat() > 1) {cooldownOverheat();}}
 			TNT1 A 0 A_JumpIf(PB_GetMagUnloaded(), "UnloadedSelect");
 			HG0U ABCD 1;
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
@@ -396,17 +396,21 @@ class PBX_NeoHMG : PB_WeaponBase
 			goto Ready3;
 		
 		FlashKicking:
+			TNT1 A 0 cooldownOverheat();
 			HG0K ABCDEFGHHFEDCBA 1;
 			goto Ready3;
 			
 		FlashAirKicking:
+			TNT1 A 0 cooldownOverheat();
 			HG0K ABCDEFGHHHFEDCBA 1;
 			goto Ready3;
 			
 		FlashSlideKicking:
+			TNT1 A 0 cooldownOverheat();
 			HG0K ABCDEFGHHHHHHHHHHHHHGFEDCBA 1;
 			goto Ready3;
 			
+			TNT1 A 0 cooldownOverheat();
 		FlashSlideKickingStop:
 			HG0K GFEDCBA 1;
 			goto Ready3;
@@ -416,8 +420,8 @@ class PBX_NeoHMG : PB_WeaponBase
 			TNT1 A 1 {if(PB_GetOverheat() == 0) invoker.isOverheating = false;}
 			TNT1 A 8;
 			TNT1 A 4 {
-				// console.printf("lowered overheat");
-				PB_ModifyOverheat(-5);
+				PBXCore_Debug.Print("Lowered Overheat");
+				PB_ModifyOverheat(OVERHEATCOOLING_RATE2);
 			}
 			Wait;
 

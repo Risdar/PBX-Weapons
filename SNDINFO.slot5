@@ -26,3 +26,8 @@ weapons/chagan/start CG_WINDU
 // Eternal Chaingun
 weapon/EternalChaingun/Shoot "sounds/weapons/Slot-5/EternalChaingun/ETRCHSHO.wav"
 weapon/EternalChaingun/Stop "sounds/weapons/Slot-5/EternalChaingun/ETRCHSTO.ogg"
+
+// Super Nailgun
+SNGA SNGA
+SNGB SNGB
+SNFIRE SNFIRE

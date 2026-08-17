@@ -185,6 +185,7 @@ class PBX_SPAS12 : PB_WeaponBase
 
         AltFire:
 			TNT1 A 0 SPAS_HandleAlt();
+        ZoomIn:
             S12X ABCDEF 1;
             TNT1 A 0 {
                 A_ZoomFactor(1.5);

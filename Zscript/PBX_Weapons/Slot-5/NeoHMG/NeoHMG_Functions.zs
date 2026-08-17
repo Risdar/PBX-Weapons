@@ -267,7 +267,7 @@ extend class PBX_NeoHMG
 				break;
 			//Tic 2
 			case 2:
-				// console.printf("given overheat");
+				PBXCore_Debug.Print("given overheat");
 				PB_ModifyOverheat(overheating ? OVERHEAT_GIVE_OVR : OVERHEAT_GIVE_NORM);
 				// A_ZoomFactor(1.0, SPF_INTERPOLATE);
 				break;

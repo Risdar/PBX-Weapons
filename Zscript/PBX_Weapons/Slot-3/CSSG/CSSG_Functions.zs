@@ -13,13 +13,16 @@ extend class PBX_CSSG
     override void DoEffect() 
 	{
 		super.DoEffect();
-		If(	owner.player && owner.player.readyweapon.GetClass() is self.GetClass())
+		If(owner.player && owner.player.readyweapon)
 		{
 			if(hookCooldown > 0 && level.time % TICRATE == 0)
 			{
 				hookCooldown--;
 				if(hookCooldown == 0)
+				{
+					PBXCore_Debug.Print("Hook Cooldown finished");
 					owner.a_startsound("MHKSTRT",193,CHANF_DEFAULT,1,ATTN_NONE);
+				}
 			}
 		}
 	}
@@ -48,6 +51,19 @@ extend class PBX_CSSG
 				A_Print("$PBX_CSSG_NOHOOK");
 			A_StartSound("weapons/empty",190,CHANF_DEFAULT,1,ATTN_NONE);
 		}
+	}
+
+	// I'll just keep it in here although its unused
+	action state CSSG_Ready()
+	{
+		let pbxplr = PBXCore_Player(invoker.owner);
+		if(pbxplr && pbxplr.Grappled)
+			return A_DoPBWeaponAction(WRF_NOSWITCH|WRF_DISABLESWITCH);
+		
+		else if(pbxplr && !pbxplr.Grappled)
+			return A_DoPBWeaponAction();
+
+		return resolvestate(null);
 	}
 
 

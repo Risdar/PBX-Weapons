@@ -24,22 +24,23 @@ extend class PBX_BDPRailgun
 	{
 		super.DoEffect();
         if (level.isFrozen()) return;
-        
-        // Check if the player exists and if the current weapon they're using is the blaster
-		If(	owner.player && owner.player.readyweapon.GetClass() is self.GetClass())
+        if(!owner || !owner.player || !owner.player.readyweapon) return;
+
+        // So it always recharge even when not selected
+        if(hologramCooldown > 0 && level.time % TICRATE == 0)
         {
-            if(hologramCooldown > 0 && level.time % TICRATE == 0)
-			{
-				hologramCooldown--;
-				if(hologramCooldown == 0)
-					owner.A_StartSound("BEPBEP", CHAN_WEAPON, pitch:1.4);
-			}
-            
-            // Get a pointer to it
-            let weap = PBX_BDPRailgun(owner.player.readyweapon);
-            if(!weap || !weap.laserActive) return;
+            hologramCooldown--;
+            if(hologramCooldown == 0)
+            {
+                PBXCore_Debug.Print("Hologram Cooldown finished");
+                owner.A_StartSound("BEPBEP", CHAN_WEAPON, pitch:1.4);
+            }
+        }
+
+        // This way the laser will only spawn if the weapon is selected
+        if(owner.player.readyweapon.GetClass() is self.GetClass() && laserActive)
             PBX_SpawnLaserSight("PBX_BlueDot");
-		}
+
     }
 
     action void doScope()

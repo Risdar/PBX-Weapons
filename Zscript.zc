@@ -31,7 +31,8 @@ Version 4.13
 
 // Slot 5
 #include "Zscript/PBX_Weapons/Slot-5/NeoHMG/NeoHMG.zs" // NeoHMG
-#include "Zscript/PBX_Weapons/Slot-5/EternalChaingun/EternalChaingun.zs" // EternalChaingun
+#include "Zscript/PBX_Weapons/Slot-5/EternalChaingun/EternalChaingun.zs" // Eternal Chaingun
+#include "Zscript/PBX_Weapons/Slot-5/SuperNailgun/SuperNailgun.zs" // Super Nailgun
 
 // Slot 6
 #include "Zscript/PBX_Weapons/Slot-6/Excavator/Excavator.zs" // Excavator

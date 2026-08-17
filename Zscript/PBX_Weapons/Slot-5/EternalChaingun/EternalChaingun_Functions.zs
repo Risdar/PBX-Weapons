@@ -17,7 +17,7 @@ extend class PBX_EternalMinigun
         if(item.getClassName() == self.getClassName())
         {
             let plr = owner.player;
-            if(PBXCore_Debug) console.printf("Weapon Found");
+            PBXCore_Debug.Print("Weapon Found");
 
             // Check if the player already has this weapons
             let weap = PBX_EternalMinigun(owner.FindInventory("PBX_EternalMinigun"));
@@ -35,7 +35,7 @@ extend class PBX_EternalMinigun
                     owner.A_GiveInventory("PBXWeapons_InfiniteAmmo",1);
                     owner.A_GiveInventory("PBXWeapons_Drain",1);
                 }
-                if(PBXCore_Debug) console.printf("Getting Cooldown, %d",weap.mPowerTime);
+                PBXCore_Debug.PrintInt("Getting Cooldown, %",weap.mPowerTime);
                 if(pb_newmugshot) owner.A_SetMugshotState("MegasphereGrin");
             }
             item.bPickupgood = true;
@@ -48,7 +48,7 @@ extend class PBX_EternalMinigun
     override void PostBeginPlay()
     {
         mPowerTime = PBXCore_Duration.GetByCVarInSeconds("pbxweapons_echaingun_duration");
-        if(PBXCore_Debug) console.printf("Power Time is %d",mPowerTime);
+        PBXCore_Debug.PrintInt("Power Time is %d",mPowerTime);
         Super.PostBeginPlay();
     }
 
@@ -63,7 +63,7 @@ extend class PBX_EternalMinigun
 
         if(level.time % TICRATE != 0) return;
      
-        if(PBXCore_Debug) console.printf("counting seconds %d",weap.mPowerTime-1);
+        PBXCore_Debug.PrintInt("Counting seconds %d",weap.mPowerTime-1);
         weap.mPowerTime--;
     }
 

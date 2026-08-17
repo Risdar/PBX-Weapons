@@ -1,0 +1,5 @@
+Original Creator by idkfa
+this is an edited version that:
+1) works in the latest PB-Staging
+2) [RETRO] Wanderer managed to make it possible to spawn in the maps, it will replace sometimes the tri-barrel minigun upgrade
+3) Now this weapon has the ability to make enemies pinned to walls, courtesy of TheGamingHeel

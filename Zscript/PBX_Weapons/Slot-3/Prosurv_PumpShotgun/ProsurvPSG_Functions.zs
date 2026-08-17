@@ -18,16 +18,12 @@ extend class PBX_ProSurvPSG
     override void DoEffect() 
 	{
 		super.DoEffect();
-
         if (level.isFrozen()) return;
-        // Check if the player exists and if the current weapon they're using is the blaster
-		If(	owner.player && owner.player.readyweapon.GetClass() is self.GetClass())
-        {
-            // Get a pointer to it
-            let weap = PBX_ProSurvPSG(owner.player.readyweapon);
-            if(!weap || !weap.laserActive) return;
-            PBX_SpawnLaserSight("PBX_GreenDot");
-		}
+        if(!owner || !owner.player || !owner.player.readyweapon) return;
+
+        // This way the laser will only spawn if the weapon is selected
+        if(owner.player.readyweapon.GetClass() is self.GetClass() && laserActive)
+			PBX_SpawnLaserSight("PBX_GreenDot");
     }
 
 	action void cleanmodetokens()

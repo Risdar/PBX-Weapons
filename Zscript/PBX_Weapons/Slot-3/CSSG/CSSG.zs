@@ -106,9 +106,12 @@ Class PBX_CSSG : PB_WeaponBase
 			goto ready;
 
 		Ready3:
-			TNT1 A 0 CM_HandleCrosshair();
-			TNT1 A 0 PB_CoolDownBarrel();
-			C0ID A 2 A_DoPBWeaponAction();
+			C0ID A 2 {
+				CM_HandleCrosshair();
+				PB_CoolDownBarrel();
+				// return CSSG_Ready();
+				return A_DoPBWeaponAction();
+			}
 			loop;
 		
 		// FIRE STATES
@@ -142,13 +145,13 @@ Class PBX_CSSG : PB_WeaponBase
 			C0FF IHGFEDC 1;
 			C0ID A 1 A_DoPBWeaponAction(WRF_NOFIRE);
 			goto reload;
-		
+
 		AltFire:
 			TNT1 A 0 {
 				if(invoker.meathookMode)
 				{
 					A_trymeathook(1600);
-					return resolvestate("Ready");
+					return resolvestate("Ready3");
 				}
 				return resolvestate(null);
 			}

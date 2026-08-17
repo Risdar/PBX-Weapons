@@ -377,6 +377,19 @@ class HMGShield : PB_Ammo
     }
 }
 
+// Super Nailgun
+class SuperNailgunAmmo : PB_Ammo
+{
+    Default
+	{
+		inventory.amount 0;
+		inventory.maxamount PBX_SuperNailgun.MAGAZINE_SIZE;
+		ammo.backpackamount 0;
+		ammo.backpackmaxamount PBX_SuperNailgun.MAGAZINE_SIZE;
+        +INVENTORY.IGNORESKILL;
+	}
+}
+
 //////////////////////////// SLOT 6 ////////////////////////////////////////////////////////////////////////////////////
 // Cyberdemon Rocket Launcher
 class CyberRLDurability : PB_Ammo

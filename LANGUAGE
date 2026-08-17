@@ -145,6 +145,10 @@ PBX_EternalChaingun_Tag             = "UAC BD Eternal Chaingun";
 
 PBX_EternalChaingun_NoBerserk       = "You need \cgBerserk\c- to Use this Weapon";
 
+// Super Nailgun
+PBX_SuperNailgun_Pickup             = "Super Nailgun (Slot 5)";
+PBX_SuperNailgun_Tag                = "UAC Prototype Super Nailgun";
+
 //////////////////////////// SLOT 6 ///////////////////////////////////////////////////////////////////////////////
 // Excavator
 PBX_Excavator_Pickup                = "Excavator (Slot 6)";

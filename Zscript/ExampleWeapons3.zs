@@ -147,27 +147,8 @@ class PBX_PlasmaBlaster : PB_WeaponBase
             }
             TNT1 A 0 PB_ReFire("AltFireBurst");
             Goto Ready3;
-            
-        ChargeFire:
-            TNT1 A 0 PB_JumpIfNoAmmo(min:TAKE_CHARGE,chamber:false);
-            AMGF A 1 A_PlaySound("BEP",7);
-            AMGF B 1 A_PlaySound("BEP",8);
-            AMGF C 1 A_PlaySound("BEP",9);
-            AMGF CD 5;
-        ChargeHold:
-            AMGF D 1 A_FireCustomMissile("RedFlareSpawn", 0, 0, 0, 0);
-            TNT1 A 0 PB_ReFire("ChargeHold");
-        FireCharge:
-            TNT1 E 0 A_PlaySound("HRFire");
-            AMGF E 1 {
-		        PB_FireBullets("HellPistolCharge", 1, 0, 0, 0, 0);
-                PB_TakeAmmo(invoker.ammo2.getClassName(),TAKE_CHARGE);
-            }
-            AMGF F 1;
-            AMGF G 1;
-            AMGL A 10;
-            Goto Ready3;
 
+//////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
         Reload:
             TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null,null,"Ready3","Ready3",MAXCHARGE);
             TNT1 A 0 A_ZoomFactor(1.0);
@@ -203,14 +184,20 @@ class PBX_PlasmaBlaster : PB_WeaponBase
             AMGZ ABC 1;
             Goto ContinueReload;
 
+//////////////////////////// UNLOAD ////////////////////////////////////////////////////////////////////////////////////
+        Unload:
+			TNT1 A 0 A_Jumpif(pb_getmagunloaded(),"Ready3");
+            TNT1 A 0 {
+				PB_UnloadMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname());
+				PB_SetMagUnloaded(true);
+				PB_SetChamberEmpty(true);
+			}
+            goto Ready3;
+
 //////////////////////////// WEAPON SPECIAL ////////////////////////////////////////////////////////////////////////////////////
         WeaponSpecial:
             TNT1 A 0 A_TakeInventory("GoWeaponSpecialAbility", 1);
-            Goto Ready3;
-            
-//////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
-
-//////////////////////////// UNLOAD ////////////////////////////////////////////////////////////////////////////////////
+            Goto Ready3;            
 
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////
         FlashPunching:

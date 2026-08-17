@@ -11,25 +11,22 @@ extend class PBX_ProsurvBlaster
 	{
 		super.DoEffect();
         if (level.isFrozen()) return;
-        // Check if the player exists and if the current weapon they're using is the blaster
-        If(	owner.player && owner.player.readyweapon.GetClass() is self.GetClass())
-        {
-            // Get a pointer to it
-            let weap = PBX_ProsurvBlaster(owner.player.readyweapon);
-            if(!weap) return;
+        if(!owner || !owner.player || !owner.player.readyweapon) return;
 
-            // Get a pointer to PSprite
-            let psp = owner.player.FindPSprite(PSP_WEAPON);
-            if(!psp) return;
+        // Get a pointer to the weapon and PSprite
+        let psp = owner.player.FindPSprite(PSP_WEAPON);
+        if(!psp) return;
 
-            if(weap.ammo1.amount < MAXCHARGE)
-                giveBlasterCharge(psp,weap);
-            if(weap.laserActive)
-                PBX_SpawnLaserSight("PBX_BlueDot");
-        }
+        // This way the blaster will always recharge even if not selected
+        if(self.ammo1.amount < MAXCHARGE)
+            giveBlasterCharge(psp);
+
+        // This way the laser will only spawn if the weapon is selected
+        if(owner.player.readyweapon is self.GetClass() && laserActive)
+            PBX_SpawnLaserSight("PBX_BlueDot");
     }
 
-    void giveBlasterCharge(PSprite psp, PBX_ProsurvBlaster weap)
+    void giveBlasterCharge(PSprite psp)
     {
         // Dont give the charge if they're in one of the exceptions
         static const StateLabel blockedStates[] = {
@@ -42,8 +39,8 @@ extend class PBX_ProsurvBlaster
         }
 
         // Give the charge every this amount of tic
-        if(level.time % GIVECHARGE == 0)
-            owner.A_GiveInventory(weap.ammo1.getClassName(),1);
+        if(level.time % GIVECHARGE != 0) return;
+        owner.A_GiveInventory(self.ammo1.getClassName(),1);
     }
 
     action state A_PressingReload()
