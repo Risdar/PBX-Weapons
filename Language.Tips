@@ -64,6 +64,11 @@ PBX_NeoHMG_Tip3 = "You can activate the shield by holding %s, it will then block
 PBX_NeoHMG_Tip4 = "Pressing the %s key while the shield is active will detonate the shield stunning nearby enemies.";
 PBX_NeoHMG_Tip5 = "The Stun Area and Damage is based on the remaining shield charges.";
 
+// Super Nailgun
+PBX_SuperNailgun_Tip1 = "The Super Nailgun has an overheat system and will overheat at %d° C.";
+PBX_SuperNailgun_Tip2 = "When overheated the weapon will fire lightning nails that arc to nearby enemies.";
+PBX_SuperNailgun_Tip3 = "Pressing %s will spin the weapon passively increasing the overheat.";
+
 //////////////////////////// SLOT 6 ///////////////////////////////////////////////////////////////////////////////
 // Excavator
 PBX_Excavator_Tip1 = "The Excavator is a specialized projectile launcher that has two modes";

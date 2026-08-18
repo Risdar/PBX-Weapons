@@ -13,17 +13,18 @@ enum PBXWeapons_eWeaponTipFlags
     PBX_TIP_M41A                = 1 << 7,
     // SLOT 5 
     PBX_TIP_NEOHMG              = 1 << 8,
+    PBX_TIP_SUPERNAILGUN        = 1 << 9,
     // SLOT 6
-    PBX_TIP_HGL                 = 1 << 9,
-    PBX_TIP_EXCAVATOR           = 1 << 10,
-    PBX_TIP_CYBERDEMONRL        = 1 << 11,
-    PBX_TIP_MASTERMINDCG        = 1 << 12,
-    PBX_TIP_PAINGIVER           = 1 << 13,
+    PBX_TIP_HGL                 = 1 << 10,
+    PBX_TIP_EXCAVATOR           = 1 << 11,
+    PBX_TIP_CYBERDEMONRL        = 1 << 12,
+    PBX_TIP_MASTERMINDCG        = 1 << 13,
+    PBX_TIP_PAINGIVER           = 1 << 14,
     // SLOT 7
-    PBX_TIP_BDPRAILGUN          = 1 << 14,
+    PBX_TIP_BDPRAILGUN          = 1 << 15,
     // SLOT 9
-    PBX_TIP_DEMONMINIGUN        = 1 << 15,
-    PBX_TIP_DEMONEXT            = 1 << 16,
+    PBX_TIP_DEMONMINIGUN        = 1 << 16,
+    PBX_TIP_DEMONEXT            = 1 << 17,
     // OTHERS
     PBX_TIP_COMMANDERWEAPON     = 1 << 29,
     PBX_TIP_MONSTERWEAPON       = 1 << 30,
@@ -139,6 +140,15 @@ extend class PBX_WeaponBase
                 tips.Push(string.format(StringTable.Localize("$PBX_NeoHMG_Tip4"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+pb_specialwheel")));
                 tips.Push("$PBX_NeoHMG_Tip5");
                 PBXCore_TipsManager.SendTipArrayIfNeeded(tips, WEAPON_HELPTEXT, PBX_TIP_NEOHMG);
+            }
+            break;
+            case 'PBX_SuperNailgun':
+            {
+                Array<String> tips;
+                tips.Push(string.format(StringTable.Localize("$PBX_SuperNailgun_Tip1"),PBX_SuperNailgun.OVERHEAT_THRESHOLD));
+                tips.Push("$PBX_SuperNailgun_Tip2");
+                tips.Push(string.format(StringTable.Localize("$PBX_SuperNailgun_Tip3"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+ALTATTACK")));
+                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, WEAPON_HELPTEXT, PBX_TIP_SUPERNAILGUN);
             }
             break;
 
