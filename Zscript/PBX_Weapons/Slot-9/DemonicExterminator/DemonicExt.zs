@@ -1,9 +1,6 @@
 // Includes
 #include "./DemonicExtFunctions.zs"
 #include "./DemonicExtAttacks.zs"
-#include "./DemonicExtProj.zs"
-#include "./DemonicExtProj2.zs"
-#include "./DemonicExtProj3.zs"
 #include "./DemonicExtStuff.zs"
 #include "./DemonicExt_Wheel.zs"
 

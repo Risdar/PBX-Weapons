@@ -1,5 +1,4 @@
 // Includes
-#include "./NukeLauncher_Projectile.zs"
 
 // Actual Weapon
 class PBX_NukeLauncher : PB_WeaponBase

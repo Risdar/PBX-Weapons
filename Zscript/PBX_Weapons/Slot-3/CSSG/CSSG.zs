@@ -1,7 +1,6 @@
 // Includes
 #include "./CSSG_Functions.zs"
 #include "./CSSG_Wheel.zs"
-#include "./CSSG_Projectiles.zs"
 #include "./CSSG_helpers.zs"
 
 Class PBX_CSSG : PB_WeaponBase

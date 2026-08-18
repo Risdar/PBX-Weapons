@@ -1,6 +1,5 @@
 // Includes
 // #include "./PlasmaBlaster_Functions.zs"
-// #include "./PlasmaBlaster_Projectiles.zs"
 // #include "./PlasmaBlaster_Wheel.zs"
 
 // Actual Weapon
@@ -45,14 +44,16 @@ class PBX_SuperNailgun : PB_WeaponBase
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
 	bool isOverheating;
 
+    const LIGTNING_DAMAGE       = 2;    // Damage per tics
+    const NAIL_ALTFIRE_AMOUNT   = 5;   // How many nail is shot on the altfire
     const MAGAZINE_SIZE         = 100; 
 
     const MAX_OVERHEAT	 		= 300;
-	const OVERHEAT_THRESHOLD	= 80;	// Overheat threshold for firing the special rounds
+	const OVERHEAT_THRESHOLD	= MAX_OVERHEAT/2;	// Overheat threshold for firing the special rounds
 	const OVERHEATCOOLING_RATE 	= 4;	// How many tics before removing 5 overheat when not selected
-	const OVERHEATCOOLING_RATE2 = -5;	// Same as above but when the weapon is selected
+	const OVERHEATCOOLING_RATE2 = -5;	// Decrease overheat when the weapon is selected
 	const OVERHEATCOOLING_LAYER = 3;
-	const OVERHEAT_GIVE_OVR 	= 12;	// How much heat given when over Threshold
+	const OVERHEAT_GIVE_OVR 	= OVERHEAT_GIVE_NORM*1.1;	// How much heat given when over Threshold
 	const OVERHEAT_GIVE_NORM	= 10;	// How much heat given when normal fire
 
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
@@ -88,12 +89,35 @@ class PBX_SuperNailgun : PB_WeaponBase
     action void SuperNailgun_Fire()
     {
         A_ZoomFactor (0.98);
-        PB_LowAmmoSoundWarning("lmg");
+        PB_LowAmmoSoundWarning("hdmr");
         PB_TakeAmmo(invoker.ammo2.getClassName(),emptyMag:0,emptyChamber:0);
         A_PlaySound("SNFIRE", 50);
-        A_FireProjectile("SuperNail_Hot");
+        PB_FireBullets("SuperNail_Hot",1,0,7,0,1);
+        if(PB_GetOverheat() >= OVERHEAT_THRESHOLD)
+        {
+            A_StartSound("LGLoop", CHAN_WEAPON, CHANF_OVERLAP, 1.0, pitch: 1.2);
+            PB_FireBullets("SuperNail_Lightning",1,0,7,0,1);
+            A_GunFlash();
+        }
         PB_WeaponRecoil(-0.6, 0);
         PB_ModifyOverheat(invoker.isOverheating ? OVERHEAT_GIVE_OVR : OVERHEAT_GIVE_NORM);
+    }
+
+    action void SuperNailgun_AltFire()
+    {
+        A_ZoomFactor (0.96);
+        SuperNailgun_PLaysound();
+        A_PlaySound("SNFIRE", 52);
+        PB_LowAmmoSoundWarning("hdmr");
+        PB_TakeAmmo(invoker.ammo2.getClassName(),NAIL_ALTFIRE_AMOUNT,0,0);
+        PB_FireBullets("SuperNail_Hot",NAIL_ALTFIRE_AMOUNT,0,7,0,1);
+        if(PB_GetOverheat() >= OVERHEAT_THRESHOLD)
+        {
+            A_StartSound("LGLoop", CHAN_WEAPON, CHANF_OVERLAP, 1.0, pitch: 1.2);
+            PB_FireBullets("SuperNail_Lightning",NAIL_ALTFIRE_AMOUNT,0,7,0,1);
+            A_GunFlash();
+        }
+        PB_ModifyOverheat(invoker.isOverheating ? OVERHEAT_GIVE_OVR*NAIL_ALTFIRE_AMOUNT : OVERHEAT_GIVE_NORM*NAIL_ALTFIRE_AMOUNT);
     }
 
     // To Reduce boilerplate
@@ -200,24 +224,14 @@ class PBX_SuperNailgun : PB_WeaponBase
                 PB_HandleCrosshair(39);
                 A_TakeInventory("PB_LockScreenTilt",1);
             }
-            // TNT1 A 0 PB_JumpIfNoAmmo(min:4);
+            TNT1 A 0 PB_JumpIfNoAmmo(min:NAIL_ALTFIRE_AMOUNT);
             TNT1 A 0 SuperNailgun_PLaysound();
             SNR1 MNO 1 A_DoPBWeaponAction();
             TNT1 A 0 SuperNailgun_PLaysound();
             SNR1 MNO 1 A_DoPBWeaponAction();
             TNT1 A 0 SuperNailgun_PLaysound();
-            TNT1 A 0 PB_ModifyOverheat(invoker.isOverheating ? OVERHEAT_GIVE_OVR : OVERHEAT_GIVE_NORM);
-            loop;
-
             SNR1 MNO 1;
-            TNT1 A 0 A_ZoomFactor (0.96);
-            TNT1 A 0 SuperNailgun_PLaysound();
-            TNT1 A 0 A_PlaySound("SNFIRE", 52);
-            TNT1 A 0 A_FireProjectile("SuperNail_Hot");
-            TNT1 A 0 A_FireProjectile("SuperNail_Hot",  0, 0, 7);
-            TNT1 A 0 A_FireProjectile("SuperNail_Hot",  0, 0, -7);
-            TNT1 A 0 A_FireProjectile("SuperNail_Hot",  0, 0, 0, -8);
-            TNT1 A 0 PB_TakeAmmo(invoker.ammo2.getClassName(),emptyMag:0,emptyChamber:0);
+            TNT1 A 0 SuperNailgun_AltFire();
             SNLR F 1 BRIGHT;
             TNT1 A 0 PB_WeaponRecoil(-2.5, 0);
             TNT1 A 0 A_ZoomFactor (1);
@@ -316,177 +330,5 @@ class PBX_SuperNailgun : PB_WeaponBase
 			TNT1 A 0 cooldownOverheat();
             MSNK BCDEFGG 1;             // 7 frames
             goto Ready3;
-    }
-}
-
-class SuperNail_Hot : PB_MGNailHot
-{
-    Default
-    {
-		PB_Projectile.BaseDamage 50;
-    }
-
-	override void OnHitActor(Actor target, Name dmgType)
-    {
-        if(target.bIsMonster && target is "PB_Monster" && self.truedamage >= target.health)
-        {
-            S_StartSound("ThunderStrike",0);
-            // Compute angles for LineTraceVisual
-            double yaw = 0;         // Straight up
-            double pitch = -90;     // -90 degrees (purely vertical)
-
-            FLineTraceData traceData;
-/* 					bool traceResult = Line3d.LineTraceVisual(
-                target,             // Source actor
-                yaw,                // Yaw (straight up)
-                2000,               // Distance to check
-                pitch,              // Pitch (-90° up)
-                TRF_NOSKY | TRF_THRUACTORS, // Ignore actors, but stop at sky
-                target.Height,                 // OffsetZ (check from above)
-                0,                  // OffsetXY
-                0,                  // OffsetSide
-                data: traceData,    // Output trace data
-                LineClassName: "Line3d",
-                TimeToLive: 1,
-                TimeToCycle: 0,
-                MarkerClassName: "Marker3d"
-            );
-*/
-            
-            bool traceResult = target.LineTrace(
-                yaw,                // Yaw (straight up)
-                2000,               // Distance to check
-                pitch,              // Pitch (-90° up)
-                TRF_NOSKY | TRF_THRUACTORS, // Ignore actors, but stop at sky
-                target.Height,                 // OffsetZ (check from above)
-                0,                  // OffsetXY
-                0,                  // OffsetSide
-                data: traceData
-            );
-
-            if (!traceResult) 
-            {
-//					Console.Printf("\cy%s is under open sky! Spawning explosion.", target.GetTag());
-                Actor.Spawn("LightningBolt",(target.pos.x,target.pos.y,target.pos.z));
-            }
-            else
-            {
-//					Console.Printf("\cy%s is NOT under open sky! Finding nearest valid spot...", target.GetTag());
-                FireGroundTracers(target);
-            }
-        }
-    }
-
-    void FireGroundTracers(Actor target)
-	{
-		double distance = 256;  // Distance outward
-		double pitch = 25;      // Downward pitch in degrees
-
-		// Separate arrays for X, Y, Z coordinates of valid locations
-		Array<double> validX;
-		Array<double> validY;
-		Array<double> validZ;
-
-		for (int i = 0; i < 8; i++)
-		{
-			double yaw = i * 45; // 0°, 45°, 90°, ..., 315°
-
-			FLineTraceData traceData;
-/*			bool traceResult = Line3d.LineTraceVisual(
-				target,               // Source actor (target)
-				yaw,                  // Yaw angle (fixed-point Doom angle)
-				distance,             // Distance of the trace
-				pitch,                // Downward pitch
-				TRF_THRUACTORS,       // Pass through actors, but hit ground
-				target.Height,        // Start at the actor’s height
-				0,                    // OffsetXY
-				0,                    // OffsetSide
-				data: traceData,      // Output trace data
-				LineClassName: "LaserBlast", // Debug visual
-				TimeToLive: 105,
-				TimeToCycle: 0,
-				MarkerClassName: "Marker3d"
-			);
-			*/
-			
-			bool traceResult = target.LineTrace(
-				yaw,                  // Yaw angle (fixed-point Doom angle)
-				distance,             // Distance of the trace
-				pitch,                // Downward pitch
-				TRF_THRUACTORS,       // Pass through actors, but hit ground
-				target.Height,        // Start at the actor’s height
-				0,                    // OffsetXY
-				0,                    // OffsetSide
-				data: traceData
-			);
-
-			if (traceResult && traceData.HitType == TRACE_HitFloor)
-			{
-//				Console.Printf("\cdTracer %d hit ground at: (%f, %f, %f)", i, traceData.HitLocation.X, traceData.HitLocation.Y, traceData.HitLocation.Z);
-
-				// SECOND TRACE UPWARD
-				FLineTraceData skyTraceData;
-			/*	bool skyTraceResult = Line3d.LineTraceVisual(
-					target,                // Source actor (target)
-					0,                     // Yaw angle (same as before)
-					2000,                  // Large upward distance
-					-90,                   // Straight up
-					TRF_NOSKY | TRF_THRUACTORS | TRF_ABSPOSITION | TRF_ABSOFFSET, // Ignore actors, check for sky
-					traceData.HitLocation.Z,    // Start from ground hit location
-					traceData.HitLocation.X,    // X offset (from previous hit)
-					traceData.HitLocation.Y,    // Y offset (from previous hit)
-					data: skyTraceData,         // Output trace data
-					LineClassName: "Line3d",    // Debug visual
-					TimeToLive: 105,
-					TimeToCycle: 0,
-					MarkerClassName: "Marker3d"
-				);
-				*/
-				
-				bool skyTraceResult = target.LineTrace(
-					0,                     // Yaw angle (same as before)
-					2000,                  // Large upward distance
-					-90,                   // Straight up
-					TRF_NOSKY | TRF_THRUACTORS | TRF_ABSPOSITION | TRF_ABSOFFSET, // Ignore actors, check for sky
-					traceData.HitLocation.Z,    // Start from ground hit location
-					traceData.HitLocation.X,    // X offset (from previous hit)
-					traceData.HitLocation.Y,    // Y offset (from previous hit)
-					data: skyTraceData
-				);
-
-				if (!skyTraceResult) // Sky is clear
-				{
-//					Console.Printf("\cySky is clear above: (%f, %f, %f)", traceData.HitLocation.X, traceData.HitLocation.Y, traceData.HitLocation.Z);
-
-					// Store X, Y, Z separately
-					validX.Push(traceData.HitLocation.X);
-					validY.Push(traceData.HitLocation.Y);
-					validZ.Push(traceData.HitLocation.Z);
-				//	Actor.Spawn("LightningBolt",(traceData.HitLocation.X,traceData.HitLocation.Y,traceData.HitLocation.Z));
-				}
-				else
-				{
-//					Console.Printf("\cgSky blocked at: (%f, %f, %f)", skyTraceData.HitLocation.X, skyTraceData.HitLocation.Y, skyTraceData.HitLocation.Z);
-				}
-			}
-			else
-			{
-//				Console.Printf("\coTracer %d missed ground! No valid hit location.", i);
-			}
-		}
-
-		// Spawn explosion at a random valid location if we have any
-		if (validX.Size() > 0)
-		{
-			int randomIndex = Random(0, validX.Size() - 1);
-			double chosenX = validX[randomIndex];
-			double chosenY = validY[randomIndex];
-			double chosenZ = validZ[randomIndex];
-
-//			Console.Printf("\cGSpawning explosion at: (%f, %f, %f)", chosenX, chosenY, chosenZ);
-
-			// Spawn the explosion
-			Actor.Spawn("LightningBolt", (chosenX, chosenY, chosenZ));
-		}
     }
 }

@@ -1,6 +1,5 @@
 // Includes
 #include "./MastermindCG_Functions.zs"
-#include "./MastermindCG_Projectiles.zs"
 
 class PBX_MastermindChaingun : PB_WeaponBase
 {

@@ -1,5 +1,4 @@
 // // Includes
-#include "./Paingiver_Projectiles.zs"
 // #include "./CyberRL_Projectiles.zs"
 
 class PBX_Paingiver : PB_WeaponBase

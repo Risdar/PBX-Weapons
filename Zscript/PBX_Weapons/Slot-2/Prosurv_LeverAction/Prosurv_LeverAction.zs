@@ -1,6 +1,5 @@
 // Includes
 #include "./LeverAction_Functions.zs"
-#include "./LeverAction_Projectiles.zs"
 #include "./LeverAction_Wheel.zs"
 
 class LA_Select_Marlin : inventory {default{inventory.maxamount 1;}}

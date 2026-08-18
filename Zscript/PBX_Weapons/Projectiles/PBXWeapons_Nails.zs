@@ -1,3 +1,4 @@
+//////////////////////////// CROSSBOW BALLISTA ////////////////////////////////////////////////////////////////////////////////////
 class BallistaBolt : PB_NailgunGlue 
 {
     Default
@@ -274,4 +275,115 @@ class BallistaFlare : actor
             FLAR A 2 BRIGHT;
             Stop;
     }
+}
+
+//////////////////////////// SUPER NAILGUN ////////////////////////////////////////////////////////////////////////////////////
+class SuperNail_Hot : PB_MGNailHot
+{
+    Default
+    {
+		PB_Projectile.BaseDamage 50;
+    }
+}
+
+class SuperNail_Lightning : SuperNail_Hot
+{
+    States
+    {
+        Fade:
+            TNT1 A 0 {
+                DoLightning = false;
+                PBXCore_Debug.Print("Lightning Disabled");
+            }
+            goto Super::Fade;
+
+        // DeathLoop:
+        //     NLPJ B 35 {
+        //         tics = lifetime;
+        //         roll = random(15, -15);
+        //         if(hitplane > 0) { //floor
+        //             bXFLIP = random(0, 1);
+        //             frame = 3;
+        //             if(hitplane > 1) //ceiling
+        //                 roll += 180;
+        //         }
+        //         DoLightning = true;
+        //         PBXCore_Debug.Print("Lightning Enabled");
+        //         SpawnLightning();
+        //     }
+        //     Goto Fade;
+    }
+
+    bool DoLightning;
+
+    override void Tick()
+	{
+		Super.Tick();
+		if(isfrozen())
+			return;
+		if (DoLightning && level.time % 3 == 0) 
+			SpawnLightning();
+	}
+
+    override int DoSpecialDamage(actor victim,int damage,name damagetype)
+	{
+		if(victim == target) return 0;
+		return Super.DoSpecialDamage(victim,damage,damagetype);
+	}
+
+    override void PostBeginPlay()
+	{
+		DoLightning = true;
+		A_StartSound("Bfgfly1",CHAN_BODY,CHANF_OVERLAP|CHANF_LOOPING);
+        PBXCore_Debug.Print("PostBeginPlay Called");
+		Super.PostBeginPlay();
+	}
+
+    Void SpawnLightning(int dist = 512)
+	{
+		if(!target) return;
+		BlockThingsIterator bti = BlockThingsIterator.Create(self,dist);
+		actor current;
+		
+		//was not fired by a player?
+		bool bad = (target && !target.player);
+		
+		while(bti.next())
+		{
+			current = bti.thing;
+            // PBXCore_Debug.Print("Checking Nearby");
+
+            //if there no monster, the monster is dead, isnt shootable, the monster is a player (and its not fired from a player)
+			//the monster is not on sight
+			if(!current || current == target || current.health < 1 ||!current.bshootable || !current.bsolid || 
+			!self.checksight(current) || (!bad && current.player) || (!bad && !current.bismonster) || current.isfriend(target))
+				continue;
+            // PBXCore_Debug.Print("Second Check Done");
+			
+			//check if the thing is not too far away
+			int distance = self.distance3D(current);
+			if(distance > dist)
+				continue;
+				
+			//get the position of the nail and the monster
+            Vector3 beamstart = PBXCore_ArcSplitController.GetBeamAttachPos(self);
+		    Vector3 beamEnd = PBXCore_ArcSplitController.GetBeamAttachPos(current);
+			
+            PBXCore_Debug.Print("Lightning Spawned");
+			PBXCore_ArcSplitController.StartChain(
+                self.target, 
+                current, 
+                PBX_SuperNailgun.LIGTNING_DAMAGE, 
+                range:dist, 
+                duration:2,     // How long should it linger on the monster
+                delay:2,        // How long before it splits into another lightning
+                maxsplits:1,    // How many arc it should split to
+                maxlinks:1      // How many times can the split arc jump to other monsters
+            );
+            PBXCore_ArcSplitController.DrawLightning(beamstart,beamend,spawnSpark:true, playersource: self.target.player);
+            PBXCore_ArcSplitController.DrawLightning(beamstart,beamend,spawnSpark:true, playersource: self.target.player);
+		}
+		
+	}
+
 }

@@ -1,3 +1,4 @@
+//////////////////////////// EXCAVATOR ////////////////////////////////////////////////////////////////////////////////////
 class BolaStuckOnMonster : inventory{default{inventory.maxamount 1;}}
 
 class Razorblade : PB_ProjectileAlt
@@ -831,5 +832,709 @@ Class ExcavatorDropShot : PB_ProjectileAlt
 		Bounce.Floor:
 			TNT1 A 0 A_SpawnItemEx("DropShotExplode",0,0,-5,0,0,0,0,SXF_NOCHECKPOSITION,0);
 			Stop;
+	}
+}
+
+//////////////////////////// CYBERDEMON ROCKET LAUNCHER ////////////////////////////////////////////////////////////////////////////////////
+class CRL_NormalRockets : PB_ProjectileAlt
+{
+    Default
+    {
+		PB_Projectile.BaseDamage 350;
+		+PB_PROJECTILE.NOCRITICALS
+        DamageType "Explosive";
+        Decal "Scorch";
+        RenderStyle "Add";
+        Radius 10;
+        Height 8;
+        Speed 90;
+        gravity 0;
+        // +MISSILE;
+        Projectile;
+        -RIPPER
+        +EXTREMEDEATH
+        +BLOODSPLATTER 
+        +THRUSPECIES
+        +MTHRUSPECIES
+        +RANDOMIZE
+        Species "Marines";
+        Scale 2.0;
+        SeeSound "DSCANFIR";
+        DeathSound "Explosion";
+        Obituary "%o was blown up by %k's Cyberdemon missile launcher. Ouch!";
+    }
+
+    States
+	{
+        Spawn:
+            TNT1 A 0 A_JumpIf(waterlevel > 1, "SpawnUnderwater");
+            WYVB A 1 Bright A_SpawnItem("RedFlareSmall22",0,0);
+            TNT1 A 0 A_CustomMissile ("OldschoolRocketSmokeTrail2", 2, 0, random (160, 210), 2, random (-30, 30));
+            TNT1 A 0 A_JumpIfInventory("lowgraphicsmode", 1, "SpawnCheap");
+            Loop;
+            
+        SpawnCheap:
+            TNT1 A 0;
+            WYVB A 1 Bright A_SpawnItem("RedFlareSmall22",0,0);
+            Loop;
+        
+        SpawnUnderwater:
+            WYVB A 1 Bright A_SpawnItem("YellowFlareSmall",0,0);
+            Goto Spawn1;
+           
+        Crash:
+		XDeath:
+		Death:
+			TNT1 A 0 {
+				A_Stop();
+				bNOINTERACTION = true;
+				bNOGRAVITY = true;
+			}
+			TNT1 A 0;
+			TNT1 A 0
+			{
+				A_Explode((80), 200);
+				A_StopSound(105);
+				A_StartSound("FAREXPL", CHAN_AUTO,CHANF_OVERLAP,0.5,0,1.1);
+				Radius_Quake (2, 4, 0, 7, 0);
+				A_SpawnItemEx ("DetectFloorCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+				A_SpawnItemEx ("DetectCeilCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+				A_SpawnItemEx ("ExplosionFlareSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+				A_SpawnItemEx ("LiquidExplosionEffectSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+				A_SpawnProjectile ("ExplosionSmokeFast22", 0, 0, random (0, 360), 2, random (0, 360));
+				A_SpawnProjectile ("MediumExplosionFlames", 0, 0, random (0, 360), 2, random (0, 360));
+				A_SpawnProjectile ("PBExplosionparticles", 0, 0, random (0, 360), 2, random (40, 90));
+				A_SpawnProjectile ("PBExplosionparticles2", 0, 0, random (0, 360), 2, random (40, 90));
+				A_SpawnProjectile ("PBExplosionparticles3", 10, 0, random (0, 360), 2, random (40, 90));
+			}
+			TNT1 A 0 A_Jump(256, "Spawn1", "Spawn2", "Spawn3");
+		Spawn1:
+			X004 ABCDE 1 bright Light("EXPLOSIONFLASH");
+			X004 FGHIJKLMNOPQ 1 bright;
+			stop;
+		Spawn2:
+			X003 ABCDE 1 bright Light("EXPLOSIONFLASH");
+			X003 FGHIJKLMNOPQRSTUVWXYZ 1 bright;
+			stop;
+		Spawn3:
+			X125 ABCDE 1 bright Light("EXPLOSIONFLASH");
+			X125 FGHIJKLMNOPQR 1 bright;
+			Stop;
+	}
+}
+
+class CRL_PiercingRockets : CRL_NormalRockets
+{
+    Default
+    {
+        +RIPPER
+		PB_Projectile.BaseDamage 250;
+		PB_Projectile.RipperCount 12;
+        PB_Projectile.PenetrationCount 5;
+        Scale 1.0;
+    }
+}
+
+//////////////////////////// SPIDER MASTERMIND CHAINGUN ////////////////////////////////////////////////////////////////////////////////////
+class MastermindCGProjectile : PB_MasterMindTracer
+{
+	Default
+	{
+		+RIPPER;
+		PB_Projectile.BaseDamage 200;
+		PB_Projectile.RipperCount 1;
+        PB_Projectile.PenetrationCount 3;
+		+PB_PROJECTILE.NOCRITICALS
+		Species "Marines";
+	}
+}
+
+// The code homing code is from Gun Bonsai
+class MastermindCG_SoulSeeker : MastermindCGProjectile
+{
+	Default
+	{
+		+RIPPER;
+		PB_Projectile.BaseDamage 150;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		let aux = HomingShots_Aux(GiveInventoryType("HomingShots_Aux"));
+		if (aux)
+		{
+			aux.level = 50; // adjusts how strong is the homing
+			aux.SetStateLabel("Homing");
+		}
+	}
+
+	override void OnDestroy()
+	{
+		Super.OnDestroy();
+
+		// Remove the homing aux if we die
+		Inventory aux = FindInventory("HomingShots_Aux");
+		if (aux) aux.Destroy();
+	}
+}
+
+//////////////////////////// PAINGIVER ////////////////////////////////////////////////////////////////////////////////////
+class SeekerRocket : PB_ProjectileAlt
+{
+    Default
+    {
+        PB_Projectile.BaseDamage 100;
+		+PB_PROJECTILE.NOCRITICALS
+        Radius 11;
+        Height 8;
+        Speed 30;
+        Projectile;
+        +FRIENDLY
+        +FORCEPAIN
+        +RANDOMIZE
+        +DEHEXPLOSION
+        +EXTREMEDEATH
+        +ROCKETTRAIL
+        +BOSS
+        DamageType "Nodrop";
+        SeeSound "weapons/rocklf";
+        DeathSound "rlboom";
+        Decal "Scorch";
+    }
+
+    override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		let aux = HomingShots_Aux(GiveInventoryType("HomingShots_Aux"));
+		if (aux)
+		{
+			aux.level = 50; // adjusts how strong is the homing
+			aux.SetStateLabel("Homing");
+		}
+	}
+
+    override void OnDestroy()
+	{
+		Super.OnDestroy();
+
+		// Remove the homing aux if we die
+		Inventory aux = FindInventory("HomingShots_Aux");
+		if (aux) aux.Destroy();
+	}
+
+	States
+	{
+        Spawn:
+            MISL A 0;
+        MissileFlying:
+            TNT1 A 0 {
+                If(WaterLevel < 1)
+                A_SpawnItemEx("RocketTrailSparks",-10,0,0,-5,0,0);
+            }
+            MISL A 0;
+            M1SL ABCD 1 Bright {
+                A_SpawnItemEx("SeekerFlare");
+                // A_SeekerMissile(7, 10, SMF_PRECISE|SMF_LOOK, 256, 10);
+                A_SpawnItemEx("SeekerRocketSmokeTrail",-14,0,0,0,FRandom(-0.5,0.5),FRandom(-0.5,0.5),0,0,64);
+            }
+            Loop;
+
+        Death:
+            MISL A 0;
+            TNT1 A 0 A_StopSound(6);
+            EXPL A 0 {
+                Radius_Quake (3, 16, 0, 15, 0);
+                A_SpawnItem ("RicoChet", 0, -30);
+                A_SpawnItemEx ("DetectFloorCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+                A_SpawnItemEx ("DetectCeilCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+            //A_SpawnItemEx ("UnderwaterExplosion",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+            }
+            TNT1 A 0 Bright {
+                A_SpawnItemEx ("ExplosionFlareSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+                A_SpawnItemEx ("RocketExplosion",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+                A_SpawnItemEx ("NewRocketExploFX", 0, 0, 0);
+                A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 180));
+            }
+            TNT1 A 0 Bright {
+                A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 360));
+                A_CustomMissile ("ExplosionParticleVeryFast", 0, 0, random (0, 360), 2, random (0, 360));
+                A_CustomMissile ("MediumExplosionFlames", 0, 0, random (0, 360), 2, random (0, 360));
+                A_CustomMissile ("ExplosionSmokeFast22", 0, 0, random (0, 360), 2, random (0, 360));
+            }
+            TNT1 A 0 A_PlaySound("FAREXPL", 3);
+            TNT1 A 20;
+            Stop;
+    }
+}
+
+class SeekerFlare : actor
+{
+    Default
+    {
+		Radius 6;
+		Height 8;
+		Scale 0.4;
+        +NOGRAVITY
+        -SOLID
+        +RANDOMIZE
+		RenderStyle "Add";
+    }
+
+    States
+    {
+		Spawn:
+            W17M A 2 Bright;
+            Stop;
+    }
+}
+
+class SeekerRocketSmokeTrail : actor
+{
+    Default
+    {
+        Scale 0.50;
+        Speed 0;
+        Alpha 0.11;
+        -NOGRAVITY
+        -NOINTERACTION
+        Gravity 0.005;
+    }
+
+    States
+    {
+        Spawn:
+            TNT1 A 0;
+            PUF2 EEFGHIJK 4 A_FadeOut(0.005);
+            PUF2 LMNOPQRSTUVWXYZ 4 A_FadeOut(0.005);
+            PUF3 ABC 2 A_FadeOut(0.005);
+            Goto Death;
+        Death:
+            TNT1 A 0;
+            Stop;
+  }
+}
+
+//////////////////////////// NUCLEAR WARHEAD ////////////////////////////////////////////////////////////////////////////////////
+class NuclearRocket : actor
+{
+    Default
+    {
+        Gravity 0.2;
+        DamageFunction 20000;
+        Speed 100;
+        Scale 1.0;
+        Radius 6;
+        Height 6;
+        Damagetype "Nuke";
+        Species "None";
+        Obituary "$OBBD_NUKELAUNCHER";
+        Projectile;
+        MeleeDamage 0;
+        Decal "Scorch";
+        +FORCERADIUSDMG
+        -NOGRAVITY
+        +SKYEXPLODE
+        +DOHARMSPECIES
+        +NODAMAGETHRUST
+        +EXTREMEDEATH
+        +BLOODSPLATTER 
+        +THRUSPECIES
+        +MTHRUSPECIES
+        +RANDOMIZE
+    }
+
+	States
+	{
+        Spawn:
+			M1SL A 0 NoDelay A_StartSound("weapons/rocketloop",CHAN_BODY,CHANF_LOOP);
+		Fly:
+			M1SL ABCD 1 Bright Light("PB_ROCKET") {
+				if(waterlevel < 1) {
+					A_SpawnItemEx("OldschoolRocketSmokeTrail2",-3,0,0,-1,0,0);
+					A_SpawnItemEx("RocketTrailSparks",-10,0,0,-5,0,0);
+				}
+			}
+			Loop;
+
+		Death:
+            TNT1 A 0 A_SPawnItemEx("NuclearExplosion",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION,0);
+			Stop;
+	}
+}
+
+
+
+class NuclearExplosion : actor
+{
+    Default
+    {
+        Damagetype "Nuke";
+        RenderStyle "None";
+        Radius 1;
+        Height 1;
+    }
+
+	States
+	{
+        Spawn:
+            TNT1 A 0;
+            TNT1 A 0 A_Explode(300, 1200, 1, 1, 1200);
+            TNT1 A 1 ;
+            TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("NuclearFlamesImpact", 5, 0, random (0, 360), 2, random (0, 10));
+            TNT1 A 0 A_CustomMissile ("SpawnedExplosionNuke2", 10, 0, random (0, 360), 2, random(80, 90));
+            //TNT1 AAA 0 A_CustomMissile ("lONGExplosionSpawner", 30, 0, random (0, 360), 2, 90);
+            TNT1 AAA 0  A_SpawnItemEx("SpawnedExplosionNuke", random (-400, 400), random (-400, 400), random (0, 100));
+            TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0  A_SpawnItemEx("SpawnedExplosionNuke", random (-600, 600), random (-600, 600), random (0, 50));
+            EXPL A 0 Radius_Quake (9, 200, 0, 300, 0);
+            TNT1 AAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("NukeFlare", random (-800, 800), random (-800, 800), random (0, 100));
+            // TNT1 A 0 A_SpawnItemEX("HorizontalShockwave4",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+            TNT1 A 0 A_Explode(300, 2000, 1, 1, 4000);
+            TNT1 A 0 A_PlaySound("Nuke/Explosion", 1);
+            TNT1 A 0 A_Explode(400,3000, 1, 1, 1);
+            TNT1 A 6 A_SpawnItemEx("NukeFlare", 0, 0, 300, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+            TNT1 A 6 A_SpawnItemEx("NukeFlare", 0, 0, 450, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+            TNT1 A 6 A_SpawnItemEx("NukeFlare", 0, 0, 600, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+            TNT1 A 6 A_SpawnItemEx("NukeFlare", 0, 0, 750, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+            TNT1 A 6 A_SpawnItemEx("NukeFlare", 0, 0, 900, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+            TNT1 A 6 A_SpawnItemEx("NukeFlare", 0, 0, 1100, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+            TNT1 A 6 A_SpawnItemEx("NukeFlare", 0, 0, 1200, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+            TNT1 A 6 A_SpawnItemEx("NukeFlare", 0, 0, 1300, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+            TNT1 A 6 A_SpawnItemEx("NukeFlare", 0, 0, 1400, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+            TNT1 A 6 A_SpawnItemEx("NukeFlare", 0, 0, 1500, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+            TNT1 AAAAA 0 A_SpawnItemEx("NukeFlare", random(-300, 300), random(-300, 300), 1600, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+            TNT1 AAAAA 6 A_SpawnItemEx("NukeFlare", random(-600, 600), random(-600, 600), 1600, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+            EXPL A 0 Radius_Quake (6, 200, 0, 300, 0);
+            TNT1 AAAaaaaaaAA 12 A_SpawnItemEx("NuclearFlamesRepeat2", random(-600, 600), random(-600, 600), 1600, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+            TNT1 Aaaaaa 0 A_SpawnItemEx("NukeSmokebIG", random(-600, 600), random(-600, 600), 1600, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+            //TNT1 AAAAAA 0  A_CustomMissile ("NukeSmoke", random (50, 1200), 0, random (0, 360), 2, random(80, 90));
+            //TNT1 AAA 0  A_CustomMissile ("NukeSmokeBig", 1400, 0, random (0, 360), 2, random(80, 90));
+            TNT1 A 1000;
+            Stop;
+	}
+}
+
+class SpawnedExplosionNuke : actor
+{
+    Default
+    {
+        Speed 2;
+        Damagetype "Nuke";
+        renderstyle "none";
+        +NOCLIP
+        +NOGRAVITY
+        +MISSILE
+        +FORCERADIUSDMG
+        +NODAMAGETHRUST
+        +NOBLOCKMAP
+    }
+    
+	states
+	{
+        Spawn:
+            TNT1 A 0;
+            TNT1 A 2 A_PlaySound("FAREXPL");
+            TNT1 AA 32 A_CustomMissile ("NuclearFlames", 0, 0, random (0, 360), 2, random (0, 90));
+            TNT1 A 0 A_Explode(128, 1000);
+            TNT1 A 0 A_CustomMissile ("NukeSmoke", 0, 0, random (0, 360), 2, random (0, 90));
+            TNT1 A 32 A_CustomMissile ("NuclearFlames", 0, 0, random (0, 360), 2, random (0, 90));
+            TNT1 A 0 A_Explode(128, 1000);
+            TNT1 A 32 A_CustomMissile ("NuclearFlames", 0, 0, random (0, 360), 2, random (0, 90));
+            TNT1 A 0 A_Explode(128, 1000);
+            TNT1 A 32 A_CustomMissile ("NuclearFlames", 0, 0, random (0, 360), 2, random (0, 90));
+            TNT1 A 0 A_Explode(128, 1000);
+            TNT1 AA 32 A_Explode(128, 1000);
+            Stop;
+	}
+}
+
+class SpawnedExplosionNuke2 : actor
+{
+    Default
+    {
+        Speed 24;
+        Radius 2;
+        Height 2;
+        renderstyle "none";
+        +NOCLIP
+        +NOGRAVITY
+        +MISSILE
+        +CLIENTSIDEONLY
+        +NOINTERACTION
+        +NOBLOCKMAP
+
+    }
+
+	states
+	{
+        Spawn:
+            TNT1 A 0;
+            TNT1 A 2;
+            TNT1 AAAA 6 A_CustomMissile ("NuclearFlames", 0, 0, random (0, 360), 2, random (0, 90));
+            TNT1 AAAA 6 A_CustomMissile ("NuclearFlamesBig", 0, 0, random (0, 360), 2, random (0, 90));
+            TNT1 A 0 A_Stop;
+            TNT1 AAAAAAAAAAAAAAA 6 A_CustomMissile ("NuclearFlamesBig", 0, 0, random (0, 360), 2, random (0, 90));
+            TNT1 A 0 A_CustomMissile ("NukeSmoke", 0, 0, random (0, 360), 2, random (0, 90));
+            TNT1 A 0 A_SpawnItemEx("NukeSmoke", random(-100, 100), random(-100, 100), random(-20, 20));
+            TNT1 AAA 6 A_CustomMissile ("NuclearFlamesBig", 0, 0, random (0, 360), 2, random (0, 20));
+            Stop;
+	}
+}
+
+
+class NuclearFlames: ZS_ExplosionFlames
+{
+    Default
+    {
+        Scale 2.2;
+        Speed 5;
+        RenderStyle "Add";
+    }
+	States
+	{
+        Spawn:
+            FLXP ABCDEFGHIJKLMNOPQRSTUVWXYZ 2 BRIGHT;
+            Stop;
+	}
+}
+
+class NuclearFlamesRepeat: ZS_ExplosionFlames
+{
+    Default
+    {
+        Scale 3.0;
+        Speed 5;
+        Renderstyle "None";
+    }
+
+	States
+	{
+        Spawn:
+            TNT1 A 0;
+            TNT1 AAAAAAAAAA 9 A_SpawnItemEx("NuclearFlames2", random(-50, 50), random(-50, 50), random(-50, 50), 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+            Stop;
+	}
+}
+
+class NuclearFlames2: ZS_ExplosionFlames
+{
+    Default
+    {
+        Scale 3.5;
+        Speed 5;
+        RenderStyle "Add";
+    }
+
+    States
+	{
+        Spawn:
+            FLXP ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 BRIGHT;
+            Stop;
+	}
+}
+
+class NuclearFlamesRepeat2: ZS_ExplosionFlames
+{
+    Default
+    {
+        Scale 3.0;
+        Speed 5;
+        Renderstyle "None";
+    }
+
+	States
+	{
+        Spawn:
+            TNT1 A 0;
+            TNT1 AAAAAAAAAA 9 A_SpawnItemEx("NuclearFlames3", random(-200, 200), random(-200, 200), random(-50, 50), 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+            Stop;
+	}
+}
+
+class NuclearFlames3: ZS_ExplosionFlames
+{
+    Default
+    {
+        YScale 8.5;
+        XScale 10.5;
+        Speed 5;
+        RenderStyle "Add";
+    }
+
+	States
+	{
+        Spawn:
+            FLXP ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 BRIGHT;
+            Stop;
+	}
+}
+
+class NuclearFlamesImpact: ZS_ExplosionFlames
+{
+    Default
+    {
+        Scale 9.2;
+        Speed 96;
+        Damagetype "Nuke";
+        RenderStyle "Add";
+        Alpha 0.25;
+        +FORCERADIUSDMG
+        -CLIENTSIDEONLY
+    }
+    
+	States
+	{
+        Spawn:
+            FLXP ACFH 1 BRIGHT A_Explode(32, 256);
+            FLXP ijklmNOPQRSTUVWXYZ 1 BRIGHT A_FadeOut(0.02);
+            Stop;
+	}
+}
+
+class NuclearFlamesBig: ZS_ExplosionFlames
+{
+    Default
+    {
+        Scale 9.2;
+        Speed 3;
+        RenderStyle "Add";
+    }
+
+	States
+	{
+        Spawn:
+            FLXP ABCDEFGHIJKLMNOPQRSTUVWXYZ 4 BRIGHT;
+            Stop;
+	}
+}
+
+class NukeSmoke: ZS_HitpuffSmoke
+{
+    Default
+    {
+        Scale 6.0;
+        Speed 1;
+        Alpha 0.1;
+        +SKYEXPLODE
+        +FORCEXYBILLBOARD
+    }
+	States
+	{
+        Spawn:
+            SMk2 CCCCCCCCCC 2 A_FadeIn(0.05);
+            SMk2 C 600;
+
+        Death:
+            SMk2 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 20 A_FadeOut(0.02);
+            Stop;
+	}
+}
+
+
+class NukeSmokeBig: NukeSmoke
+{
+    Default
+    {
+        XScale 18.0;
+        YScale 12.0;
+    }
+}
+
+class ZS_ExplosionFlames : ZS_FlameTrails
+{
+    Default
+    {
+        Scale 1.0;
+        Speed 2;
+        RenderStyle "Add";
+        BounceType "Doom";
+    }
+	States
+	{
+        Spawn:
+            EXPL AA 3 BRIGHT A_SpawnItem("RedFlare",0,0);
+            EXPL AA 0 A_CustomMissile ("ExplosionSmokeHD", 0, 0, random (0, 360), 2, random (0, 360));
+            EXPL BCDEFGH 3 BRIGHT;
+            Stop;
+	}
+}
+
+class ZS_FlameTrails : actor
+{
+    Default
+    {
+        Radius 1;
+        Height 1;
+        Speed 3;
+        RenderStyle "Add";
+        Damagetype "fire";
+        BounceType "Doom";
+        Scale 0.5;
+        Gravity 0;
+        PROJECTILE;
+        -NOGRAVITY
+        +FORCEXYBILLBOARD
+        +CLIENTSIDEONLY
+        +THRUACTORS
+    }
+
+	States
+	{
+        Spawn:
+            TNT1 A 2;
+            FRPR ABCDEFGH 3 BRIGHT;
+            Stop;
+	}
+}
+
+class ExplosionSmokeHD: ZS_HitpuffSmoke
+{
+    Default
+    {
+        Scale 2.0;
+        Speed 1;
+    }
+
+	States
+	{
+        Spawn:  
+            TNT1 A 0;
+            TNT1 A 0 A_Jump(128, 2);
+            TNT1 A 0 A_SetScale(-2.5, 2.0);
+            TNT1 A 0;
+            SM9K ABCDEFGHIJKLMNOPQRSTUVWXYZ 2;
+            Stop;
+	}
+}
+
+class ZS_HitpuffSmoke : actor
+{
+    Default
+    {
+        Radius 1;
+        Height 1;
+        Scale 0.7;
+        Speed 1;
+        RenderStyle "Translucent";
+        BounceType "Doom";
+        Alpha 0.4;
+        PROJECTILE;
+        +CLIENTSIDEONLY
+        +FORCEXYBILLBOARD
+        +MISSILE
+        +THRUACTORS
+    }
+
+	States
+	{
+        Spawn:  
+            TNT1 A 0;
+            TNT1 A 0 A_Jump(128, 2);
+            TNT1 A 0 A_SetScale(-0.7, -0.7);
+            TNT1 A 0;
+            SMOK ABCDEFGHIJKLMNOPQ 1;
+            Stop;
 	}
 }

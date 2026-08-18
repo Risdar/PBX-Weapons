@@ -1,6 +1,5 @@
 // Includes
 #include "./CyberRL_Functions.zs"
-#include "./CyberRL_Projectiles.zs"
 
 class PBX_CyberdemonRL : PB_WeaponBase
 {

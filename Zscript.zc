@@ -9,7 +9,16 @@ Version 4.13
 #include "Zscript/PBX_Weapons/PBXWeapons_HUDData.zs"    // Data that the Core uses to draw the icons
 #include "Zscript/PBX_Weapons/PBXWeapons_Tips.zs"
 
-// Each weapon has their own includes (basically helper files), you cen see these in each weapon files
+// Projectiles
+#include "Zscript/PBX_Weapons/Projectiles/PBXWeapons_Bullets.zs"
+#include "Zscript/PBX_Weapons/Projectiles/PBXWeapons_Demon.zs"
+#include "Zscript/PBX_Weapons/Projectiles/PBXWeapons_Energy.zs"
+#include "Zscript/PBX_Weapons/Projectiles/PBXWeapons_Explosives.zs"
+#include "Zscript/PBX_Weapons/Projectiles/PBXWeapons_Nails.zs"
+#include "Zscript/PBX_Weapons/Projectiles/PBXWeapons_Rail.zs"
+#include "Zscript/PBX_Weapons/Projectiles/PBXWeapons_Shells.zs"
+
+// Some weapon has their own includes (basically helper files), you cen see these in each weapon files
 // Slot 1
 
 
