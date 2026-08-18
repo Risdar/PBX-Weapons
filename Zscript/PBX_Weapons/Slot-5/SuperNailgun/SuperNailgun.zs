@@ -3,7 +3,7 @@
 // #include "./PlasmaBlaster_Wheel.zs"
 
 // Actual Weapon
-class PBX_SuperNailgun : PB_WeaponBase
+class PBX_SuperNailgun : PBX_WeaponBase
 {
     Default
     {
@@ -43,20 +43,19 @@ class PBX_SuperNailgun : PB_WeaponBase
 
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
 	bool isOverheating;
+    bool isSpinning;
 
     const LIGTNING_DAMAGE       = 2;    // Damage per tics
     const NAIL_ALTFIRE_AMOUNT   = 5;   // How many nail is shot on the altfire
     const MAGAZINE_SIZE         = 100; 
 
-    const MAX_OVERHEAT	 		= 300;
+    const MAX_OVERHEAT	 		= 450;
 	const OVERHEAT_THRESHOLD	= MAX_OVERHEAT/2;	// Overheat threshold for firing the special rounds
 	const OVERHEATCOOLING_RATE 	= 4;	// How many tics before removing 5 overheat when not selected
 	const OVERHEATCOOLING_RATE2 = -5;	// Decrease overheat when the weapon is selected
 	const OVERHEATCOOLING_LAYER = 3;
 	const OVERHEAT_GIVE_OVR 	= OVERHEAT_GIVE_NORM*1.1;	// How much heat given when over Threshold
 	const OVERHEAT_GIVE_NORM	= 10;	// How much heat given when normal fire
-
-//////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
     action void superNailgun_setSprite(name mSprite)
@@ -89,6 +88,7 @@ class PBX_SuperNailgun : PB_WeaponBase
     action void SuperNailgun_Fire()
     {
         A_ZoomFactor (0.98);
+        A_AlertMonsters();
         PB_LowAmmoSoundWarning("hdmr");
         PB_TakeAmmo(invoker.ammo2.getClassName(),emptyMag:0,emptyChamber:0);
         A_PlaySound("SNFIRE", 50);
@@ -179,13 +179,14 @@ class PBX_SuperNailgun : PB_WeaponBase
 				A_SetInventory("PB_LockScreenTilt",0);
 				A_ClearOverlays(OVERHEATCOOLING_LAYER,OVERHEATCOOLING_LAYER);
 				cooldownOverheat();
-                PB_WeaponRaise("GENREADY");
+                PBX_WeaponRaise("GENREADY");
 			    return PB_RespectIfNeeded();
 			}
         SelectAnimation:
             SNSE ABCDEFG 1 superNailgun_setSprite("SNSU");
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
         Ready3:
+            TNT1 A 0 {invoker.isSpinning = false;}
 			SNLR A 1 {
                 if(PB_GetOverheat() > 1) {cooldownOverheat();}
 				if(PB_GetOverheat() == 0) {invoker.isOverheating = false;}
@@ -211,6 +212,7 @@ class PBX_SuperNailgun : PB_WeaponBase
             SNLR F 1 BRIGHT SuperNailgun_Fire();
             SNLR GHI 1 A_ZoomFactor(1);
             TNT1 A 0 PB_ReFire("Fire");
+            TNT1 A 0 A_JumpIf(invoker.isSpinning,"SpinLoop");
         SpinAfterFire:
             SNLR CDECD 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD);
             SNLR ECDE 2 A_DoPBWeaponAction(WRF_ALLOWRELOAD);
@@ -218,12 +220,25 @@ class PBX_SuperNailgun : PB_WeaponBase
   
 //////////////////////////// ALT FIRE ////////////////////////////////////////////////////////////////////////////////////
         AltFire:
+            TNT1 A 0 A_JumpIf(invoker.isSpinning,"SpinAfterFire");
+        SpinLoop:
             TNT1 A 0 {
                 A_WeaponOffset(0,32);
                 PB_SetRoll(0);
                 PB_HandleCrosshair(39);
                 A_TakeInventory("PB_LockScreenTilt",1);
+                A_AlertMonsters();
+                invoker.isSpinning = true;
             }
+            SNLR GHI 1 A_DoPBWeaponAction();
+            TNT1 A 0 SuperNailgun_PLaysound();
+            TNT1 A 0 PB_ModifyOverheat(OVERHEAT_GIVE_NORM);
+            TNT1 A 0 A_JumpIf(invoker.isSpinning,"SpinLoop");
+            TNT1 A 0 PB_ReFire("SpinLoop");
+            Goto Ready3;
+
+            // Everything after this is unused
+            // its the old altfire
             TNT1 A 0 PB_JumpIfNoAmmo(min:NAIL_ALTFIRE_AMOUNT);
             TNT1 A 0 SuperNailgun_PLaysound();
             SNR1 MNO 1 A_DoPBWeaponAction();

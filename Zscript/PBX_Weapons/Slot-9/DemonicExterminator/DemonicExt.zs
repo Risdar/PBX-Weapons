@@ -10,7 +10,7 @@ class UMDE_Select_IncinerationMode : inventory{default{inventory.maxamount 1;}}
 class UMDE_Select_LightningMode : inventory{default{inventory.maxamount 1;}}
 
 // The Actual Weapon
-Class PBX_DemonExt : PB_WeaponBase
+Class PBX_DemonExt : PBX_WeaponBase
 {
 	default
 	{
@@ -67,7 +67,7 @@ Class PBX_DemonExt : PB_WeaponBase
 			    DemonExtCrosshair();
 				A_SetInventory("PB_LockScreenTilt",0);
 				PB_WeapTokenSwitch("UnmakerSelected");
-                PB_WeaponRaise("UNMAKSEL");
+                PBX_WeaponRaise("UNMAKSEL");
 			    return PB_RespectIfNeeded();
 			}
 		SelectAnimation:

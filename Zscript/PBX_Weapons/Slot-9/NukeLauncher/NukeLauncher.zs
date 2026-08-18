@@ -1,7 +1,7 @@
 // Includes
 
 // Actual Weapon
-class PBX_NukeLauncher : PB_WeaponBase
+class PBX_NukeLauncher : PBX_WeaponBase
 {
     Default
     {
@@ -56,7 +56,7 @@ class PBX_NukeLauncher : PB_WeaponBase
 				PB_SetRoll(0);
 			    PB_HandleCrosshair(39);
 				A_SetInventory("PB_LockScreenTilt",0);
-                PB_WeaponRaise("8FGPICK");
+                PBX_WeaponRaise("8FGPICK");
 			    return PB_RespectIfNeeded();
 			}
         SelectAnimation:

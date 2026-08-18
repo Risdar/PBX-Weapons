@@ -1,12 +1,7 @@
 // Includes
 #include "./NeoHMG_Functions.zs"
-#include "./NeoHMG_Wheel.zs"
 
-// Tokens
-class HMG_Select_Heated : inventory {default{inventory.maxamount 1;}}
-class HMG_Select_Charged : inventory {default{inventory.maxamount 1;}}
-
-class PBX_NeoHMG : PB_WeaponBase
+class PBX_NeoHMG : PBX_WeaponBase
 {
 	Default
 	{
@@ -17,8 +12,6 @@ class PBX_NeoHMG : PB_WeaponBase
 		Weapon.SlotNumber 5;
 		Weapon.SlotPriority 0;
 	    Weapon.SelectionOrder 506;
-        PB_WeaponBase.UsesWheel true;
-		PB_WeaponBase.WheelInfo "HMGWheel";
         Inventory.AltHudIcon "HG0WA0";
 		PB_WeaponBase.MaxOverheat MAX_OVERHEAT;
 		PB_WeaponBase.OverheatCoolingRate OVERHEATCOOLING_RATE;
@@ -61,7 +54,6 @@ class PBX_NeoHMG : PB_WeaponBase
 	const OVERHEAT_GIVE_NORM	= 10;	// How much heat given when normal fire
 
 	// Shield Variables
-	bool shieldEnabled;
 	bool shieldactive;
 	bool shieldReady;
 	bool shieldWasActive;
@@ -73,18 +65,12 @@ class PBX_NeoHMG : PB_WeaponBase
 
 	// Shield Values
 	const shieldProtectionMultiplier = 1; // How many shield charges are consumed per point of damage (Multiplier)
-	const shieldRechargeSpeed = 5; // How many tics before giving the shield charge
-	const shieldRechargeRate = 5; // How many shield charges to give each tic
-	const shieldCooldown = 15; // How many tics before shield is available again
+	const shieldRechargeSpeed = 5; 		  // How many tics before giving the shield charge
+	const shieldRechargeRate = 2; 		  // How many shield charges to give each tic
+	const shieldCooldown = 15; 			  // How many tics before shield is available again
 
 	// Modes
-	int ammoType;
 	bool isOverheating;
-	enum NeoHMGRounds
-	{
-		eHeatedRounds = 0,
-        eChargedRounds = 1
-	}
 
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
 	States
@@ -117,7 +103,7 @@ class PBX_NeoHMG : PB_WeaponBase
 				PB_SetRoll(0);
 				PB_HandleCrosshair(52);
 				A_SetInventory("PB_LockScreenTilt",0);
-                PB_WeaponRaise("HMGUP");
+                PBX_WeaponRaise("HMGUP");
 				cooldownOverheat();
 			    return PB_RespectIfNeeded();
 			}
@@ -172,17 +158,7 @@ class PBX_NeoHMG : PB_WeaponBase
 				HMG_CoolDownBarrel();
 				cooldownOverheat();
 			}
-			TNT1 A 0 {
-				invoker.Shieldtimer = shieldCooldown;
-				invoker.shieldready = false;
-				invoker.shieldbroken = true;
-				invoker.shieldwasactive = false;
-				A_SetInventory("HMGShield",0);
-				a_startsound("StickyGrenade/Hit",125,0,0.5);
-				A_startsound("HMGSHLD1",HMG_SHIELDSOUNDLAYER);
-				A_Overlay(HMG_SHIELDLAYER,"HMGShieldBroken",true);
-				EventHandler.SendInterfaceEvent(PlayerNumber(), "PB_HUDInterference", 20);
-			}
+			TNT1 A 0 HMG_DetonateShield();
 			HG0F A 45 {
 				setMagSprite("XH04","XH03","XH02","XH01");
 				return A_DoPBWeaponAction(WRF_NOFIRE|WRF_NOSWITCH);
@@ -284,9 +260,9 @@ class PBX_NeoHMG : PB_WeaponBase
 			TNT1 A 0 {
 				A_StartSound("PLSULT", CHAN_WEAPON, CHANF_OVERLAP);
 				A_SetBlend("Blue", 0.6, 12);	
-				A_FireProjectile("PB_StunGrenadeExplosion", 0, 0, 0, 0);
+				HMGSpawnStunBomb();
+				A_FireShieldParticles();
 			}
-			PSHL A 0 A_FireShieldParticles();
 			stop;
 		
 //////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
@@ -378,14 +354,10 @@ class PBX_NeoHMG : PB_WeaponBase
 
 //////////////////////////// WEAPON SPECIAL ////////////////////////////////////////////////////////////////////////////////////
 		Weaponspecial:
-        	TNT1 A 0 {
-				A_Takeinventory("GoWeaponSpecialAbility",1);
-                A_ZoomFactor(1.0);
-			}
 			TNT1 A 0 HMG_HandleSpecial();
-			HG0U DDDDCC 1;
-			TNT1 A 0 A_StartSound("excavator/switch", CHAN_WEAPON, CHANF_OVERLAP, 1.0);
-			HG0U CCDDDD 1;
+			// HG0U DDDDCC 1;
+			// TNT1 A 0 A_StartSound("excavator/switch", CHAN_WEAPON, CHANF_OVERLAP, 1.0);
+			// HG0U CCDDDD 1;
 			goto Ready3;
 		
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////

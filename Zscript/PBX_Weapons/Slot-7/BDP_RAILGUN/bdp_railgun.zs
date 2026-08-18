@@ -11,7 +11,7 @@ class platrailgun_goScope : inventory {default{inventory.maxamount 1;}}
 class platrailgun_goNVG : inventory {default{inventory.maxamount 1;}}
 class platrailgun_goLaser : inventory {default{inventory.maxamount 1;}}
 
-Class PBX_BDPRailgun : PB_WeaponBase
+Class PBX_BDPRailgun : PBX_WeaponBase
 {
     Default
     {
@@ -108,7 +108,7 @@ Class PBX_BDPRailgun : PB_WeaponBase
                 A_ClearOverlays(HANDLE_LAYER);
 			    PB_HandleCrosshair(97);
 				A_SetInventory("PB_LockScreenTilt",0);
-                PB_WeaponRaise("RAILINSR");
+                PBX_WeaponRaise("RAILINSR");
                 A_ClearOverlays(HANDLE_LAYER);
                 A_SetInventory("PBX_Infrared", 0);
 			    return PB_RespectIfNeeded();

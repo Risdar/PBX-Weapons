@@ -15,7 +15,7 @@ class MS_Select_ToggleNVG : inventory {default{inventory.maxamount 1;}}
 // Other Tokens
 class MetalSniperUpgraded : inventory {default{inventory.maxamount 1;}}
 
-Class PBX_MetalSniper : PB_WeaponBase
+Class PBX_MetalSniper : PBX_WeaponBase
 {
     default
     {
@@ -100,7 +100,7 @@ Class PBX_MetalSniper : PB_WeaponBase
         Select:
             TNT1 A 0 {
                 resetVariables();
-                PB_WeaponRaise("MS/Up");
+                PBX_WeaponRaise("MS/Up");
                 return PB_RespectIfNeeded();
             }
         SelectAnimation:

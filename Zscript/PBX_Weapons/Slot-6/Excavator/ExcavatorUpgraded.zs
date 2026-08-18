@@ -105,7 +105,7 @@ extend class PBX_Excavator
 			goto ActualDeselect;
 
         Select_Upgraded:
-			TNT1 A 0 PB_WeaponRaise("RLANDRAW");
+			TNT1 A 0 PBX_WeaponRaise("RLANDRAW");
 			TNT1 A 0 PB_RespectIfNeeded();
         SelectAnimation_Upgraded:
             EX_A ABCDE 1 checkUnloadedSprites("EX_B","EX_D","EX_A","EX_C");

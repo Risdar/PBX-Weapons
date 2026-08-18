@@ -5,6 +5,7 @@ server bool pbxweapons_sendTip = true;
 server bool pbxweapons_normalriflereplace = false;
 server bool pbxweapons_startwithblaster = false;
 server bool pbxweapons_enablesecretweapon = true;
+server bool pbxweapons_cssghooklockswitch = true;
 server int pbxweapons_secretweapon_spawnchance = 10;
 
 // Tip Flags

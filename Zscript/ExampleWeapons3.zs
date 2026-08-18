@@ -90,7 +90,7 @@ class PBX_PlasmaBlaster : PB_WeaponBase
 				PB_SetRoll(0);
 			    PB_HandleCrosshair(39);
 				A_SetInventory("PB_LockScreenTilt",0);
-                PB_WeaponRaise("weapons/smg_magfly1");
+                PBX_WeaponBase("weapons/smg_magfly1");
 			    return PB_RespectIfNeeded();
 			}
         SelectAnimation:

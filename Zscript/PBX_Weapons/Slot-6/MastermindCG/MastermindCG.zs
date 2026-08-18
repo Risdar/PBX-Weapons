@@ -1,7 +1,7 @@
 // Includes
 #include "./MastermindCG_Functions.zs"
 
-class PBX_MastermindChaingun : PB_WeaponBase
+class PBX_MastermindChaingun : PBX_WeaponBase
 {
 	Default
 	{
@@ -66,7 +66,7 @@ class PBX_MastermindChaingun : PB_WeaponBase
 			TNT1 A 0 A_Lower();
 			Wait;
 		Select:
-			TNT1 A 0 PB_WeaponRaise("CBOXPKUP");
+			TNT1 A 0 PBX_WeaponRaise("CBOXPKUP");
 			// TNT1 A 0 PB_RespectIfNeeded();
 		SelectAnimation:
 			RMNG NMLKJ 1 A_GunFlash();

@@ -11,7 +11,7 @@ class EX_Select_SawMode : inventory{default{inventory.maxamount 1;}}
 class EX_Select_No : inventory{default{inventory.maxamount 1;}}
 class Excavator_Upgraded : inventory{default{inventory.maxamount 1;}}
 
-class PBX_Excavator : PB_WeaponBase
+class PBX_Excavator : PBX_WeaponBase
 {
 	Default
 	{
@@ -129,7 +129,7 @@ class PBX_Excavator : PB_WeaponBase
 			goto Ready3;
 		Select:
             TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"Select_Upgraded");
-			TNT1 A 0 PB_WeaponRaise("RLANDRAW");
+			TNT1 A 0 PBX_WeaponRaise("RLANDRAW");
 			TNT1 A 0 PB_RespectIfNeeded();
 		SelectAnimation:
             TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"SelectAnimation_Upgraded");

@@ -6,7 +6,7 @@ class LA_Select_Marlin : inventory {default{inventory.maxamount 1;}}
 class LA_Select_Magnum : inventory {default{inventory.maxamount 1;}}
 class LA_Select_Laser : inventory {default{inventory.maxamount 1;}}
 
-class PBX_Prosurv_LeverAction : PB_WeaponBase
+class PBX_Prosurv_LeverAction : PBX_WeaponBase
 {
 	Default
 	{
@@ -153,7 +153,7 @@ class PBX_Prosurv_LeverAction : PB_WeaponBase
 			TNT1 A 0 A_Takeinventory("PB_LockScreenTilt",1);
 			Goto Ready3;
 		Select:
-			TNT1 A 0 PB_WeaponRaise("weapons/leveraction/inspect");
+			TNT1 A 0 PBX_WeaponRaise("weapons/leveraction/inspect");
 			TNT1 A 0 PB_RespectIfNeeded();
 		SelectContinue:
 			TNT1 A 0;

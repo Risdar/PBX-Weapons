@@ -39,7 +39,8 @@ enum PBXWeapons_eChaingunSpawns
 	DisablePBX_BattleRifle					= 1 << 0,
 	DisablePBX_MetalSniper			        = 1 << 1,
 ////// SLOT 5 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	DisablePBX_NeoHMG			        	= 1 << 2
+	DisablePBX_NeoHMG			        	= 1 << 2,
+	DisablePBX_SuperNailgun			        = 1 << 3
 }
 
 enum PBXWeapons_eRocketLauncherSpawns
@@ -138,9 +139,16 @@ class PBXChaingun_Injector : PBInjector
 		// Neo HMG
 		if(!(pbxweapons_chaingun_filter & DisablePBX_NeoHMG))
 		{
-			// handler.InjectSpawn('PB_MGSpawnerT3', 'PBX_NeoHMG', 255, 1);
+			handler.InjectSpawn('PB_MGSpawnerT3', 'PBX_NeoHMG', 255, 1);
 			handler.InjectSpawn('PB_MGSpawnerT4', 'PBX_NeoHMG', 255, 1);
 		}
+		// Super Nailgun
+		if(!(pbxweapons_chaingun_filter & DisablePBX_SuperNailgun))
+		{
+			handler.InjectSpawn('PB_MGSpawnerT3', 'PBX_SuperNailgun', 255, 1);
+			handler.InjectSpawn('PB_MGSpawnerT4', 'PBX_SuperNailgun', 255, 1);
+		}
+		
 	}
 }
 

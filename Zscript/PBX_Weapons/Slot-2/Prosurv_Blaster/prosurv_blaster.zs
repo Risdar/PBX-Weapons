@@ -3,7 +3,7 @@
 // #include "./PlasmaBlaster_Wheel.zs"
 
 // Actual Weapon
-class PBX_ProsurvBlaster : PB_WeaponBase
+class PBX_ProsurvBlaster : PBX_WeaponBase
 {
     Default
     {
@@ -98,7 +98,7 @@ class PBX_ProsurvBlaster : PB_WeaponBase
 			    PB_HandleCrosshair(65);
 				A_SetInventory("PB_LockScreenTilt",0);
                 modifyBlasterCharge(SET,MAXCHARGE);
-                PB_WeaponRaise("weapons/blasterpistol/ready");
+                PBX_WeaponRaise("weapons/blasterpistol/ready");
 			    return PB_RespectIfNeeded();
 			}
         SelectAnimation:

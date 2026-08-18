@@ -13,7 +13,7 @@ class PSG_Select_Detonator : inventory {default{inventory.maxamount 1;}}
 class RemoteChargeDetonator : inventory {default{inventory.maxamount 1;}}
 
 // Actual Weapon
-class PBX_ProSurvPSG : PB_Weapon
+class PBX_ProSurvPSG : PBX_WeaponBase
 {
     Default
     {
@@ -158,7 +158,7 @@ class PBX_ProSurvPSG : PB_Weapon
 				PB_SetRoll(0);
 			    PB_HandleCrosshair(46);
 				A_SetInventory("PB_LockScreenTilt",0);
-                PB_WeaponRaise("weapons/autoshotgun/respect1");
+                PBX_WeaponRaise("weapons/autoshotgun/respect1");
 			    return PB_RespectIfNeeded();
 			}
         SelectAnimation:

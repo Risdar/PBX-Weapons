@@ -32,6 +32,7 @@ class PBXWeapons_Handler : EventHandler
 
 		// SLOT 5
 		PBXCore_Handler.TryGiveInventory(pm,'PBX_NeoHMG', 'HMGChamberAmmo', PBX_NeoHMG.MAGAZINE_SIZE);
+		PBXCore_Handler.TryGiveInventory(pm,'PBX_SuperNailgun', 'SuperNailgunAmmo', PBX_SuperNailgun.MAGAZINE_SIZE);
 
 		// SLOT 6
 		PBXCore_Handler.TryGiveInventory(pm,'PBX_Excavator', 'ExcavatorRounds', PBX_Excavator.MAGAZINE_SIZE);

@@ -10,7 +10,7 @@ class BR_Select_Zoom : inventory {default{inventory.maxamount 1;}}
 class BR_Select_Laser : inventory {default{inventory.maxamount 1;}}
 class BattleRifle_Upgraded : inventory {default{inventory.maxamount 1;}}
 
-class PBX_BDPBattleRifle : PB_WeaponBase
+class PBX_BDPBattleRifle : PBX_WeaponBase
 {
 	Default
 	{
@@ -78,7 +78,7 @@ class PBX_BDPBattleRifle : PB_WeaponBase
             Wait;
 		Select:
             TNT1 A 0 A_SetInventory("PBX_Infrared", 0);
-			TNT1 A 0 PB_WeaponRaise("BR45PICK");
+			TNT1 A 0 PBX_WeaponRaise("BR45PICK");
 			TNT1 A 0 PB_RespectIfNeeded();
 		SelectAnimation:
 			TNT1 A 0 {invoker.burstcount = 0;}

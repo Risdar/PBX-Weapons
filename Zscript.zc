@@ -2,6 +2,7 @@ Version 4.13
 
 // General
 #include "Zscript/PBX_Weapons/PBXWeapons_Systems.zs"
+#include "Zscript/PBX_Weapons/PBXWeapons_BaseWeapon.zs"
 #include "Zscript/PBX_Weapons/PBXWeapons_Upgrades.zs"
 #include "Zscript/PBX_Weapons/PBXWeapons_Ammo.zs"
 #include "Zscript/PBX_Weapons/PBXWeapons_Spawners.zs"

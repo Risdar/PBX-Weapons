@@ -2,7 +2,7 @@
 #include "./EternalChaingun_Functions.zs"
 
 // Actual Weapon
-class PBX_EternalMinigun : PB_WeaponBase
+class PBX_EternalMinigun : PBX_WeaponBase
 {
     Default
     {
@@ -84,7 +84,7 @@ class PBX_EternalMinigun : PB_WeaponBase
 				PB_SetRoll(0);
 			    PB_HandleCrosshair(39);
 				A_SetInventory("PB_LockScreenTilt",0);
-                PB_WeaponRaise("weapons/minigun/respect1");
+                PBX_WeaponRaise("weapons/minigun/respect1");
 			    return PB_RespectIfNeeded();
 			}
         SelectAnimation:

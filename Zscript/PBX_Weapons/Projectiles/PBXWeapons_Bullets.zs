@@ -50,8 +50,9 @@ class MS_ResonanceRounds : PB_Projectile
 		if(mActor)
 		{
 			pbxcore_debug.print("spawned stun explosion");
+			mActor.target = target.player.mo;
 			mActor.expDmg  = 250;
-			mActor.expRad  = 600;
+			mActor.expRad  = 1024;
 			mActor.expType = "Stun";
 		}
 		A_StopSound(CHAN_BODY);

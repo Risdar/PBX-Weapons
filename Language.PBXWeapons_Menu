@@ -11,12 +11,26 @@ PBXWEAPONS_MENU_ENABLE_SECRET_WEAPONS = "Enable Secret Weapons";
 
 
 //////////////////////////// WEAPONS MENU ///////////////////////////////////////////////////////////////////////////////
-PBXWEAPONS_SECRETWEAPONS_SPAWNCHANCE = "Secret weapon spawn chance (in Percent)";
+PBXWEAPONS_SECRETWEAPONS_SPAWNCHANCE = "Secret weapon spawn chance";
 PBXWEAPONS_ECHAINGUN_POWERTIME = "Eternal Chaingun's Power Time Duration";
 PBXWEAPONS_MEATHOOK_COOLDOWN = "CSSG's Meathook Cooldown";
 PBXWEAPONS_HOLOGRAM_COOLDOWN = "Platinum Railgun's Hologram Cooldown";
 PBXWEAPONS_HOLOGRAM_LIFETIME = "Platinum Railgun's Hologram Lifetime";
 PBXWEAPONS_MENU_RESET_WEAPON_DURATIONS = "Reset PBX Weapons Values";
+PBXWEAPONS_CSSG_LOCK_SWITCH = "CSSG Meathook Lock Switch";
+
+TIP_pbxweapons_normalriflereplace   = "Start the game with the Platinum Rifle on top of the Standard PB DMR";
+TIP_pbxweapons_startwithblaster     = "Start the game with the Pistol Blaster, a very weak pistol that has infinite ammo";
+TIP_pbxweapons_enablesecretweapon   = "Enable or disable the secret weapons in the game, Currently there's only the Nuke Launcher";
+TIP_pbxweapons_cssghooklockswitch   = "If enabled will disable weapon switching when the CSSG Meathook is attached to a monster";
+
+TIP_pbxweapons_secretweapon_spawnchance = "How frequent should the secret weapons spawn (In Percent)";
+
+TIP_pbxweapons_echaingun_duration   = "This affects the Eternal Chaingun's Power Time after pickup (In Seconds)";
+TIP_pbxweapons_meathook_cooldown    = "This affects the CSSG's Meathook cooldown (In Seconds)";
+TIP_pbxweapons_hologram_cooldown    = "This affects the Platinum Railgun's Hologram cooldown (In Seconds)";
+TIP_pbxweapons_hologram_lifetime    = "This affects the Platinum Railgun's Hologram lifetime (In Seconds)";
+
 
 //////////////////////////// SPAWN MENU ///////////////////////////////////////////////////////////////////////////////
 PBXWEAPONS_PLASMA_BLASTER = "Enable Plasma Blaster";
@@ -28,6 +42,7 @@ PBXWEAPONS_COMMANDER_SHOTGUN = "Enable Commander Shotgun";
 PBXWEAPONS_BATTLE_RIFLE = "Enable Battle Rifle";
 PBXWEAPONS_METAL_SNIPER = "Enable Metal Sniper";
 PBXWEAPONS_NEOHMG = "Enable Neo HMG";
+PBXWEAPONS_SUPERNAILGUN = "Enable Super Nailgun";
 
 PBXWEAPONS_EXCAVATOR = "Enable Excavator";
 PBXWEAPONS_PAINGIVER = "Enable Paingiver";

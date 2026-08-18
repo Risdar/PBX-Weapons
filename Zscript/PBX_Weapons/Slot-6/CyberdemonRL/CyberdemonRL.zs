@@ -1,7 +1,7 @@
 // Includes
 #include "./CyberRL_Functions.zs"
 
-class PBX_CyberdemonRL : PB_WeaponBase
+class PBX_CyberdemonRL : PBX_WeaponBase
 {
 	Default
 	{
@@ -71,7 +71,7 @@ class PBX_CyberdemonRL : PB_WeaponBase
 				PB_SetRoll(0);
 			    PB_HandleCrosshair(78);
 				A_SetInventory("PB_LockScreenTilt",0);
-                PB_WeaponRaise("BFGREADY");
+                PBX_WeaponRaise("BFGREADY");
                 PB_WeapTokenSwitch("RocketLauncherSelected");
 			    return PB_RespectIfNeeded();
 			}

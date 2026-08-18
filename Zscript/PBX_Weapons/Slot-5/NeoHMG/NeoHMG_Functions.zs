@@ -3,10 +3,9 @@ extend class PBX_NeoHMG
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////    
 	override void postbeginplay()
 	{
-		ammoType = eHeatedRounds;
 		shieldReady = true;
 		isOverheating = false;
-		giveinventory("HMGShield", PBX_NeoHMG.SHIELD_MAXCHARGE);
+		giveinventory("HMGShield", SHIELD_MAXCHARGE);
 		super.postbeginplay();
 	}
 
@@ -31,7 +30,7 @@ extend class PBX_NeoHMG
 	{
 		super.DoEffect();
 
-		if(!owner || !owner.player) 
+		if(!owner || !owner.player || !owner.player.readyweapon) 
 			return;
 
 		bool isWeapon = owner.player.readyweapon is "PBX_NeoHMG";
@@ -94,7 +93,7 @@ extend class PBX_NeoHMG
 				{
 					rechargetimer++;
 				}
-				Else if(countinv("HMGShield") < 100)
+				Else if(countinv("HMGShield") < SHIELD_MAXCHARGE)
 				{
 					rechargetimer = 0;
 					giveinventory("HMGShield",shieldRechargeRate);
@@ -114,46 +113,44 @@ extend class PBX_NeoHMG
 	}
 
 //////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
-	action void cleanmodetokens()
-    {
-        A_SetInventory("HMG_Select_Heated",  0);
-        A_SetInventory("HMG_Select_Charged", 0);
-    }
-
-	action state HMG_HandleSpecial()
-    {
-        bool goHeated  = CountInv("HMG_Select_Heated") > 0;
-        bool goCharged = CountInv("HMG_Select_Charged") > 0;
-        bool alreadyHeated  = goHeated  && getAmmoType() == eHeatedRounds;
-        bool alreadyCharged = goCharged && getAmmoType() == eChargedRounds;
-
-		if(countinv("PBX_CloseWheel") > 0)
+	action void HMGSpawnStunBomb()
+	{
+		let mActor = PB_StunGrenadeExplosion(Spawn("PB_StunGrenadeExplosion",self.pos));
+		int mShieldLeft = max(10,CountInv("HMGShield")); // So it'll atleast deal 10 damage with 10 radius
+		if(mActor)
 		{
-			A_TakeInventory("PBX_CloseWheel",1);
-			return resolvestate("Ready3");
+			pbxcore_debug.PrintInt("spawned stun explosion with shield left: %d",mShieldLeft);
+			mActor.target = self.player.mo;
+			mActor.expDmg  = mShieldLeft;
+			mActor.expRad  = mShieldLeft; 
+			mActor.expType = "Stun";
 		}
+	}
 
-        if (alreadyHeated || alreadyCharged)
-        {
-            A_Print("$PBX_AlreadySelected");
-            cleanmodetokens();
-            return resolvestate("Ready3");
-        }
+	action void HMG_DetonateShield()
+	{
+		invoker.Shieldtimer = shieldCooldown;
+		invoker.shieldready = false;
+		invoker.shieldbroken = true;
+		invoker.shieldwasactive = false;
+		a_startsound("StickyGrenade/Hit",125,0,0.5);
+		A_startsound("HMGSHLD1",HMG_SHIELDSOUNDLAYER);
+		
+		HMGSpawnStunBomb();
+		
+		A_SetInventory("HMGShield",0);
+		EventHandler.SendInterfaceEvent(PlayerNumber(), "PB_HUDInterference", 20);
+	}
 
-        if (goHeated)
-        {
-            setAmmoType(eHeatedRounds);
-            A_Print("$PBX_NeoHMG_Heated");
-        }
+	action void HMG_HandleSpecial()
+    {
+		A_Takeinventory("GoWeaponSpecialAbility",1);
+		A_ZoomFactor(1.0);
 
-        if (goCharged)
-        {
-            setAmmoType(eChargedRounds);
-            A_Print("$PBX_NeoHMG_Charged");
-        }
-
-        cleanmodetokens();
-        return resolvestate(null);
+		if(invoker.ShieldActive)
+		{
+			HMG_DetonateShield();
+		}
     }
 
 	action void HMG_CoolDownBarrel()
@@ -177,51 +174,17 @@ extend class PBX_NeoHMG
 		A_Overlay(OVERHEATCOOLING_LAYER,"Cooling",true);
 	}
 
-	action int getAmmoType()
-	{
-		return invoker.ammoType;
-	}
-
-	action int setAmmoType(int set)
-	{
-		return invoker.ammoType = set;
-	}
-
 	action void HMG_fireBullet(bool overheating)
 	{
-		string loadedbullets;
-		string soundtouse;
 		double spread;
+		bool mIsOverheat = PB_GetOverheat() > OVERHEAT_THRESHOLD;
 
-		if(overheating)	
-						spread = 7;
-		else if(PB_GetOverheat() > OVERHEAT_THRESHOLD) 
-						spread = 1.0 + (PB_GetOverheat() / 100.0);
-		else			spread = 3;
+		if(overheating)			spread = 7;
+		else if(mIsOverheat) 	spread = 1.0 + (PB_GetOverheat() / 100.0);
+		else					spread = 3;
 		
-		if(PB_GetOverheat() > OVERHEAT_THRESHOLD)
-		{
-			invoker.isOverheating = true;
-			switch(getAmmoType())
-			{
-				default:
-				case eHeatedRounds:
-					loadedbullets = "PB_792x57mm_Heated";
-					soundtouse = "MG42FIR";
-					break;
-				case eChargedRounds:
-					loadedbullets = "PB_792x57mm_Charged";
-					soundtouse = "LFIRE";
-					break;
-			}
-		}
-		else
-		{
-			loadedbullets = "PB_792x57mm";
-			soundtouse = "weapon/HMG/Fire";
-		}
-		A_Startsound(soundtouse,30);
-		PB_FireBullets(loadedbullets, 1, spread, 0, 0, spread);
+		A_Startsound(mIsOverheat ? "MG42FIR" : "weapon/HMG/Fire",30);
+		PB_FireBullets(mIsOverheat ? "PB_792x57mm_Heated" : "PB_792x57mm", 1, spread, 0, 0, spread);
 	}
 
 	action void setMagSprite(

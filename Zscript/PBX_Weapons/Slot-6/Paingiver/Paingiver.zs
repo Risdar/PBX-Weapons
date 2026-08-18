@@ -1,7 +1,7 @@
 // // Includes
 // #include "./CyberRL_Projectiles.zs"
 
-class PBX_Paingiver : PB_WeaponBase
+class PBX_Paingiver : PBX_WeaponBase
 {
 	Default
 	{
@@ -136,7 +136,7 @@ class PBX_Paingiver : PB_WeaponBase
 				PB_SetRoll(0);
 			    PB_HandleCrosshair(65);
 				A_SetInventory("PB_LockScreenTilt",0);
-                PB_WeaponRaise("weapons/sgl/inspect2");
+                PBX_WeaponRaise("weapons/sgl/inspect2");
                 PB_WeapTokenSwitch("RocketLauncherSelected");
 			    return PB_RespectIfNeeded();
 			}

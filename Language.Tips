@@ -60,8 +60,9 @@ PBX_DemonicBallista_Tip3 = "You can change modes using %s";
 // HMG
 PBX_NeoHMG_Tip1 = "The HMG is an automatic heavy weapon that has an overheat system and a shield accumulator.";
 PBX_NeoHMG_Tip2 = "When the overheat system reaches %d° C, the weapon will modify the projectile to a more powerful version.";
-PBX_NeoHMG_Tip3 = "You can choose between heated rounds and charged rounds using %s";
-PBX_NeoHMG_Tip4 = "You can activate the shield by holding %s, it will then block any damage and recharge when not in use";
+PBX_NeoHMG_Tip3 = "You can activate the shield by holding %s, it will then block any damage and recharge when not in use.";
+PBX_NeoHMG_Tip4 = "Pressing the %s key while the shield is active will detonate the shield stunning nearby enemies.";
+PBX_NeoHMG_Tip5 = "The Stun Area and Damage is based on the remaining shield charges.";
 
 //////////////////////////// SLOT 6 ///////////////////////////////////////////////////////////////////////////////
 // Excavator

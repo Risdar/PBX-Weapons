@@ -9,7 +9,7 @@ class CB_Select_NormalMode : inventory {default{inventory.maxamount 1;}}
 class CB_Select_NO : inventory {default{inventory.maxamount 1;}}
 class Crossbow_Upgraded : inventory {default{inventory.maxamount 1;}}
 
-class PBX_Prosurv_Ballista : PB_WeaponBase
+class PBX_Prosurv_Ballista : PBX_WeaponBase
 {
 	Default
 	{
@@ -169,7 +169,7 @@ class PBX_Prosurv_Ballista : PB_WeaponBase
                 A_WeaponOffset(0,32);
                 PB_SetRoll(0);
                 PB_HandleCrosshair(29);
-                PB_WeaponRaise("weapons/ballista/raise");
+                PBX_WeaponRaise("weapons/ballista/raise");
                 return PB_RespectIfNeeded();
             }
         SelectAnimation:

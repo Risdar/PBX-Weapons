@@ -57,13 +57,10 @@ extend class PBX_CSSG
 	action state CSSG_Ready()
 	{
 		let pbxplr = PBXCore_Player(invoker.owner);
-		if(pbxplr && pbxplr.Grappled)
-			return A_DoPBWeaponAction(WRF_NOSWITCH|WRF_DISABLESWITCH);
-		
-		else if(pbxplr && !pbxplr.Grappled)
-			return A_DoPBWeaponAction();
+		if(pbxplr && pbxplr.Grappled && pbxweapons_cssghooklockswitch)
+			return A_DoPBWeaponAction(WRF_NOSWITCH|WRF_DISABLESWITCH);	
 
-		return resolvestate(null);
+		return A_DoPBWeaponAction();
 	}
 
 

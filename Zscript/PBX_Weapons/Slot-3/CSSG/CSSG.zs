@@ -3,7 +3,7 @@
 #include "./CSSG_Wheel.zs"
 #include "./CSSG_helpers.zs"
 
-Class PBX_CSSG : PB_WeaponBase
+Class PBX_CSSG : PBX_WeaponBase
 {
 	default
 	{
@@ -52,7 +52,7 @@ Class PBX_CSSG : PB_WeaponBase
 			stop;
 		
 		Select:
-			TNT1 A 0 PB_WeaponRaise("COMSSGUP");
+			TNT1 A 0 PBX_WeaponRaise("COMSSGUP");
 			TNT1 A 0 PB_RespectIfNeeded();
 			TNT1 A 0 PB_WeapTokenSwitch("SSGSelected");
 		SelectAnimation:
@@ -108,8 +108,7 @@ Class PBX_CSSG : PB_WeaponBase
 			C0ID A 2 {
 				CM_HandleCrosshair();
 				PB_CoolDownBarrel();
-				// return CSSG_Ready();
-				return A_DoPBWeaponAction();
+				return CSSG_Ready();
 			}
 			loop;
 		

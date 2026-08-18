@@ -4,7 +4,7 @@
 // #include "./ProsurvPSG_helpers.zs"
 
 // Actual Weapon
-class PBX_SPAS12 : PB_WeaponBase
+class PBX_SPAS12 : PBX_WeaponBase
 {
 	Default
 	{
@@ -25,7 +25,7 @@ class PBX_SPAS12 : PB_WeaponBase
 		Weapon.SlotNumber 3;
 		Weapon.SlotPriority 2.4;
 		// Obituary "$OB_PB_SPAS12";
-		Scale 0.45;
+		Scale 0.40;
 		Tag "$PBX_SPAS12_TAG";
         +FLOORCLIP;
 		+DONTGIB;
@@ -132,7 +132,7 @@ class PBX_SPAS12 : PB_WeaponBase
                 PB_SetRoll(0);
                 A_TakeInventory("PB_LockScreenTilt", 1);
                 PB_SetZoom(false);
-                PB_WeaponRaise("weapons/spas12/raise");
+                PBX_WeaponRaise("weapons/spas12/raise");
 			    return PB_RespectIfNeeded();
             }
         SelectAnimation:

@@ -24,14 +24,17 @@ OptionMenu "PBXWeapons_Menu"
     Option "$PBXWEAPONS_MENU_ENABLE_TOOLTIPS", "pbxweapons_sendTip", "OnOff","PBXCore_SendTip"
     Option "$PBXWEAPONS_START_WITH_BDP_RIFLE", "pbxweapons_normalriflereplace", "OnOff"
     Option "$PBXWEAPONS_START_WITH_PISTOL_BLASTER", "pbxweapons_startwithblaster", "OnOff"
-    Option "$PBXWEAPONS_MENU_ENABLE_SECRET_WEAPONS", "pbxweapons_enablesecretweapon", "OnOff"
     StaticText " "
     SafeCommand "$PBXWEAPONS_MENU_ENABLE_SPAWNERS", "set PBXWeapons_chainsaw_filter 0; set PBXWeapons_pistol_filter 0; set PBXWeapons_shotgun_filter 0; set PBXWeapons_ssg_filter 0; set PBXWeapons_chaingun_filter 0; set PBXWeapons_rocketlauncher_filter 0; set PBXWeapons_plasmarifle_filter 0; set PBXWeapons_bfg_filter 0;set pbxweapons_backpack_filter 0;set PBXWeapons_monsterdrop_filter 0;set PBXWeapons_specialdrop_filter 0"
     SafeCommand "$PBXWEAPONS_MENU_RESET_PBTOOLTIPS", "set pb_helpflags 0"
     SafeCommand "$PBXWEAPONS_MENU_RESET_PBXWEAPONS_TOOLTIPS", "set PBXWeapons_WeaponHelpFlags 0; set PBXWeapons_UpgradeHelpFlags 0"
     StaticText " "
     StaticText	"--------- Weapon Settings ---------", 1
+    Option "$PBXWEAPONS_CSSG_LOCK_SWITCH", "pbxweapons_cssghooklockswitch", "OnOff"
+    StaticText " "
+    Option "$PBXWEAPONS_MENU_ENABLE_SECRET_WEAPONS", "pbxweapons_enablesecretweapon", "OnOff"
     Slider "$PBXWEAPONS_SECRETWEAPONS_SPAWNCHANCE",  "pbxweapons_secretweapon_spawnchance",     1, 100, 1,0,"pbxweapons_enablesecretweapon"
+    StaticText " "
     Slider "$PBXWEAPONS_ECHAINGUN_POWERTIME",  "pbxweapons_echaingun_duration",     1, 500, 1
     Slider "$PBXWEAPONS_MEATHOOK_COOLDOWN",  "pbxweapons_meathook_cooldown",     1, 500, 1
     Slider "$PBXWEAPONS_HOLOGRAM_COOLDOWN",  "pbxweapons_hologram_cooldown",     1, 500, 1
@@ -82,13 +85,20 @@ AddOptionMenu "AddonWeaponSpawns" after "SSGT3"
         FlagOption    "$PBXWEAPONS_METAL_SNIPER",           "PBXWeapons_chaingun_filter",    "OffOn", 1
     }
     // TIER 3
+    AddOptionMenu "AddonWeaponSpawns" after "CHNT3"
+    {
+        // SLOT 5
+        FlagOption    "$PBXWEAPONS_NEOHMG",                "PBXWeapons_chaingun_filter",    "OffOn", 2
+        FlagOption    "$PBXWEAPONS_SUPERNAILGUN",          "PBXWeapons_chaingun_filter",    "OffOn", 3
+    }
+
 
     // TIER 4
-    AddOptionMenu "AddonWeaponSpawns" after "CHNT4"
+    /* AddOptionMenu "AddonWeaponSpawns" after "CHNT4"
     {
         // SLOT 5
         FlagOption    "$PBXWEAPONS_NEOHMG",                "PBXWeapons_chaingun_filter",    "OffOn", 3
-    }
+    } */
 
 // ROCKET LAUNCHER /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // TIER 3

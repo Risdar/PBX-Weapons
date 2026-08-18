@@ -6,7 +6,7 @@ class NR_Select_FireMode : inventory {default{inventory.maxamount 1;}}
 class NR_Select_DualWield : inventory {default{inventory.maxamount 1;}}
 class NR_Select_Laser : inventory {default{inventory.maxamount 1;}}
 
-Class PBX_NormalRifle : PB_WeaponBase
+Class PBX_NormalRifle : PBX_WeaponBase
 {
     Default
     {
@@ -92,7 +92,7 @@ Class PBX_NormalRifle : PB_WeaponBase
                 PB_ClearDualWield();
 			    PB_HandleCrosshair(55);
 				A_SetInventory("PB_LockScreenTilt",0);
-                PB_WeaponRaise("CLIPIN");
+                PBX_WeaponRaise("CLIPIN");
                 invoker.burstcount = 0;
 			    return PB_RespectIfNeeded();
 			}

@@ -8,7 +8,7 @@ class Plasma_Select_Burst : inventory {default{inventory.maxamount 1;}}
 class Plasma_Select_Charge : inventory {default{inventory.maxamount 1;}}
 
 // Actual Weapon
-class PBX_PlasmaBlaster : PB_WeaponBase
+class PBX_PlasmaBlaster : PBX_WeaponBase
 {
     Default
     {
@@ -76,7 +76,7 @@ class PBX_PlasmaBlaster : PB_WeaponBase
 				PB_SetRoll(0);
 			    PB_HandleCrosshair(39);
 				A_SetInventory("PB_LockScreenTilt",0);
-                PB_WeaponRaise("weapons/smg_magfly1");
+                PBX_WeaponRaise("weapons/smg_magfly1");
 			    return PB_RespectIfNeeded();
 			}
         SelectAnimation:

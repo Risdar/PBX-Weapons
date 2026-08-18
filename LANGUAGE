@@ -2,9 +2,6 @@
 //////////////////////////// GENERAL ///////////////////////////////////////////////////////////////////////////////
 PBXWeapons_Settings                 = "\cg⟁\c- PBX - Weapons Settings";
 PBXWeapons_Version                  = "\cgPBX - Weapons Version: 2.8";
-TIP_pbxweapons_normalriflereplace   = "Start the game with the Platinum Rifle on top of the Standard PB DMR";
-TIP_pbxweapons_startwithblaster     = "Start the game with the Pistol Blaster, a very weak pistol that has infinite ammo";
-TIP_pbxweapons_enablesecretweapon   = "Enable or disable the secret weapons in the game, Currently there's only the Nuke Launcher";
 
 //////////////////////////// SLOT 1 ///////////////////////////////////////////////////////////////////////////////
 
@@ -136,8 +133,8 @@ PBX_Prosurv_Ballista_UpgradeTag     = "Ballista Upgrade";
 PBX_NeoHMG_Pickup                   = "HMG (Slot 5)";
 PBX_NeoHMG_Tag                      = "UAC PB-3 Heavy Machine Gun";
 
-PBX_NeoHMG_Heated                   = "\caHeated \c-Rounds";
-PBX_NeoHMG_Charged                  = "\cnCharged \c-Rounds";
+PBX_NeoHMG_DetonateShield           = "\caDetonate \c-Shield";
+PBX_NeoHMG_PlaceShield              = "\caPlace \c-Shield";
 
 // Eternal Chaingun
 PBX_EternalChaingun_Pickup          = "Eternal Chaingun (Slot 5)";
