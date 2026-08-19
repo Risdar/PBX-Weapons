@@ -180,14 +180,15 @@ extend class PBX_Prosurv_Ballista
 		int mode = getCrossbowMode();
 		if(PB_GetChamberEmpty())
 			return resolvestate(null);
-		else if(mode == SHOCK_BOLT)
-			return resolvestate(shock);
-		else if(mode == DEMONIC_BOLT)
-			return resolvestate(demonic);
-		else if(mode == EXPLOSIVE_BOLT)
-			return resolvestate(explosive);
-		else
-			return resolvestate(null);
+
+		switch(mode)
+		{
+			case SHOCK_BOLT:		return resolvestate(shock);
+			case DEMONIC_BOLT:		return resolvestate(demonic);
+			case EXPLOSIVE_BOLT:	return resolvestate(explosive);
+		}
+		
+		return resolvestate(null);
 	}
 
 	// Fire Function, selects the correct projectile depending on mode

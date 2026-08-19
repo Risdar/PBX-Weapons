@@ -1,5 +1,3 @@
-class MeatHookExtended : Inventory {Default {Inventory.MaxAmount 1;}}
-
 extend class PBX_CSSG
 {
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
@@ -483,12 +481,9 @@ extend class PBX_CSSG
 		
 	}
 
-	Action state CSSG_HandleWheel()
+	action state CSSG_HandleWheel()
 	{
 		A_Takeinventory("GoWeaponSpecialAbility",1);
-
-		int mode = invoker.shellsmode + 1;
-		int actmode = invoker.shellsmode; // actual mode
 		int wheelmode = getTokens();
 
 		if(wheelmode == HOOK_ALTFIRE && invoker.meathookMode || wheelmode == SINGLE_ALTFIRE && !invoker.meathookMode)
@@ -502,7 +497,7 @@ extend class PBX_CSSG
 		{
 			case NO_UPGRADE: 
 				A_Print("$PBX_AmmoNotAvailable");
-			case CLOSE_WHEEL: 
+			case CLOSE_WHEEL: case SKIP_FUNCTION:
 				break;
 				
 			case SINGLE_ALTFIRE:
@@ -525,6 +520,26 @@ extend class PBX_CSSG
 				break;
 		}
 
+		if(wheelmode == SINGLE_ALTFIRE || wheelmode == HOOK_ALTFIRE)
+		{
+			cleanmodetokens();
+			return ResolveState("SwitchAnimation");
+		}
+		if(wheelmode == NO_UPGRADE || wheelmode == CLOSE_WHEEL || wheelmode == SWITCH_MENU)
+		{
+			cleanmodetokens();
+			return ResolveState("Ready3");
+		}
+
+		cleanmodetokens();
+		return resolvestate(null);
+	}
+
+	Action state CSSG_HandleShells()
+	{
+		int mode = invoker.shellsmode + 1;
+		int actmode = invoker.shellsmode; // actual mode
+		
 		// Handle Shell Change
 		// If you've already selected the same shell type, cancel wheel
 		if(countinv(PBX_CSSG.CSSG_ShellsToken1[actmode]) > 0)
@@ -549,13 +564,13 @@ extend class PBX_CSSG
 				invoker.shellsmode = i;
 				A_print(PBX_CSSG.CSSG_ConfirmShell[i]);
 				ClearCssgTokens();
-				return resolvestate("EndSelection");
+				return resolvestate("ChangeShellAnimation");
 			}
 		}
 		 
-		// End selection regardless
-		cleanmodetokens();
-		return resolvestate("Ready3");
+		// Fallthrough to handle shells
+		ClearCssgTokens();
+		return resolvestate(null);
 	}
 
 	action int getTokens()
@@ -568,12 +583,15 @@ extend class PBX_CSSG
 			return SINGLE_ALTFIRE;
 		else if (FindInventory("SelectCSG_No"))
 			return NO_UPGRADE;
-		else
+		else if (FindInventory("PBX_CloseWheel"))
 			return CLOSE_WHEEL;
+		else
+			return SKIP_FUNCTION;
 	}
 
 	action void cleanmodetokens()
 	{
+		A_TakeInventory("PBX_CloseWheel",1);
 		A_TakeInventory("SelectCSG_No",1);
 		A_TakeInventory("SelectCSG_SwitchSingle",1);
 		A_TakeInventory("SelectCSG_SwitchHook",1);

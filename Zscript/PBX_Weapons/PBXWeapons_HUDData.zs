@@ -406,10 +406,10 @@ class PBXHUDService_PBX_SuperNailgun : service
         data.Image2 = "";       // Weapon Mode Icon
         data.Image3 = "";       // Weapon Mode 2 Icon (For example the CryoRifle has 2 modes at the same time)
 
-        data.Offset1 = (0,15);   // Weapon Icon Position
+        data.Offset1 = (-2,16);   // Weapon Icon Position
         data.Offset2 = (0,0);   // Weapon Mode Icon Position
 
-        data.Scale1 = 0.8;      // Weapon Icon Scale
+        data.Scale1 = 0.7;      // Weapon Icon Scale
         data.Scale2 = 1.0;      // Weapon Mode Icon Scale
 
         return data;

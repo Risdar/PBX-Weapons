@@ -1,3 +1,6 @@
+// Commander's SuperShotgun by Barge, Popguy, WolVexus, and Jaih1r0
+// New sprites is made by SamuelGuy
+
 // Includes
 #include "./CSSG_Functions.zs"
 #include "./CSSG_Wheel.zs"
@@ -48,7 +51,8 @@ Class PBX_CSSG : PBX_WeaponBase
 	};
 
 	enum CM_Wheel {
-		CLOSE_WHEEL = -2,
+		SKIP_FUNCTION = -3, // This is used so HandleWheel can skip its function and go to HandleShells
+		CLOSE_WHEEL,
 		NO_UPGRADE,
 		SINGLE_ALTFIRE,
 		HOOK_ALTFIRE,
@@ -295,8 +299,9 @@ Class PBX_CSSG : PBX_WeaponBase
 		
 		// OTHERS
 		WeaponSpecial:
-			TNT1 A 0 CSSG_HandleWheel();
-		EndSelection:
+		TNT1 A 0 CSSG_HandleWheel();
+			TNT1 A 0 CSSG_HandleShells(); // Somehow putting the HandleWheel first will break the HandleShells, no idea why
+		ChangeShellAnimation:
 			C0HO ABC 1;
 			TNT1 A 0 A_startsound("CSSGOPEN",25);
 			C0HO D 1;
@@ -320,6 +325,12 @@ Class PBX_CSSG : PBX_WeaponBase
 			C0RB IJKLMM 1;
 			TNT1 A 3;
 			goto closeSSG;
+
+		SwitchAnimation:
+			C0MO ABCDE 1;
+			C0MO F 2;
+			C0MO EDCBA 1;
+			goto ready3;
 			
 		// FLASH STATES
 		FlashPunching:

@@ -1,3 +1,5 @@
+// Battle Rifle from Brutal Doom Platinum by EmeraldCoasttt
+
 // Includes
 #include "./BattleRifle_Functions.zs"
 #include "./BattleRifle_Wheel.zs"

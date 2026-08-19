@@ -1,3 +1,5 @@
+// Super Nailgun made by Idkfa
+
 // Includes
 // #include "./PlasmaBlaster_Functions.zs"
 // #include "./PlasmaBlaster_Wheel.zs"
@@ -155,7 +157,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
             SNR1 MNO 4 A_DoPBWeaponAction();
             TNT1 A 0 SuperNailgun_PLaysound();
 		    SNR1 MNO 5 A_DoPBWeaponAction();
-            Goto Ready3;
+            goto Ready3;
 
         CacheSprites:
             SNXL A 0; SNSU A 0;
@@ -217,7 +219,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
         SpinAfterFire:
             SNLR CDECD 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD);
             SNLR ECDE 2 A_DoPBWeaponAction(WRF_ALLOWRELOAD);
-            Goto Ready3;
+            goto Ready3;
   
 //////////////////////////// ALT FIRE ////////////////////////////////////////////////////////////////////////////////////
         AltFire:
@@ -238,7 +240,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
             TNT1 A 0 PB_ModifyOverheat(OVERHEAT_GIVE_NORM);
             TNT1 A 0 A_JumpIf(invoker.isSpinning,"SpinLoop");
             TNT1 A 0 PB_ReFire("SpinLoop");
-            Goto Ready3;
+            goto Ready3;
 
             // Everything after this is unused
             // its the old altfire
@@ -255,7 +257,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
             TNT1 A 0 A_ZoomFactor (1);
             SNLR GHI 2;
             TNT1 A 0 PB_ReFire("AltFire");
-            Goto Ready3;
+            goto Ready3;
 
 //////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
         Reload:
@@ -289,7 +291,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
             SNRL STUVWX 1 PB_SetRoll(roll-2);
             TNT1 A 0 PB_SetRoll(0);
             TNT1 A 0 A_JumpIf(invoker.isSpinning,"SpinLoop");
-            Goto Ready3;
+            goto Ready3;
             
 //////////////////////////// UNLOAD ////////////////////////////////////////////////////////////////////////////////////
         Unload:
@@ -306,17 +308,22 @@ class PBX_SuperNailgun : PBX_WeaponBase
                 PB_SetMagEmpty(true);
             }
             SNRL GHI 1;
-            Goto Ready3;
+            goto Ready3;
 
 //////////////////////////// WEAPON SPECIAL ////////////////////////////////////////////////////////////////////////////////////
         WeaponSpecial:
             TNT1 A 0 {
                 A_TakeInventory("GoWeaponSpecialAbility", 1);
                 invoker.isChargedNails = !invoker.isChargedNails;
+                A_StartSound("MS/Button", 22);
                 A_Print(invoker.isChargedNails ? "$PBX_SuperNailgun_ChargedNails" : "$PBX_SuperNailgun_HeatedNails");
             }
             TNT1 A 0 A_JumpIf(invoker.isSpinning,"SpinLoop");
-            Goto Ready3;
+        SwitchAnimation:
+            SNSE GFED 1 superNailgun_setSprite("SNSU");
+            "####" C 3;
+            "####" DEFG 1;
+            goto Ready3;
             
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////
         FlashPunching:

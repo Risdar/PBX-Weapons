@@ -23,6 +23,9 @@ Class TripleDoomUpgrade : CSSGUpgradetokens{}
 Class DanmakuUpgrade : CSSGUpgradetokens{}
 Class SubZeroUpgrade : CSSGUpgradetokens{}
 
+// Others
+class MeatHookExtended : Inventory {Default {Inventory.MaxAmount 1;}}
+
 //a base class for tokens, wasnt really needed, but at first i thought they were a lot more
 Class CSSGUpgradetokens : inventory
 {

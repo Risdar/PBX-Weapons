@@ -162,7 +162,7 @@ extend class PBX_Excavator
 			return resolvestate("Ready3");
 		}
 
-		// Handle Non-Upgraded
+		// Handle Not Upgraded
 		if(tokens == eNoUpgrade)
 		{
 			A_TakeInventory("EX_Select_No",1);
@@ -180,14 +180,13 @@ extend class PBX_Excavator
 			return resolvestate("ready3");
 		}
 
-		// If its from drop/drill and going to bola, just play a sound and go to ready2
+		// If its from drop/drill and going to bola, just play a sound and go to Switch Animation
 		if(tokens == eBolaMode && (mode == eDropShotMode || mode == eDrillChargeMode))
 		{
 			setExcavatorMode(tokens);
-			A_PlaySound("excavator/switch");
 			A_Print("$PBX_Excavator_BolaMode");
 			cleanmodetokens();
-			return resolvestate("Ready2");
+			return resolvestate("SwitchAnimation_Upgraded");
 		}
 
 		// If it goes to Bola or Saw mode, go to unload
@@ -212,11 +211,10 @@ extend class PBX_Excavator
 			A_Print(tokens == eDropShotMode ? "$PBX_Excavator_DropMode" : "$PBX_Excavator_DrillMode");
 			cleanmodetokens();
 
-			// Play a sound and early return if its upgraded
+			// Play a sound and early return to the upgraded switch animation if its upgraded
 			if(isExcavatorUpgraded())
 			{
-				A_PlaySound("excavator/switch");
-				return resolvestate("ready2");
+				return resolvestate("SwitchAnimation_Upgraded");
 			}
 			return resolvestate(null);
 		}

@@ -336,27 +336,34 @@ extend class PBX_Excavator
 			EX_I DDDDDCBA 1;
 			goto ContinueReload_Upgraded;
 
+		SwitchAnimation_Upgraded:
+			EX_A FGHI 1 checkUnloadedSprites("EX_B","EX_D","EX_A","EX_C");
+			"####" A 0 A_PlaySound("excavator/switch");
+			"####" I 10;
+			"####" IHGF 1;
+            goto Ready2;
+
         FlashPunching_Upgraded:
             EX_A FGHI 1 checkUnloadedSprites("EX_B","EX_D","EX_A","EX_C");
-			EX_A I 6 checkUnloadedSprites("EX_B","EX_D","EX_A","EX_C");
-			EX_A IHGF 1 checkUnloadedSprites("EX_B","EX_D","EX_A","EX_C");
+			"####" I 6;
+			"####" IHGF 1;
             goto Ready2;
 
         FlashKicking_Upgraded:
             EX_A FGHI 1 checkUnloadedSprites("EX_B","EX_D","EX_A","EX_C");
-			EX_A I 6 checkUnloadedSprites("EX_B","EX_D","EX_A","EX_C");
-			EX_A IHGF 1 checkUnloadedSprites("EX_B","EX_D","EX_A","EX_C");
+			"####" I 6;
+			"####" IHGF 1;
             goto Ready2;
 
         FlashAirKicking_Upgraded:
             EX_A FGHI 1 checkUnloadedSprites("EX_B","EX_D","EX_A","EX_C");
-			EX_A I 8 checkUnloadedSprites("EX_B","EX_D","EX_A","EX_C");
-			EX_A IHGF 1 checkUnloadedSprites("EX_B","EX_D","EX_A","EX_C");
+			"####" I 8;
+			"####" IHGF 1;
             goto Ready2;
 
         FlashSlideKicking_Upgraded:
             EX_A FGHI 1 checkUnloadedSprites("EX_B","EX_D","EX_A","EX_C");
-			EX_A I 21 checkUnloadedSprites("EX_B","EX_D","EX_A","EX_C");
+			"####" I 21;
             goto Ready2;
 
         FlashSlideKickingStop_Upgraded:

@@ -1,3 +1,5 @@
+// Excavator from Project Survival made by ThePopeOfDope
+
 // Includes
 #include "./Excavator_Functions.zs"
 #include "./Excavator_Wheel.zs"
