@@ -183,7 +183,7 @@ Class PBX_MetalSniper : PBX_WeaponBase
             TNT1 A 0 A_JumpIf(PB_GetZoom(), "ZoomOut");
         ZoomIn:
             TNT1 A 0 {
-                setADSWheel();
+                invoker.wheelinfo = "MS_Zoomed_Wheel";
                 PB_SetZoom(true);
             }
             // TNT1 A 0 PB_SetUsableWheel(false);

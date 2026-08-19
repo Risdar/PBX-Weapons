@@ -147,7 +147,9 @@ extend class PBX_WeaponBase
                 Array<String> tips;
                 tips.Push(string.format(StringTable.Localize("$PBX_SuperNailgun_Tip1"),PBX_SuperNailgun.OVERHEAT_THRESHOLD));
                 tips.Push("$PBX_SuperNailgun_Tip2");
-                tips.Push(string.format(StringTable.Localize("$PBX_SuperNailgun_Tip3"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+ALTATTACK")));
+                tips.Push("$PBX_SuperNailgun_Tip3");
+                tips.Push(string.format(StringTable.Localize("$PBX_SuperNailgun_Tip4"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+pb_specialwheel")));
+                tips.Push(string.format(StringTable.Localize("$PBX_SuperNailgun_Tip5"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+ALTATTACK")));
                 PBXCore_TipsManager.SendTipArrayIfNeeded(tips, WEAPON_HELPTEXT, PBX_TIP_SUPERNAILGUN);
             }
             break;

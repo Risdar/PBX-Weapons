@@ -258,7 +258,7 @@ class PBX_DemonicBallistaUpgrade : PB_UpgradeItem
     States
 	{
         Spawn:
-            CB_Z C -1;
+            CB_Z Z -1;
             Stop;
 
         Pickup:
@@ -267,7 +267,8 @@ class PBX_DemonicBallistaUpgrade : PB_UpgradeItem
                 A_SetInventory("Crossbow_Upgraded", 1);
                 A_GiveInventory("PBX_Prosurv_Ballista", 1);
                 A_SetWeaponTag("PBX_Prosurv_Ballista","$PBX_CrossbowBallista_Tag");
-                A_GiveInventory("PB_DTech", 60);
+                A_GiveInventory("PB_DTech", 30);
+                A_GiveInventory("PB_Cell", 30);
             }
             Stop;
 	}

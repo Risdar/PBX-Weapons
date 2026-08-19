@@ -20,7 +20,7 @@ Class PBX_CSSG : PBX_WeaponBase
 		weapon.ammotype1 "PB_Shell";
 		weapon.ammogive1 4;
 		PB_WeaponBase.UsesWheel true;
-		PB_WeaponBase.WheelInfo "CSSGWeaponWheel";
+		PB_WeaponBase.WheelInfo "CSSGWeaponWheelPage1";
 		PB_WeaponBase.ReserveToMagAmmoFactor 1;
 	}
 	
@@ -29,6 +29,8 @@ Class PBX_CSSG : PBX_WeaponBase
 	int hookCooldown;
 
 	bool meathookMode;
+
+	bool mWheelPage2;
 
 	const BARREL_CAPACITY = 2;
 	
@@ -44,6 +46,14 @@ Class PBX_CSSG : PBX_WeaponBase
 		Shell_Damn = 9,
 		Shell_SubZ = 10
 	};
+
+	enum CM_Wheel {
+		CLOSE_WHEEL = -2,
+		NO_UPGRADE,
+		SINGLE_ALTFIRE,
+		HOOK_ALTFIRE,
+		SWITCH_MENU
+	}
 	
 	states
 	{
@@ -285,14 +295,8 @@ Class PBX_CSSG : PBX_WeaponBase
 		
 		// OTHERS
 		WeaponSpecial:
-			TNT1 A 0 A_takeinventory("GoWeaponSpecialAbility",1);
-			TNT1 A 0 {
-				A_Takeinventory("GoWeaponSpecialAbility",1);
-				PB_SetZoom(false);
-			}
 			TNT1 A 0 CSSG_HandleWheel();
 		EndSelection:
-			TNT1 A 0 ClearCssgTokens();
 			C0HO ABC 1;
 			TNT1 A 0 A_startsound("CSSGOPEN",25);
 			C0HO D 1;

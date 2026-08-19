@@ -38,11 +38,6 @@ extend class PBX_MetalSniper
     // ═════════════════════════════════════════════════════════════════════════
     // ACTION FUNCTIONS
     // ═════════════════════════════════════════════════════════════════════════
-    action void setADSWheel()
-    {
-        invoker.wheelinfo = "MS_Zoomed_Wheel";
-    }
-
     action void resetVariables()
     {
         invoker.enableScopeHUD = false;

@@ -106,7 +106,7 @@ Class MS_Zoomed_Wheel : wheelinfocontainer
 {
 	override int GetSPCount(actor requester)
 	{
-		return 4;
+		return 5;
 	}
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
@@ -120,6 +120,14 @@ Class MS_Zoomed_Wheel : wheelinfocontainer
 		super.GetSpecials(spw,requester);
 
 		vector2 iconScale = (1.0, 1.0);
+
+		PB_SpecialWheel_Mode Weapon_Close = new ("PB_SpecialWheel_Mode");
+		Weapon_Close.img = "graphics/WeaponWheel/CloseMenu.png";
+		Weapon_Close.Alias = "$PBX_CloseMenu";
+		Weapon_Close.tokentogive = "PBX_CloseWheel";
+		Weapon_Close.scalex = WHEEL_CLOSEMENU_SCALE;
+		Weapon_Close.scaley = WHEEL_CLOSEMENU_SCALE;
+		spw.push(Weapon_Close);
 
 		// Laser
 		PB_SpecialWheel_Mode MS_Laser = new ("PB_SpecialWheel_Mode");

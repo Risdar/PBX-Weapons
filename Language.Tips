@@ -66,8 +66,10 @@ PBX_NeoHMG_Tip5 = "The Stun Area and Damage is based on the remaining shield cha
 
 // Super Nailgun
 PBX_SuperNailgun_Tip1 = "The Super Nailgun has an overheat system and will overheat at %d° C.";
-PBX_SuperNailgun_Tip2 = "When overheated the weapon will fire lightning nails that arc to nearby enemies.";
-PBX_SuperNailgun_Tip3 = "Pressing %s will spin the weapon passively increasing the overheat.";
+PBX_SuperNailgun_Tip2 = "When overheated the weapon will fire special nails depending on which mode is selected.";
+PBX_SuperNailgun_Tip3 = "Super Heated Nails will bounce and deal fire damage while Super Charged Nails will arc through enemies and deal electric damage.";
+PBX_SuperNailgun_Tip4 = "You can switch between the two modes by pressing %s";
+PBX_SuperNailgun_Tip5 = "Pressing %s will spin the weapon passively increasing the overheat.";
 
 //////////////////////////// SLOT 6 ///////////////////////////////////////////////////////////////////////////////
 // Excavator

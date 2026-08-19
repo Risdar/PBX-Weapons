@@ -44,6 +44,12 @@ PBX_CSSG_TAG                        = "Commander Super Shotgun";
 PBX_CSSG_SINGLE                     = "Single Barrel AltFire";
 PBX_CSSG_HOOK                       = "Meat Hook AltFire";
 
+PBX_CSSG_PAGE1_WW                   = "Go To CSSG Customization Wheel";
+PBX_CSSG_PAGE2_WW                   = "Go To Shell Type Wheel";
+
+PBX_CSSG_PAGE1                      = "CSSG Customization Wheel";
+PBX_CSSG_PAGE2                      = "Shell Type Wheel";
+
 PBX_CSSG_NOHOOK                     = "Meat Hook Not Ready";
 PBX_CSSG_NOPLAYER                   = "Hook Failed, Are you using an old save?";
 
@@ -119,9 +125,15 @@ PBX_MetalSniper_UpgradeTag          = "Metal Sniper Upgrade";
 PBX_CrossbowBallista_Pickup         = "Ballista (Slot 4)";
 PBX_CrossbowBallista_Tag            = "Composite Crossbow";
 
-PBX_Crossbow_Standard               = "\cdNormal Arrow \c-Loaded";
-PBX_Crossbow_Explosive              = "\crExplosive Arrow \c-Loaded";
-PBX_Crossbow_Demonic                = "\caDemonic Ballista \c-Mode";
+PBX_Crossbow_Standard               = "\cdNormal Bolt \c-Loaded";
+PBX_Crossbow_Explosive              = "\crExplosive Bolt \c-Loaded";
+PBX_Crossbow_Demonic                = "\caDemonic Bolt \c-Loaded";
+PBX_Crossbow_Shock                  = "\cnShock Bolt \c-Loaded";
+
+PBX_Crossbow_Standard_WW            = "\cdNormal Bolt";
+PBX_Crossbow_Explosive_WW           = "\crExplosive Bolt";
+PBX_Crossbow_Demonic_WW             = "\caDemonic Bolt";
+PBX_Crossbow_Shock_WW               = "\cnShock Bolt";
 
 PBX_Crossbow_DemonicNoAmmo          = "You Don't Have Any Demonic Ammo";
 
@@ -145,6 +157,9 @@ PBX_EternalChaingun_NoBerserk       = "You need \cgBerserk\c- to Use this Weapon
 // Super Nailgun
 PBX_SuperNailgun_Pickup             = "Super Nailgun (Slot 5)";
 PBX_SuperNailgun_Tag                = "UAC Prototype Super Nailgun";
+
+PBX_SuperNailgun_HeatedNails        = "\cgSuper Heated Nails \c-Mode";
+PBX_SuperNailgun_ChargedNails       = "\cnSuper Charged Nails \c-Mode";
 
 //////////////////////////// SLOT 6 ///////////////////////////////////////////////////////////////////////////////
 // Excavator

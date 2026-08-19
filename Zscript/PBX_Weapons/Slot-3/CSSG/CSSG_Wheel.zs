@@ -1,7 +1,55 @@
-//
-//	the info object that holds the data for the wheel handler to read
-//
-Class CSSGWeaponWheel : wheelinfocontainer
+Class CSSGWeaponWheelPage1 : wheelinfocontainer
+{
+	override int GetSPCount(actor requester)
+	{
+		return 4;
+	}
+	
+	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
+	{
+		if(!spw || !requester)
+			return;
+			
+		super.GetSpecials(spw,requester);
+
+		vector2 iconScale = (1.0, 1.0);
+
+		PB_SpecialWheel_Mode Weapon_Close = new ("PB_SpecialWheel_Mode");
+		Weapon_Close.img = "graphics/WeaponWheel/CloseMenu.png";
+		Weapon_Close.Alias = "$PBX_CloseMenu";
+		Weapon_Close.tokentogive = "PBX_CloseWheel";
+		Weapon_Close.scalex = WHEEL_CLOSEMENU_SCALE;
+		Weapon_Close.scaley = WHEEL_CLOSEMENU_SCALE;
+		spw.Push(Weapon_Close);
+
+		PB_SpecialWheel_Mode CSSG_Switch = new ("PB_SpecialWheel_Mode");
+		CSSG_Switch.img = "graphics/WeaponWheel/CSSG/SG_Buck.png";
+		CSSG_Switch.Alias = "$PBX_CSSG_PAGE2_WW";
+		CSSG_Switch.tokentogive = "SelectCSG_SwitchMenu";
+		CSSG_Switch.scalex = iconscale.x/2;
+		CSSG_Switch.scaley = iconscale.y/2;
+		spw.Push(CSSG_Switch);
+
+		PB_SpecialWheel_Mode CSSG_SingleAlt = new ("PB_SpecialWheel_Mode");
+		CSSG_SingleAlt.img = "graphics/WeaponWheel/CSSG/SG_SingleFire.png";
+		CSSG_SingleAlt.Alias = "$PBX_CSSG_SINGLE";
+		CSSG_SingleAlt.tokentogive = "SelectCSG_SwitchSingle";
+		CSSG_SingleAlt.scalex = iconscale.x;
+		CSSG_SingleAlt.scaley = iconscale.y;
+		spw.Push(CSSG_SingleAlt);
+
+		PB_SpecialWheel_Mode CSSG_HookAlt = new ("PB_SpecialWheel_Mode");
+		CSSG_HookAlt.img = "graphics/WeaponWheel/CSSG/SG_Meathook.png";
+		CSSG_HookAlt.Alias = "$PBX_CSSG_HOOK";
+		CSSG_HookAlt.tokentogive = "SelectCSG_SwitchHook";
+		CSSG_HookAlt.scalex = iconscale.x;
+		CSSG_HookAlt.scaley = iconscale.y;
+		spw.Push(CSSG_HookAlt);
+
+	}
+}
+
+Class CSSGWeaponWheelPage2 : wheelinfocontainer
 {
 	override int GetSPCount(actor requester)
 	{
@@ -29,17 +77,9 @@ Class CSSGWeaponWheel : wheelinfocontainer
 		spw.Push(Weapon_Close);
 
 		PB_SpecialWheel_Mode CSSG_Switch = new ("PB_SpecialWheel_Mode");
-		if(!cssg.meathookMode)
-		{
-			CSSG_Switch.img = "graphics/WeaponWheel/CSSG/SG_Meathook.png";
-			CSSG_Switch.Alias = "$PBX_CSSG_HOOK";
-		}
-		else
-		{
-			CSSG_Switch.img = "graphics/WeaponWheel/CSSG/SG_SingleFire.png";
-			CSSG_Switch.Alias = "$PBX_CSSG_SINGLE";
-		}
-		CSSG_Switch.tokentogive = "SelectCSG_SwitchAlt";
+		CSSG_Switch.img = "graphics/WeaponWheel/CSSG/SG_Page.png";
+		CSSG_Switch.Alias = "$PBX_CSSG_PAGE1_WW";
+		CSSG_Switch.tokentogive = "SelectCSG_SwitchMenu";
 		CSSG_Switch.scalex = iconscale.x;
 		CSSG_Switch.scaley = iconscale.y;
 		spw.Push(CSSG_Switch);

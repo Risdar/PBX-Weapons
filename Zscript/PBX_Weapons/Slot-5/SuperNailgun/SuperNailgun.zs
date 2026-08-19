@@ -44,6 +44,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
 	bool isOverheating;
     bool isSpinning;
+    bool isChargedNails;
 
     const LIGTNING_DAMAGE       = 2;    // Damage per tics
     const NAIL_ALTFIRE_AMOUNT   = 5;   // How many nail is shot on the altfire
@@ -92,11 +93,11 @@ class PBX_SuperNailgun : PBX_WeaponBase
         PB_LowAmmoSoundWarning("hdmr");
         PB_TakeAmmo(invoker.ammo2.getClassName(),emptyMag:0,emptyChamber:0);
         A_PlaySound("SNFIRE", 50);
-        PB_FireBullets("SuperNail_Hot",1,0,7,0,1);
+        PB_FireBullets("PB_MGNail",1,0,7,0,1);
         if(PB_GetOverheat() >= OVERHEAT_THRESHOLD)
         {
             A_StartSound("LGLoop", CHAN_WEAPON, CHANF_OVERLAP, 1.0, pitch: 1.2);
-            PB_FireBullets("SuperNail_Lightning",1,0,7,0,1);
+            PB_FireBullets(invoker.isChargedNails ? "SuperNail_Lightning" : "SuperNail_Hot",1,0,7,0,1);
             A_GunFlash();
         }
         PB_WeaponRecoil(-0.6, 0);
@@ -220,6 +221,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
   
 //////////////////////////// ALT FIRE ////////////////////////////////////////////////////////////////////////////////////
         AltFire:
+            TNT1 A 0 A_JumpIf(PB_GetMagUnloaded(),"Reload");
             TNT1 A 0 A_JumpIf(invoker.isSpinning,"SpinAfterFire");
         SpinLoop:
             TNT1 A 0 {
@@ -230,6 +232,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
                 A_AlertMonsters();
                 invoker.isSpinning = true;
             }
+            // This is the new AltFire
             SNLR GHI 1 A_DoPBWeaponAction();
             TNT1 A 0 SuperNailgun_PLaysound();
             TNT1 A 0 PB_ModifyOverheat(OVERHEAT_GIVE_NORM);
@@ -285,6 +288,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
             SNRL QR 1;
             SNRL STUVWX 1 PB_SetRoll(roll-2);
             TNT1 A 0 PB_SetRoll(0);
+            TNT1 A 0 A_JumpIf(invoker.isSpinning,"SpinLoop");
             Goto Ready3;
             
 //////////////////////////// UNLOAD ////////////////////////////////////////////////////////////////////////////////////
@@ -296,7 +300,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
             SNRL EF 1 PB_SetRoll(roll+2);
             TNT1 A 0 {
                 A_PlaysoundEx("weapons/shotgun/detach", "Auto");
-                PB_UnloadMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname());
+                PB_UnloadMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname(),maxsize:MAGAZINE_SIZE,spawnActor:"PBX_SuperNail_DroppedMag");
                 PB_SetChamberEmpty(true);
                 PB_SetMagUnloaded(true);
                 PB_SetMagEmpty(true);
@@ -308,8 +312,10 @@ class PBX_SuperNailgun : PBX_WeaponBase
         WeaponSpecial:
             TNT1 A 0 {
                 A_TakeInventory("GoWeaponSpecialAbility", 1);
-                A_Print("$PBX_NoSpecial");
+                invoker.isChargedNails = !invoker.isChargedNails;
+                A_Print(invoker.isChargedNails ? "$PBX_SuperNailgun_ChargedNails" : "$PBX_SuperNailgun_HeatedNails");
             }
+            TNT1 A 0 A_JumpIf(invoker.isSpinning,"SpinLoop");
             Goto Ready3;
             
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////

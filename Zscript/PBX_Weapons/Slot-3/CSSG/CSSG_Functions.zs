@@ -53,7 +53,6 @@ extend class PBX_CSSG
 		}
 	}
 
-	// I'll just keep it in here although its unused
 	action state CSSG_Ready()
 	{
 		let pbxplr = PBXCore_Player(invoker.owner);
@@ -234,7 +233,7 @@ extend class PBX_CSSG
 				A_SpawnItemEx("BlueFlareSpawn", 0, 0, -3);
 				A_SpawnItemEx("BlueFlareSpawn", 0, 0, 3);
 				PB_FireBullets("SubZeroProjectile",10,6,0,0,6);
-         		A_FireBullets (8, 6, 10, 18, "SubZ_Puff",FBF_NORANDOM,8192,"CSSG_FrozenTracer",-12);
+         		A_FireBullets(8, 6, 10, 18, "SubZ_Puff",FBF_NORANDOM,8192,"CSSG_FrozenTracer",-12);
 				break;
 		}
 		
@@ -486,32 +485,47 @@ extend class PBX_CSSG
 
 	Action state CSSG_HandleWheel()
 	{
+		A_Takeinventory("GoWeaponSpecialAbility",1);
+
 		int mode = invoker.shellsmode + 1;
 		int actmode = invoker.shellsmode; // actual mode
+		int wheelmode = getTokens();
 
-		if(countinv("PBX_CloseWheel") > 0)
+		if(wheelmode == HOOK_ALTFIRE && invoker.meathookMode || wheelmode == SINGLE_ALTFIRE && !invoker.meathookMode)
 		{
-			A_TakeInventory("PBX_CloseWheel",1);
-			return resolvestate("Ready3");
+			A_Print("$PB_ALREADYSELECTED"); 
+            cleanModeTokens(); 
+            return ResolveState("Ready3");
 		}
 
-		if(countinv("SelectCSG_SwitchAlt") > 0)
+		switch(wheelmode)
 		{
-			A_TakeInventory("SelectCSG_SwitchAlt",1);
-			invoker.meathookMode = !invoker.meathookMode;
-			A_print(invoker.meathookMode ? "$PBX_CSSG_HOOK" : "$PBX_CSSG_SINGLE");
-			a_startsound(invoker.meathookMode ? "MHKSTRT" : "weapons/cssg/in",193,CHANF_DEFAULT,1,ATTN_NONE);
-			return resolvestate("Ready3");
-		}
-		
-		// If you dont have an upgrade token, cancel wheel
-		if(countinv("SelectCSG_No") > 0)
-		{
-			A_TakeInventory("SelectCSG_No",1);
-			A_Print("$PBX_AmmoNotAvailable");
-			return resolvestate("Ready3");
+			case NO_UPGRADE: 
+				A_Print("$PBX_AmmoNotAvailable");
+			case CLOSE_WHEEL: 
+				break;
+				
+			case SINGLE_ALTFIRE:
+				invoker.meathookMode = false;
+				A_print("$PBX_CSSG_SINGLE");
+				a_startsound("weapons/cssg/in",193,CHANF_DEFAULT,1,ATTN_NONE);
+				break;
+
+			case HOOK_ALTFIRE:
+				invoker.meathookMode = true;
+				A_print("$PBX_CSSG_HOOK");
+				a_startsound("MHKSTRT",193,CHANF_DEFAULT,1,ATTN_NONE);
+				break;
+
+			case SWITCH_MENU:
+				invoker.mWheelPage2 = !invoker.mWheelPage2;
+				invoker.wheelinfo = invoker.mWheelPage2 ? "CSSGWeaponWheelPage2" : "CSSGWeaponWheelPage1";
+				A_print(invoker.mWheelPage2 ? "$PBX_CSSG_PAGE2" : "$PBX_CSSG_PAGE1");
+				// EventHandler.SendInterfaceEvent(PlayerNumber(),"pb_special_wheel");
+				break;
 		}
 
+		// Handle Shell Change
 		// If you've already selected the same shell type, cancel wheel
 		if(countinv(PBX_CSSG.CSSG_ShellsToken1[actmode]) > 0)
 		{
@@ -526,7 +540,7 @@ extend class PBX_CSSG
 			return resolvestate("Ready3");
 		}
 		
-		// Actual handling of the wheel
+		// Actual shell change
 		for(int i = 0; i < PBX_CSSG.CSSG_ShellsToken1.size(); i++)
 		{
 			if(countinv(PBX_CSSG.CSSG_ShellsToken1[i]) > 0)
@@ -534,12 +548,36 @@ extend class PBX_CSSG
 				invoker.oldshells = invoker.shellsmode;
 				invoker.shellsmode = i;
 				A_print(PBX_CSSG.CSSG_ConfirmShell[i]);
+				ClearCssgTokens();
 				return resolvestate("EndSelection");
 			}
 		}
 		 
 		// End selection regardless
-		return resolvestate("EndSelection");
+		cleanmodetokens();
+		return resolvestate("Ready3");
+	}
+
+	action int getTokens()
+	{
+		if(FindInventory("SelectCSG_SwitchMenu"))
+			return SWITCH_MENU;
+		else if (FindInventory("SelectCSG_SwitchHook"))
+			return HOOK_ALTFIRE;
+		else if (FindInventory("SelectCSG_SwitchSingle"))
+			return SINGLE_ALTFIRE;
+		else if (FindInventory("SelectCSG_No"))
+			return NO_UPGRADE;
+		else
+			return CLOSE_WHEEL;
+	}
+
+	action void cleanmodetokens()
+	{
+		A_TakeInventory("SelectCSG_No",1);
+		A_TakeInventory("SelectCSG_SwitchSingle",1);
+		A_TakeInventory("SelectCSG_SwitchHook",1);
+		A_TakeInventory("SelectCSG_SwitchMenu",1);
 	}
 	
 	action void clearcssgtokens()

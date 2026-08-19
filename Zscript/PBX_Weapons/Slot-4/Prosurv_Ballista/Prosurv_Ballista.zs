@@ -1,14 +1,19 @@
+// Crossbow Ballista from Project Survival made by ThePopeOfDope
+// Shock Bolt sprites is made by Waik (_wkn)
+
 // Includes
 #include "./CrossbowBallista_Functions.zs"
 #include "./CrossbowBallista_Wheel.zs"
 
 // Tokens
+class CB_Select_ShockMode : inventory {default{inventory.maxamount 1;}}
 class CB_Select_DemonicMode : inventory {default{inventory.maxamount 1;}}
 class CB_Select_ExplosiveMode : inventory {default{inventory.maxamount 1;}}
 class CB_Select_NormalMode : inventory {default{inventory.maxamount 1;}}
 class CB_Select_NO : inventory {default{inventory.maxamount 1;}}
 class Crossbow_Upgraded : inventory {default{inventory.maxamount 1;}}
 
+// Actual Weapon
 class PBX_Prosurv_Ballista : PBX_WeaponBase
 {
 	Default
@@ -60,20 +65,32 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
         NO_UPGRADE,
 		NORMAL_BOLT,
 		EXPLOSIVE_BOLT,
-		DEMONIC_BOLT
+		DEMONIC_BOLT,
+        SHOCK_BOLT
 	}
 
     States
     {
         CacheSprites:
-            CB0S A 0; CB1S A 0; CB2S A 0; CB3S A 0;
-            CB0T A 0; CB1T A 0; CB2T A 0; CB3T A 0;
-            CB0P A 0; CB1P A 0; CB2P A 0; CB3P A 0;
-            CB0K A 0; CB1K A 0; CB2K A 0; CB3K A 0;
-            CB_F A 0; CB_G A 0;
+            CB0S A 0; CB1S A 0; CB2S A 0; CB3S A 0; CB4S A 0;
+            CB0T A 0; CB1T A 0; CB2T A 0; CB3T A 0; CB4T A 0;
+            CB0P A 0; CB1P A 0; CB2P A 0; CB3P A 0; CB4P A 0;
+            CB0K A 0; CB1K A 0; CB2K A 0; CB3K A 0; CB4K A 0;
+            CB_F A 0; CB_G A 0; CB_I A 0;
+
+            CB_Z A 0; CB_Z B 0; CB_Z C 0; CB_Z D 0;
 
         Spawn:
-            CB_Z A -1;
+            CB_Z A -1 {
+                switch(getCrossbowMode())
+                {
+                    case NORMAL_BOLT: 	  frame = 0;	break;
+                    case EXPLOSIVE_BOLT:  frame = 1;	break;
+                    case DEMONIC_BOLT: 	  frame = 2;	break;
+                    case SHOCK_BOLT: 	  frame = 3;	break;
+                    default: break;
+                }
+            }
             Stop;
 
         Deselect:
@@ -84,7 +101,7 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
                 PB_SetZoom(false);
             }
         ActualDeselect:
-		    CB_A EDCBA 1 setCrossbowSprite("CB0S","CB1S","CB2S","CB3S");
+		    CB_A EDCBA 1 setCrossbowSprite("CB0S","CB1S","CB2S","CB3S","CB4S");
 			TNT1 AAA 0 A_lower();
 			Wait;
 
@@ -115,40 +132,27 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
                     return resolvestate(null);
             }
             CB_F AB 1 {
-                setCrossbowSprite("TNT1","CB_F","CB_G","TNT1");
+                setCrossbowSprite(bolt:"CB_F",explosive:"CB_G",shock:"CB_I");
                 return A_DoPBWeaponAction();
             }
-            TNT1 A 0 A_PlaySoundEx("weapons/ballista/boltin","Auto");
-            CB_F CDE 1 {
-                setCrossbowSprite("TNT1","CB_F","CB_G","TNT1");
-                return A_DoPBWeaponAction();
-            }
-            CB_F FFFFF 1 {
-                setCrossbowSprite("TNT1","CB_F","CB_G","TNT1");
-                return A_DoPBWeaponAction();
-            }
-            CB_F FG 1 {
+            "####" A 0 A_PlaySoundEx("weapons/ballista/boltin","Auto");
+            "####" CDE 1 A_DoPBWeaponAction();
+            "####" FFFFF 1 A_DoPBWeaponAction();
+            "####" FG 1 {
                 PB_SetRoll(roll-.3);
-                setCrossbowSprite("TNT1","CB_F","CB_G","TNT1");
                 return A_DoPBWeaponAction();
             }
-            CB_F HHHHH 1 {
-                setCrossbowSprite("TNT1","CB_F","CB_G","TNT1");
-                return A_DoPBWeaponAction();
-            }
-            CB_F H 1 {
-                setCrossbowSprite("TNT1","CB_F","CB_G","TNT1");
+            "####" HHHHH 1 A_DoPBWeaponAction();
+            "####" H 1 {
                 PB_SetRoll(roll+.3);
                 return A_DoPBWeaponAction();
             }
-            CB_F IJ 1 {
-                setCrossbowSprite("TNT1","CB_F","CB_G","TNT1");
+            "####" IJ 1 {
                 PB_SetRoll(roll+.4);
                 return A_DoPBWeaponAction();
             }
-            TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
-            CB_F KLMN 1 {
-                setCrossbowSprite("TNT1","CB_F","CB_G","TNT1");
+            "####" A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
+            "####" KLMN 1 {
                 PB_SetRoll(roll+.4);
                 return A_DoPBWeaponAction();
             }
@@ -173,7 +177,7 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
                 return PB_RespectIfNeeded();
             }
         SelectAnimation:
-            CB1S ABCDE 1 setCrossbowSprite("CB0S","CB1S","CB2S","CB3S");
+            CB1S ABCDE 1 setCrossbowSprite("CB0S","CB1S","CB2S","CB3S","CB4S");
             goto Ready3;
             
         RespectEmpty:
@@ -200,11 +204,11 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
                 PB_HandleCrosshair(29);
             }
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"Ready2");
-            TNT1 A 0 readyCheck("ReadyToFireDemonic","ReadyToFireExplosive");
+            TNT1 A 0 readyCheck("ReadyToFireDemonic","ReadyToFireExplosive","ReadyToFireShock");
         ReadyToFire:
             CB1S E 1 {				
                 PB_HandleCrosshair(29);
-                setCrossbowSprite("CB0S","CB1S","TNT1","TNT1");
+                setCrossbowSprite("CB0S","CB1S");
                 return PB_ReadyFire(ads:false);
             }
             Loop;
@@ -223,17 +227,25 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             }
             Loop;
 
+        ReadyToFireShock:
+            CB4S EEEEEEEEEEEEEEEEEEEEFGHGF 1 {
+                PB_HandleCrosshair(29);
+                return PB_ReadyFire(ads:false);
+            }
+            Loop;
+        
+
         Ready2:
             TNT1 A 0 {
                 PB_SetRoll(0);
                 A_TakeInventory("PB_LockScreenTilt",1);
                 A_SetCrosshair(-1);
             }
-            TNT1 A 0 readyCheck("Ready2Demonic","Ready2Explosive");
+            TNT1 A 0 readyCheck("Ready2Demonic","Ready2Explosive","Ready2Shock");
         ReadyToFire2:
             CB1T E 1 {
                 A_SetCrosshair(-1);
-                setCrossbowSprite("CB0T","CB1T","TNT1","TNT1");
+                setCrossbowSprite("CB0T","CB1T");
                 return PB_ReadyFire(ads:true);
             }
             Loop;
@@ -247,6 +259,13 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
 
         Ready2Demonic:
             CB3T EFGF 3 {
+                A_SetCrosshair(-1);
+                return PB_ReadyFire(ads:true);
+            }
+            Loop;
+
+        Ready2Shock:
+            CB4T EEEEEEEEEEEEEEEEEEEEFGHGF 1 {
                 A_SetCrosshair(-1);
                 return PB_ReadyFire(ads:true);
             }
@@ -311,7 +330,7 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"ZoomOut");
         ZoomIn:
             TNT1 A 0 A_ZoomFactor(1.5);
-            CB1T ABCD 1 setCrossbowSprite("CB0T","CB1T","CB2T","CB3T");
+            CB1T ABCD 1 setCrossbowSprite("CB0T","CB1T","CB2T","CB3T","CB4T");
             TNT1 A 0 {
                 PB_SetZoom(true);
                 A_SetCrosshair(-1);
@@ -320,9 +339,10 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
 
         ZoomOut:
             TNT1 A 0 PB_HandleCrosshair(29);
-            CB1T DCBA 1 setCrossbowSprite("CB0T","CB1T","CB2T","CB3T");
+            CB1T DCBA 1 setCrossbowSprite("CB0T","CB1T","CB2T","CB3T","CB4T");
             TNT1 A 0 PB_SetZoom(false);
             TNT1 A 0 {
+                // Check if the player still has tokens, if yes then this means ZoomOut is called from the WeaponSpecial
                 if(checkTokens())
                     return resolvestate("unload");
                 return resolvestate(null);
@@ -351,20 +371,18 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             CB_E HIJKKKKKKK 1;
             TNT1 A 0 A_PlaySoundEx("weapons/ballista/drawstring","Auto");
             CB_E LMN 1;
-			TNT1 A 0 PB_SetMagUnloaded(true);
             CB_E OPPPPP 1;
         ContinueReload: // Used by the mode change
             TNT1 A 0 A_JumpIf(invoker.ammo1.amount < invoker.ReserveToMagAmmoFactor, "ContinueUnload"); // Edge case where you mode change but has no reserve
             TNT1 A 0 A_JumpIf(getCrossbowMode() == DEMONIC_BOLT,"ReloadDemonic");
-            CB_F AB 1 setCrossbowSprite("TNT1","CB_F","CB_G","TNT1");
-            TNT1 A 0 A_PlaySoundEx("weapons/ballista/boltin","Auto");
-            CB_F CDE 1 setCrossbowSprite("TNT1","CB_F","CB_G","TNT1");
-            CB_F FG 1 {
-                setCrossbowSprite("TNT1","CB_F","CB_G","TNT1");
+            CB_F AB 1 setCrossbowSprite(bolt:"CB_F",explosive:"CB_G",shock:"CB_I");
+            "####" A 0 A_PlaySoundEx("weapons/ballista/boltin","Auto");
+            "####" CDE 1;
+            "####" FG 1 {
                 PB_SetRoll(roll-.3);
                 invoker.unwindString = true;
             }
-            TNT1 A 0 {
+            "####" A 0 {
 				A_SetInventory(invoker.ammo2.getclassname(),ARROW_AMOUNT); // Gives the arrow
 				A_TakeInventory(invoker.ammo1.getclassname(),invoker.ReserveToMagAmmoFactor,TIF_NOTAKEINFINITE); // Take 1 reserve
                 A_PlaySoundEx("Ironsights","Auto");
@@ -372,19 +390,10 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
 				PB_SetMagEmpty(false);
 				PB_SetChamberEmpty(false);
 			}
-            CB_F H 1 {
-                setCrossbowSprite("TNT1","CB_F","CB_G","TNT1");
-                PB_SetRoll(roll+.3);
-            }
-            CB_F IJ 1 {
-                setCrossbowSprite("TNT1","CB_F","CB_G","TNT1");
-                PB_SetRoll(roll+.4);
-            }
-            TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
-            CB_F KLMN 1 {
-                setCrossbowSprite("TNT1","CB_F","CB_G","TNT1");
-                PB_SetRoll(roll+.4);
-            }
+            "####" H 1 PB_SetRoll(roll+.3);
+            "####" IJ 1 PB_SetRoll(roll+.4);
+            "####" A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
+            "####" KLMN 1 PB_SetRoll(roll+.4);
         EndReload:
             TNT1 A 0 {
                 invoker.unwindString = false;
@@ -418,30 +427,21 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             TNT1 A 0 A_JumpIf(checkTokens() && PB_GetChamberEmpty(), "ContinueUnload"); // Skip the taking out arrow animation
             TNT1 A 0 A_JumpIf(getCrossbowMode() == DEMONIC_BOLT, "UnloadDemonic");
             CB_F NMLK 1 {
-                setCrossbowSprite("TNT1","CB_F","CB_G","TNT1");
+                setCrossbowSprite(bolt:"CB_F",explosive:"CB_G",shock:"CB_I");
                 PB_SetRoll(roll+.4);
             }
-            CB_F JI 1 {
-                setCrossbowSprite("TNT1","CB_F","CB_G","TNT1");
-                PB_SetRoll(roll+.4);
-            }
-            CB_F H 1 {
-                setCrossbowSprite("TNT1","CB_F","CB_G","TNT1");
-                PB_SetRoll(roll-.3);
-            }
-            TNT1 A 0 A_PlaySoundEx("weapons/ballista/boltout","Auto");
-            TNT1 A 0 {
+            "####" JI 1 PB_SetRoll(roll+.4);
+            "####" H 1 PB_SetRoll(roll-.3);
+            "####" A 0 {
+                A_PlaySoundEx("weapons/ballista/boltout","Auto");
                 unloadCrossbow();
                 PB_SetChamberEmpty(true);
                 PB_SetMagEmpty(true);
                 PB_SetMagUnloaded(true);
             }
-            CB_F GF 1 {
-                setCrossbowSprite("TNT1","CB_F","CB_G","TNT1");
-                PB_SetRoll(roll+.3);
-            }
-            CB_F EDC 1 setCrossbowSprite("TNT1","CB_F","CB_G","TNT1");
-            CB_F BA 1 setCrossbowSprite("TNT1","CB_F","CB_G","TNT1");
+            "####" GF 1 PB_SetRoll(roll+.3);
+            "####" EDC 1;
+            "####" BA 1;
         ContinueUnload:
             TNT1 A 0 A_PlaySoundEx("Ironsights","Auto");
             TNT1 A 0 A_PlaySoundEx("weapons/ballista/drawstring","Auto");
@@ -473,24 +473,25 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             Goto ContinueUnload;
 
         FlashPunching:
-            CB1P ABCDEEEEEEDCBA 1 setCrossbowSprite("CB0P","CB1P","CB2P","CB3P");
+            CB1P ABCDEEEEEEDCBA 1 setCrossbowSprite("CB0P","CB1P","CB2P","CB3P","CB4P");
             goto Ready3;
 
         FlashKicking:
-            CB1K ABCDEEEEEEDCBA 1 setCrossbowSprite("CB0K","CB1K","CB2K","CB3K");
+            CB1K ABCDEEEEEEDCBA 1 setCrossbowSprite("CB0K","CB1K","CB2K","CB3K","CB4P");
             goto Ready3;
 
         FlashAirKicking:
-            CB1K ABCDEEEEEEEDCBA 1 setCrossbowSprite("CB0K","CB1K","CB2K","CB3K");
+            CB1K ABCDEEEEEEEDCBA 1 setCrossbowSprite("CB0K","CB1K","CB2K","CB3K","CB4K");
             goto Ready3;
 
         FlashSlideKicking:
-            CB1K ABCD 1 setCrossbowSprite("CB0K","CB1K","CB2K","CB3K");
-            CB1K E 21 setCrossbowSprite("CB0K","CB1K","CB2K","CB3K");
+            CB1K ABCD 1 setCrossbowSprite("CB0K","CB1K","CB2K","CB3K","CB4K");
+            "####" E 19;
+            "####" DCBA 1;
             goto Ready3;
 
         FlashSlideKickingStop:
-            CB1K EEEDCBA 1 setCrossbowSprite("CB0K","CB1K","CB2K","CB3K");
+            CB1K EEEDCBA 1 setCrossbowSprite("CB0K","CB1K","CB2K","CB3K","CB4K");
             goto Ready3;
 
     }

@@ -1,6 +1,10 @@
 // Wheel Tokens
 Class SelectCSG_No : Inventory {default{inventory.maxamount 1;}}
-Class SelectCSG_SwitchAlt : Inventory {default{inventory.maxamount 1;}}
+Class SelectCSG_SwitchSingle : Inventory {default{inventory.maxamount 1;}}
+Class SelectCSG_SwitchHook : Inventory {default{inventory.maxamount 1;}}
+
+Class SelectCSG_SwitchMenu : Inventory {default{inventory.maxamount 1;}}
+
 Class SelectCSG_Buckshot : Inventory {default{inventory.maxamount 1;}}
 Class SelectCSG_Danmaku : Inventory {default{inventory.maxamount 1;}}
 Class SelectCSG_Slugshot : Inventory {default{inventory.maxamount 1;}}

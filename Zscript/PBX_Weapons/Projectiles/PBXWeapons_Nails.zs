@@ -1,5 +1,5 @@
 //////////////////////////// CROSSBOW BALLISTA ////////////////////////////////////////////////////////////////////////////////////
-class BallistaBolt : PB_NailgunGlue 
+class PBX_BallistaBolt : PB_NailgunGlue 
 {
     Default
     {
@@ -58,7 +58,7 @@ class BallistaBolt : PB_NailgunGlue
 				bTHRUACTORS = true;
 			}
 		Fade:
-            CRBA A 1 A_SpawnItemEx("PBX_BoltPickup",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
+            CRBA A 1 A_SpawnItemEx("PBX_BallistaBoltPickup",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
 			stop;
 
 		XDeath:
@@ -75,7 +75,7 @@ class BallistaBolt : PB_NailgunGlue
 	}
 }
 				
-class ExplosiveBolt : BallistaBolt
+class PBX_ExplosiveBolt : PBX_BallistaBolt
 {
     int user_stickycounter;
     int user_stuckEnemy;
@@ -178,7 +178,7 @@ class ExplosiveBolt : BallistaBolt
     }
 }
 
-class DemonicBolt : PB_NailgunGlue
+class PBX_DemonicBolt : PB_NailgunGlue
 {
     Default
     {
@@ -277,6 +277,68 @@ class BallistaFlare : actor
     }
 }
 
+class PBX_ShockBolt : PBX_BallistaBolt
+{
+    Default
+    {
+        PB_Projectile.BaseDamage 60;
+		PB_Projectile.RipperCount 1;
+        DamageType "Nail";
+        +DONTBOUNCEONSHOOTABLES;
+        +USEBOUNCESTATE;
+        +HITTRACER;
+    }
+
+    States
+    {
+        Fly:
+            CRBS D 2 A_SpawnItemEx("BoltTrail", 0, 0, 0, 1, 0, 0, 180, 128);
+            Loop;
+        Crash:
+		Stuck:
+        Death:
+		XDeath:
+            TNT1 A 0 A_StopSound(6);
+			TNT1 A 0 A_SpawnItemEx("PB_ShockBoltExplosion",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0);
+            Stop;
+    }
+}
+
+
+// Unsure where this should actually go, but the same file worked just fine. Move it where it should be.
+// The "A_SpawnItemEx("LightningGunPuff")" wasnt just a graphical thing. It carried a rather large stun area, making unusable for the intended bolt use.
+// There are two A_Explode calls. The first one carries most of the damage: 250 electric in a small area.
+// The other call carries the actual stun effect. 0 damage does not seem to have any effect, so it needs to be set to 1 damage.
+class PB_ShockBoltExplosion : PB_StunGrenadeExplosion
+{
+	Default
+	{
+		PB_StunGrenadeExplosion.props 250, 16, "Electric"; //expDmg, expRad, expType;
+	}
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay A_StartSound("LGBOMB");
+			STFL ABCDEF 1 BRIGHT Light("LightningImpactLight") {
+				A_SetScale(Scale.X+0.032,Scale.Y+0.032);
+				A_SpawnProjectile("ElectroBlastTrail",6,0,random(0,359),CMF_AIMDIRECTION|CMF_TRACKOWNER,random(-180,180));
+			}
+		TNT1 A 0 {
+			//A_SpawnItemEx("LightningGunPuff"); // Stun part
+			A_SpawnItemEx("BlueFlare");
+			A_Explode(expDmg,expRad,XF_THRUSTLESS,false,expRad,damagetype:expType);
+			A_Explode(1,expRad,XF_THRUSTLESS,false,expRad,damagetype:"Stun");
+			A_StartSound("STNBOEX");
+			for(int i = 0; i < 10; i++)
+			{
+				A_SpawnProjectile("ElectroBlastTrail",6,0,random(0,359),CMF_AIMDIRECTION|CMF_TRACKOWNER,random(-180,180));
+			}
+		}
+		XELC AABBCCDDEEFF 1 Bright Light("LightningImpactLight") A_SpawnProjectile("ElectroBlastTrail",6,0,random(0,359),CMF_AIMDIRECTION|CMF_TRACKOWNER,random(-180,180));
+		Stop;
+	}
+}
+
 //////////////////////////// SUPER NAILGUN ////////////////////////////////////////////////////////////////////////////////////
 class SuperNail_Hot : PB_MGNailHot
 {
@@ -286,8 +348,13 @@ class SuperNail_Hot : PB_MGNailHot
     }
 }
 
-class SuperNail_Lightning : SuperNail_Hot
+class SuperNail_Lightning : PB_MGNail
 {
+    Default
+    {
+		PB_Projectile.BaseDamage 50;
+    }
+    
     States
     {
         Fade:
@@ -297,21 +364,6 @@ class SuperNail_Lightning : SuperNail_Hot
             }
             goto Super::Fade;
 
-        // DeathLoop:
-        //     NLPJ B 35 {
-        //         tics = lifetime;
-        //         roll = random(15, -15);
-        //         if(hitplane > 0) { //floor
-        //             bXFLIP = random(0, 1);
-        //             frame = 3;
-        //             if(hitplane > 1) //ceiling
-        //                 roll += 180;
-        //         }
-        //         DoLightning = true;
-        //         PBXCore_Debug.Print("Lightning Enabled");
-        //         SpawnLightning();
-        //     }
-        //     Goto Fade;
     }
 
     bool DoLightning;

@@ -314,17 +314,17 @@ class CrossbowBallistaAmmo : Ammo
     }
 }
 
-class PBX_BoltPickup : PB_HighCalMag
+class PBX_BallistaBoltPickup : PB_HighCalMag
 {
     Default
     {
-        Inventory.Amount 1;
+        Inventory.Amount PBX_Prosurv_Ballista.ARROW_AMOUNT;
         Inventory.PickupSound "Ammocase/Open";
     }
 
     override void PB_SetAmmoSprite()
     {
-        sprite = GetSpriteIndex("CRBAA0");
+        sprite = GetSpriteIndex("CRBA");
     }
 
 	States
@@ -338,13 +338,13 @@ class PBX_ExplosiveBoltPickup : PB_RocketAmmo
 {
     Default
     {
-        Inventory.Amount 1;
+        Inventory.Amount PBX_Prosurv_Ballista.ARROW_AMOUNT;
         Inventory.PickupSound "Ammocase/Open";
     }
 
     override void PB_SetAmmoSprite()
     {
-        sprite = GetSpriteIndex("CRBZD0");
+        sprite = GetSpriteIndex("CRBZ");
         frame = 3;
     }
 
@@ -352,6 +352,48 @@ class PBX_ExplosiveBoltPickup : PB_RocketAmmo
     {
         CacheSprites:
             CRBZ D 0;
+    }
+}
+
+class PBX_DemonicBoltPickup : PB_RocketAmmo
+{
+    Default
+    {
+        Inventory.Amount PBX_Prosurv_Ballista.ARROW_AMOUNT;
+        Inventory.PickupSound "Ammocase/Open";
+    }
+
+    override void PB_SetAmmoSprite()
+    {
+        sprite = GetSpriteIndex("CRBA");
+        frame = 1;
+    }
+
+	States
+    {
+        CacheSprites:
+            CRBA B 0;
+    }
+}
+
+class PBX_ShockBoltPickup : PB_Cell
+{
+    Default
+    {
+        Inventory.Amount PBX_Prosurv_Ballista.ARROW_AMOUNT;
+        Inventory.PickupSound "Ammocase/Open";
+    }
+
+    override void PB_SetAmmoSprite()
+    {
+        sprite = GetSpriteIndex("CRBS");
+        frame = 3;
+    }
+
+	States
+    {
+        CacheSprites:
+            CRBS D 0;
     }
 }
 
@@ -388,6 +430,32 @@ class SuperNailgunAmmo : PB_Ammo
 		ammo.backpackmaxamount PBX_SuperNailgun.MAGAZINE_SIZE;
         +INVENTORY.IGNORESKILL;
 	}
+}
+
+class PBX_SuperNail_DroppedMag : PB_HighCalMag
+{
+    Default
+    {
+        Inventory.Amount PBX_SuperNailgun.MAGAZINE_SIZE;
+        Inventory.PickupSound "Ammocase/Open";
+        Height 12;
+        Radius 9;
+        Speed 4;
+        Scale 0.57;
+        Mass 1;
+        SeeSound "weapons/largemagdrop";
+    }
+
+    override void PB_SetAmmoSprite()
+    {
+        sprite = GetSpriteIndex("DRM8");
+    }
+
+	States
+    {
+        CacheSprites:
+            DRM8 A 0;
+    }
 }
 
 //////////////////////////// SLOT 6 ////////////////////////////////////////////////////////////////////////////////////
