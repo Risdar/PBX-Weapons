@@ -376,8 +376,8 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 			goto Ready3;
 
 		WeaponSwitch:
-			LVRA VWX 1;
-			LVRA XWV 1;
+			LVRA VWXYZZ 1;
+			LVRA ZZYXWV 1;
 			goto Ready3;
 		
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////
