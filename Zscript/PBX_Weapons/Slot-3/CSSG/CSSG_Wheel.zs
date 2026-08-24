@@ -53,7 +53,7 @@ Class CSSGWeaponWheelPage2 : wheelinfocontainer
 {
 	override int GetSPCount(actor requester)
 	{
-		return 12;
+		return 14;
 	}
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
@@ -249,6 +249,48 @@ Class CSSGWeaponWheelPage2 : wheelinfocontainer
 			CSSG_SubZero_No.scaley = iconscale.y;
 			
 			spw.Push(CSSG_SubZero_No);
+		}
+
+		if(requester.FindInventory("HellFireUpgrade") || disabled) 
+		{
+			PB_SpecialWheel_Mode CSSG_HellFire = new ("PB_SpecialWheel_Mode");
+			CSSG_HellFire.img = "graphics/WeaponWheel/CSSG/SG_HellFire.png";
+			CSSG_HellFire.Alias = "$PBX_CM_HELFRLD";
+			CSSG_HellFire.tokentogive = "SelectCSG_HellFire";
+			CSSG_HellFire.scalex = iconscale.x;
+			CSSG_HellFire.scaley = iconscale.y;
+			spw.Push(CSSG_HellFire);
+		} else 
+		{
+			PB_SpecialWheel_Mode CSSG_HellFire_No = new ("PB_SpecialWheel_Mode");
+			CSSG_HellFire_No.img = "graphics/pywheel/SG_NO.png";
+			CSSG_HellFire_No.Alias = "$PBX_AmmoNotAvailable";
+			CSSG_HellFire_No.tokentogive = "SelectCSG_No";
+			CSSG_HellFire_No.scalex = iconscale.x;
+			CSSG_HellFire_No.scaley = iconscale.y;
+			
+			spw.Push(CSSG_HellFire_No);
+		}
+
+		if(requester.FindInventory("AcidShellsUpgrade") || disabled) 
+		{
+			PB_SpecialWheel_Mode CSSG_Acid = new ("PB_SpecialWheel_Mode");
+			CSSG_Acid.img = "graphics/WeaponWheel/CSSG/SG_Acid.png";
+			CSSG_Acid.Alias = "$PBX_CM_ACIDLD";
+			CSSG_Acid.tokentogive = "SelectCSG_Acid";
+			CSSG_Acid.scalex = iconscale.x;
+			CSSG_Acid.scaley = iconscale.y;
+			spw.Push(CSSG_Acid);
+		} else 
+		{
+			PB_SpecialWheel_Mode CSSG_Acid_No = new ("PB_SpecialWheel_Mode");
+			CSSG_Acid_No.img = "graphics/pywheel/SG_NO.png";
+			CSSG_Acid_No.Alias = "$PBX_AmmoNotAvailable";
+			CSSG_Acid_No.tokentogive = "SelectCSG_No";
+			CSSG_Acid_No.scalex = iconscale.x;
+			CSSG_Acid_No.scaley = iconscale.y;
+			
+			spw.Push(CSSG_Acid_No);
 		}
 		
 	}

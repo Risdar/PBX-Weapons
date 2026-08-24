@@ -73,16 +73,16 @@ class PBXHUDService_PBX_LeverAction : service
         let lar = PBX_Prosurv_LeverAction(objectArg);
         if(!lar) return null;
 
-        data.Image1 = lar.laserActive 
+        data.Image1 = lar.mLaserSightActivated 
             ? "graphics/WeaponWheel/LeverAction/LaserOn.png" 
             : "graphics/WeaponWheel/LeverAction/LaserOff.png";
         data.Image2 = "";       // Weapon Mode Icon
         data.Image3 = "";       // Weapon Mode 2 Icon (For example the CryoRifle has 2 modes at the same time)
 
-        data.Offset1 = lar.laserActive ? (0,18) : (-10, 18);
+        data.Offset1 = lar.mLaserSightActivated ? (0,18) : (-10, 18);
         data.Offset2 = (0,0);   // Weapon Mode Icon Position
 
-        data.Scale1 = lar.laserActive ? 0.6 : 0.7;
+        data.Scale1 = lar.mLaserSightActivated ? 0.6 : 0.7;
         data.Scale2 = 1.0;      // Weapon Mode Icon Scale
 
         return data;
@@ -110,7 +110,7 @@ class PBXHUDService_PBX_CSSG : service
             "buckhud", "slughud", "flcthud", 
             "flakhud", "drgnhud", "explhud", 
             "phoshud", "doomhud", "dnmkhud", 
-            "subzhud"
+            "subzhud", "helfhud", "acshhud"
         };
         // Show what Ammo type is selected
         int cssgshell = clamp(cssg.shellsmode, 0, cssgIcons.Size() - 1);
@@ -147,16 +147,16 @@ class PBXHUDService_PBX_PSG : service
         let psg = PBX_ProSurvPSG(objectArg);
         if(!psg) return null;
 
-        data.Image1 = psg.laserActive 
+        data.Image1 = psg.mLaserSightActivated 
             ? "graphics/WeaponWheel/ProsurvPSG/LaserOn.png" 
             : "graphics/WeaponWheel/ProsurvPSG/LaserOff.png";
         data.Image2 = "";       // Weapon Mode Icon
         data.Image3 = "";       // Weapon Mode 2 Icon (For example the CryoRifle has 2 modes at the same time)
 
-        data.Offset1 = psg.laserActive ? (13,-9) : (-5, -7); 
+        data.Offset1 = psg.mLaserSightActivated ? (13,-9) : (-5, -7); 
         data.Offset2 = (0,0);   // Weapon Mode Icon Position
 
-        data.Scale1 = psg.laserActive ? 0.8 : 1.1;
+        data.Scale1 = psg.mLaserSightActivated ? 0.8 : 1.1;
         data.Scale2 = 1.0;      // Weapon Mode Icon Scale
 
         return data;
@@ -211,16 +211,16 @@ class PBXHUDService_PBX_BattleRifle : service
         let br = PBX_BDPBattleRifle(objectArg);
         if(!br) return null;
 
-        data.Image1 = br.laserActive 
+        data.Image1 = br.mLaserSightActivated 
             ? "graphics/WeaponWheel/BattleRifle/br_LaserOn.png" 
             : "graphics/WeaponWheel/BattleRifle/br_LaserOff.png";
         data.Image2 = "";       // Weapon Mode Icon
         data.Image3 = "";       // Weapon Mode 2 Icon (For example the CryoRifle has 2 modes at the same time)
 
-        data.Offset1 = br.laserActive ? (0,12) : (-7, 12);  
+        data.Offset1 = br.mLaserSightActivated ? (0,12) : (-7, 12);  
         data.Offset2 = (0,0);   // Weapon Mode Icon Position
 
-        data.Scale1 = br.laserActive ? 0.7 : 1.3;
+        data.Scale1 = br.mLaserSightActivated ? 0.7 : 1.3;
         data.Scale2 = 1.0;      // Weapon Mode Icon Scale
 
         return data;
@@ -245,7 +245,7 @@ class PBXHUDService_PBX_MetalSniper : service
         let sniper = PBX_MetalSniper(objectArg);
         if(!sniper) return null;
 
-        data.Image1 = sniper.laserActive 
+        data.Image1 = sniper.mLaserSightActivated 
             ? "graphics/WeaponWheel/MetalSniper/LaserOn.png" 
             : "graphics/WeaponWheel/MetalSniper/LaserOff.png";
         data.Image2 = sniper.resonanceAmmoLoaded ? 
@@ -253,7 +253,7 @@ class PBXHUDService_PBX_MetalSniper : service
             : "graphics/WeaponWheel/metalsniper/StandardAlt.png";
         data.Image3 = "";       // Weapon Mode 2 Icon (For example the CryoRifle has 2 modes at the same time)
 
-        data.Offset1 = sniper.laserActive ? (0,10) : (0,14); 
+        data.Offset1 = sniper.mLaserSightActivated ? (0,10) : (0,14); 
         data.Offset2 = (0,0);   // Weapon Mode Icon Position
 
         if(sniper.AltMode) data.Offset1.y -= 19;
@@ -312,16 +312,16 @@ class PBXHUDService_PBX_NormalRifle : service
         let nr = PBX_NormalRifle(objectArg);
         if(!nr) return null;
 
-        data.Image1 = nr.laserActive 
+        data.Image1 = nr.mLaserSightActivated 
             ? "graphics/WeaponWheel/NormalRifle/laseron.png" 
             : "graphics/WeaponWheel/NormalRifle/laseroff.png";
         data.Image2 = "";       // Weapon Mode Icon
         data.Image3 = "";       // Weapon Mode 2 Icon (For example the CryoRifle has 2 modes at the same time)
 
-        data.Offset1 = nr.laserActive ? (0,12) : (-5,12);
+        data.Offset1 = nr.mLaserSightActivated ? (0,12) : (-5,12);
         data.Offset2 = (0,0);   // Weapon Mode Icon Position
 
-        data.Scale1 = nr.laserActive ? 0.8 : 0.9;
+        data.Scale1 = nr.mLaserSightActivated ? 0.8 : 0.9;
         data.Scale2 = 1.0;      // Weapon Mode Icon Scale
 
         return data;
@@ -553,16 +553,16 @@ class PBXHUDService_PBX_Railgun : service
         let railgun = PBX_BDPRailgun(objectArg);
         if(!railgun) return null;
 
-        data.Image1 = railgun.laserActive 
+        data.Image1 = railgun.mLaserSightActivated 
             ? "graphics/WeaponWheel/PlatRailgun/LaserOn.png" 
             : "graphics/WeaponWheel/PlatRailgun/LaserOff.png";
         data.Image2 = "";       // Weapon Mode Icon
         data.Image3 = "";       // Weapon Mode 2 Icon (For example the CryoRifle has 2 modes at the same time)
 
-        data.Offset1 = railgun.laserActive ? (0,12) : (-5, 12);   // Weapon Icon Position
+        data.Offset1 = railgun.mLaserSightActivated ? (0,12) : (-5, 12);   // Weapon Icon Position
         data.Offset2 = (0,0);   // Weapon Mode Icon Position
 
-        data.Scale1 = railgun.laserActive ? 0.7 : 1.4;      // Weapon Icon Scale
+        data.Scale1 = railgun.mLaserSightActivated ? 0.7 : 1.4;      // Weapon Icon Scale
         data.Scale2 = 1.0;      // Weapon Mode Icon Scale
 
         return data;

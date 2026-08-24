@@ -55,6 +55,52 @@ class PBX_PlasmaBlaster : PB_WeaponBase
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
+    action void setCrossbowSprite(name unloaded = '', name bolt = '', name explosive = '', name demonic = '', name shock = '')
+	{
+		int mode = getCrossbowMode();
+		name spriteToUse = '';
+		
+		if(PB_GetChamberEmpty())
+			spriteToUse = unloaded;
+
+		switch(mode)
+		{
+			case NORMAL_BOLT: 	  spriteToUse = bolt;		break;
+			case EXPLOSIVE_BOLT:  spriteToUse = explosive;	break;
+			case DEMONIC_BOLT: 	  spriteToUse = demonic;	break;
+			case SHOCK_BOLT: 	  spriteToUse = shock;		break;
+			default: break;
+		}
+
+		if(spriteToUse != '')
+			A_SetWeaponSpriteEx(spriteToUse);
+	}
+    
+    action int getCrossbowMode()
+	{
+		return invoker.currentMode;
+	}
+
+	action void setCrossbowMode(int mode)
+	{
+		invoker.currentMode = mode;
+	}
+    
+    action int getTokens()
+	{
+		if(FindInventory("CB_Select_ShockMode"))
+			return SHOCK_BOLT;
+		else if(FindInventory("CB_Select_DemonicMode"))
+			return DEMONIC_BOLT;
+		else if (FindInventory("CB_Select_ExplosiveMode"))
+			return EXPLOSIVE_BOLT;
+		else if (FindInventory("CB_Select_NormalMode"))
+			return NORMAL_BOLT;
+		else if (FindInventory("CB_Select_NO"))
+			return NO_UPGRADE;
+		else
+			return CLOSE_WHEEL;
+	}
 
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
     States
@@ -73,15 +119,8 @@ class PBX_PlasmaBlaster : PB_WeaponBase
             Goto Ready3;
 
         Deselect:
-			TNT1 A 0 {
-				A_WeaponOffset(0,32);
-				PB_SetRoll(0);
-				PB_HandleCrosshair(39);
-				A_TakeInventory("PB_LockScreenTilt",1);
-                A_StopSound(1);
-			}
-			AMGR ABCDEF 1;
-			TNT1 A 0 A_Lower();
+            AMGR ABCDEF 1;
+            TNT1 A 0 PBX_WeaponLower();
 			Wait;
 
         Select:

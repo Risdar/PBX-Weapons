@@ -48,54 +48,37 @@ class BluePlasmaParticleWeapon : actor
 	}
 }
 
-class RailCaseSpawn : actor
+class SpentRailgunShell : BaseMagActor
 {
 	Default
 	{
-		Speed 20;
-		PROJECTILE;
-		+NOCLIP;
-		+CLIENTSIDEONLY;
-	}
-
-	States
-	{
-		Spawn:
-			TNT1 A 0;
-			TNT1 A 1 A_CustomMissile("RailCasing",-9,20,random(-38,-48),2,random(10,20));
-			Stop;
-	}
-} 
-
-class RailCasing: BaseMagActor
-{
-	Default
-	{
-		Speed 7;
+		Scale 0.2;
+		+STRETCHPIXELS
 		BounceFactor 0.7;
-		Scale 0.3;
 	}
+	
 	States
 	{
 		Spawn:
-			ECLI H 4;
-		Spawn2:
-			ECLI HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH 4 A_SetRoll(roll-45);
-			LOOP;
-
+			RCLI A 0;
+			Goto Fly;
+		Fly:
+			#### # 1 A_SetRoll(roll+11.25);
+			Loop;
 		Death:
-			"####" "#" 0;
-			"####" "#" 0 A_Jump(128,"Die2");
-			"####" "#" 0 A_SetRoll(-90);
-			"####" "#" 0;
-		StayDead:
-			"####" "#" 350;
-			Goto Fadeout;
-
-		Die2:
-			"####" "#" 0 A_SetRoll(90);
-			"####" "#" 0 A_ChangeFlag("XFLIP",1);
-			Goto staydead;
+			RCLI A 350
+			{
+				if(random(0, 1) == 1)
+				{
+					A_ChangeFlag("XFLIP",1);
+					A_SetRoll(90);
+				}
+				else
+				{
+					A_SetRoll(-90);
+				}
+			}
+			Goto FadeOut;
 	}
 }
 

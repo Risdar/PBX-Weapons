@@ -1,3 +1,5 @@
+// Plasma Blaster from Project Survival made by ThePopeOfDope
+
 // Includes
 #include "./prosurvblaster_Functions.zs"
 // #include "./PlasmaBlaster_Wheel.zs"
@@ -230,12 +232,9 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
 				A_GiveInventory("PB_LockScreenTilt",1);
 				PB_HandleCrosshair(65);
 			}
-            TNT1 A 0 {
-				if(invoker.laserActive) invoker.laserActive = false;
-				else invoker.laserActive = true;
-            	A_StartSound("MS/Button", CHAN_AUTO, CHANF_OVERLAP);
-				A_Print(invoker.laserActive ? "$PBX_LaserOn" : "$PBX_LaserOff");
-			}
+            TNT1 A 0 PBX_ToggleLaserSight();
+            TNT1 A 0 A_JumpIf(PB_GetZoom(),"Ready2");
+            BRGY ABCDEFGFEDCBA 1;
 			Goto Ready3;
 
         FlashKicking:

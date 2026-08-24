@@ -107,6 +107,8 @@ class PBX_CSSG_WPShell            : PBX_CSSG_ShellBase {override void PB_SetAmmo
 class PBX_CSSG_TDoomShell         : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZCG5A0");}}
 class PBX_CSSG_DanmakuShell       : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZCG4A0");}}
 class PBX_CSSG_SubZeroShell       : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZCG3A0");}}
+class PBX_CSSG_HellFireShell      : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZC11A0");}}
+class PBX_CSSG_AcidShell          : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZC12A0");}}
 
 // PSG
 class PumpShotgunAmmo : Ammo

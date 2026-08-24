@@ -1,4 +1,4 @@
-// Includes
+// Nuke Launcher from Brutal Doom by Sergeant_Mark_IV
 
 // Actual Weapon
 class PBX_NukeLauncher : PBX_WeaponBase

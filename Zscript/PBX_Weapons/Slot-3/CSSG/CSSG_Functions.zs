@@ -51,6 +51,12 @@ extend class PBX_CSSG
 		}
 	}
 
+	action void CSSG_CutMeathook()
+	{
+		let pbxplr = PBXCore_Player(invoker.owner);
+		if(pbxplr) pbxplr.StopHook(true);
+	}
+
 	action state CSSG_Ready()
 	{
 		let pbxplr = PBXCore_Player(invoker.owner);
@@ -60,26 +66,25 @@ extend class PBX_CSSG
 		return A_DoPBWeaponAction();
 	}
 
-
 	static const string CSSG_ShellsType[] = {
 		"$PBX_CM_BUCKLD2",	"$PBX_CM_SLUGLD2",	"$PBX_CM_FLCHLD2",
 		"$PBX_CM_FLAKLD2",	"$PBX_CM_DGBTLD2",	"$PBX_CM_EXPLLD2",
 		"$PBX_CM_WPLOAD2",	"$PBX_CM_DOOMLD2",	"$PBX_CM_DNMKULD2",
-		"$PBX_CM_SUBZRLD2"
+		"$PBX_CM_SUBZRLD2",	"$PBX_CM_HELFRLD2", "$PBX_CM_ACIDLD2"
 	};
 	
 	static const string CSSG_ShellsToken1[] = {
 		"SelectCSG_Buckshot",		"SelectCSG_Slugshot",		"SelectCSG_Flechette",
 		"SelectCSG_Flak",			"SelectCSG_Dragonsbreath",	"SelectCSG_Explosive",	
 		"SelectCSG_WPhosphorus",	"SelectCSG_Doom",			"SelectCSG_Danmaku",
-		"SelectCSG_SubZero"
+		"SelectCSG_SubZero", 		"SelectCSG_HellFire", 		"SelectCSG_Acid"
 	};
 	
 	static const string CSSG_ConfirmShell[] = {
 		"$PBX_CM_BUCKLD",	"$PBX_CM_SLUGLD",	"$PBX_CM_FLCHLD",
 		"$PBX_CM_FLAKLD",	"$PBX_CM_DGBTLD",	"$PBX_CM_EXPLLD",
 		"$PBX_CM_WPLOAD",	"$PBX_CM_DOOMLD",	"$PBX_CM_DNMKULD",
-		"$PBX_CM_SUBZRLD"
+		"$PBX_CM_SUBZRLD", 	"$PBX_CM_HELFRLD", 	"$PBX_CM_ACIDLD"
 	};
 	
 	//bascially, check wich shells is actually used, and change the sprite based on that
@@ -94,6 +99,8 @@ extend class PBX_CSSG
 		name tds = '',
 		name dnm = '',
 		name subz = '',
+		name helf = '',
+		name acid = '',
 		bool old = false)
 	{
 		int wich = old ? invoker.oldshells : invoker.shellsmode;
@@ -110,6 +117,8 @@ extend class PBX_CSSG
 			case Shell_Doom: 	A_SetWeaponSpriteEx(tds); 		break;
 			case Shell_Damn: 	A_SetWeaponSpriteEx(dnm); 		break;
 			case Shell_SubZ: 	A_SetWeaponSpriteEx(subz); 		break;
+			case Shell_HellF: 	A_SetWeaponSpriteEx(helf); 		break;
+			case Shell_Acid: 	A_SetWeaponSpriteEx(acid); 		break;
 		}
 		
 	}
@@ -130,6 +139,8 @@ extend class PBX_CSSG
 			case Shell_Doom:  A_Print("$PBX_CM_DOOMLD");  break;
 			case Shell_Damn:  A_Print("$PBX_CM_DNMKULD"); break;
 			case Shell_SubZ:  A_Print("$PBX_CM_SUBZRLD"); break;
+			case Shell_HellF: A_Print("$PBX_CM_HELFRLD"); break;
+			case Shell_Acid:  A_Print("$PBX_CM_ACIDLD");  break;
 		}
 	}
 	
@@ -152,6 +163,8 @@ extend class PBX_CSSG
 			case Shell_Doom: 	shelltype = "TDoomCasing"; 				break;
 			case Shell_Damn: 	shelltype = "DanmakuCasing"; 			break;
 			case Shell_SubZ: 	shelltype = "SubZeroCasing"; 			break;
+			case Shell_HellF: 	shelltype = "HellFireCasing"; 			break;
+			case Shell_Acid: 	shelltype = "AcidShellsCasing"; 		break;
 		}
 		PB_SpawnCasing(shelltype,random(10,14),random(-1,3),random(26,28),random(1,3),random(-5,-2),random(4,7));
 	}
@@ -233,6 +246,12 @@ extend class PBX_CSSG
 				PB_FireBullets("SubZeroProjectile",10,6,0,0,6);
          		A_FireBullets(8, 6, 10, 18, "SubZ_Puff",FBF_NORANDOM,8192,"CSSG_FrozenTracer",-12);
 				break;
+			case Shell_HellF:
+				PB_FireBullets("HellFireProjectile",10,6,0,0,6);
+				break;
+			case Shell_Acid:
+				PB_FireBullets("AcidShellsProjectile",8,6,0,0,6);
+				break;
 		}
 		
 	}
@@ -281,6 +300,12 @@ extend class PBX_CSSG
 				// A_FireBullets (8, 6, 10, 18, "ShotKeeperPuff",FBF_NORANDOM,8192,"CSSG_FrozenTracer",-12);
          		A_FireBullets (8, 6, 10, 18, "SubZ_Puff",FBF_NORANDOM,8192,"CSSG_FrozenTracer",-12);
 				break;
+			case Shell_HellF:
+				PB_FireBullets("HellFireProjectile",6,6,0,0,6);
+				break;
+			case Shell_Acid:
+				PB_FireBullets("AcidShellsProjectile",4,6,0,0,6);
+				break;
 		}
 		PB_IncrementHeat(4);
 	}
@@ -327,6 +352,12 @@ extend class PBX_CSSG
 				PB_FireBullets("SubZeroProjectile",5,6,0,0,6);
          		A_FireBullets (8, 6, 10, 18, "SubZ_Puff",FBF_NORANDOM,8192,"CSSG_FrozenTracer",-12);
 				break;
+			case Shell_HellF:
+				PB_FireBullets("HellFireProjectile",6,6,0,0,6);
+				break;
+			case Shell_Acid:
+				PB_FireBullets("AcidShellsProjectile",4,6,0,0,6);
+				break;
 		}
 		PB_IncrementHeat(4);
 	}
@@ -360,6 +391,8 @@ extend class PBX_CSSG
 			case Shell_Doom:	mCrosshair = 11;	break;
 			case Shell_Damn:	mCrosshair = 45;	break;
 			case Shell_SubZ:	mCrosshair = 71;	break;
+			case Shell_HellF:	mCrosshair = 70;	break;
+			case Shell_Acid:	mCrosshair = 70;	break;
 		}
 		PB_HandleCrosshair(mCrosshair);
 	}
@@ -404,10 +437,18 @@ extend class PBX_CSSG
 				A_Startsound("CSSGDANF",22);
 				break;
 			case Shell_SubZ:	
+				A_Startsound("CSSGFULL",21);
 				A_Startsound("weapons/CryoRifle/missile",21);
 				break;
+			case Shell_HellF:
+				A_Startsound("DTechShotty/Fire",21);
+				A_Startsound("DTechShotty/PrimaryAmb",22);
+				break;
+			case Shell_Acid:
+				A_Startsound("SSHFIRE",21);
+				A_Startsound("CSSGFULL",21);
+				break;
 		}
-		
 	}
 	
 	Action void CM_PlayAltFireSound()
@@ -451,6 +492,13 @@ extend class PBX_CSSG
 			case Shell_SubZ:	
 				A_Startsound("weapons/CryoRifle/missile",21);
 				break;
+			case Shell_HellF:
+				A_Startsound("DTechShotty/Fire",21);
+				break;
+			case Shell_Acid:
+				A_Startsound("weapons/shh2",21);
+				A_Startsound("CSSGSNGL",22);
+				break;
 		}
 
 	}
@@ -470,7 +518,8 @@ extend class PBX_CSSG
 			case Shell_WPSP: 	tounload = 'PBX_CSSG_WPShell';				break;
 			case Shell_Doom:	tounload = 'PBX_CSSG_TDoomShell';			break;
 			case Shell_Damn:	tounload = 'PBX_CSSG_DanmakuShell';			break;
-			case Shell_SubZ:	tounload = 'PBX_CSSG_SubZeroShell';			break;
+			case Shell_SubZ:	tounload = 'PBX_CSSG_HellFireShell';		break;
+			case Shell_SubZ:	tounload = 'PBX_CSSG_AcidShell';			break;
 		}
 
 		PB_UnloadMag(

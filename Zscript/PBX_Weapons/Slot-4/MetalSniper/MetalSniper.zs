@@ -1,3 +1,5 @@
+// Metalsniper made by Metalman (Sprites), Jaih1r0 (Code/Animations), Ravik (Sounds)
+
 // Includes
 #include "./MetalSniper_Functions.zs"
 #include "./MetalSniper_Wheel.zs"
@@ -6,12 +8,7 @@
 class MS_Select_AimMode : inventory {default{inventory.maxamount 1;}}
 class MS_Select_GrenMode : inventory {default{inventory.maxamount 1;}}
 class MS_Select_Resonance : inventory {default{inventory.maxamount 1;}}
-class MS_Select_Laser : inventory {default{inventory.maxamount 1;}}
 class MS_Select_NO : inventory {default{inventory.maxamount 1;}}
-// ADS Wheel Tokens
-class MS_Select_ToggleZoom : inventory {default{inventory.maxamount 1;}}
-class MS_Select_ToggleScope : inventory {default{inventory.maxamount 1;}}
-class MS_Select_ToggleNVG : inventory {default{inventory.maxamount 1;}}
 // Other Tokens
 class MetalSniperUpgraded : inventory {default{inventory.maxamount 1;}}
 
@@ -30,6 +27,7 @@ Class PBX_MetalSniper : PBX_WeaponBase
         PB_WeaponBase.UsesWheel true;
         PB_WeaponBase.WheelInfo "MetalSniperWheel";
 		PB_WeaponBase.ReserveToMagAmmoFactor AMMO_TAKE_NORMAL;
+        PBX_WeaponBase.ScopeConfiguration true, MINZOOM, MAXZOOM; 
         scale 0.62;
         +weapon.noalert;
         +weapon.noautofire;
@@ -39,27 +37,29 @@ Class PBX_MetalSniper : PBX_WeaponBase
     const MAGAZINE_SIZE = 12; // mag size for resonance is 4
     const AMMO_TAKE_NORMAL = 2;
     const AMMO_TAKE_RESONANCE = 6;
-    const SniperMode  = 0;
-    const GrenadeMode = 1;
     const muzzlelayer = -52;
-    const LOWZOOM = 4.0;
-    const HIGHZOOM = 7.0;
-    enum MS_Wheel{
-        NORMAL,
-        ADS
-    }
+    const MINZOOM = 1.5;
+    const MAXZOOM = 12.0;
 
     // ── State ─────────────────────────────────────────────────────────────────
     bool resonanceAmmoLoaded;
     bool grenadeloaded;
-    bool laserActive;
-    bool nvgActive;
     bool AltMode;
-    bool LockedOn;
     bool enableScopeHUD; // This is for the overlay that you see when the scope mode is active
     int currentMaxAmmo;
-    int ScopeMode;
-    double zoomstrength;
+
+    enum MS_WheelMode
+    {
+        ERROR_WHEEL = -3,
+        CLOSE_WHEEL,
+        NO_UPGRADE,
+        ZOOM_ALTFIRE,
+        GRENADE_ALTFIRE,
+        TOGGLE_RESONANCE,
+        TOGGLE_LASER,
+        TOGGLE_SCOPE,
+        TOGGLE_NVG
+    }
 
     // ═════════════════════════════════════════════════════════════════════════
     // STATES
@@ -99,7 +99,6 @@ Class PBX_MetalSniper : PBX_WeaponBase
         // ── 1t / Deselect ─────────────────────────────────────────────
         Select:
             TNT1 A 0 {
-                resetVariables();
                 PBX_WeaponRaise("MS/Up");
                 return PB_RespectIfNeeded();
             }
@@ -108,12 +107,7 @@ Class PBX_MetalSniper : PBX_WeaponBase
             goto Ready3;
 
         Deselect:
-            TNT1 A 0 {
-                resetVariables();
-                PB_SetZoom(false);
-                A_ZoomFactor(1.0);
-            }
-            // TNT1 A 0 PB_SetUsableWheel(true);
+            TNT1 A 0 PBX_WeaponLower();
             MSND ABCD 1;
             TNT1 A 0 A_Lower(120);
             wait;
@@ -132,12 +126,13 @@ Class PBX_MetalSniper : PBX_WeaponBase
             MSNR ABCDEFGHIJKLMNOPQR 0;  // insert standard mag
             MSR6 ABCDEFGHIJKLMNOPQR 0;  // insert resonance mag 
         Ready3:
-            TNT1 A 0 PB_HandleCrosshair(42);
+            TNT1 A 0 {
+                PB_HandleCrosshair(42);
+                A_ZoomFactor(1.0);
+            }
             TNT1 A 0 A_JumpIf(PB_GetZoom(), "Ready2");
-            TNT1 A 0 resetVariables();
         ReadyToFire:
-            MSNF A 1
-            {
+            MSNF A 1 {
                 PB_HandleCrosshair(42);
                 PB_CoolDownBarrel(-4, 0, 6, 0,  1);
                 PB_CoolDownBarrel( 4, 0, 6, 0, -1);
@@ -177,48 +172,31 @@ Class PBX_MetalSniper : PBX_WeaponBase
 
         // ── AltFire: zoom or grenade mode ────────────────────────────────
         AltFire:
-            TNT1 A 0 {invoker.LockedOn = false;}
-            TNT1 A 0 A_JumpIf(MS_getmode() == GrenadeMode, "AltFire_Grenade");
+            TNT1 A 0 A_JumpIf(invoker.AltMode == GRENADE_ALTFIRE, "AltFire_Grenade");
         AltFire_Zoom:
             TNT1 A 0 A_JumpIf(PB_GetZoom(), "ZoomOut");
         ZoomIn:
             TNT1 A 0 {
                 invoker.wheelinfo = "MS_Zoomed_Wheel";
                 PB_SetZoom(true);
+                A_StartSound("IronSights", 29);
             }
-            // TNT1 A 0 PB_SetUsableWheel(false);
-            TNT1 A 0 A_StartSound("IronSights", 29);
-            MSNA A 1 A_ZoomFactor(1.5);
-            MSNA B 1 A_ZoomFactor(2.0);
-            MSNA C 1 A_ZoomFactor(2.5);
-            MSNA D 1 A_ZoomFactor(3.0);
-            MSNA E 1 A_ZoomFactor(3.5);
-            MSNA F 1 A_ZoomFactor(4.0);
+            TNT1 A 0 A_ZoomFactor(1.5);
+            MSNA ABC 1;
+            TNT1 A 0 A_ZoomFactor(PBX_GetZoomLevel());
+            MSNA DEF 1;
             goto Ready2;
 
         ZoomOut:
-            TNT1 A 0 {
-                resetVariables();
-                PB_SetZoom(false);
-            }
-            // TNT1 A 0 PB_SetUsableWheel(true);
             TNT1 A 0 A_StartSound("IronSights", 29);
-            MSNA F 1 A_ZoomFactor(3.5);
-            MSNA E 1 A_ZoomFactor(3.0);
-            MSNA D 1 A_ZoomFactor(2.5);
-            MSNA C 1 A_ZoomFactor(2.0);
-            MSNA B 1 A_ZoomFactor(1.5);
-            MSNA A 1 A_ZoomFactor(1.0);
+            TNT1 A 0 A_ZoomFactor(1.5);
+            MSNA FED 1;
+            TNT1 A 0 PB_SetZoom(false);
+            MSNA CBA 1;
             goto Ready3;
 
         // ── Ready (ADS) ───────────────────────────────────────────────────
         Ready2:  
-            TNT1 A 0 {
-                if(invoker.nvgActive) {
-                    A_SetInventory("PBX_Infrared", 1);
-                    A_StartSound("RA1IF1", CHAN_AUTO, CHANF_OVERLAP);
-                }
-            }
         Ready_ADS:
             MSNS A 1 MS_ReadyZoom();
             loop;
@@ -298,43 +276,48 @@ Class PBX_MetalSniper : PBX_WeaponBase
 
         // ── Reload ────────────────────────────────────────────────────────
         ReloadFromADS:
+            TNT1 A 0 A_StartSound("IronSights", 29);
+            MSNA F 1 A_ZoomFactor(3.5);
+            MSNA E 1 A_ZoomFactor(3.0);
+            MSNA D 1 A_ZoomFactor(2.5);
+            MSNA C 1 A_ZoomFactor(2.0);
+            MSNA B 1 A_ZoomFactor(1.5);
+            MSNA A 1 A_ZoomFactor(1.0);
         Reload:
             TNT1 A 0{
-                A_ZoomFactor(1.0);
                 PB_SetZoom(false);
-                resetVariables();
             }
             TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, "Start_Rechamber", "Ready3", "NoAmmo", invoker.currentMaxAmmo, invoker.ReserveToMagAmmoFactor);
         // ── Raise weapon  ──────────────────
         StandardReload:
             TNT1 A 0 A_StartSound("IronSights", 30);
             MSU1 ABCDEFGHIJKL 1;    // raise
-            TNT1 A 0 A_JumpIf(isResonance(), "TakeMagResonance");
+            TNT1 A 0 A_JumpIf(invoker.resonanceAmmoLoaded, "TakeMagResonance");
         // Take standard mag out
         TakeMagStandard:
             MST1 ABCD 1 { if (PB_GetMagEmpty()) A_SetWeaponSprite("MST0"); }
-            TNT1 A 0 A_StartSound("MS/Button", 22);
-            MST1 E    1 { if (PB_GetMagEmpty()) A_SetWeaponSprite("MST0"); }
-            TNT1 A 0 {
+            "####" A 0 A_StartSound("MS/Button", 22);
+            "####" E 1;
+            "####" A 0 {
                 A_StartSound("MS/TakeMag", 23);
                 PB_SetMagUnloaded(true);
             }
-            MST1 FGHIJKL 1 { if (PB_GetMagEmpty()) A_SetWeaponSprite("MST0"); }
+            "####" FGHIJKL 1;
             goto InsertMag;
 
         // Take resonance mag out
         TakeMagResonance:
             MST3 ABCD 1 { if (PB_GetMagEmpty()) A_SetWeaponSprite("MST0"); }
-            TNT1 A 0 A_StartSound("MS/Button", 22);
-            MST3 E    1 { if (PB_GetMagEmpty()) A_SetWeaponSprite("MST0"); }
-            TNT1 A 0 {
+            "####" A 0 A_StartSound("MS/Button", 22);
+            "####" E 1;
+            "####" A 0 {
                 A_StartSound("MS/TakeMag", 23);
                 PB_SetMagUnloaded(true);
             }
-            MST3 FGHIJKL 1 { if (PB_GetMagEmpty()) A_SetWeaponSprite("MST0"); }
+            "####" FGHIJKL 1;
         // Insert new mag
         InsertMag:
-            MSNR ABCDEFG 1 { if (isResonance()) A_SetWeaponSprite("MSR6"); }
+            MSNR ABCDEFG 1 { if (invoker.resonanceAmmoLoaded) A_SetWeaponSprite("MSR6"); }
             TNT1 A 0 A_StartSound("MS/InsertMag", 20);
             MSNR HIJKL 1 ;
             TNT1 A 0 {
@@ -364,7 +347,7 @@ Class PBX_MetalSniper : PBX_WeaponBase
             TNT1 A 0 A_StartSound("MS/BoltDown", 24);
             TNT1 A 0 PB_SetChamberEmpty(false);
             MSNC HIJ 1 ;
-			MSNC K 1 { if (isResonance()) A_SetWeaponSprite("MSN4"); }
+			MSNC K 1 { if (invoker.resonanceAmmoLoaded) A_SetWeaponSprite("MSN4"); }
 			MSNC L 1 ;
             TNT1 A 0 A_StartSound("MS/BoltUp", 25);
             MSNC M 1 ;
@@ -372,12 +355,8 @@ Class PBX_MetalSniper : PBX_WeaponBase
 
         // ── Reload from special ─────────────
         ReloadFromSpecial:
-            TNT1 A 0 {
-                MS_ToggleResonance();
-                MS_AmmoCapacity();
-                cleanmodetokens();
-            }
-            MSR6 ABCDEFG 1 { if (!isResonance()) A_SetWeaponSprite("MSNR"); }
+            TNT1 A 0 MS_HandleAmmoChange();
+            MSR6 ABCDEFG 1 { if (!invoker.resonanceAmmoLoaded) A_SetWeaponSprite("MSNR"); }
             TNT1 A 0 A_StartSound("MS/InsertMag", 20);
             MSNR HIJKL 1;
             TNT1 A 0 {
@@ -393,7 +372,7 @@ Class PBX_MetalSniper : PBX_WeaponBase
             TNT1 A 0 A_StartSound("IronSights", 30);
             TNT1 A 0 A_JumpIf(PB_GetMagUnloaded() && !PB_GetChamberEmpty(), "StartUnloadChamber");
             MSU1 ABCDEFGHIJKL 1;
-            TNT1 A 0 A_JumpIf(isResonance(), "UnloadMagResonance");
+            TNT1 A 0 A_JumpIf(invoker.resonanceAmmoLoaded, "UnloadMagResonance");
 			goto UnloadMagStandard;
 
 		Unload:
@@ -403,7 +382,7 @@ Class PBX_MetalSniper : PBX_WeaponBase
         UnloadRaise:
             MSU1 ABCDEFGHIJKL 1;
             TNT1 A 0 A_JumpIf(PB_GetMagEmpty(), "UnloadMagEmpty");
-            TNT1 A 0 A_JumpIf(isResonance(), "UnloadMagResonance");
+            TNT1 A 0 A_JumpIf(invoker.resonanceAmmoLoaded, "UnloadMagResonance");
         // Standard mag unload
         UnloadMagStandard:
             MST1 ABCD 1;
@@ -510,27 +489,22 @@ Class PBX_MetalSniper : PBX_WeaponBase
 
         // ── Melee flash overlays ──────────────────────────────────────────
         FlashPunching:
-            TNT1 A 0 resetVariables();
             MSNQ ABCDEFGHFEDCBA 1;      // 14 frames
             goto Ready3;
 
         FlashKicking:
-            TNT1 A 0 resetVariables();
             MSNK ABCDEFGHGFEDCBA 1;     // 15 frames
             goto Ready3;
 
         FlashAirKicking:
-            TNT1 A 0 resetVariables();
             MSNQ ABCDEFGHHGFEDCBA 1;    // 16 frames
             goto Ready3;
 
         FlashSlideKicking:
-            TNT1 A 0 resetVariables();
             MSNK ABCDEFGHHHHHHHHHHHHHGFEDCBA 1; // 27 frames
             goto Ready3;
 
         FlashSlideKickingStop:
-            TNT1 A 0 resetVariables();
             MSNK GFEDCBA 1;             // 7 frames
             goto Ready3;
     }

@@ -1,3 +1,5 @@
+// Railgun from Brutal Doom Platinum made by Dox778, EmeraldCoastt and the BDP Team
+
 // Includes
 #include "./bdprailgun_Functions.zs"
 #include "./bdprailgun_Wheel.zs"
@@ -6,10 +8,6 @@
 // Tokens
 class killhologram : inventory {default{inventory.maxamount 1;}}
 class platRailgun_goHolo : inventory {default{inventory.maxamount 1;}}
-class platrailgun_goZoom : inventory {default{inventory.maxamount 1;}}
-class platrailgun_goScope : inventory {default{inventory.maxamount 1;}}
-class platrailgun_goNVG : inventory {default{inventory.maxamount 1;}}
-class platrailgun_goLaser : inventory {default{inventory.maxamount 1;}}
 
 Class PBX_BDPRailgun : PBX_WeaponBase
 {
@@ -21,6 +19,7 @@ Class PBX_BDPRailgun : PBX_WeaponBase
 		PB_WeaponBase.ReserveToMagAmmoFactor 10;
         PB_WeaponBase.UsesWheel false; // We dont want the player to be able to use the wheel on start
         PB_WeaponBase.WheelInfo "BDPRailgun_Wheel";
+        PBX_WeaponBase.ScopeConfiguration true, MINZOOM, MAXZOOM; 
 		Obituary "%o was pierced by %k's Railgun.";
 		Inventory.PickupSound "PLSDRAW";
 		Inventory.Pickupmessage "$PBX_BDPRailgun_Pickup";
@@ -33,16 +32,12 @@ Class PBX_BDPRailgun : PBX_WeaponBase
         scale 1.0;
     }
 
-	bool laserActive;
-	bool lockedOn;
-    bool nvgActive;
-    int scopeMode;
     int hologramCooldown;
     double zoomstrength;
     const MAGAZINE_SIZE = 5;
     const bdpraildamage = 500;
-    const LOWZOOM = 3.0;
-    const HIGHZOOM = 9.0;
+    const MINZOOM = 2.0;
+    const MAXZOOM = 15.0;
     const HANDLE_LAYER = -5;
     const MUZZLE_LAYER = -2;
 
@@ -86,64 +81,46 @@ Class PBX_BDPRailgun : PBX_WeaponBase
 
         Deselect:
 			TNT1 A 0 {
-				A_WeaponOffset(0,32);
-				PB_SetRoll(0);
-				PB_HandleCrosshair(97);
-				A_TakeInventory("PB_LockScreenTilt",1);
+				PBX_WeaponLower();
                 A_ClearOverlays(HANDLE_LAYER);
-                A_SetInventory("PBX_Infrared", 0);
+                PB_SetUsableWheel(false);
 			}
-            TNT1 A 0 PB_SetUsableWheel(false);
-			TNT1 A 0 A_StopSound(1);
-			TNT1 A 0 A_StopSOund(2);
-			TNT1 A 0 A_StopSOund(6);
 			RAIS EFGH 1;
 			TNT1 A 0 A_Lower();
 			Wait;
 
         Select:
             TNT1 A 0 {
-				A_WeaponOffset(0,32);
-				PB_SetRoll(0);
                 A_ClearOverlays(HANDLE_LAYER);
 			    PB_HandleCrosshair(97);
-				A_SetInventory("PB_LockScreenTilt",0);
                 PBX_WeaponRaise("RAILINSR");
-                A_ClearOverlays(HANDLE_LAYER);
-                A_SetInventory("PBX_Infrared", 0);
 			    return PB_RespectIfNeeded();
 			}
         SelectAnimation:
             RAIS DCBA 1;
         Ready3:
             TNT1 A 0 {
-                A_SetInventory("PBX_Infrared", 0);
-                A_ZoomFactor(1.0);
                 PB_SetUsableWheel(false);
+                PB_HandleCrosshair(97);
             }
         ReadyToFire:
             RAIL A 1 {
+                A_ZoomFactor(1.0);
                 PB_Cooldownbarrel();
-			    PB_HandleCrosshair(97);
 			    return A_DoPBWeaponAction();
             }
             loop;
 
         Ready2:
             TNT1 A 0 {
-                if(invoker.nvgActive) {
-                    A_SetInventory("PBX_Infrared", 1);
-                    A_StartSound("RA1IF1", CHAN_AUTO, CHANF_OVERLAP);
-                }
+                PB_SetUsableWheel(true);
+                A_SetCrosshair(-1);
             }
         ReadyToFire2:
             SNIP C 1 Bright {
-                PB_SetUsableWheel(true);
 				PB_CoolDownBarrel();
-                A_ZoomFactor(getZoomStrength());
-                A_SetCrosshair(-1);
-                if(invoker.ScopeMode == 1 || invoker.ScopeMode == 2)
-                    doScope();
+                A_ZoomFactor(PBX_GetZoomLevel());
+                PBX_ReadySmartScope("Blue");
 				return PB_ReadyFire(ads:true);
             }
             loop;
@@ -197,7 +174,7 @@ Class PBX_BDPRailgun : PBX_WeaponBase
 				If(PB_GetChamberEmpty())
 				{
 					A_startsound("Railgun/Eject",2);
-					A_FireProjectile("RailCaseSpawn",0,0,0,0,0,0);
+					A_FireProjectile("SpentRailgunShell",0,0,0,0,0,0);
 				    if(!PB_GetMagEmpty()) PB_SetChamberEmpty(false);
 				}
 			}
@@ -246,7 +223,7 @@ Class PBX_BDPRailgun : PBX_WeaponBase
             SNIP CC 1 BRIGHT;
             TNT1 A 0 {
                 A_startsound("Railgun/Eject",2); 
-                PB_SpawnCasing("RailCaseSpawn");
+                PB_SpawnCasing("SpentRailgunShell");
 				if(!PB_GetMagEmpty()) PB_SetChamberEmpty(false);
             }
             SNIP CCCCCCCCCCCCCCCCCCC 1 BRIGHT PB_GunSmoke(0,0,0);
@@ -257,40 +234,38 @@ Class PBX_BDPRailgun : PBX_WeaponBase
             Goto Ready2;
 
         AltFire:
-            TNT1 A 0 {invoker.LockedOn = false;}
 			TNT1 A 0 A_Jumpif(PB_GetZoom(),"ZoomOut");
         ZoomIn:
             TNT1 A 0 {
                 A_overlay(HANDLE_LAYER,"DoNothing");
-			    A_startsound("IronSights",29);
-                A_zoomfactor(getZoomStrength());
+			    A_startsound("BEP",29);
                 A_SetCrosshair(-1);
                 PB_SetZoom(true);
+                PB_SetUsableWheel(true);
             }
-            TNT1 A 0 PB_SetUsableWheel(true);
-            RAIZ ABCDEF 1;
+            TNT1 A 0 A_ZoomFactor(1.5);
+            RAIZ ABC 1;
+            TNT1 A 0 A_ZoomFactor(PBX_GetZoomLevel());
+            RAIZ DEF 1;
 			Goto Ready2;
 
         ZoomOut:
             TNT1 A 0 {
-			    A_startsound("IronSights",29);
-                A_ZoomFactor(1.0);
-                PB_SetZoom(false);
+			    A_startsound("BEP",29);
                 PB_HandleCrosshair(97);
-                A_SetInventory("PBX_Infrared", 0);
+                PB_SetUsableWheel(false);
             }
-            TNT1 A 0 PB_SetUsableWheel(false);
+            TNT1 A 0 A_ZoomFactor(1.5);
             RAIZ FE 1;
+            TNT1 A 0 PB_SetZoom(false);
             RAIZ DCBA 1;
             Goto Ready3;
 
         Reload:
 			TNT1 A 0 {
                 PB_SetZoom(false);
-                A_ZoomFactor(1.0);
                 A_Giveinventory("PB_LockScreenTilt",1);
                 A_SetCrosshair(-1);
-                A_SetInventory("PBX_Infrared", 0);
 			}
             TNT1 A 0 PB_CheckReload(null,null,"Pumping","Ready3","Ready3",MAGAZINE_SIZE);
 			TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
@@ -328,7 +303,6 @@ Class PBX_BDPRailgun : PBX_WeaponBase
         ReloadFromPump:
 			TNT1 A 0  {
                 PB_SetZoom(false);
-                A_ZoomFactor(1.0);
                 A_Giveinventory("PB_LockScreenTilt",1);
                 A_SetCrosshair(-1);
                 A_overlay(HANDLE_LAYER,"ReloadingHand1");
@@ -417,7 +391,6 @@ Class PBX_BDPRailgun : PBX_WeaponBase
 
         // FLASH STATES
         FlashPunching:
-            TNT1 A 0 A_SetInventory("PBX_Infrared", 0);
             TNT1 A 0 PB_SetUsableWheel(false);
             RAIK ABCD 1;
             RAIK E 6;
@@ -425,7 +398,6 @@ Class PBX_BDPRailgun : PBX_WeaponBase
             goto Ready3;
 
 		FlashKicking:
-            TNT1 A 0 A_SetInventory("PBX_Infrared", 0);
             TNT1 A 0 PB_SetUsableWheel(false);
 			RAIK ABCD 1;
             RAIK E 7;
@@ -433,7 +405,6 @@ Class PBX_BDPRailgun : PBX_WeaponBase
 			goto Ready3;
 			
 		FlashAirKicking:
-            TNT1 A 0 A_SetInventory("PBX_Infrared", 0);
             TNT1 A 0 PB_SetUsableWheel(false);
 			RAIK ABCD 1;
             RAIK E 8;
@@ -441,7 +412,6 @@ Class PBX_BDPRailgun : PBX_WeaponBase
 			goto Ready3;
 			
 		FlashSlideKicking:
-            TNT1 A 0 A_SetInventory("PBX_Infrared", 0);
             TNT1 A 0 PB_SetUsableWheel(false);
 			RAIK ABCD 1;
             RAIK E 19;
@@ -449,7 +419,6 @@ Class PBX_BDPRailgun : PBX_WeaponBase
 			goto Ready3;
 			
 		FlashSlideKickingStop:
-            TNT1 A 0 A_SetInventory("PBX_Infrared", 0);
             TNT1 A 0 PB_SetUsableWheel(false);
 			RAIK ABCDEEE 1; //7 frames 
 			goto Ready3;

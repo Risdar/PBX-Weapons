@@ -1,3 +1,13 @@
+//	PB neo HMG by jaih1r0
+//	carrot: resprite of the old PB HMG
+//	PC1073: firing sounds
+//	Tesefy: the weapons pickup sheet used to frankensprite the pickup sprite of this thing
+//	jaih1r0: animations and code
+//	old PB 3.0 HMG sprite (couldnt found specific credits :p but im almost sure is eriance)
+// 	HMG Shield is from BDP made by EmeraldCoast and the BDP Team
+// 	Shield Sounds (Ported from BDP Assault Shotgun): Created/edited/mixed by Dissy EX
+// 	(Sounds sourced and modified from Halo: Reach, Halo 4, Counter-Strike: Global Offensive, and Doom Eternal)
+
 // Includes
 #include "./NeoHMG_Functions.zs"
 
@@ -220,8 +230,10 @@ class PBX_NeoHMG : PBX_WeaponBase
 					A_OverlayFlags(HMG_SHIELDLAYER,PSPF_FLIP,true);
 				else
 					A_OverlayFlags(HMG_SHIELDLAYER,PSPF_FLIP,false);
-				A_OverlayFlags(HMG_SHIELDLAYER,PSPF_RENDERSTYLE|PSPF_FORCESTYLE,true);
+
+				A_OverlayFlags(HMG_SHIELDLAYER,PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
 				A_OverlayRenderStyle(HMG_SHIELDLAYER,STYLE_Add);
+				A_OverlayAlpha(HMG_SHIELDLAYER,0.5);
 			}
 			TNT1 A 0 A_JumpIf(invoker.ShieldFrame > 0,"HMGShield2");
 			PSHL A 1 BRIGHT {invoker.ShieldFrame++;}

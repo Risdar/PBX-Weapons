@@ -66,3 +66,8 @@ PBXWEAPONS_EXCAVATOR_UPGRADE = "Enable Excavator Upgrade";
 PBXWEAPONS_CSSG_UPGRADES = "Enable CSSG Upgrades";
 
 PBXWEAPONS_ETERNAL_CHAINGUN = "Enable Eternal Chaingun";
+
+//////////////////////////// GENERAL MENU ///////////////////////////////////////////////////////////////////////////////
+PBXWEAPONS_WHEELZOOM     = "Scroll Wheel Zoom";
+PBXWEAPONS_WHEELZOOM_IN  = "Manual Zoom In Key";
+PBXWEAPONS_WHEELZOOM_OUT = "Manual Zoom Out Key";

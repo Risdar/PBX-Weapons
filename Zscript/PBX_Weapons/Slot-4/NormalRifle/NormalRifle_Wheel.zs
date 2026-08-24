@@ -59,7 +59,7 @@ Class NormalRifleWheel : wheelinfocontainer
 
 		// Laser
 		PB_SpecialWheel_Mode BR_Laser = new ("PB_SpecialWheel_Mode");
-		if(nr.laserActive) {
+		if(nr.mLaserSightActivated) {
 			BR_Laser.Alias = "$PBX_LaserOff";
 			BR_Laser.img = "graphics/WeaponWheel/NormalRifle/LaserOff.png";
 		}
@@ -67,7 +67,7 @@ Class NormalRifleWheel : wheelinfocontainer
 			BR_Laser.Alias = "$PBX_LaserON";
 			BR_Laser.img = "graphics/WeaponWheel/NormalRifle/LaserOn.png";
 		}
-		BR_Laser.tokentogive = "NR_Select_Laser";
+		BR_Laser.tokentogive = "PBX_Toggle_Laser";
 		BR_Laser.scalex = scale.x;
 		BR_Laser.scaley = scale.y;
 		spw.push(BR_Laser);

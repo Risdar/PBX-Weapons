@@ -15,8 +15,3 @@ New CSSG Sprites is from ModDB by SamuelGuy (https://www.moddb.com/mods/project-
 
 Ice upgrade pickup sprite is made by SchrödingCat, Eriance/Amuscaria, Realm667
 Ice projectiles is from PBWP's Marauder Shotgun Freeze Shells made by JhulkerCraft
-
-Here is the full credits of PB Freezer Weapon Pack
-Freezer,Freezebot,Freezenade,Cryo Shotgun by SchrödingCat, Eriance/Amuscaria, Realm667
-Ice Projectiles (Cryo Bow) by Bloax, ZZrionTheInsect, Xaser & Ethrill, Tomtefar, SchrödingCat
-Freezer Animation & Freezenade Animation by Dox778

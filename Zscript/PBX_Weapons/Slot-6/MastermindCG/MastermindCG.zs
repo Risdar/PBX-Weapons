@@ -1,3 +1,11 @@
+// Sprite Base - Dr_Cosmobyte, Captain J and Mike12.
+// Lighting - Sechtera
+// Pickup - Turbo
+// Dox778 -  Original Brutal Doom Addon Creator
+// Port to PB By Jenny / Jeniffer & 517qwerty
+
+
+
 // Includes
 #include "./MastermindCG_Functions.zs"
 

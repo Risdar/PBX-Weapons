@@ -13,25 +13,26 @@ extend class PBX_ProsurvBlaster
         if (level.isFrozen()) return;
         if(!owner || !owner.player || !owner.player.readyweapon) return;
 
-        // Get a pointer to the weapon and PSprite
-        let psp = owner.player.FindPSprite(PSP_WEAPON);
-        if(!psp) return;
-
         // This way the blaster will always recharge even if not selected
         if(self.ammo1.amount < MAXCHARGE)
-            giveBlasterCharge(psp);
+            giveBlasterCharge();
 
-        // This way the laser will only spawn if the weapon is selected
-        if(owner.player.readyweapon is self.GetClass() && laserActive)
-            PBX_SpawnLaserSight("PBX_BlueDot");
     }
 
-    void giveBlasterCharge(PSprite psp)
+    override void PBX_DoEffectWeaponReady(Weapon weap)
+    {
+		PBX_SpawnLaserSight(PBX_LaserSightProjectile.BLUE_DOT);
+    }
+
+    void giveBlasterCharge()
     {
         // Dont give the charge if they're in one of the exceptions
         static const StateLabel blockedStates[] = {
             "Fire", "Fire2", "Reload", "Recharge"
         };
+
+        let psp = owner.player.FindPSprite(PSP_WEAPON);
+        if(!psp) return;
 
         for (int i = 0; i < blockedStates.Size(); i++)
         {

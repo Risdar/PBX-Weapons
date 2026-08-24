@@ -1,4 +1,4 @@
-//////////////////////////// COMMANDER SUPERSHOTGUN ////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////// COMMANDER SUPER SHOTGUN ////////////////////////////////////////////////////////////////////////////////////
 class ExplosiveProjectile : PB_Projectile
 {
 	Default
@@ -610,4 +610,83 @@ class FreezerTrailSparksSmall : actor
         Loop;
     }
 }
-//
+
+class HellFireProjectile : PB_10GAPellet
+{ 
+    Default
+    {
+        PB_Projectile.BaseDamage 35;
+        RenderStyle "Add";
+		Height 6;
+		Radius 6;
+		Scale 0.3;
+		Alpha 0.80;
+		Speed 100;
+		Decal "DoomImpScorch";
+		Species "Player";
+		DamageType "HellFire";
+        +NOINTERACTION;
+        +NOGRAVITY;
+        +CLIENTSIDEONLY;
+		+NOBLOCKMAP;
+		+ACTIVATEIMPACT;
+		+ACTIVATEPCROSS;
+		+NOTELEPORT;
+		+EXTREMEDEATH;
+		+PUFFONACTORS ;
+		+BLOODLESSIMPACT;
+		+FORCERADIUSDMG;
+		+ALWAYSPUFF;
+		+DONTHARMSPECIES;
+		+PUFFGETSOWNER;
+    }
+
+    States
+    {
+		Spawn:
+			TRA3 A 1 Bright;
+			Loop;
+	
+		Xdeath:
+			TNT1 A 0 A_SpawnItem("HellRifle_Puff",0);
+			TNT1 A 0 A_SpawnItem("DTechBurningPiece",0);
+			TNT1 A 0 BRIGHT A_SpawnItem("RedFlare",0);
+			TNT1 AAA 0 A_SpawnItemEx("ObeliskTrailSpark", random(-8, 8), random(-8, 8), random(-2,2), 0, 0, 0, 0, 128, 0);
+			TNT1 A 4;
+			Stop;
+
+		Death:
+			TNT1 A 0 A_SpawnItem("HellRifle_Puff2",0);
+			TNT1 A 0 A_SpawnItem("DTechBurningPiece2",0);
+			TNT1 A 0 BRIGHT A_SpawnItem("RedFlare",0);
+			TNT1 AAA 0 A_SpawnItemEx("ExplosionParticleVerySlow", random(-8, 8), random(-8, 8), random(-2,2), 0, 0, 0, 0, 128, 0);
+			TNT1 AAA 0 A_SpawnItemEx("ObeliskTrailSpark", random(-8, 8), random(-8, 8), random(-2,2), 0, 0, 0, 0, 128, 0);
+			TNT1 A 4;
+			Stop;
+    }
+}
+
+class AcidShellsProjectile : PB_10GAPellet
+{
+    Default
+    {
+        PB_Projectile.BaseDamage 35;
+        DamageType "Disintegrate";
+    }
+
+	States
+	{
+		Death:
+		XDeath:
+			TNT1 A 0 {
+				for(int i = 0; i < 20; i++)
+				{
+					A_SpawnProjectile("PB_Shrapnel", 0, 0, random (0, 360), 2, random (-90, 90));
+				}
+			}
+			TNT1 A 0 A_SpawnItem("BFGAltShockWave",0,0);
+			TNT1 A 0 A_SpawnItemEx("ACIDFOG",flags:SXF_TRANSFERPOINTERS);
+			TNT1 A 1;
+			Stop;
+	}
+}

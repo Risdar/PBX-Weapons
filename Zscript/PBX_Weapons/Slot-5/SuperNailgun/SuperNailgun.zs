@@ -72,6 +72,12 @@ class PBX_SuperNailgun : PBX_WeaponBase
 		A_Overlay(OVERHEATCOOLING_LAYER,"Cooling",true);
 	}
 
+    action state SuperNailgun_CheckSpin(StateLabel spin = "SpinLoop")
+    {
+        if(invoker.isSpinning) return resolvestate(spin);
+        return resolvestate(null);
+    }
+
     action void SuperNailgun_CoolDownBarrel()
 	{
 		int heat = PB_GetOverheat();
@@ -189,6 +195,8 @@ class PBX_SuperNailgun : PBX_WeaponBase
             SNSE ABCDEFG 1 superNailgun_setSprite("SNSU");
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
         Ready3:
+            TNT1 A 0 SuperNailgun_CheckSpin();
+        ReadyToFire:
             TNT1 A 0 {invoker.isSpinning = false;}
 			SNLR A 1 {
                 if(PB_GetOverheat() > 1) {cooldownOverheat();}
@@ -209,14 +217,19 @@ class PBX_SuperNailgun : PBX_WeaponBase
 			}
 			Wait;
 
+        CheckSpin:
+            TNT1 A 0 SuperNailgun_CheckSpin();
+            goto Ready3;
+
 //////////////////////////// FIRE ////////////////////////////////////////////////////////////////////////////////////
         Fire:
             TNT1 A 0 PB_JumpIfNoAmmo();
             SNLR F 1 BRIGHT SuperNailgun_Fire();
             SNLR GHI 1 A_ZoomFactor(1);
             TNT1 A 0 PB_ReFire("Fire");
-            TNT1 A 0 A_JumpIf(invoker.isSpinning,"SpinLoop");
+            TNT1 A 0 SuperNailgun_CheckSpin();
         SpinAfterFire:
+            TNT1 A 0 {invoker.isSpinning = false;}
             SNLR CDECD 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD);
             SNLR ECDE 2 A_DoPBWeaponAction(WRF_ALLOWRELOAD);
             goto Ready3;
@@ -224,7 +237,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
 //////////////////////////// ALT FIRE ////////////////////////////////////////////////////////////////////////////////////
         AltFire:
             TNT1 A 0 A_JumpIf(PB_GetMagUnloaded(),"Reload");
-            TNT1 A 0 A_JumpIf(invoker.isSpinning,"SpinAfterFire");
+            TNT1 A 0 SuperNailgun_CheckSpin("SpinAfterFire");
         SpinLoop:
             TNT1 A 0 {
                 A_WeaponOffset(0,32);
@@ -238,9 +251,8 @@ class PBX_SuperNailgun : PBX_WeaponBase
             SNLR GHI 1 A_DoPBWeaponAction();
             TNT1 A 0 SuperNailgun_PLaysound();
             TNT1 A 0 PB_ModifyOverheat(OVERHEAT_GIVE_NORM);
-            TNT1 A 0 A_JumpIf(invoker.isSpinning,"SpinLoop");
             TNT1 A 0 PB_ReFire("SpinLoop");
-            goto Ready3;
+            goto CheckSpin;
 
             // Everything after this is unused
             // its the old altfire
@@ -290,8 +302,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
             SNRL QR 1;
             SNRL STUVWX 1 PB_SetRoll(roll-2);
             TNT1 A 0 PB_SetRoll(0);
-            TNT1 A 0 A_JumpIf(invoker.isSpinning,"SpinLoop");
-            goto Ready3;
+            goto CheckSpin;
             
 //////////////////////////// UNLOAD ////////////////////////////////////////////////////////////////////////////////////
         Unload:
@@ -306,6 +317,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
                 PB_SetChamberEmpty(true);
                 PB_SetMagUnloaded(true);
                 PB_SetMagEmpty(true);
+                invoker.isSpinning = false;
             }
             SNRL GHI 1;
             goto Ready3;
@@ -318,45 +330,45 @@ class PBX_SuperNailgun : PBX_WeaponBase
                 A_StartSound("MS/Button", 22);
                 A_Print(invoker.isChargedNails ? "$PBX_SuperNailgun_ChargedNails" : "$PBX_SuperNailgun_HeatedNails");
             }
-            TNT1 A 0 A_JumpIf(invoker.isSpinning,"SpinLoop");
+            TNT1 A 0 SuperNailgun_CheckSpin();
         SwitchAnimation:
             SNSE GFED 1 superNailgun_setSprite("SNSU");
             "####" C 3;
             "####" DEFG 1;
             goto Ready3;
-            
+
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////
         FlashPunching:
 			TNT1 A 0 cooldownOverheat();
             SNSE GFEDCB 1 superNailgun_setSprite("SNSU");
             "####" AA 1;
             "####" BCDEFG 1;      // 14 frames
-            goto Ready3;
+            goto CheckSpin;
 
         FlashKicking:
 			TNT1 A 0 cooldownOverheat();
             SNSE GFEDCB 1 superNailgun_setSprite("SNSU");
             "####" AAA 1;
             "####" BCDEFG 1;      
-            goto Ready3;        // 15 frames
+            goto CheckSpin;        // 15 frames
 
         FlashAirKicking:
 			TNT1 A 0 cooldownOverheat();
             SNSE GFEDCB 1 superNailgun_setSprite("SNSU");
             "####" A 4;
             "####" BCDEFG 1;      
-            goto Ready3;        // 16 frames
+            goto CheckSpin;        // 16 frames
 
         FlashSlideKicking:
 			TNT1 A 0 cooldownOverheat();
             SNSE GFEDCB 1 superNailgun_setSprite("SNSU");
             "####" A 15;
             "####" BCDEFG 1;      
-            goto Ready3; // 27 frames
+            goto CheckSpin; // 27 frames
 
         FlashSlideKickingStop:
 			TNT1 A 0 cooldownOverheat();
             MSNK BCDEFGG 1;             // 7 frames
-            goto Ready3;
+            goto CheckSpin;
     }
 }

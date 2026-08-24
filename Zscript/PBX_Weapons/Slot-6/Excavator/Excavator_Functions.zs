@@ -2,39 +2,25 @@ extend class PBX_Excavator
 {
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
     
-	Override void DoEffect()
-	{
-		if (!owner || !owner.player)
-        	return;
-
-		let rw = PBX_Excavator(owner.player.ReadyWeapon);
-		if (!rw)
-        	return;
-
+	override void PBX_DoEffectWeaponReady(Weapon weap)
+    {
 		bool pressingAlt = owner.player.cmd.buttons & BT_ALTATTACK;
 		bool hasDetonator = owner.countinv("GrenadeDetonator") > 0;
-		bool isInDropDrillMode = (rw.excavatorMode == eDrillChargeMode) || (rw.excavatorMode == eDropShotMode);
-		
-		if( self.GetClass() is rw.GetClass() && isInDropDrillMode)
+		bool isInDropDrillMode = (excavatorMode == eDrillChargeMode) || (excavatorMode == eDropShotMode);
+
+		if(isInDropDrillMode)
 		{
-			if( pressingAlt && !hasDetonator )
+			if(pressingAlt && !hasDetonator )
 			{
 				owner.A_SetInventory("GrenadeDetonator",1);
 				owner.A_PlaySound("excavator/detonate");
 			}
-			if( !pressingAlt && hasDetonator )
+			if(!pressingAlt && hasDetonator )
 			{
 				owner.A_SetInventory("GrenadeDetonator",0);
 			}
 		}
-	}
-
-	override void postbeginplay()
-	{
-		isUpgraded = false;
-		excavatorMode = eDrillChargeMode;
-		super.postbeginplay();
-	}
+    }
 
 //////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
 

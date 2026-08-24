@@ -1,19 +1,26 @@
 Class BattleRifleWheel : wheelinfocontainer
 {
+	bool mHasUpgrade;
+	bool mIsZooming;
+	bool mUpgradeDisabled;
+
+	void getVariables(actor requester)
+	{
+		mHasUpgrade = requester.FindInventory("BattleRifle_Upgraded");
+		mIsZooming  = requester.FindInventory("Zoomed");
+		mUpgradeDisabled = PBXWeapons_backpack_filter & DisablePBX_BattleRifleUpgrade;
+	}
+
 	override int GetSPCount(actor requester)
 	{
-		bool hasUpgrade = requester.FindInventory("BattleRifle_Upgraded");
-		bool isZooming  = requester.FindInventory("Zoomed");
-		bool disabled;
-
-		let disableUpgrade = Cvar.GetCvar('PBXWeapons_backpack_filter', requester.player);
-		if(disableUpgrade)
-			disabled = disableUpgrade.getint() & DisablePBX_BattleRifleUpgrade;
+		getVariables(requester);
 
 		// this is so the nvg and scope mode is added when
 		// the weapon has been upgraded and is zoomed in
-		int result = 4;
-		if((hasUpgrade || disabled) && isZooming) result++;
+		int result = 3;
+		if((mHasUpgrade || mUpgradeDisabled) && mIsZooming) 
+			result = 5;
+			
 		return result;
 	}
 	
@@ -27,13 +34,7 @@ Class BattleRifleWheel : wheelinfocontainer
 
 		super.GetSpecials(spw,requester);
 
-		bool hasUpgrade = requester.FindInventory("BattleRifle_Upgraded");
-		bool isZooming  = requester.FindInventory("Zoomed");
-
-		bool disabled;
-		let disableUpgrade = Cvar.GetCvar('PBXWeapons_backpack_filter', requester.player);
-		if(disableUpgrade)
-			disabled = disableUpgrade.getint() & DisablePBX_BattleRifleUpgrade;
+		getVariables(requester);
         
         vector2 scale = (0.9,0.9);
 
@@ -64,36 +65,28 @@ Class BattleRifleWheel : wheelinfocontainer
 
 		// Laser
 		PB_SpecialWheel_Mode BR_Laser = new ("PB_SpecialWheel_Mode");
-		if(battleRifle.laserActive) {
+		if(battleRifle.mLaserSightActivated) 
+		{
 			BR_Laser.Alias = "$PBX_LaserOff";
 			BR_Laser.img = "graphics/WeaponWheel/BattleRifle/BR_LaserOff.png";
 		}
-		else {
+		else 
+		{
 			BR_Laser.Alias = "$PBX_LaserON";
 			BR_Laser.img = "graphics/WeaponWheel/BattleRifle/BR_LaserOn.png";
 		}
-		BR_Laser.tokentogive = "BR_Select_Laser";
+		BR_Laser.tokentogive = "PBX_Toggle_Laser";
 		BR_Laser.scalex = scale.x;
 		BR_Laser.scaley = scale.y;
 		spw.push(BR_Laser);
 
-		// Zoom Strength
-		PB_SpecialWheel_Mode BR_Zoom = new ("PB_SpecialWheel_Mode");
-		BR_Zoom.img = "graphics/WeaponWheel/ChangeZoom.png";
-		if(battleRifle.zoomstrength == battleRifle.HIGHZOOM) BR_Zoom.Alias = "$PBX_Zoom20";
-		else BR_Zoom.Alias = "$PBX_Zoom40";
-		BR_Zoom.tokentogive = "BR_Select_Zoom";
-		BR_Zoom.scalex = WHEEL_ZOOM_SCALE;
-		BR_Zoom.scaley = WHEEL_ZOOM_SCALE;
-		spw.push(BR_Zoom);
-
-		if((hasUpgrade || disabled) && isZooming)
+		if((mHasUpgrade || mUpgradeDisabled) && mIsZooming)
 		{
 			// Scope
 			PB_SpecialWheel_Mode BR_Scope = new ("PB_SpecialWheel_Mode");
 			BR_Scope.img = "graphics/WeaponWheel/ScopeMode.png";
 			BR_Scope.Alias = "$PBX_GoScope";
-			BR_Scope.tokentogive = "BR_Select_Scope";
+			BR_Scope.tokentogive = "PBX_Toggle_Scope";
 			BR_Scope.scalex = WHEEL_SCOPE_SCALE;
 			BR_Scope.scaley = WHEEL_SCOPE_SCALE;
 			spw.push(BR_Scope);
@@ -101,9 +94,11 @@ Class BattleRifleWheel : wheelinfocontainer
 			// NVG
 			PB_SpecialWheel_Mode BR_goNVG = new ("PB_SpecialWheel_Mode");
 			BR_goNVG.img = "GRAPHICS/HiResPickups/Powerups/VISR1.png";
-			if(battleRifle.nvgActive) BR_goNVG.Alias = "$PBX_nvgOffWW";
-			else BR_goNVG.Alias = "$PBX_nvgOnWW";
-			BR_goNVG.tokentogive = "BR_Select_NVG";
+			if(battleRifle.mNightVisionActivated) 
+				BR_goNVG.Alias = "$PBX_nvgOffWW";
+			else 
+				BR_goNVG.Alias = "$PBX_nvgOnWW";
+			BR_goNVG.tokentogive = "PBX_Toggle_NVG";
 			BR_goNVG.scalex = WHEEL_NVG_SCALE;
 			BR_goNVG.scaley = WHEEL_NVG_SCALE;
 			spw.push(BR_goNVG);

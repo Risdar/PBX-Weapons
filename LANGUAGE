@@ -3,6 +3,11 @@
 PBXWeapons_Settings                 = "\cg⟁\c- PBX - Weapons Settings";
 PBXWeapons_Version                  = "\cgPBX - Weapons Version: 2.8";
 
+PBXWeapons_SmartScope_MaxHP         = "Max. HP: %u";
+PBXWeapons_SmartScope_CurrHP        = "HP: %u";
+PBXWeapons_SmartScope_PainChance    = "Pain chance: %u%%";
+PBXWeapons_SmartScope_Distance      = "Distance: %.1f m.";
+
 //////////////////////////// SLOT 1 ///////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////// SLOT 2 ///////////////////////////////////////////////////////////////////////////////
@@ -63,6 +68,8 @@ PBX_CM_WPLOAD                       = "\c[WPBronze]White Phosphorus \c-Shells";
 PBX_CM_DOOMLD                       = "\ctTriple Doom \c-Shells";
 PBX_CM_DNMKULD                      = "\c[DanmakuYellow]Danmaku \c-Shells";   
 PBX_CM_SUBZRLD                      = "\cnSub-Zero \c-Shells";   
+PBX_CM_HELFRLD                      = "\crHell Fire \c-Shells";   
+PBX_CM_ACIDLD                       = "\cqAcid \c-Shells";   
 
 PBX_CM_BUCKLD2                      = "\cgBuckshot \c- ";
 PBX_CM_SLUGLD2                      = "\cdSlugs \c- ";
@@ -74,13 +81,18 @@ PBX_CM_WPLOAD2                      = "\c[WPBronze]White Phosphorus \c- ";
 PBX_CM_DOOMLD2                      = "\ctTriple Doom \c- ";
 PBX_CM_DNMKULD2                     = "\c[DanmakuYellow]Danmaku \c- ";   
 PBX_CM_SUBZRLD2                     = "\cnSub-Zero \c- ";   
+PBX_CM_HELFRLD2                     = "\crHell Fire \c- ";   
+PBX_CM_ACIDLD2                      = "\cqAcid \c- ";   
 
 PBX_CSSG_ALR                        = "Ammo type already selected: %s";
 
-PBX_PICKUP_EXPL                     = "Got the Explosive shell upgrade!";
-PBX_PICKUP_WPSP                     = "Got the White phosphorus shell upgrade!";
-PBX_PICKUP_DOOM                     = "Got the Triple Doom shell upgrade!";
+PBX_PICKUP_EXPL                     = "Got the Explosive shell Upgrade!";
+PBX_PICKUP_WPSP                     = "Got the White phosphorus shell Upgrade!";
+PBX_PICKUP_DOOM                     = "Got the Triple Doom shell Upgrade!";
 PBX_PICKUP_DNMK                     = "You got the Danmaku Shell Upgrade!!!";
+PBX_PICKUP_SUBZ                     = "You got the Sub-Zero Shell Upgrade";
+PBX_PICKUP_HELF                     = "You got the Hell Fire Shell Upgrade";
+PBX_PICKUP_ACDS                     = "You got the Acid Shell Upgrade";
 
 // SPAS 12
 PBX_SPAS12_PICKUP                   = "SPAS-12 (Slot 3)";
@@ -136,6 +148,7 @@ PBX_Crossbow_Demonic_WW             = "\caDemonic Bolt";
 PBX_Crossbow_Shock_WW               = "\cnShock Bolt";
 
 PBX_Crossbow_DemonicNoAmmo          = "You Don't Have Any Demonic Ammo";
+PBX_Crossbow_ShockNoAmmo            = "You Don't Have Any Energy Cells";
 
 PBX_DemonicBallistaUpgrade_Pickup   = "Demonic Ballista Upgrade (Slot 4)";
 PBX_Prosurv_Ballista_UpgradeTag     = "Ballista Upgrade";

@@ -7,7 +7,6 @@
 PBX_PlasmaBlaster_Tip1 = "The Plasma Blaster has 4 modes, two for each primary and secondary.";
 PBX_PlasmaBlaster_Tip2 = "You can switch modes using %s";
 
-
 // Lever Action
 PBX_LeverAction_Tip1 = "The Lever Action Rifle can use two types of ammo.";
 PBX_LeverAction_Tip2 = "The .444 Marlin rounds deal high damage but only has %d shots.";
@@ -38,10 +37,11 @@ PBX_BattleRifleUpgrade_Tip1 = "You just picked up Battle Rifle Upgade.";
 PBX_BattleRifleUpgrade_Tip2 = "The Scope will now show have the target analysis ablity and every bullet will ricochet";
 
 // Metal Sniper
-PBX_MetalSniper_Tip1 = "The Metal Sniper two AltFire modes and three scope modes.";
+PBX_MetalSniper_Tip1 = "The Metal Sniper two AltFire modes and an Advanced Targeting Scope.";
 PBX_MetalSniper_Tip2 = "The Grenade AltFire needs to be primed before firing by pressing %s and then %s";
-PBX_MetalSniper_Tip3 = "You can switch Target Analysis Mode by pressing %s when scoped in";
-PBX_MetalSniper_Tip4 = "You can get the alternate Resonance Ammo type by picking it's upgrade that spawn on Tier 3 backpacks.";
+PBX_MetalSniper_Tip3 = "You can switch AltFire Modes by opening the Weapon Special (%s)";
+PBX_MetalSniper_Tip4 = "Opening the Weapon Special Wheel when \cdzoomed \c-in will let you select the Advanced Targeting Scope Modes.";
+PBX_MetalSniper_Tip5 = "You can get the alternate Resonance Ammo type by picking it's upgrade that spawn on Tier 3 backpacks.";
 
 PBX_MetalSniperUpgrade_Tip1 = "The Resonance Ammo is a special Anti Arachno-Shield round.";
 PBX_MetalSniperUpgrade_Tip2 = "Shooting it at an Arachnotron shield will ignite the shield and stun all nearby enemies.";
@@ -97,7 +97,8 @@ PBX_Paingiver_Tip3 = "You can activate the Enraged State by pressing %s";
 //////////////////////////// SLOT 7 ///////////////////////////////////////////////////////////////////////////////
 PBX_BDPRailgun_Tip1 = "The Platinum Railgun is a branch of the experimental MK-III Railgun.";
 PBX_BDPRailgun_Tip2 = "Though it doesn't have the contact laser mode, this variant can project holograms that can be used as a decoy.";
-PBX_BDPRailgun_Tip3 = "You can project the holograms using %s";
+PBX_BDPRailgun_Tip3 = "You can project the holograms using the Weapon Special Key (%s)";
+PBX_BDPRailgun_Tip4 = "Pressing the Weapon Special Key %s when \cdZoomed \c-in will let you select the Scoped Modes";
 
 //////////////////////////// SLOT 8 ///////////////////////////////////////////////////////////////////////////////
 
@@ -109,6 +110,10 @@ PBX_DemonExt_Tip2 = "You can use the souls when in \cjSoul Lightning \c-Mode.";
 //////////////////////////// OTHERS ///////////////////////////////////////////////////////////////////////////////
 // SHARED
 PBX_DisableUpgrade      = "You can bypass this requirement by disabling the upgrade in the Addon Spawner Settings.";
+
+PBX_ScrollZoom_Tip1     = "You just picked up a scoped weapon";
+PBX_ScrollZoom_Tip2     = "Every scoped weapon has variable zoom that can be adjusted using the \cnScroll Wheel\c- when \cdZoomed \c-in";
+PBX_ScrollZoom_Tip3     = "You can also manually adjust the zoom using %s to Zoom In or %s to Zoom Out";
 
 PBX_MonsterWeapon1      = "You have picked up a Monster Weapon, they are very powerful weapons but has durability.";
 PBX_MonsterWeapon2      = "You can restore its durability by picking up the same weapon again.";

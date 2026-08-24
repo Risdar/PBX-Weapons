@@ -27,7 +27,7 @@ Class PSGWheel : wheelinfocontainer
 
 		// Laser
 		PB_SpecialWheel_Mode PSG_Laser = new ("PB_SpecialWheel_Mode");
-		if(psg.laserActive) {
+		if(psg.mLaserSightActivated) {
 			PSG_Laser.Alias = "$PBX_LaserOff";
 			PSG_Laser.img = "graphics/WeaponWheel/ProsurvPSG/LaserOff.png";
 		}
@@ -35,7 +35,7 @@ Class PSGWheel : wheelinfocontainer
 			PSG_Laser.Alias = "$PBX_LaserON";
 			PSG_Laser.img = "graphics/WeaponWheel/ProsurvPSG/LaserOn.png";
 		}
-		PSG_Laser.tokentogive = "PSG_Select_Laser";
+		PSG_Laser.tokentogive = "PBX_Toggle_Laser";
 		PSG_Laser.scalex = 1.1;
 		PSG_Laser.scaley = 1.1;
 		spw.push(PSG_Laser);

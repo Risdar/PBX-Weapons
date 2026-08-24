@@ -1,0 +1,5 @@
+addkeysection "$PBXWEAPONS_WHEELZOOM" PBX_KEY
+Alias          pbx_zoomin	                    "netevent PBXWeapons_ZoomIn"
+Alias          pbx_zoomout	                    "netevent PBXWeapons_ZoomOut"
+AddMenuKey     "$PBXWEAPONS_WHEELZOOM_IN" 	    pbx_zoomin
+AddMenuKey     "$PBXWEAPONS_WHEELZOOM_OUT" 	    pbx_zoomout

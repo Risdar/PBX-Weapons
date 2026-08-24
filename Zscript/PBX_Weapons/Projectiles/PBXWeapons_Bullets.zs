@@ -15,7 +15,7 @@ class PB_444Marlin : PB_500SW
 {
 	Default
 	{
-		PB_Projectile.BaseDamage 200;
+		PB_Projectile.BaseDamage 180;
 		PB_Projectile.RipperCount 5;
 		PB_Projectile.PenetrationCount 5;
 		+PB_Projectile.WHIZCRACK;

@@ -51,17 +51,18 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
 	
     bool unwindString;
 	int currentMode;
-	const ARROW_AMOUNT	 	= 1; // This is kinda dumb lol but oh well... consistency
-	const ammoTakeNormal	= 1; // Normal Shot
-	const ammoTakeDemonic 	= 5; // Demonic Shot
+	const ARROW_AMOUNT	 	= 1;  // This is kinda dumb lol but oh well... consistency
+	const ammoTakeNormal	= 1;  // Standard Bolt
+	const ammoTakeDemonic 	= 5;  // Demonic Bolt
+	const ammoTakeShock 	= 15; // Shock Bolt
 
 	const HIGHCAL_AMMO_GIVE = 15; 
 	const ROCKET_AMMO_GIVE 	= 10; 
 
 	enum crossbowMode
 	{
-        CLOSE_WHEEL = -2,
-        UNLOADED,
+        ERROR_WHEEL = -2,
+        CLOSE_WHEEL,
         NO_UPGRADE,
 		NORMAL_BOLT,
 		EXPLOSIVE_BOLT,
@@ -375,7 +376,7 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
         ContinueReload: // Used by the mode change
             TNT1 A 0 A_JumpIf(invoker.ammo1.amount < invoker.ReserveToMagAmmoFactor, "ContinueUnload"); // Edge case where you mode change but has no reserve
             TNT1 A 0 A_JumpIf(getCrossbowMode() == DEMONIC_BOLT,"ReloadDemonic");
-            CB_F AB 1 setCrossbowSprite(bolt:"CB_F",explosive:"CB_G",shock:"CB_I");
+            CB_F AB 1 setCrossbowSprite(bolt:"CB_F",explosive:"CB_G",shock:"CB_I",skipUnloadedCheck:true);
             "####" A 0 A_PlaySoundEx("weapons/ballista/boltin","Auto");
             "####" CDE 1;
             "####" FG 1 {

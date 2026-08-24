@@ -41,15 +41,12 @@ Class MetalSniperWheel : wheelinfocontainer
 		MS_GrenMode.scaley = iconscale.y;
 		spw.push(MS_GrenMode);
 
-		bool disabled;
-		let disableUpgrade = Cvar.GetCvar('PBXWeapons_backpack_filter', requester.player);
-		if(disableUpgrade)
-			disabled = disableUpgrade.getint() & DisablePBX_MetalSniperUpgrade;
+		bool disabled = PBXWeapons_backpack_filter & DisablePBX_MetalSniperUpgrade;
 
 		iconScale = (1.0, 1.0);
 
 		PB_SpecialWheel_Mode MS_Laser = new ("PB_SpecialWheel_Mode");
-		if(weap.laserActive) {
+		if(weap.mLaserSightActivated) {
 			MS_Laser.Alias = "$PBX_LaserOff";
 			MS_Laser.img = "graphics/WeaponWheel/MetalSniper/LaserOff.png";
 		}
@@ -57,7 +54,7 @@ Class MetalSniperWheel : wheelinfocontainer
 			MS_Laser.Alias = "$PBX_LaserON";
 			MS_Laser.img = "graphics/WeaponWheel/MetalSniper/LaserOn.png";
 		}
-		MS_Laser.tokentogive = "MS_Select_Laser";
+		MS_Laser.tokentogive = "PBX_Toggle_Laser";
 		MS_Laser.scalex = iconscale.x;
 		MS_Laser.scaley = iconscale.y;
 		spw.push(MS_Laser);
@@ -106,7 +103,7 @@ Class MS_Zoomed_Wheel : wheelinfocontainer
 {
 	override int GetSPCount(actor requester)
 	{
-		return 5;
+		return 4;
 	}
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
@@ -131,7 +128,7 @@ Class MS_Zoomed_Wheel : wheelinfocontainer
 
 		// Laser
 		PB_SpecialWheel_Mode MS_Laser = new ("PB_SpecialWheel_Mode");
-		if(weap.laserActive) {
+		if(weap.mLaserSightActivated) {
 			MS_Laser.Alias = "$PBX_LaserOff";
 			MS_Laser.img = "graphics/WeaponWheel/MetalSniper/LaserOff.png";
 		}
@@ -139,7 +136,7 @@ Class MS_Zoomed_Wheel : wheelinfocontainer
 			MS_Laser.Alias = "$PBX_LaserON";
 			MS_Laser.img = "graphics/WeaponWheel/MetalSniper/LaserOn.png";
 		}
-		MS_Laser.tokentogive = "MS_Select_Laser";
+		MS_Laser.tokentogive = "PBX_Toggle_Laser";
 		MS_Laser.scalex = iconscale.x;
 		MS_Laser.scaley = iconscale.y;
 		spw.push(MS_Laser);
@@ -148,27 +145,20 @@ Class MS_Zoomed_Wheel : wheelinfocontainer
 		PB_SpecialWheel_Mode MS_goScope = new ("PB_SpecialWheel_Mode");
 		MS_goScope.img = "graphics/WeaponWheel/ScopeMode.png";
 		MS_goScope.Alias = "$PBX_GoScope";
-		MS_goScope.tokentogive = "MS_Select_ToggleScope";
+		MS_goScope.tokentogive = "PBX_Toggle_Scope";
 		MS_goScope.scalex = WHEEL_SCOPE_SCALE;
 		MS_goScope.scaley = WHEEL_SCOPE_SCALE;
 		spw.push(MS_goScope);
 
-		// Zoom Strength
-		PB_SpecialWheel_Mode MS_goZoom = new ("PB_SpecialWheel_Mode");
-		MS_goZoom.img = "graphics/WeaponWheel/ChangeZoom.png";
-		if(weap.zoomstrength == weap.HIGHZOOM) MS_goZoom.Alias = "$PBX_Zoom40";
-		else MS_goZoom.Alias = "$PBX_Zoom70";
-		MS_goZoom.tokentogive = "MS_Select_ToggleZoom";
-		MS_goZoom.scalex = WHEEL_ZOOM_SCALE;
-		MS_goZoom.scaley = WHEEL_ZOOM_SCALE;
-		spw.push(MS_goZoom);
-		
+
 		// NVG
 		PB_SpecialWheel_Mode MS_goNVG = new ("PB_SpecialWheel_Mode");
 		MS_goNVG.img = "GRAPHICS/HiResPickups/Powerups/VISR1.png";
-		if(weap.nvgActive) MS_goNVG.Alias = "$PBX_nvgOffWW";
-		else MS_goNVG.Alias = "$PBX_nvgOnWW";
-		MS_goNVG.tokentogive = "MS_Select_ToggleNVG";
+		if(weap.mNightVisionActivated) 
+			MS_goNVG.Alias = "$PBX_nvgOffWW";
+		else 
+			MS_goNVG.Alias = "$PBX_nvgOnWW";
+		MS_goNVG.tokentogive = "PBX_Toggle_NVG";
 		MS_goNVG.scalex = WHEEL_NVG_SCALE;
 		MS_goNVG.scaley = WHEEL_NVG_SCALE;
 		spw.push(MS_goNVG);

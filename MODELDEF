@@ -19,7 +19,7 @@ Model PBX_CubeRadiusLoop
 	FrameIndex 0000 A 0 0
 }
 
-Model PBX_CubeRadiusCyan
+Model PBX_CubeRadius
 {
 	Path "models/RadiusDebug"
 	Model 0 "CubeRadius.md3"

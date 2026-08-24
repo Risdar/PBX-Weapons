@@ -1,3 +1,11 @@
+// Ali Jr. - base sprites
+// IDDQD_1337 - base brightmaps
+// Sechtera - improved firing frames
+// SgtMarkIV, TypicalSF, Acclaim Entertainment and Probe Entertainment - muzzle flashes
+// Dox778 -  Original Brutal Doom Addon Creator
+// Jenny - Port to PB (maybe?)
+// Pickup sprite is from Brutal Doom Arthur Edition by arthoriusb2593
+
 // Includes
 #include "./CyberRL_Functions.zs"
 

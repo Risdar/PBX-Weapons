@@ -19,28 +19,13 @@ extend class PBX_NormalRifle
 
         "FlashKickingAkimbo","FlashAirKickingAkimbo","FlashSlideKickingAkimbo","FlashSlideKickingStopAkimbo",
 
-        "WeaponRespect",
+        "WeaponRespect", "SwitchAnimation",
         "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
     };
 
-    override void PostBeginPlay()
+    override void PBX_DoEffectWeaponReady(Weapon weap)
     {
-        doBurst = false;
-        laserActive = false;
-        burstcount = 0;
-        burstcountLeft = 0;
-        Super.PostBeginPlay();
-    }
-
-    override void DoEffect() 
-	{
-		super.DoEffect();
-        if (level.isFrozen()) return;
-        if(!owner || !owner.player || !owner.player.readyweapon) return;
-        
-        // This way the laser will only spawn if the weapon is selected
-        if(owner.player.readyweapon.GetClass() is self.GetClass() && laserActive)
-            PBX_SpawnLaserSight("PBX_RedDot");
+		PBX_SpawnLaserSight(PBX_LaserSightProjectile.RED_DOT);
     }
 
     action void setBurstCount(int set, bool isLeft = false)
@@ -247,11 +232,11 @@ extend class PBX_NormalRifle
 
 		bool toggleFireMode     = countinv("NR_Select_FireMode")    > 0;
 		bool toggleDualWield  	= countinv("NR_Select_DualWield")   > 0;
-		bool toggleLaser 	    = countinv("NR_Select_Laser")       > 0;
+		bool toggleLaser 	    = countinv("PBX_Toggle_Laser")       > 0;
 
         if(countinv("PBX_CloseWheel") > 0)
 		{
-			A_TakeInventory("PBX_CloseWheel",1);
+            cleanmodetokens();
             if(PB_GetZoom()) return resolvestate("Ready2");
 			else return resolvestate("Ready3");
 		}
@@ -263,28 +248,13 @@ extend class PBX_NormalRifle
             A_Print(invoker.doBurst ? "$PB_FIREMODE_BURST" : "$PB_FIREMODE_FULL");
 		}
 
-		if (toggleLaser)
-        {
-            if(invoker.laserActive) invoker.laserActive = false;
-            else invoker.laserActive = true;
-            A_Print(invoker.laserActive ? "$PBX_LaserOn" : "$PBX_LaserOff");
-        }
+		if (toggleLaser) 
+            PBX_ToggleLaserSight(skipPlaySound:true);
 
         if (toggleDualWield)
         {
             cleanmodetokens();
-
-            // Dual Wield Toggle
-            if (A_CheckAkimbo()) 
-                return ResolveState("StopDualWield");
-            if (invoker.amount >= 2) {
-                if(PB_GetZoom()) return ResolveState("ZoomOut"); // After zoomout it goes to "SwitchToDualWield"
-                return ResolveState("SwitchToDualWield");
-            }
-
-            // If you dont have 2 rifles
-            A_Print("$PBX_NormalRifle_NoAkimbo");
-            return ResolveState("Ready3");
+            return PBX_SetupDualWield("$PBX_NormalRifle_NoAkimbo");
         } 
 
 		// Always remove the tokens regardless
@@ -297,8 +267,7 @@ extend class PBX_NormalRifle
 			return resolvestate("Ready2");
 		}
 
-        A_StartSound("MS/Button", CHAN_AUTO, CHANF_OVERLAP);
-		// Fallthrough to Ready3
+		// Fallthrough to Switch Animation
 		return resolvestate(null);
 	}
 
@@ -306,6 +275,7 @@ extend class PBX_NormalRifle
     {
         A_SetInventory("NR_Select_FireMode",0);
         A_SetInventory("NR_Select_DualWield",0);
-        A_SetInventory("NR_Select_Laser",0);
+        A_SetInventory("PBX_Toggle_Laser",0);
+        A_SetInventory("PBX_CloseWheel",0);
     }
 }

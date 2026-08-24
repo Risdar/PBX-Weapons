@@ -1,5 +1,9 @@
 // Commander's SuperShotgun by Barge, Popguy, WolVexus, and Jaih1r0
-// New sprites is made by SamuelGuy
+// New sprites made by SamuelGuy
+// Ice upgrade pickup sprite is made by SchrödingCat, Eriance/Amuscaria, Realm667
+// Ice projectiles is from PBWP's Marauder Shotgun Freeze Shells made by JhulkerCraft
+// HellFire and Acid Sprites is made by Waik (_wkn)
+// HellFire shells firing sounds is from D-Tech Weapons Pack, specifically from DOOM 2016/DOOM Eternal by ID Software
 
 // Includes
 #include "./CSSG_Functions.zs"
@@ -47,7 +51,9 @@ Class PBX_CSSG : PBX_WeaponBase
 		Shell_WPSP = 7,
 		Shell_Doom = 8,
 		Shell_Damn = 9,
-		Shell_SubZ = 10
+		Shell_SubZ = 10,
+		Shell_HellF = 11,
+		Shell_Acid = 12
 	};
 
 	enum CM_Wheel {
@@ -75,9 +81,10 @@ Class PBX_CSSG : PBX_WeaponBase
 			goto Ready3;
 		
 		Deselect:
-			//TNT1 A 0 A_takeinventory("PB_ShellViewer",10);
-			//TNT1 A 0 PB_CheckBarrelPlace1();
-			TNT1 A 0 A_startsound("weapons/changing",60);
+			TNT1 A 0 {
+				A_startsound("weapons/changing",60);
+				CSSG_CutMeathook();
+			}
 			C0SU DCBA 1;
 			TNT1 A 0 A_Lower(120);
 			wait;
@@ -97,7 +104,12 @@ Class PBX_CSSG : PBX_WeaponBase
 		//insert shells
 			C0RB A 1;
 			C0RB BCDFGH 1 {
-				ChangeCSSGShellsLook('C0RB','C0RS','C0RN','C0RK','C0RD','C0RX','C0RW','C0RT','C0RM','C1RX');
+				ChangeCSSGShellsLook(
+					'C0RB','C0RS','C0RN',
+					'C0RK','C0RD','C0RX',
+					'C0RW','C0RT','C0RM',
+					'C1RX','C0RH','C0RA'
+				);
 				return A_DoPBWeaponAction();
 			}
 			TNT1 A 0 A_startsound("weapons/cssg/in",26);
@@ -133,6 +145,7 @@ Class PBX_CSSG : PBX_WeaponBase
 				PB_SetRoll(0);
 				A_SetInventory("PB_LockScreenTilt",0);
 				CM_HandleCrosshair();
+				CSSG_CutMeathook();
 			}
 			TNT1 A 0 PB_JumpIfNoAmmo("LeftFire",2);
 			TNT1 A 0 A_overlay(-31,"MuzzleFlashFull");
@@ -235,8 +248,13 @@ Class PBX_CSSG : PBX_WeaponBase
 			TNT1 A 0 PB_GunSmoke(0,0,-2);
 			C0HO II 1;
 		//insert shell
-			C0HB ABC 1 ChangeCSSGShellsLook('C0HB','C0HS','C0HN','C0HK','C0HD','C0HX','C0HW','C0HT','C0HM','C1HX');
-			C0HB DEF 1 ChangeCSSGShellsLook('C0HB','C0HS','C0HN','C0HK','C0HD','C0HX','C0HW','C0HT','C0HM','C1HX');
+			C0HB ABC 1 ChangeCSSGShellsLook(
+				'C0HB','C0HS','C0HN',
+				'C0HK','C0HD','C0HX',
+				'C0HW','C0HT','C0HM',
+				'C1HX','C0HH','C0HA'
+			);
+			"####" DEF 1;
 			TNT1 A 0 A_startsound("weapons/cssg/in",24);
 			TNT1 A 0 {
 				PB_AmmoIntoMag(invoker.ammo2.GetClassName(),invoker.ammo1.GetClassName(),BARREL_CAPACITY);
@@ -267,7 +285,12 @@ Class PBX_CSSG : PBX_WeaponBase
 			C0RO P 1;
 		//insert shells
 			C0RB A 1;
-			C0RB BCDFGH 1 ChangeCSSGShellsLook('C0RB','C0RS','C0RN','C0RK','C0RD','C0RX','C0RW','C0RT','C0RM','C1RX');
+			C0RB BCDFGH 1 ChangeCSSGShellsLook(
+				'C0RB','C0RS','C0RN',
+				'C0RK','C0RD','C0RX',
+				'C0RW','C0RT','C0RM',
+				'C1RX','C0RH','C0RA'
+			);
 			TNT1 A 0 {
 				A_startsound("weapons/cssg/in",26);
 				PB_AmmoIntoMag(invoker.ammo2.GetClassName(),invoker.ammo1.GetClassName(),BARREL_CAPACITY);
@@ -285,7 +308,12 @@ Class PBX_CSSG : PBX_WeaponBase
 			C0HO D 1;
 			TNT1 A 4;
 			C0RB LKJI 1;
-			C0RB HGFEDCB 1 ChangeCSSGShellsLook('C0RB','C0RS','C0RN','C0RK','C0RD','C0RX','C0RW','C0RT','C0RM','C1RX');
+			C0RB HGFEDCB 1 ChangeCSSGShellsLook(
+				'C0RB','C0RS','C0RN',
+				'C0RK','C0RD','C0RX',
+				'C0RW','C0RT','C0RM',
+				'C1RX','C0RH','C0RA'
+			);
 			TNT1 A 0 {
 				CM_HandleUnload();
 				PB_SetChamberEmpty(true);
@@ -314,7 +342,12 @@ Class PBX_CSSG : PBX_WeaponBase
 			}
 			C0RO NOP 1;
 			C0RB A 1;
-			C0RB BCDEFGH 1 ChangeCSSGShellsLook('C0RB','C0RS','C0RN','C0RK','C0RD','C0RX','C0RW','C0RT','C0RM','C1RX');
+			C0RB BCDEFGH 1 ChangeCSSGShellsLook(
+				'C0RB','C0RS','C0RN',
+				'C0RK','C0RD','C0RX',
+				'C0RW','C0RT','C0RM',
+				'C1RX','C0RH','C0RA'
+			);
 			TNT1 A 0 A_startsound("weapons/cssg/in",24);
 			TNT1 A 0 {
 				// if(countinv(invoker.ammotype2)<2 && countinv(invoker.ammotype1)>0)
@@ -381,28 +414,15 @@ Class PBX_CSSG : PBX_WeaponBase
 			stop;
 			
 		LoadSprites:
-			C0RB ABCDEF 0;
-			C0RD ABCDEF 0;
-			C0RX ABCDEF 0;
-			C0RK ABCDEF 0;
-			C0RN ABCDEF 0;
-			C0RS ABCDEF 0;
-			C0RW ABCDEF 0;
-			C0RT ABCDEF 0;
-			C0RM ABCDEF 0;
-			C1RX ABCDEF 0;
+			C0RB A 0; C0RD A 0; C0RX A 0;
+			C0RK A 0; C0RN A 0; C0RS A 0;
+			C0RW A 0; C0RT A 0; C0RM A 0;
+			C1RX A 0; C0RH A 0; C0RA A 0;
 
-			C0HB ABCD 0;
-			C0HD ABCD 0;
-			C0HX ABCD 0;
-			C0HN ABCD 0;
-			C0HS ABCD 0;
-			C0HW ABCD 0;
-			C0HK ABCD 0;
-			C0HT ABCD 0;
-			C0HM ABCD 0;
-			C1HX ABCD 0;
-			stop;
+			C0HB A 0; C0HD A 0; C0HX A 0;
+			C0HN A 0; C0HS A 0; C0HW A 0;
+			C0HK A 0; C0HT A 0; C0HM A 0;
+			C1HX A 0; C0HH A 0; C0HA A 0;
 			
 	}
 	

@@ -219,7 +219,9 @@ class PBXUpgrades_Injector : PBInjector
 			handler.InjectSpawn('PB_ShellboxSpawnerT2', 'SubZeroShellsUpgrade', 255, 1);
 			handler.InjectSpawn('PB_ShellboxSpawnerT3', 'DanmakuShellsUpgrade', 255, 1);
 			handler.InjectSpawn('PB_ShellboxSpawnerT3', 'ExplosiveShellsUpgrade', 255, 1);
+			handler.InjectSpawn('PB_ShellboxSpawnerT3', 'AcidShellsUpgradePickup', 255, 1);
 			handler.InjectSpawn('PB_ShellboxSpawnerT4', 'DoomShellsUpgrade', 255, 1);
+			handler.InjectSpawn('PB_ShellboxSpawnerT4', 'HellFireShellsUpgrade', 255, 1);
 		}
 		
 		// Metal Sniper Upgrade
@@ -287,9 +289,11 @@ class PBXWeapons_WeaponSpawner : EventHandler
 
 		for (int i = 0; i < level.Sectors.Size(); ++i)
 		{
+			if(mSecretWeaponSpawned) return;
+			
 			Sector CurrSec = level.Sectors[i];
 			vector3 SpawnPos = (CurrSec.centerspot.x, CurrSec.centerspot.y, CurrSec.floorplane.ZAtPoint(CurrSec.centerspot));
-
+			
 			if (CurrSec.IsSecret() && !mSecretWeaponSpawned)
 			{
 				Actor.Spawn("PBX_SpecialWeaponSpawner", SpawnPos);

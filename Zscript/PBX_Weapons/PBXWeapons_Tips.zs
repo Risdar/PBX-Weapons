@@ -26,6 +26,7 @@ enum PBXWeapons_eWeaponTipFlags
     PBX_TIP_DEMONMINIGUN        = 1 << 16,
     PBX_TIP_DEMONEXT            = 1 << 17,
     // OTHERS
+    PBX_TIP_SCROLLZOOM          = 1 << 28,
     PBX_TIP_COMMANDERWEAPON     = 1 << 29,
     PBX_TIP_MONSTERWEAPON       = 1 << 30,
     PBX_TIP_DEMONICWEAPON       = 1 << 31
@@ -39,6 +40,15 @@ extend class PBX_WeaponBase
     action void PBX_WeaponHelpText()
 	{
         // PBXCore_Debug.Print("Help Text Called");
+        if(invoker.mScopedWeapon)
+        {
+            Array<String> tips;
+            tips.Push("$PBX_ScrollZoom_Tip1");
+            tips.Push("$PBX_ScrollZoom_Tip2");
+            tips.Push(string.format(StringTable.Localize("$PBX_ScrollZoom_Tip3"),PB_HelpNotificationsHandler.PB_FormatKeybinds("pbx_zoomin"),PB_HelpNotificationsHandler.PB_FormatKeybinds("pbx_zoomout")));
+            PBXCore_TipsManager.SendTipArrayIfNeeded(tips, WEAPON_HELPTEXT, PBX_TIP_SCROLLZOOM);
+        }
+
         switch(invoker.getClassName())
         {
             default:
@@ -114,6 +124,7 @@ extend class PBX_WeaponBase
                 tips.Push(string.format(StringTable.Localize("$PBX_MetalSniper_Tip2"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+ALTATTACK"), PB_HelpNotificationsHandler.PB_FormatKeybinds("+ATTACK")));
                 tips.Push(string.format(StringTable.Localize("$PBX_MetalSniper_Tip3"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+pb_specialwheel")));
                 tips.Push("$PBX_MetalSniper_Tip4");
+                tips.Push("$PBX_MetalSniper_Tip5");
                 PBXCore_TipsManager.SendTipArrayIfNeeded(tips, WEAPON_HELPTEXT, PBX_TIP_METALSNIPER);
                 TryGiveSpecialTip(DISABLE_UPGRADE);
             }

@@ -1,7 +1,3 @@
-// What gives the playr Nightvision, its basically a powerup
-class PBX_Infrared : PB_PowerLightAmp  {default{Powerup.Duration -1800;}}
-class PBX_CloseWheel : inventory {default{inventory.maxamount 1;}}
-
 // Handles giving the player ammo (and other things) on map start
 // This is so the player will always have full ammo when picking up a new weapon
 class PBXWeapons_Handler : EventHandler
@@ -54,34 +50,49 @@ class PBXWeapons_Handler : EventHandler
     }
 }
 
-// Laser sight
-// Call in DoEffect()
-mixin class PBX_LaserSight
+// This handles the Mouse Wheel Zoom
+class PBXWeapons_ZoomHandler : EventHandler
 {
-    void PBX_SpawnLaserSight(name laser = "PBX_RedDot", StateLabel defaultReadyState = "Ready3", int laserRange = 4096)
+    override bool InputProcess(InputEvent e)
     {
-		let psp = owner.player.FindPSprite(PSP_WEAPON);
-		if(!psp) return;
+        if (e.Type == InputEvent.Type_None)
+            return false;
 
-        for (int i = 0; i < blockedLaserStates.Size(); i++)
+        let plr = players[consoleplayer].mo;
+        if (!plr || !(plr.player.ReadyWeapon is "PBX_WeaponBase") || !plr.FindInventory("Zoomed"))
+            return false;
+
+		let weap = PBX_WeaponBase(plr.player.ReadyWeapon);
+		if(!weap || !weap.mScopedWeapon) 
+			return false;
+
+        if (e.KeyScan == InputEvent.Key_MWheelUp)
         {
-            if (InStateSequence(psp.curstate, ResolveState(blockedLaserStates[i])) 
-                && !InStateSequence(psp.curstate, ResolveState(defaultReadyState)))
-                return;
+        	PBXCore_Debug.Print("Wheel Up");
+            SendNetworkEvent("PBXWeapons_ZoomIn");
+            return true;
         }
 
-        double pz = owner.height * 0.5 - owner.floorclip + owner.player.mo.AttackZOffset * owner.player.crouchFactor;
+        if (e.KeyScan == InputEvent.Key_MWheelDown)
+        {
+        	PBXCore_Debug.Print("Wheel Down");
+            SendNetworkEvent("PBXWeapons_ZoomOut");
+            return true;
+        }
 
-        FLineTraceData lasersight;
-        owner.LineTrace(
-			owner.angle, 
-			laserRange, 
-			owner.pitch, 
-            TRF_SOLIDACTORS|TRF_THRUHITSCAN, 
-			offsetz: pz, 
-			data: lasersight);
+        return false;
+    }
 
-        Spawn(laser, lasersight.HitLocation);
+    override void NetworkProcess(ConsoleEvent e)
+    {
+        PlayerInfo player = players[e.Player];
+        let wpn = PBX_WeaponBase(player.ReadyWeapon);
+        if (!wpn || !wpn.mScopedWeapon || !player.mo || !player.mo.FindInventory("Zoomed")) return;
+
+        if (e.Name == "PBXWeapons_ZoomIn")
+            wpn.PBX_AdjustZoom(1);
+        else if (e.Name == "PBXWeapons_ZoomOut")
+            wpn.PBX_AdjustZoom(-1);
     }
 }
 
@@ -89,72 +100,79 @@ mixin class PBX_LaserSight
 // This handles the target analysis system
 class PBXWeapons_ScopeHandler : EventHandler
 {
-	ui bool CanDraw;
-	ui int MaxHealth, Health, ZoomScale, PainChance;
-	ui string ActorName;
-	ui double Distance;
-	ui bool IsBlue;
+	ui bool 	mCanDraw;
+	ui int 		mMaxHealth, mCurrentHealth, mZoomScale, mPainChance;
+	ui string 	mActorName;
+	ui double 	mDistance;
+	ui bool 	mUseBlueFont;
     
     override void InterfaceProcess(ConsoleEvent e)
     {
 		bool blue = e.name.IndexOf("PrintScopeData_Blue:") >= 0;
-    	bool green = e.name.IndexOf("PrintScopeData:") >= 0;
+    	bool green = e.name.IndexOf("PrintScopeData_Green:") >= 0;
 
 		if((blue || green) && !e.IsManual)
         {
-			IsBlue = blue;
-            Health = e.args[0];
-			MaxHealth = e.args[1];
-			double fuck = e.args[2];
-			PainChance = fuck / 256 * 100;
+			mUseBlueFont 	= blue;
+            mCurrentHealth  = e.args[0];
+			mMaxHealth 		= e.args[1];
+			double painC 	= e.args[2];
+			mPainChance 	= painC / 256 * 100;
 			Array<string> command;
 			e.Name.Split (command, ":");
 			
 			if(command.Size() == 2)
-			{
-				ActorName = command[1];
+				mActorName = command[1];
 				
-			}
-			CanDraw = true;
+			mCanDraw = true;
         }
+
 		if(e.name.IndexOf("PrintScopeData2:") >= 0 && !e.IsManual)
         {
             double ok = e.args[0];
-			Distance = ok / 32; //32 units should rougly be a meter i hope
-			ZoomScale = e.args[1];
+			mDistance = ok / 32; //32 units should rougly be a meter i hope
+			mZoomScale = e.args[1];
         }
-	
     }
 
 	override void UItick()
 	{
-		CanDraw = false;
+		mCanDraw = false;
 	}
 	
 	override void RenderUnderlay(RenderEvent e)
 	{	
-		if(CanDraw)
+		let phud = PB_Hud_ZS(StatusBar);
+        if (!phud || !mCanDraw) return;
+
+		vector2 hud_origin;
+		vector2 hud_size;
+		[hud_origin.x, hud_origin.y, hud_size.x, hud_size.y] = Screen.GetViewWindow();
+
+		int color = mUseBlueFont ? Font.CR_CYAN : Font.CR_GREEN;
+		int flags = BaseStatusBar.DI_SCREEN_CENTER | BaseStatusBar.DI_TEXT_ALIGN_LEFT;
+
+		int hudX = 15;
+		int hudY = 30;
+		int steps = 15;
+
+		phud.PBHud_DrawString(phud.mBoldFont, mActorName, (hudX, 10), flags, color, scale: (1.3, 1.3));
+
+		Array<string> lines;
+		lines.Push(string.format(StringTable.Localize("$PBXWeapons_SmartScope_MaxHP"), mMaxHealth));
+		lines.Push(string.format(StringTable.Localize("$PBXWeapons_SmartScope_CurrHP"), mCurrentHealth));
+		lines.Push(string.format(StringTable.Localize("$PBXWeapons_SmartScope_PainChance"), mPainChance));
+		lines.Push(string.format(StringTable.Localize("$PBXWeapons_SmartScope_Distance"), mDistance));
+
+		for (int i = 0; i < lines.Size(); i++)
 		{
-			vector2 hud_origin;
-			vector2 hud_size;
-			int color = IsBlue ? Font.CR_CYAN : Font.CR_GREEN;
-			[hud_origin.x, hud_origin.y, hud_size.x, hud_size.y] =
-			Screen.GetViewWindow();
-			
-			Screen.DrawText(BigFont, color, 190, 86, ActorName,
-			DTA_Clean, true
-			);
-		
-			string Wow = string.format("Max. HP: %u\nHP: %u\nPain chance: %u%%", MaxHealth, Health, PainChance);
-			Screen.DrawText(SmallFont, color, 190, 104, Wow,
-			DTA_Clean, true
-			);
-			
-			string DistanceInMeters = string.format("Distance: %.1f m.", Distance);
-			Screen.DrawText(SmallFont, color, 190, 74, DistanceInMeters,
-			DTA_Clean, true
-			);
+			phud.PBHud_DrawString(phud.mDefaultFont, lines[i], (hudX, hudY + i * steps), flags, color);
 		}
+
+		// Old version
+		// Screen.DrawText(BigFont, color, 190, 86, mActorName, DTA_Clean, true);
+		// Screen.DrawText(SmallFont, color, 190, 104, Wow, DTA_Clean, true);
+		// Screen.DrawText(SmallFont, color, 190, 74, DistanceInMeters, DTA_Clean, true);
 	}	
 }
 
@@ -206,6 +224,7 @@ Class PBXWeapons_CheatsHandler : Eventhandler
 }
 
 // Homing Projectiles Base
+// The code is from ToxicFrog's Gun Bonsai
 class HomingShots_Aux : Inventory 
 {
 	uint level;
@@ -224,11 +243,11 @@ class HomingShots_Aux : Inventory
 	bool TerminalHoming() 
 	{
 		return owner.tracer && owner.CheckLOF(
-			0, // flags
+			0, 			 // flags
 			64+level*32, // range, 2m + 1m/level
-			0, // minrange
-			0, 0, // angles
-			0, 0, // offset
+			0, 			 // minrange
+			0, 0, 		 // angles
+			0, 0, 		 // offset
 			AAPTR_TRACER
 		);
 	}
@@ -260,15 +279,18 @@ class HomingShots_Aux : Inventory
 			owner.tracer = null;
 			let vel = owner.vel;
 			let angle = owner.angle;
+			
 			owner.A_SeekerMissile(
 			0, // terminal homing cone radius
 			1, // max turn angle per tic, degrees
+			
 			SMF_LOOK | SMF_PRECISE | SMF_CURSPEED,
 			min(level*256, 256), // chance of acquiring a new target if it doesn't have one
 			min(ceil((64 + level*32)/128.0), 8)); // scan range for new targets in blocks
+
 			// Reject anything that is not a PB_Monster
-			if (owner.tracer && !(owner.tracer is "PB_Monster"))
-				owner.tracer = null;
+			if (owner.tracer && !(owner.tracer is "PB_Monster")) owner.tracer = null;
+
 			owner.vel = vel;
 			owner.angle = angle;
 		} 
@@ -284,7 +306,7 @@ class HomingShots_Aux : Inventory
 			// which means we should let A_SeekerMissile take over flight control and
 			// guide us in.
 			owner.A_SeekerMissile(
-				0, // terminal homing cone radius
+				0, 				// terminal homing cone radius
 				min(level, 90), // max turn angle per tic, degrees
 				SMF_PRECISE | SMF_CURSPEED
 			);
@@ -300,9 +322,8 @@ class HomingShots_Aux : Inventory
 	}
 }
 
-
 // Laser sights
-CLASS PBX_BlueDot : FastProjectile
+CLASS PBX_LaserSightProjectile : FastProjectile
 { 
 	Default
 	{
@@ -311,44 +332,28 @@ CLASS PBX_BlueDot : FastProjectile
 		Scale 0.2;
 		Radius 1;
 		Height 2;
-		+NOBLOCKMAP;
-		+NOGRAVITY;
-		+BLOODLESSIMPACT;
-		+ALWAYSPUFF;
-		+PUFFONACTORS;
-		+DONTSPLASH;
-		+FORCEXYBILLBOARD;
 		Renderstyle "Add";
 		Alpha 0.8;
+		+NOBLOCKMAP;	+NOGRAVITY;		+BLOODLESSIMPACT;
+		+ALWAYSPUFF;	+PUFFONACTORS;	+DONTSPLASH;
+		+FORCEXYBILLBOARD;
 	}
+
+	int mColor;
+
+	enum PBX_LaserColor
+    {
+        RED_DOT = 17,
+        GREEN_DOT = 6,
+        BLUE_DOT = 1
+    }
+
 	States
 	{
-	Spawn:
-		LEYS RR 0;
-		LEYS B 1 BRIGHT;
-		Stop;
-	}
-}
-
-class PBX_RedDot : PBX_BlueDot
-{
-    States
-	{
-	Spawn:
-		LEYS RR 0 BRIGHT;
-		LEYS R 1 BRIGHT;
-		Stop;
-	}
-}
-
-class PBX_GreenDot : PBX_BlueDot
-{
-    States
-	{
-	Spawn:
-		LEYS RR 0 BRIGHT;
-		LEYS G 1 BRIGHT;
-		Stop;
+		Spawn:
+			LEYS RR 0;
+			LEYS B 1 BRIGHT {frame = mColor;}
+			Stop;
 	}
 }
 
@@ -367,11 +372,24 @@ Class PBX_CubeRadius : actor
 		+THRUACTORS
 		-RANDOMIZE
 	}
+
+	int mColor;
+
+	enum PBX_CubeColor
+	{
+		RED,
+		GREEN,
+		BLUE
+	}
+
 	States
 	{
 		Spawn:
-			0000 A 0;
-			0000 A 1;
+			0001 A 0;
+			0000 A 1 {
+				if(mColor == BLUE)
+					sprite = GetSpriteIndex("0001");
+			}
 			stop;
 	}
 }
@@ -384,29 +402,6 @@ Class PBX_CubeRadiusLoop : PBX_CubeRadius
 			0000 A 0;
 			0000 A 1;
 			wait;
-	}
-}
-
-Class PBX_CubeRadiusCyan : actor
-{
-	DEFAULT
-	{
-		Radius 20;
-		Height 20;
-		Scale 32.0;
-		//RenderStyle "STYLE_Translucent";
-		//Alpha 0.8;
-		+NOINTERACTION
-		+NOBLOCKMAP
-		+THRUACTORS
-		-RANDOMIZE
-	}
-	States
-	{
-		Spawn:
-			0001 A 0;
-			0001 A 1;
-			stop;
 	}
 }
 

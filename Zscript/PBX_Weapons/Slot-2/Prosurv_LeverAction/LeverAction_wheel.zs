@@ -42,7 +42,7 @@ Class LeverActionWheel : wheelinfocontainer
 		spw.push(LA_357Magnum);
 
 		PB_SpecialWheel_Mode LA_Laser = new ("PB_SpecialWheel_Mode");
-		if(la.laserActive) {
+		if(la.mLaserSightActivated) {
 			LA_Laser.Alias = "$PBX_LaserOff";
 			LA_Laser.img = "graphics/WeaponWheel/LeverAction/LaserOff.png";
 		}
@@ -50,7 +50,7 @@ Class LeverActionWheel : wheelinfocontainer
 			LA_Laser.Alias = "$PBX_LaserON";
 			LA_Laser.img = "graphics/WeaponWheel/LeverAction/LaserOn.png";
 		}
-		LA_Laser.tokentogive = "LA_Select_Laser";
+		LA_Laser.tokentogive = "PBX_Toggle_Laser";
 		LA_Laser.scalex = iconscale.x;
 		LA_Laser.scaley = iconscale.y;
 		spw.push(LA_Laser);

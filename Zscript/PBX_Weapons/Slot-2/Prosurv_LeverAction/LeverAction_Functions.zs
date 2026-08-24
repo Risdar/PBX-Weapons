@@ -1,59 +1,23 @@
 extend class PBX_Prosurv_LeverAction
 {
+	mixin PBX_LaserSight;
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////  
 	override void postbeginplay()
 	{
-		laserActive = false;
 		LAMode = LA_357Magnum;
 		currentMaxAmmo = MAGAZINE_SIZE;
 		super.postbeginplay();
 	}
 
-	override void DoEffect() 
-	{
-		super.DoEffect();
+	static const StateLabel blockedLaserStates[] = {
+		"Pump", "PumpBegin", "PumpEnd", "Reload","FinishUnload", "Deselect", "SelectAnimation",
+		"ReloadLoop", "ReloadFinished","Unload","RemoveBullets", "WeaponRespect", "WeaponSwitch",
+		"FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
+	};
 
-        if (level.isFrozen()) return;
-        
-        // Check if the player exists and if the current weapon they're using is the blaster
-		If(	owner.player && owner.player.readyweapon.GetClass() is self.GetClass())
-        {
-            // Get a pointer to it
-            let weap = PBX_Prosurv_LeverAction(owner.player.readyweapon);
-            if(!weap) return;
-
-			// Get a pointer to PSprite
-			let psp = owner.player.FindPSprite(PSP_WEAPON);
-			if(!psp) return;
-
-            if(!weap.laserActive) return;
-
-            // Dont spawn the laser sight if the weapon is in one of these states
-            static const StateLabel blockedStates[] = {
-                "Pump", "PumpBegin", "PumpEnd", "Reload","FinishUnload", "Deselect", "SelectAnimation",
-                "ReloadLoop", "ReloadFinished","Unload","RemoveBullets", "WeaponRespect",
-                "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
-            };
-
-            for (int i = 0; i < blockedStates.Size(); i++)
-            {
-                if (InStateSequence(psp.curstate, ResolveState(blockedStates[i])) && !InStateSequence(psp.curstate, ResolveState("Ready3"))) 
-                    return;
-            }
-
-            // Spawn the laser sight
-            double pz = owner.height * 0.5 - owner.floorclip + owner.player.mo.AttackZOffset*owner.player.crouchFactor;
-            FLineTraceData lasersight;
-            owner.LineTrace(owner.angle, 
-                4096, 
-                owner.pitch, 
-                TRF_SOLIDACTORS|TRF_THRUHITSCAN, 
-                offsetz: pz, 
-                data: lasersight
-            );
-
-            Spawn("PBX_RedDot", lasersight.HitLocation);
-		}
+	override void PBX_DoEffectWeaponReady(Weapon weap)
+    {
+		PBX_SpawnLaserSight(PBX_LaserSightProjectile.RED_DOT);
     }
 
 //////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
@@ -71,17 +35,10 @@ extend class PBX_Prosurv_LeverAction
 	{
 		A_SetInventory("LA_Select_Marlin", 0);
 		A_SetInventory("LA_Select_Magnum", 0);
-		A_SetInventory("LA_Select_Laser" ,0);
+		A_SetInventory("PBX_Toggle_Laser" ,0);
+		A_SetInventory("PBX_CloseWheel", 0);
 	}
 	
-	action void LA_Deselect()
-	{
-		A_SetInventory("Unloading",0);
-		A_SetInventory("Zoomed",0);
-		A_SetInventory("ADSmode",0);
-		A_ZoomFactor(1.0);
-	}
-
 	action void LA_FireWeapon(int ticCount)
 	{
 		bool ads = PB_GetZoom();
@@ -156,38 +113,33 @@ extend class PBX_Prosurv_LeverAction
 	{
 		bool goMarlin 	 = findinventory("LA_Select_Marlin");
 		bool goMagnum 	 = findinventory("LA_Select_Magnum");
-		bool toggleLaser = findinventory("LA_Select_Laser");
+		bool toggleLaser = findinventory("PBX_Toggle_Laser");
 
+		A_WeaponOffset(0,32);
 		A_SetInventory("CantWeaponSpecial",0);
+		A_SetInventory("GoWeaponSpecialAbility",0);
 		
-		if(countinv("PBX_CloseWheel") > 0)
-		{
-			A_TakeInventory("PBX_CloseWheel",1);
-			if(PB_GetZoom()) return resolvestate("Ready2");
-			else return resolvestate("Ready3");
-		}
-
 		if(goMarlin && getLAMode() == LA_444Marlin || goMagnum && getLAMode() == LA_357Magnum)
-		{
 			A_Print("$PB_ALREADYSELECTED");
-			clearLAModeTokens();
-			return resolvestate("Ready3");
-		}
 
 		if(toggleLaser)
 		{
-            if(invoker.laserActive) invoker.laserActive = false;
-            else invoker.laserActive = true;
-            A_Print(invoker.laserActive ? "$PBX_LaserOn" : "$PBX_LaserOff");
-			A_StartSound("MS/Button", 26);
 			clearLAModeTokens();
-			if(PB_GetZoom()) return resolvestate("Ready2");
-			else return resolvestate("Ready3");
-        }
+			PBX_ToggleLaserSight();
+			if(!PB_GetZoom())
+				return resolvestate("WeaponSwitch");
+		}
 
-		if(goMarlin) A_Print("$PBX_LeverAction_Marlin", 2);
-		if(goMagnum) A_Print("$PBX_LeverAction_Magnum", 2);
+		if(goMarlin || goMagnum) 
+		{
+			A_Print(goMarlin ? "$PBX_LeverAction_Marlin" : "$PBX_LeverAction_Magnum", 2);
 
+			if(invoker.ammo2.amount == 0)
+				return resolvestate("finishunload");
+			return resolvestate("Unload");
+		}
+
+		clearLAModeTokens();
 		return resolvestate(null);
 	}
 
@@ -196,13 +148,15 @@ extend class PBX_Prosurv_LeverAction
 		if(findinventory("LA_Select_Marlin") || findinventory("LA_Select_Magnum"))
 		{
 			{
-				if (CountInv("LA_Select_Marlin") > 0) {
+				if (CountInv("LA_Select_Marlin") > 0) 
+				{
 					LA_SetAmmo(LA_444Marlin);
 					setLAMode(LA_444Marlin);
 					invoker.ReserveToMagAmmoFactor = AMMO_TAKE_MARLIN;
 					invoker.currentMaxAmmo = MAGAZINE_SIZE/2;
 				}
-				if (CountInv("LA_Select_Magnum") > 0) {
+				if (CountInv("LA_Select_Magnum") > 0) 
+				{
 					LA_SetAmmo(LA_357Magnum);
 					setLAMode(LA_357Magnum);
 					invoker.ReserveToMagAmmoFactor = AMMO_TAKE_MAGNUM;

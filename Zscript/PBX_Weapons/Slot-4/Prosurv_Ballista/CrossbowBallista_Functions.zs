@@ -17,14 +17,19 @@ extend class PBX_Prosurv_Ballista
 
 //////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
 	// Automatically change sprites based on the mode
-	action void setCrossbowSprite(name unloaded = '', name bolt = '', name explosive = '', name demonic = '', name shock = '')
+	action void setCrossbowSprite(
+		name unloaded = '', 
+		name bolt = '', 
+		name explosive = '', 
+		name demonic = '', 
+		name shock = '',
+		bool skipUnloadedCheck = false
+	)
 	{
 		int mode = getCrossbowMode();
 		name spriteToUse = '';
 		
-		if(PB_GetChamberEmpty())
-			spriteToUse = unloaded;
-
+		// Set the sprite based on mode
 		switch(mode)
 		{
 			case NORMAL_BOLT: 	  spriteToUse = bolt;		break;
@@ -34,6 +39,11 @@ extend class PBX_Prosurv_Ballista
 			default: break;
 		}
 
+		// If the chamber is empty, prioritize unloaded sprite
+		if(PB_GetChamberEmpty() && !skipUnloadedCheck)
+			spriteToUse = unloaded;
+		
+		// Double check if the sprite for it actually exists
 		if(spriteToUse != '')
 			A_SetWeaponSpriteEx(spriteToUse);
 	}
@@ -51,6 +61,7 @@ extend class PBX_Prosurv_Ballista
 	// Convert tokens to Integers for easier use
 	action int getTokens()
 	{
+		// Prioritize checking the tokens
 		if(FindInventory("CB_Select_ShockMode"))
 			return SHOCK_BOLT;
 		else if(FindInventory("CB_Select_DemonicMode"))
@@ -61,8 +72,10 @@ extend class PBX_Prosurv_Ballista
 			return NORMAL_BOLT;
 		else if (FindInventory("CB_Select_NO"))
 			return NO_UPGRADE;
-		else
+		else if (FindInventory("PBX_CloseWheel"))
 			return CLOSE_WHEEL;
+		else
+			return ERROR_WHEEL;
 	}
 
 	// Unload crossbow depending on mode
@@ -96,7 +109,7 @@ extend class PBX_Prosurv_Ballista
 		bool alreadySelected = tokens == mode;
 		bool notUpgraded = tokens == NO_UPGRADE;
 
-		// Dont do anything
+		// Dont do anything, early returns
 		if(countinv("PBX_CloseWheel") > 0 || alreadySelected || notUpgraded)
 		{
 			cleanmodetokens();
@@ -119,12 +132,13 @@ extend class PBX_Prosurv_Ballista
 		}
 
 		// Very specific case where you've already unloaded and mode switch
-		if(PB_GetMagUnloaded())
+		if(PB_GetChamberEmpty())
 		{
 			handleModeChange();
         	return ResolveState("Reload");
 		}
 
+		// Fallthrough to Unload Animation, the actual mode change is handled there
         return ResolveState(null);
     }
 
@@ -151,12 +165,11 @@ extend class PBX_Prosurv_Ballista
 			case NORMAL_BOLT: 	  ammoTake = ammoTakeNormal;  ammo = "PB_HighCalMag"; 	icon = "CB_ZA0"; 	break;
 			case EXPLOSIVE_BOLT:  ammoTake = ammoTakeNormal;  ammo = "PB_RocketAmmo";	icon = "CB_ZB0";	break;
 			case DEMONIC_BOLT: 	  ammoTake = ammoTakeDemonic; ammo = "PB_DTech";	 	icon = "CB_ZC0";	break;
-			case SHOCK_BOLT: 	  ammoTake = ammoTakeNormal;  ammo = "PB_Cell";	 		icon = "CB_ZD0";	break;
+			case SHOCK_BOLT: 	  ammoTake = ammoTakeShock;   ammo = "PB_Cell";	 		icon = "CB_ZD0";	break;
 		}
 
-		// Get a pointer to the ammo type being selected
-		let ammoType = FindInventory(ammo);
-		if(ammoType)
+		// Check if the player has that ammo
+		if(CountInv(ammo) >= ammoTake)
 		{
 			// If it exists, do mode change
 			setCrossbowMode(mode);
@@ -166,18 +179,19 @@ extend class PBX_Prosurv_Ballista
 		}
 		else if(mode == DEMONIC_BOLT)
 			self.A_Print("$PBX_Crossbow_DemonicNoAmmo"); // If it gets to this then the player doesnt have any dtech ammo
-		else
-			self.A_Print("$PBX_AmmoNotFound"); // This means the ammo being chosen does not exist
+		else if(mode == SHOCK_BOLT)
+			self.A_Print("$PBX_Crossbow_ShockNoAmmo"); // If it gets to this then the player doesnt have any pb cells
 		
 		// always clear tokens and go to continue reload
 		cleanmodetokens();
-		return resolvestate("ContinueReload");
+		return resolvestate("ContinueReload"); // Continue Reload also handles if the player does not have enough reserve when mode change
 	}
 
 	// Since some ready states have animations we made a simple "switch" so it goes to the right ready state
 	action state readyCheck(StateLabel demonic, StateLabel explosive, StateLabel shock)
 	{
 		int mode = getCrossbowMode();
+
 		if(PB_GetChamberEmpty())
 			return resolvestate(null);
 

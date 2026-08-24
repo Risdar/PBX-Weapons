@@ -1,10 +1,14 @@
+// Pump Shotgun from Project Survival made by ThePopeOfDope
+// Modified sprites from Carrots Vanilla Project made by IAmCarrotMaster, edited by ThePopeOfDope
+// Laser Charge, Swarm Charge, Acid Charge sprites are from LitDoom by Skadi and the LitDoom team modified by ThePopeOfDope
+// Tripmine from Brutal Doom Platinum by EmeraldCoasttt and the BDP Team
+
 // Includes
 #include "./ProsurvPSG_Functions.zs"
 #include "./ProsurvPSG_Wheel.zs"
 #include "./ProsurvPSG_helpers.zs"
 
 // Tokens
-class PSG_Select_Laser : inventory {default{inventory.maxamount 1;}}
 class PSG_Select_Tripmine : inventory {default{inventory.maxamount 1;}}
 class PSG_Select_LaserCharge : inventory {default{inventory.maxamount 1;}}
 class PSG_Select_AcidCharge : inventory {default{inventory.maxamount 1;}}

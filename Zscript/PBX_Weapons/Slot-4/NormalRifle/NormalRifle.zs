@@ -1,10 +1,15 @@
+// Assault rifle from old version of BD and Brutal Doom Platinum
+// 1. Dox778 (Animations)
+// 2. Metalman (Sprite Edit and New Frames)
+// 3. Mike12 (Original Sprites)
+// 4. Craneo (ADS Sprites)
+
 // Includes
 #include "./NormalRifle_Functions.zs"
 #include "./NormalRifle_Wheel.zs"
 
 class NR_Select_FireMode : inventory {default{inventory.maxamount 1;}}
 class NR_Select_DualWield : inventory {default{inventory.maxamount 1;}}
-class NR_Select_Laser : inventory {default{inventory.maxamount 1;}}
 
 Class PBX_NormalRifle : PBX_WeaponBase
 {
@@ -33,7 +38,6 @@ Class PBX_NormalRifle : PBX_WeaponBase
     }
 
     bool doBurst;
-    bool laserActive;
     bool waitReleaseRight;
     bool waitReleaseLeft;
     int burstcount;
@@ -241,6 +245,10 @@ Class PBX_NormalRifle : PBX_WeaponBase
 
         Weaponspecial:
 			TNT1 A 0 checkSpecial();
+        SwitchAnimation:
+	        RIFL RSTUVV 1;
+            TNT1 A 0 A_StartSound("MS/Button", CHAN_AUTO, CHANF_OVERLAP);
+            RIFL VVUTSR 1;
 			goto Ready3;
 
         SwitchToDualWield:

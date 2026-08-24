@@ -9,27 +9,15 @@ extend class PBX_ProSurvPSG
 		"FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
 	};
 
-	override void PostBeginPlay()
+	override void PBX_DoEffectWeaponReady(Weapon weap)
     {
-        laserActive = false;
-        Super.PostBeginPlay();
-    }
-
-    override void DoEffect() 
-	{
-		super.DoEffect();
-        if (level.isFrozen()) return;
-        if(!owner || !owner.player || !owner.player.readyweapon) return;
-
-        // This way the laser will only spawn if the weapon is selected
-        if(owner.player.readyweapon.GetClass() is self.GetClass() && laserActive)
-			PBX_SpawnLaserSight("PBX_GreenDot");
+		PBX_SpawnLaserSight(PBX_LaserSightProjectile.GREEN_DOT);
     }
 
 	action void cleanmodetokens()
 	{
 		A_SetInventory("PBX_CloseWheel",0);
-		A_SetInventory("PSG_Select_Laser",0);
+		A_SetInventory("PBX_Toggle_Laser",0);
 		A_SetInventory("PSG_Select_Tripmine",0);
 		A_SetInventory("PSG_Select_LaserCharge",0);
 		A_SetInventory("PSG_Select_AcidCharge",0);
@@ -39,7 +27,7 @@ extend class PBX_ProSurvPSG
 
 	action int getTokens() 
 	{
-		if(FindInventory("PSG_Select_Laser")) 
+		if(FindInventory("PBX_Toggle_Laser")) 
 			return TOGGLE_LASER;
 		else if(FindInventory("PSG_Select_Tripmine"))
 			return TRY_TRIPMINE;
@@ -70,8 +58,7 @@ extend class PBX_ProSurvPSG
 
 			case TOGGLE_LASER:
 				cleanmodetokens();
-				invoker.laserActive = !invoker.laserActive;
-				A_Print(invoker.laserActive ? "$PBX_LaserOn" : "$PBX_LaserOff");
+				PBX_ToggleLaserSight();
 				if(PB_GetZoom())
 					return resolvestate("ready2");
 				return resolvestate("ready3");

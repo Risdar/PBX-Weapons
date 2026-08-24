@@ -73,8 +73,6 @@ class RifleClipSpawn : actor
 	{
 		Spawn:
 			TNT1 A 0;
-			//TNT1 A 1 A_CustomMissile("EmptyBrass",1,0,random(-80,-100),2,random(45,80))
-			//TNT1 A 1 A_CustomMissile("EmptyBrass",1,0,random(-85,-95),2,random(25,40))
 			TNT1 A 1 A_CustomMissile("EmptyRifleClip",6,-3,random(-80,-100),2,random(20,45));
 			Stop;
 	}

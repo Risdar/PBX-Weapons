@@ -1,0 +1,26 @@
+// Tesla Gun
+TESLAH1 TESLAH1 
+TESLAH2 TESLAH2 
+TESLAH3 TESLAH3 
+TESLAH4 TESLAH4 
+
+LIGHTNG1 LIGHTNG1
+LIGHTNG2 LIGHTNG2
+LIGHTNG3 LIGHTNG3
+LIGHTNG4 LIGHTNG4
+$random LIGHTNG {LIGHTNG1 LIGHTNG2 LIGHTNG3}
+
+$volume electrogun/bomb 4
+$rolloff electrogun/explode 1400 3200
+electrogun/pickup       PZAPPICK
+electrogun/shoot		PZAPSEE	
+electrogun/fire 		PZAPFIRE
+electrogun/loop         PZAPLOOP
+electrogun/hit			PZAPHIT
+electrogun/charge		PZAPCHRG	
+electrogun/cooloff      PZAPRMBL
+electrogun/charge2		PZAPCHR2
+electrogun/bomb         PZAPBOMB
+electrogun/explode      PZAPBEXP
+electrogun/hum          PZAPHUM
+electrogun/select       PZAPSEL

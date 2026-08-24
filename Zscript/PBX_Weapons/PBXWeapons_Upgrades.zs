@@ -43,6 +43,8 @@ class CSSGUpgradeBase : PBXCore_UpgradeBase
 			case 'TripleDoomUpgrade':		s = "DHEL"; break;
 			case 'DanmakuUpgrade': 			s = "THEL"; break;
 			case 'SubZeroUpgrade': 			s = "FHEL"; break;
+			case 'HellFireUpgrade': 		s = "HHEL"; break;
+			case 'AcidShellsUpgrade': 		s = "AHEL"; break;
             default:                        s = "TNT1"; break;
 		}
         sprite = GetSpriteIndex(s);
@@ -51,7 +53,9 @@ class CSSGUpgradeBase : PBXCore_UpgradeBase
     States
 	{
 		LoadSprites:
-			XHEL A 0; PHEL A 0; DHEL A 0; THEL A 0; FHEL A 0;
+			XHEL A 0; PHEL A 0; DHEL A 0; 
+			THEL A 0; FHEL A 0; HHEL A 0;
+			AHEL A 0;
 	}
 }
 
@@ -103,10 +107,32 @@ Class SubZeroShellsUpgrade : CSSGUpgradeBase
 {
 	default
 	{
-		inventory.pickupmessage "$PBX_CM_SUBZRLD";
+		inventory.pickupmessage "$PBX_PICKUP_SUBZ";
 		PBXCore_UpgradeBase.upgradetoken 'SubZeroUpgrade';
 		PBXCore_UpgradeBase.Sprite 'SubZeroUpgrade';
 		Inventory.althudicon "FHELA0";
+	}
+}
+
+Class HellFireShellsUpgrade : CSSGUpgradeBase
+{
+	default
+	{
+		inventory.pickupmessage "$PBX_PICKUP_HELF";
+		PBXCore_UpgradeBase.upgradetoken 'HellFireUpgrade';
+		PBXCore_UpgradeBase.Sprite 'HellFireUpgrade';
+		Inventory.althudicon "HHELA0";
+	}
+}
+
+Class AcidShellsUpgradePickup : CSSGUpgradeBase
+{
+	default
+	{
+		inventory.pickupmessage "$PBX_PICKUP_ACDS";
+		PBXCore_UpgradeBase.upgradetoken 'AcidShellsUpgrade';
+		PBXCore_UpgradeBase.Sprite 'AcidShellsUpgrade';
+		Inventory.althudicon "AHELA0";
 	}
 }
 

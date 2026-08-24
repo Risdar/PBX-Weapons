@@ -1,3 +1,6 @@
+// Paingiver by Moa-Dixon and R3W
+// Ported to PB by Jenny/Jeniffer
+
 // // Includes
 // #include "./CyberRL_Projectiles.zs"
 

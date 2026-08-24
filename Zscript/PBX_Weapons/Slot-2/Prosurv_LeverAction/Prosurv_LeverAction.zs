@@ -1,10 +1,12 @@
+// Plasma Blaster from Project Survival made by ThePopeOfDope
+// Idel sprite from Siren, new sprites made by ThePopeOfDope
+
 // Includes
 #include "./LeverAction_Functions.zs"
 #include "./LeverAction_Wheel.zs"
 
 class LA_Select_Marlin : inventory {default{inventory.maxamount 1;}}
 class LA_Select_Magnum : inventory {default{inventory.maxamount 1;}}
-class LA_Select_Laser : inventory {default{inventory.maxamount 1;}}
 
 class PBX_Prosurv_LeverAction : PBX_WeaponBase
 {
@@ -70,7 +72,7 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
             LVR4 E -1;
             Stop;
         Deselect:
-            TNT1 A 0 LA_Deselect();
+            TNT1 A 0 PBX_WeaponLower();
 		    LVRA AA 1; 
 			LVR4 A 1;
 			LVRA BCDE 1;
@@ -168,8 +170,8 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 				A_SetInventory("PB_LockScreenTilt",0);
 				A_SetInventory("CantDoAction", 0);
 			}
-        ReadytoFire:
 			TNT1 A 0 A_jumpif(PB_GetZoom(),"Ready2");
+        ReadytoFire:
 			LVRA A 1{
 				PB_CoolDownBarrel();
 				PB_HandleCrosshair(76);
@@ -364,30 +366,23 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 				PB_SetMagEmpty(true);
 				PB_SetChamberEmpty(true);
 				PB_SetReloading(false);
-				return PB_HandleWheel();
+				return PB_HandleWheel(); // Actual Mode Change is handled here
 			}
 			LVR2 QPONM 1;
 			Goto Ready3;
 //////////////////////////// WEAPON SPECIAL ////////////////////////////////////////////////////////////////////////////////////
 		Weaponspecial:
-		TNT1 A 0 {
-			A_SetInventory("CantWeaponSpecial",1);
-			A_Takeinventory("GoWeaponSpecialAbility",1);
-		}
-		TNT1 A 0 PB_PreHandleLAWheel(); // Jump to Ready states if its only the toggle laser token
-		TNT1 A 0 PB_SetZoom(false);
-		TNT1 A 0 {
-			A_ZoomFactor(1.0);
-			A_WeaponOffset(0,32);
-            A_SetCrosshair(-1);
-			// PB_HandleCrosshair(-1);
-		}
-		TNT1 A 0 A_JumpIf(invoker.ammo2.amount == 0, "finishunload");
-		goto Unload;
+			TNT1 A 0 PB_PreHandleLAWheel();
+			goto Ready3;
+
+		WeaponSwitch:
+			LVRA VWX 1;
+			LVRA XWV 1;
+			goto Ready3;
 		
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////
 		FlashPunching:
-          	 LVRA VWXYZZZ 1;
+			LVRA VWXYZZZ 1;
 			LVRA ZZZYXWV 1; //14 frames
 			goto Ready3;
 
