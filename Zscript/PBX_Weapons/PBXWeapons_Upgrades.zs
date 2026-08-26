@@ -2,20 +2,77 @@ enum PBXWeapons_eUpgradeTipFlags
 {
 	// UPGRADES
     PBX_TIP_METALSNIPER_UPGRADE = 1 << 0,
-    PBX_TIP_BATTLERIFLE_UPGRADE = 1 << 1,
+    PBX_TIP_LEVERACTION_UPGRADE = 1 << 1,
     PBX_TIP_CROSSBOW_UPGRADE    = 1 << 2,
     PBX_TIP_CSSG_UPGRADE        = 1 << 3,
     PBX_TIP_EXCAVATOR_UPGRADE   = 1 << 4,
     // OTHERS
     PBX_TIP_DISABLE_UPGRADE     = 1 << 31
 }
+
+//////////////////////////// SLOT 2 ////////////////////////////////////////////////////////////////////////////////////
+// Lever Action
+class LeverAction_Upgrade : PB_UpgradeItem
+{
+	Default
+	{
+		//$Title Lever Action Rifle Upgrade
+		//$Category Project Brutality - Weapon Upgrades
+		//Game Doom;
+		//SpawnID
+		Height 32;
+		-INVENTORY.ALWAYSPICKUP;
+		-COUNTITEM;
+		Inventory.Pickupsound "CLIPIN";
+		Inventory.PickupMessage "$PBX_LeverAction_UpgradePickup";
+		Inventory.althudicon "BRXUA0";
+		Tag "$PBX_LeverAction_UpgradeTag";
+		Scale 0.4;
+		FloatBobStrength 0.5;
+	}
+
+	override bool TryPickup(in out Actor toucher) 
+	{
+		if(toucher.FindInventory("PBX_Prosurv_LeverAction") 
+			&& toucher.FindInventory("LA_Upgraded") 
+			&& toucher.CountInv("PB_LowCalMag") == toucher.GetAmmoCapacity("PB_LowCalMag")) {
+			return false;
+		}
+        bool pickup = Super.TryPickup(toucher);
+		if(pickup && pbxweapons_sendTip)
+		{
+			Array<String> tips;
+			tips.Push("$PBX_LeverActionUpgrade_Tip1");
+			tips.Push(string.format(StringTable.Localize("$PBX_LeverActionUpgrade_Tip2"),PBX_Prosurv_LeverAction.AMMO_TAKE_MARLIN,PBX_Prosurv_LeverAction.MAGAZINE_SIZE/2));
+			PBXCore_TipsManager.SendTipArrayIfNeeded(tips,"PBXWeapons_UpgradeHelpFlags", PBX_TIP_LEVERACTION_UPGRADE);
+		}
+		return pickup;
+	}
+
+	States
+	{
+		Spawn:
+			LVR5 A -1;
+			Stop;
+
+		Pickup:
+			TNT1 A 0 {
+				A_SetInventory("LA_Upgraded", 1);
+				A_GiveInventory("PBX_Prosurv_LeverAction", 1);
+				A_GiveInventory("PB_LowCalMag", 30);
+			}
+			Stop;
+	}
+}
+
 //////////////////////////// SLOT 3 ////////////////////////////////////////////////////////////////////////////////////
 // CSSG
-class CSSGUpgradeBase : PBXCore_UpgradeBase
+class CSSGUpgradeBase : PBXCore_UpgradeBase abstract
 {
 	Default
 	{
 		Inventory.Pickupsound "misc/shellbox_PickUp";
+        +Inventory.AlwaysPickUp;
 	}
 
     override bool TryPickup(in out Actor toucher)
@@ -23,12 +80,13 @@ class CSSGUpgradeBase : PBXCore_UpgradeBase
         bool pickup = Super.TryPickup(toucher);
         if (pickup && pbxweapons_sendTip)
 		{
-			toucher.A_giveinventory("PB_Shell",10);
 			Array<String> tips;
 			tips.Push("$PBX_CSSGUpgrade_Tip1");
 			tips.Push("$PBX_CSSGUpgrade_Tip2");
 			PBXCore_TipsManager.SendTipArrayIfNeeded(tips, "PBXWeapons_UpgradeHelpFlags", PBX_TIP_CSSG_UPGRADE);
 		}
+		toucher.A_giveinventory("PB_Shell",12);
+		PBXCore_Debug.Print("Tried giving shells");
         return pickup;
     }
 
@@ -137,61 +195,6 @@ Class AcidShellsUpgradePickup : CSSGUpgradeBase
 }
 
 //////////////////////////// SLOT 4 ////////////////////////////////////////////////////////////////////////////////////
-// Battle Rifle
-class BattleRifle_Upgrade : PB_UpgradeItem
-{
-	Default
-	{
-		//$Title Battle Rifle Upgrade
-		//$Category Project Brutality - Weapon Upgrades
-		//Game Doom;
-		//SpawnID
-		Height 32;
-		-INVENTORY.ALWAYSPICKUP;
-		-COUNTITEM;
-		Inventory.Pickupsound "CLIPIN";
-		Inventory.PickupMessage "$PBX_BattleRifle_UpgradePickup";
-		Inventory.althudicon "BRXUA0";
-		Tag "$PBX_BattleRifle_UpgradeTag";
-		Scale 1.0;
-		FloatBobStrength 0.5;
-	}
-
-	override bool TryPickup(in out Actor toucher) 
-	{
-		if(toucher.FindInventory("PBX_BDPBattleRifle") 
-			&& toucher.FindInventory("BattleRifle_Upgraded") 
-			&& toucher.CountInv("PB_HighCalMag") == toucher.GetAmmoCapacity("PB_HighCalMag")) {
-			return false;
-		}
-        bool pickup = Super.TryPickup(toucher);
-		if(pickup && pbxweapons_sendTip)
-		{
-			Array<String> tips;
-			tips.Push("$PBX_BattleRifleUpgrade_Tip1");
-			tips.Push("$PBX_BattleRifleUpgrade_Tip2");
-			PBXCore_TipsManager.SendTipArrayIfNeeded(tips,"PBXWeapons_UpgradeHelpFlags", PBX_TIP_BATTLERIFLE_UPGRADE);
-		}
-		return pickup;
-	}
-
-	States
-	{
-	Spawn:
-		BRXU A -1;
-		Stop;
-
-	Pickup:
-		TNT1 A 0 {
-			A_SetInventory("BattleRifle_Upgraded", 1);
-			A_GiveInventory("PBX_BDPBattleRifle", 1);
-			A_SetWeaponTag("PBX_BDPBattleRifle","$PBX_BattleRifle_Tag");
-            A_GiveInventory("PB_HighCalMag", 30);
-		}
-		Stop;
-	}
-}
-
 // Metal Sniper
 class MetalSniper_Upgrade : PB_UpgradeItem
 {

@@ -13,6 +13,9 @@ Class LeverActionWheel : wheelinfocontainer
 		let la = PBX_Prosurv_LeverAction(requester.player.readyweapon);
         if(!la) return;
 
+		bool isUpgraded = requester.FindInventory("LA_Upgraded");
+		bool disabled = pbxweapons_backpack_filter & DisablePBX_LeverActionUpgrade;
+
 		super.GetSpecials(spw,requester);
 
 		vector2 iconscale = (0.6,0.6);
@@ -25,14 +28,6 @@ Class LeverActionWheel : wheelinfocontainer
 		Weapon_Close.scaley = WHEEL_CLOSEMENU_SCALE;
 		spw.push(Weapon_Close);
 
-		PB_SpecialWheel_Mode LA_Marlin = new ("PB_SpecialWheel_Mode");
-		LA_Marlin.img = "graphics/WeaponWheel/LeverAction/Marlin.png";
-		LA_Marlin.Alias = "$PBX_LeverAction_Marlin";
-		LA_Marlin.tokentogive = "LA_Select_Marlin";
-		LA_Marlin.scalex = iconscale.x;
-		LA_Marlin.scaley = iconscale.y;
-		spw.push(LA_Marlin);
-		
 		PB_SpecialWheel_Mode LA_357Magnum = new ("PB_SpecialWheel_Mode");
 		LA_357Magnum.img = "graphics/WeaponWheel/LeverAction/Magnum.png";
 		LA_357Magnum.Alias = "$PBX_LeverAction_Magnum";
@@ -40,7 +35,28 @@ Class LeverActionWheel : wheelinfocontainer
 		LA_357Magnum.scalex = iconscale.x;
 		LA_357Magnum.scaley = iconscale.y;
 		spw.push(LA_357Magnum);
-
+		
+		if(isUpgraded || disabled)
+		{
+			PB_SpecialWheel_Mode LA_Marlin = new ("PB_SpecialWheel_Mode");
+			LA_Marlin.img = "graphics/WeaponWheel/LeverAction/Marlin.png";
+			LA_Marlin.Alias = "$PBX_LeverAction_Marlin";
+			LA_Marlin.tokentogive = "LA_Select_Marlin";
+			LA_Marlin.scalex = iconscale.x;
+			LA_Marlin.scaley = iconscale.y;
+			spw.push(LA_Marlin);
+		}
+		else
+		{
+			PB_SpecialWheel_Mode LA_NoUpgrade = new ("PB_SpecialWheel_Mode");
+			LA_NoUpgrade.img = "graphics/WeaponWheel/LeverAction/NoMarlin.png";
+			LA_NoUpgrade.Alias = "$PBX_AmmoNotAvailable";
+			LA_NoUpgrade.tokentogive = "LA_Select_No";
+			LA_NoUpgrade.scalex = iconscale.x;
+			LA_NoUpgrade.scaley = iconscale.y;
+			spw.push(LA_NoUpgrade);
+		}
+		
 		PB_SpecialWheel_Mode LA_Laser = new ("PB_SpecialWheel_Mode");
 		if(la.mLaserSightActivated) {
 			LA_Laser.Alias = "$PBX_LaserOff";

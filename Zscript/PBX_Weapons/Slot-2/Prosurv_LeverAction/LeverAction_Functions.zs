@@ -10,12 +10,12 @@ extend class PBX_Prosurv_LeverAction
 	}
 
 	static const StateLabel blockedLaserStates[] = {
-		"Pump", "PumpBegin", "PumpEnd", "Reload","FinishUnload", "Deselect", "SelectAnimation",
+		"Pump", "PumpBegin", "PumpEnd", "Reload","FinishUnload", "Deselect", "SelectAnimation", "ReloadFromADS",
 		"ReloadLoop", "ReloadFinished","Unload","RemoveBullets", "WeaponRespect", "WeaponSwitch",
 		"FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
 	};
 
-	override void PBX_DoEffectWeaponReady(Weapon weap)
+	override void PBX_DoEffectWeaponReady()
     {
 		PBX_SpawnLaserSight(PBX_LaserSightProjectile.RED_DOT);
     }
@@ -26,6 +26,7 @@ extend class PBX_Prosurv_LeverAction
 	{
 		invoker.LAMode = mode;
 	}
+
 	action int getLAMode()
 	{
 		return invoker.LAMode;
@@ -33,6 +34,7 @@ extend class PBX_Prosurv_LeverAction
 
 	action void clearLAModeTokens()
 	{
+		A_SetInventory("LA_Select_No", 0);
 		A_SetInventory("LA_Select_Marlin", 0);
 		A_SetInventory("LA_Select_Magnum", 0);
 		A_SetInventory("PBX_Toggle_Laser" ,0);
@@ -111,6 +113,7 @@ extend class PBX_Prosurv_LeverAction
 
 	action state PB_PreHandleLAWheel()
 	{
+		bool noUpgrade 	 = findinventory("LA_Select_No");
 		bool goMarlin 	 = findinventory("LA_Select_Marlin");
 		bool goMagnum 	 = findinventory("LA_Select_Magnum");
 		bool toggleLaser = findinventory("PBX_Toggle_Laser");
@@ -118,6 +121,14 @@ extend class PBX_Prosurv_LeverAction
 		A_WeaponOffset(0,32);
 		A_SetInventory("CantWeaponSpecial",0);
 		A_SetInventory("GoWeaponSpecialAbility",0);
+
+		if(noUpgrade)
+		{
+			clearLAModeTokens();
+			A_Print("$PBX_AmmoNotAvailable");
+			if(PB_GetZoom()) return resolvestate("Ready2");
+			return resolvestate("Ready3");
+		}
 		
 		if(goMarlin && getLAMode() == LA_444Marlin || goMagnum && getLAMode() == LA_357Magnum)
 			A_Print("$PB_ALREADYSELECTED");
@@ -126,6 +137,7 @@ extend class PBX_Prosurv_LeverAction
 		{
 			clearLAModeTokens();
 			PBX_ToggleLaserSight();
+			// Plays the switch animation only when its not in ADS
 			if(!PB_GetZoom())
 				return resolvestate("WeaponSwitch");
 		}

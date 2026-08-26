@@ -5,8 +5,10 @@
 #include "./LeverAction_Functions.zs"
 #include "./LeverAction_Wheel.zs"
 
+class LA_Select_No : inventory {default{inventory.maxamount 1;}}
 class LA_Select_Marlin : inventory {default{inventory.maxamount 1;}}
 class LA_Select_Magnum : inventory {default{inventory.maxamount 1;}}
+class LA_Upgraded : inventory {default{inventory.maxamount 1;}}
 
 class PBX_Prosurv_LeverAction : PBX_WeaponBase
 {
@@ -55,9 +57,9 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 	int currentMaxAmmo;
 	int LAMode;
 	bool laserActive;
-	const MAGAZINE_SIZE = 12; // mag size for marlin is 6
+	const MAGAZINE_SIZE = 12; // mag size for marlin is half of this
 	const AMMO_TAKE_MAGNUM = 2;
-	const AMMO_TAKE_MARLIN = 3;
+	const AMMO_TAKE_MARLIN = 4;
 	enum eLAMode
 	{
 		LA_444Marlin,
@@ -287,17 +289,21 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 			LVR3 PONM 1;
 			Goto Ready3;
 //////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
+		ReloadFromADS:
+			TNT1 A 0 PB_HandleCrosshair(76);
+			TNT1 A 0 PB_SetZoom(false);
+			TNT1 A 0 A_startsound("IronSights");
+			LVR3 PONM 1;
 		Reload:
-            TNT1 A 0 PB_CheckReload( null, null, "Pump", "Ready3", "Ready3", invoker.currentMaxAmmo);
+			TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");
 			TNT1 A 0 {
-				PB_SetZoom(false);
-				A_WeaponOffset(0,32);
 				A_ZoomFactor(1.0);
+				A_WeaponOffset(0,32);
 				A_SetInventory("PB_LockScreenTilt",1);
-				A_SetCrosshair(-1);
 			}
 			TNT1 A 0 A_StartSound("weapons/leveraction/inspect");
 			LVR2 MNOP 1 PB_SetRoll(roll+1.0);
+            TNT1 A 0 PB_CheckReload( null, null, "Pump", "Ready3", "Ready3", invoker.currentMaxAmmo);
 			TNT1 A 0 A_StartSound("weapons/leveraction/openchamber");
 			LVR2 QQ 1 PB_SetRoll(roll-2.0);
 			LVR2 RSTUVV 1 PB_SetRoll(roll-0.6);

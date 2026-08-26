@@ -348,20 +348,75 @@ class SuperNail_Hot : PB_MGNailHot
     }
 }
 
-class SuperNail_Lightning : PBXCore_LightningProjectile
+// Copied from the lightning API in PBXCore
+class SuperNail_Lightning : PB_MGNail
 {
-    Default
-    {
-		PB_Projectile.BaseDamage 50;
+	double ac_detectRange;
+	double ac_range;
+	int ac_maxvictims, ac_damage, ac_duration, ac_delay, ac_maxChains, ac_maxLinks;
+	array<Actor> ac_victims;
+
+	Default
+	{
+		Projectile;
+        PB_Projectile.BaseDamage 50;
         DamageType "Nails";
         Translation "112:127=192:207", "224:231=80:87";
-        PBXCore_LightningProjectile.DetectRange 256;
-		PBXCore_LightningProjectile.MaxVictims 5;
-		PBXCore_LightningProjectile.SplitRange 256;
-		PBXCore_LightningProjectile.Damage PBX_SuperNailgun.LIGTNING_DAMAGE;
-		PBXCore_LightningProjectile.Duration 2;
-		PBXCore_LightningProjectile.Delay TICRATE;
-		PBXCore_LightningProjectile.maxChains 1;
-		PBXCore_LightningProjectile.MaxLinks 2;
+	}
+
+    override void PostBeginPlay()
+    {
+        super.PostBeginPlay();
+        ac_detectRange = 256;
+        ac_range = 256;
+        ac_maxvictims = 5;
+        ac_damage = 1;
+        ac_duration = 2;
+        ac_delay = 2;
+        ac_maxChains = 1;
+        ac_maxLinks = 2;
     }
+
+	virtual bool L_IsValidVictim(Actor victim, Actor damageSource, double distSquared)
+	{
+		return victim &&
+			victim != self &&
+			PBXCore_LightningController.L_IsValidVictim(victim, damageSource) &&
+			self.Distance3DSquared(victim) <= distSquared &&
+			self.CheckSight(victim);
+	}
+
+	virtual void L_ProjTick()
+	{
+		if (!bMissile)
+		{
+			A_StopSound(CHAN_VOICE);
+			return;
+		}
+
+		Actor damageSource = target != null? target : Actor(self);
+		PBXCore_LightningController.L_RemoveInvalidVictimsFromArr(damageSource, self, ac_victims, ac_detectRange);
+		PBXCore_LightningController.L_AddValidVictimsToArr(damageSource, self, ac_victims, ac_detectRange, ac_maxvictims);
+
+		if (ac_victims.Size() > 0)
+			A_StartSound("lightnin/loop", CHAN_VOICE, CHANF_LOOPING);
+		else
+			A_StopSound(CHAN_VOICE);
+		
+
+		// Attack victims and draw lightning towards them:
+		foreach (thing : ac_victims)
+		{
+			PBXCore_LightningController.L_StartChain(damageSource, thing, ac_damage, ac_range, ac_duration, ac_delay, ac_maxChains, ac_maxLinks);
+			PBXCore_LightningController.L_DrawLightning(self.pos.PlusZ(self.height*0.5), thing.pos.PlusZ(thing.height*0.5));
+		}
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+		if (isFrozen()) return;
+
+		L_ProjTick();
+	}
 }

@@ -206,8 +206,7 @@ extend class PBX_CSSG
 		switch(mode)
 		{
 			case Shell_Buck: 
-				PB_FireBullets("PB_10GAPellet",18,8,0,0,6);
-				PB_FireBullets("PB_10GAPellet_LP",1,0,0,0,0);
+				PB_FireBullets("PB_10GAPellet",20,8,0,0,6);
 				break;
 			case Shell_Slug:
 				PB_FireBullets("PB_12GASlug",1,0.1,2,0,0); 
@@ -219,13 +218,13 @@ extend class PBX_CSSG
 			case Shell_Flak: 
 				CSSG_FireBullets("chunk1",3,5,0,0,3); 
 				CSSG_FireBullets("chunk2",3,3,0,0,4);
-				CSSG_FireBullets("chunk4",1,4,0,0,3);
+				CSSG_FireBullets("chunk4",2,4,0,0,3);
 				break;
 			case Shell_Drgn: 
 				PB_FireBullets("PB_DragonsBreathTracer",10,6,0,0,6); 
 				break; 
 			case Shell_EXPL:
-				PB_FireBullets("ExplosiveProjectile",4,6,0,0,6); 
+				PB_FireBullets("ExplosiveProjectile",5,6,0,0,6); 
 				break; 
 			case Shell_WPSP: 
 				PB_FireBullets("WPhosphorusProjectile",7,6,0,0,6);
@@ -234,7 +233,7 @@ extend class PBX_CSSG
 				PB_FireBullets("PB_12GASlug",1,0.1,2,0,0); 
 				PB_FireBullets("PB_12GASlug",1,0.1,-2,0,0);
 				PB_FireBullets("PB_10GAPellet",10,6,0,0,6);
-				PB_FireBullets("PB_10GAPellet_LP",2,6,0,0,6);
+				PB_FireBullets("PB_10GAPellet_LP",1,6,0,0,6);
 				PB_FireBullets("PB_8GAPellet",10,16,0,0,12);
 				break;
 			case Shell_Damn:
@@ -243,17 +242,18 @@ extend class PBX_CSSG
 			case Shell_SubZ:
 				A_SpawnItemEx("BlueFlareSpawn", 0, 0, -3);
 				A_SpawnItemEx("BlueFlareSpawn", 0, 0, 3);
-				PB_FireBullets("SubZeroProjectile",10,6,0,0,6);
+				PB_FireBullets("SubZeroProjectile",6,6,0,0,6);
          		A_FireBullets(8, 6, 10, 18, "SubZ_Puff",FBF_NORANDOM,8192,"CSSG_FrozenTracer",-12);
 				break;
 			case Shell_HellF:
-				PB_FireBullets("HellFireProjectile",10,6,0,0,6);
+				PB_FireBullets("HellFireProjectile",16,6,0,0,6);
 				break;
 			case Shell_Acid:
-				PB_FireBullets("AcidShellsProjectile",8,6,0,0,6);
+				PB_FireBullets("AcidShellsProjectile",3,6,0,0,6);
 				break;
 		}
-		
+		// Always shoot the shield breaking projectile
+		PB_FireBullets("PB_10GAPellet_LP",1,0,0,0,0);
 	}
 
 	Action Void FireHalfCSSGRight()
@@ -272,8 +272,8 @@ extend class PBX_CSSG
 				PB_FireBullets("PB_MGNail",6,3,0,0,3); 
 				break;
 			case Shell_Flak: 
-				CSSG_FireBullets("chunk1",3,3,0,0,3); 
-				CSSG_FireBullets("chunk4",1,3,0,0,3);
+				CSSG_FireBullets("chunk1",2,3,0,0,3); 
+				CSSG_FireBullets("chunk4",2,3,0,0,3);
 				break;
 			case Shell_Drgn: 
 				PB_FireBullets("PB_DragonsBreathTracer",5,6,0,0,6); 
@@ -296,15 +296,14 @@ extend class PBX_CSSG
 			case Shell_SubZ:
 				A_SpawnItemEx("BlueFlareSpawn", 0, 0, -3);
 				A_SpawnItemEx("BlueFlareSpawn", 0, 0, 3);
-				PB_FireBullets("SubZeroProjectile",5,6,0,0,6);
-				// A_FireBullets (8, 6, 10, 18, "ShotKeeperPuff",FBF_NORANDOM,8192,"CSSG_FrozenTracer",-12);
-         		A_FireBullets (8, 6, 10, 18, "SubZ_Puff",FBF_NORANDOM,8192,"CSSG_FrozenTracer",-12);
+				PB_FireBullets("SubZeroProjectile",3,6,0,0,6);
+         		A_FireBullets(8, 6, 5, 18, "SubZ_Puff",FBF_NORANDOM,8192,"CSSG_FrozenTracer",-12);
 				break;
 			case Shell_HellF:
-				PB_FireBullets("HellFireProjectile",6,6,0,0,6);
+				PB_FireBullets("HellFireProjectile",8,6,0,0,6);
 				break;
 			case Shell_Acid:
-				PB_FireBullets("AcidShellsProjectile",4,6,0,0,6);
+				PB_FireBullets("AcidShellsProjectile",1,6,0,0,6);
 				break;
 		}
 		PB_IncrementHeat(4);
@@ -317,7 +316,7 @@ extend class PBX_CSSG
 		switch(mode)
 		{
 			case Shell_Buck: 
-				PB_FireBullets("PB_10GAPellet",9,6,0,0,6);
+				PB_FireBullets("PB_10GAPellet",10,6,0,0,6);
 				break;
 			case Shell_Slug: 
 				PB_FireBullets("PB_12GASlug",1,0.1,-2,0,0); 
@@ -326,7 +325,7 @@ extend class PBX_CSSG
 				PB_FireBullets("PB_MGNail",6,3,0,0,3); 
 				break;
 			case Shell_Flak: 
-				CSSG_FireBullets("chunk2",3,3,0,0,3); 
+				CSSG_FireBullets("chunk2",4,3,0,0,3); 
 				break;
 			case Shell_Drgn: 
 				PB_FireBullets("PB_DragonsBreathTracer",5,6,0,0,6); 
@@ -349,14 +348,14 @@ extend class PBX_CSSG
 			case Shell_SubZ:
 				A_SpawnItemEx("BlueFlareSpawn", 0, 0, -3);
 				A_SpawnItemEx("BlueFlareSpawn", 0, 0, 3);
-				PB_FireBullets("SubZeroProjectile",5,6,0,0,6);
-         		A_FireBullets (8, 6, 10, 18, "SubZ_Puff",FBF_NORANDOM,8192,"CSSG_FrozenTracer",-12);
+				PB_FireBullets("SubZeroProjectile",3,6,0,0,6);
+         		A_FireBullets (8, 6, 5, 18, "SubZ_Puff",FBF_NORANDOM,8192,"CSSG_FrozenTracer",-12);
 				break;
 			case Shell_HellF:
-				PB_FireBullets("HellFireProjectile",6,6,0,0,6);
+				PB_FireBullets("HellFireProjectile",8,6,0,0,6);
 				break;
 			case Shell_Acid:
-				PB_FireBullets("AcidShellsProjectile",4,6,0,0,6);
+				PB_FireBullets("AcidShellsProjectile",1,6,0,0,6);
 				break;
 		}
 		PB_IncrementHeat(4);

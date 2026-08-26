@@ -7,7 +7,7 @@
 // Pickup sprite is from Brutal Doom Arthur Edition by arthoriusb2593
 
 // Includes
-#include "./CyberRL_Functions.zs"
+// #include "./CyberRL_Functions.zs"
 
 class PBX_CyberdemonRL : PBX_WeaponBase
 {
@@ -51,6 +51,58 @@ class PBX_CyberdemonRL : PBX_WeaponBase
 	const DURABILITY = 75; // Durability Amount
 	const DURABILITY_NAME = "CyberRLDurability"; 
       
+//////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
+    override void PostBeginPlay()
+    {
+        PiercingRockets = false;
+        shotCount = 0;
+        Super.PostBeginPlay();
+    }
+
+	override bool TryPickup(in out Actor toucher)
+    {
+        bool pickup = Super.TryPickup(toucher);
+        if (pickup)
+			toucher.A_giveinventory(DURABILITY_NAME,DURABILITY);
+		
+        return pickup;
+    }
+    
+//////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
+
+	action void CyberRl_FireWeapon(int ticCount)
+	{
+		name tofire = invoker.PiercingRockets ? "CRL_PiercingRockets" : "CRL_NormalRockets";
+	
+		switch (ticCount)
+		{
+			default:
+			case 1:
+				A_AlertMonsters();
+				A_StartSound("Rifle/DSCANFIR", CHAN_WEAPON, CHANF_OVERLAP, 1.0);
+				A_ZoomFactor(0.98, SPF_INTERPOLATE);
+				PB_LowAmmoSoundWarning("default", invoker.ammotype1.getclassname());
+				// PB_TakeAmmo(invoker.ammotype2,1);
+				A_TakeInventory(invoker.AmmoType1, invoker.ammoTake, TIF_NOTAKEINFINITE);
+				A_TakeInventory(DURABILITY_NAME,1,TIF_NOTAKEINFINITE);
+				PB_FireBullets(tofire, 1, 0, 0, 0, 0.5);
+				PB_IncrementHeat(4);
+				break;
+			//Tic 2
+			case 2:
+				A_ZoomFactor(1.0, SPF_INTERPOLATE);
+				PB_WeaponRecoil(-2,frandom(-2,2));
+				break;
+		}
+	}
+
+	action state CyberRL_HandleAmmo()
+	{
+		if (CountInv(DURABILITY_NAME) < 1) 		return ResolveState("WeaponBreak");
+		if (invoker.ammo1.amount < ammoTake) 	return ResolveState("NoAmmo");
+		return ResolveState(null);
+	}
+
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
 	States
 	{
@@ -138,10 +190,8 @@ class PBX_CyberdemonRL : PBX_WeaponBase
 			CYBF D 3 Bright;
 			CYBF D 1 Bright A_SetPitch(pitch + 0.6, SPF_INTERPOLATE);
 			CYBF EEFFGG 1 Bright A_SetPitch(pitch + 0.4, SPF_INTERPOLATE);
-			// TNT1 A 0 A_FireCustomMissile("SmokeSpawner11", 0, 0, 0, 7);
 			CYBF HHJ 1 Bright;
 			CYBF IJIJIJ 1 Bright;
-			// TNT1 A 0 A_FireCustomMissile("SmokeSpawner11", 0, 0, 0, 7);
 			TNT1 A 0 PB_ReFire();
 			goto Ready3;
 
@@ -150,20 +200,6 @@ class PBX_CyberdemonRL : PBX_WeaponBase
 			CYBF IJIJ 1 BRIGHT A_DoPBWeaponAction(WRF_NOFIRE);
 		   	goto Ready3;
 
-		WeaponBreak:
-			TNT1 A 0 {
-				for(int i = 0; i < 5; i++)
-				{
-					A_CustomMissile ("MetalShard1", 5, 0, random (-10, -20), 2, random (0, 30));
-					A_CustomMissile ("MetalShard2", 5, 0, random (-10, -20), 2, random (0, 30));
-					A_CustomMissile ("MetalShard3", 5, 0, random (-10, -20), 2, random (0, 30));
-				}
-				A_TakeInventory("PBX_CyberdemonRL",1);
-				A_Startsound("meleeweapon/break");
-				A_ALertMonsters();
-			}
-			Stop;
-		
 //////////////////////////// WEAPON SPECIAL ////////////////////////////////////////////////////////////////////////////////////
 		Weaponspecial:
 			TNT1 A 0 A_Takeinventory("GoWeaponSpecialAbility",1);

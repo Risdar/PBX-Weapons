@@ -85,8 +85,12 @@ class PBX_NukeLauncher : PBX_WeaponBase
             }
             NKLF B 2 BRIGHT;
             NKLF CDEFGHIJKL 1;
-			NKLS EFGH 1;
-            TNT1 A 0 A_TakeInventory("PBX_NukeLauncher",1);
+			NKLS EFGH 1 A_WeaponOffset(0, 8, WOF_ADD);
+            "####" "#" 0 {
+                player.pendingweapon = player.mo.BestWeapon(null);
+                self.RemoveInventory(invoker);
+            }
+            stop;
             Goto Ready;
   
         WeaponSpecial:

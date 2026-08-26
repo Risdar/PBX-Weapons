@@ -3,8 +3,7 @@ extend class PBX_NeoHMG
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////    
 	override void postbeginplay()
 	{
-		shieldReady = true;
-		isOverheating = false;
+		mShieldIsReady = true;
 		giveinventory("HMGShield", SHIELD_MAXCHARGE);
 		super.postbeginplay();
 	}
@@ -13,12 +12,10 @@ extend class PBX_NeoHMG
     {
 		if (passive && damage > 0)
 		{
-			shieldDrain = clamp(int(damage * shieldProtectionMultiplier), 1, PBX_NeoHMG.SHIELD_MAXCHARGE);
-			// console.printf("Damage dealt");
-			if (owner.player && owner.player.readyweapon is "PBX_NeoHMG" && shieldWasActive)
+			mShieldDrain = clamp(int(damage * SHIELD_PROTECTION_MULTIPLIER), 1, SHIELD_MAXCHARGE);
+			if (owner.player && owner.player.readyweapon is "PBX_NeoHMG" && mShieldWasActive)
 			{
-				// console.printf("Blocked damage");
-				owner.TakeInventory("HMGShield", shieldDrain);
+				owner.TakeInventory("HMGShield", mShieldDrain);
 				owner.A_StartSound("StickyGrenade/Hit", 125);
 				newDamage = 0;
 			}
@@ -29,84 +26,112 @@ extend class PBX_NeoHMG
 	override void DoEffect() 
 	{
 		super.DoEffect();
-
-		if(!owner || !owner.player || !owner.player.readyweapon) 
+		if(level.isFrozen() || !owner || !owner.player || !owner.player.readyweapon) 
 			return;
 
+		// Things to check
 		bool isWeapon = owner.player.readyweapon is "PBX_NeoHMG";
 		bool isPressingAlt = owner.player.cmd.buttons & BT_ALTATTACK;
 		bool hasShieldCharge = countinv("HMGShield") > 0;
 		bool isNotOverheating = overheat < MAX_OVERHEAT-5;
+		bool shouldEnable = isWeapon && isPressingAlt && mShieldIsReady && hasShieldCharge && isNotOverheating;
 
-		bool shouldEnable = isWeapon && isPressingAlt && shieldready && hasShieldCharge && isNotOverheating;
-
+		// If the shield should be enabled
 		If(shouldEnable)
 		{
+			// Activate the shield
 			owner.Player.SetPSprite(HMG_SHIELDLAYER,resolvestate("HMGShield"));
-			If(!shieldwasactive)
+
+			// If the shield was only now activated
+			If(!mShieldWasActive)
 			{
+				// Do a shield bash
 				owner.Player.SetPSprite(HMG_SHIELDLAYER,resolvestate("HMGShieldBash"));
 				owner.A_startsound("HMGSHLD3",HMG_SHIELDSOUNDLAYER);
 			}
-			shieldwasactive = true;
-			Shieldactive = true;
-			owner.bnoblood = true;
-			
-			//console.printf("Shield active wooo");
+
+			// Enable these variables regardless
+			mShieldWasActive = true;
+			mShieldActive = true;
+			owner.bnoblood = true;	
 		}
+		// If the player is not activating the shield
 		else if(owner.player)
 		{
-			Shieldactive = false;
+			// Reset some variables
+			mShieldActive = false;
 			owner.bnoblood = false;
-			If(shieldwasactive && isWeapon)
+
+			// If the shield was recently activated and the player is holding the NeoHMG
+			If(mShieldWasActive && isWeapon)
 			{
+				// Play the shield break effects
 				owner.Player.SetPSprite(HMG_SHIELDLAYER,resolvestate("HMGShieldBreak"));
 				owner.A_startsound("HMGSHLD4",HMG_SHIELDSOUNDLAYER);
 				owner.a_startsound("StickyGrenade/Hit",125,0,0.5);
-				Shieldtimer = shieldCooldown;
-				shieldready = false;
+
+				// Set the cooldown
+				mShieldCooldown = SHIELD_COOLDOWN;
+				mShieldIsReady = false;
+
+				// If the shield doesnt have any charges
 				If(countinv("HMGShield") < 1)
 				{
-					shieldbroken = true;
+					// Play the shield broken effects, "HMGShieldBroken" is where the stun bomb is spawned
+					mShieldIsBroken = true;
 					EventHandler.SendInterfaceEvent(PlayerNumber(), "PB_HUDInterference", 20);
 					owner.A_startsound("HMGSHLD1",HMG_SHIELDSOUNDLAYER);
 					owner.Player.SetPSprite(HMG_SHIELDLAYER,resolvestate("HMGShieldBroken"));
 				}
-				shieldwasactive = false;
+
+				// Disable this variable
+				mShieldWasActive = false;
 			}
-			If(shieldtimer > 0)
+
+			// Decrease the cooldown
+			If(mShieldCooldown > 0)
+				mShieldCooldown--;
+			
+
+			// If the cooldown is finished, the shield is not broken, but the shield is not ready
+			Else if(!mShieldIsBroken && !mShieldIsReady)
 			{
-				shieldtimer--;
-			}
-			Else if(!shieldbroken && !shieldready)
-			{
-				shieldready = true;
+				// Ready shield
+				mShieldIsReady = true;
 				
+				// Play a sound if the player is still holding the NeoHMG
 				If(isWeapon)
-				{
 					owner.A_startsound("HMGSHLD",HMG_SHIELDSOUNDLAYER2);
-				}
+				
 			}
-			If(ShieldTimer < 1)
+
+			// If the cooldown is finished
+			If(mShieldCooldown < 1)
 			{
-				If(rechargetimer < shieldRechargeSpeed)
+				// Counts up to SHIELD_RECHARGE_CYCLE to finish one cycle
+				// If the weapon is overheating then it will recharge faster
+				If(mShieldRechargeTimer < ((overheat > OVERHEAT_THRESHOLD) ? Int(SHIELD_RECHARGE_CYCLE/2) : SHIELD_RECHARGE_CYCLE))
+					mShieldRechargeTimer++;
+				
+				// If the shield charge is less than the maximum amount and the weapon is overheating
+				Else if(countinv("HMGShield") < SHIELD_MAXCHARGE && overheat > 0)
 				{
-					rechargetimer++;
+					// Reset the recharge timer and give the charge
+					mShieldRechargeTimer = 0;
+					giveinventory("HMGShield",SHIELD_RECHARGE_AMOUNT);
 				}
-				Else if(countinv("HMGShield") < SHIELD_MAXCHARGE)
+
+				// If the shield was broken
+				Else if(mShieldIsBroken)
 				{
-					rechargetimer = 0;
-					giveinventory("HMGShield",shieldRechargeRate);
-				}
-				Else if(shieldbroken)
-				{
-					ShieldBroken = false;
-					ShieldReady = true;
-					// ChangeAmmoIcon2("ASGSA0");
+					// Reset some variables
+					mShieldIsBroken = false;
+					mShieldIsReady = true;
+
+					// Play a sound if the player is still holding the NeoHMG
 					If(isWeapon)
-					{
 						owner.A_startsound("HMGSHLD",HMG_SHIELDSOUNDLAYER2);
-					}
+					
 				}
 			}
 		}
@@ -129,10 +154,10 @@ extend class PBX_NeoHMG
 
 	action void HMG_DetonateShield()
 	{
-		invoker.Shieldtimer = shieldCooldown;
-		invoker.shieldready = false;
-		invoker.shieldbroken = true;
-		invoker.shieldwasactive = false;
+		invoker.mShieldCooldown = SHIELD_COOLDOWN;
+		invoker.mShieldIsReady = false;
+		invoker.mShieldIsBroken = true;
+		invoker.mShieldWasActive = false;
 		a_startsound("StickyGrenade/Hit",125,0,0.5);
 		A_startsound("HMGSHLD1",HMG_SHIELDSOUNDLAYER);
 		
@@ -147,7 +172,7 @@ extend class PBX_NeoHMG
 		A_Takeinventory("GoWeaponSpecialAbility",1);
 		A_ZoomFactor(1.0);
 
-		if(invoker.ShieldActive)
+		if(invoker.mShieldActive)
 		{
 			HMG_DetonateShield();
 		}
@@ -174,20 +199,21 @@ extend class PBX_NeoHMG
 		A_Overlay(OVERHEATCOOLING_LAYER,"Cooling",true);
 	}
 
-	action void HMG_fireBullet(bool overheating)
+	action void HMG_fireBullet(bool overThreshold)
 	{
 		double spread;
-		bool mIsOverheat = PB_GetOverheat() > OVERHEAT_THRESHOLD;
+        bool isOverheating = PB_GetOverheat() > 0;
 
-		if(overheating)			spread = 7;
-		else if(mIsOverheat) 	spread = 1.0 + (PB_GetOverheat() / 100.0);
+		if(overThreshold)		spread = 7;
+		else if(isOverheating) 	spread = 1.0 + (PB_GetOverheat() / 100.0);
 		else					spread = 3;
 		
-		A_Startsound(mIsOverheat ? "MG42FIR" : "weapon/HMG/Fire",30);
-		PB_FireBullets(mIsOverheat ? "PB_792x57mm_Heated" : "PB_792x57mm", 1, spread, 0, 0, spread);
+		A_Startsound(overThreshold ? "MG42FIR" : "weapon/HMG/Fire",30);
+		PB_FireBullets(overThreshold ? "PB_792x57mm_Heated" : "PB_792x57mm", 1, spread, 0, 0, spread);
 	}
 
 	action void setMagSprite(
+		name l5,
 		name l4, 
 		name l3, 
 		name l2, 
@@ -195,7 +221,8 @@ extend class PBX_NeoHMG
 	)
 	{
 		int ammo = invoker.ammo2.amount;
-		if		(ammo == 4) A_SetWeaponSpriteEx(l4);
+		if		(ammo >  4) A_SetWeaponSpriteEx(l5);
+		else if (ammo == 4) A_SetWeaponSpriteEx(l3);
 		else if (ammo == 3) A_SetWeaponSpriteEx(l3);
 		else if (ammo == 2) A_SetWeaponSpriteEx(l2);
 		else if (ammo <= 1)	A_SetWeaponSpriteEx(l1);
@@ -203,7 +230,7 @@ extend class PBX_NeoHMG
 
 	action void fireHMG(int ticCount)
 	{
-		bool overheating = invoker.isOverheating;
+		bool overThreshold = PB_GetOverheat() > OVERHEAT_THRESHOLD;
 
 		switch (ticCount)
 		{
@@ -214,7 +241,7 @@ extend class PBX_NeoHMG
 				PB_SetRoll(0);
 				A_TakeInventory("PB_LockScreenTilt",1);
 				// ACTUAL FIRING
-				HMG_fireBullet(overheating);
+				HMG_fireBullet(overThreshold);
 				PB_DynamicTail("lmg", "lmg");
 				A_FlashOverlay();
 				PB_WeaponRecoil(-1.1,frandom(-0.82,0.82));
@@ -228,11 +255,10 @@ extend class PBX_NeoHMG
 				PB_LowAmmoSoundWarning();
 				pb_takeammo(invoker.ammotype2,1,0);
 				break;
-			//Tic 2
+				
 			case 2:
 				PBXCore_Debug.Print("given overheat");
-				PB_ModifyOverheat(overheating ? OVERHEAT_GIVE_OVR : OVERHEAT_GIVE_NORM);
-				// A_ZoomFactor(1.0, SPF_INTERPOLATE);
+				PB_ModifyOverheat(overThreshold ? OVERHEAT_GIVE_OVR : OVERHEAT_GIVE_NORM);
 				break;
 		}
 	}

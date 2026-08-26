@@ -67,11 +67,11 @@ class PBX_WeaponBase : PB_WeaponBase abstract
 		If(	owner.player && owner.player.readyweapon.GetClass() is self.GetClass())
         {
 		    PBX_HandleNightVision();
-            PBX_DoEffectWeaponReady(owner.player.readyweapon);
+            PBX_DoEffectWeaponReady();
 		}
     }
 
-    protected virtual void PBX_DoEffectWeaponReady(Weapon weap) {}
+    protected virtual void PBX_DoEffectWeaponReady() {}
 
     // A wrapper for PB_WeaponRaise so we can do some default behaviours
     action void PBX_WeaponRaise(string upSnd = "")
@@ -304,6 +304,7 @@ class PBX_WeaponBase : PB_WeaponBase abstract
 			else
 				hitnormal = (-ricochetdata.Hitline.delta.y, ricochetdata.Hitline.delta.x, 0).unit();
 		}
+        
 		else if (ricochetdata.HitType == TRACE_HitFloor)
 			hitnormal = ricochetdata.HitSector.FloorPlane.normal;
 			
@@ -323,6 +324,7 @@ class PBX_WeaponBase : PB_WeaponBase abstract
 		Vector3 NextShotPosition = level.Vec3Offset(ricochetData.hitlocation, hitnormal * 2.0);
 		
         // Actually fire
+        PBXCore_Debug.Print("Projectile Fired");
 		PB_FireBullets(projectileName, projectileAmount, angle, offsets, height, pitch);
         PB_SpawnCasing(casingName,22,2,28,Frandom(-2, -1),Frandom(5,8),Frandom(3,4));
 
@@ -331,10 +333,12 @@ class PBX_WeaponBase : PB_WeaponBase abstract
 		
 		If(ricochetdata.HitType == TRACE_HitWall || ricochetdata.HitType == TRACE_HitFloor || ricochetdata.HitType == TRACE_HitCeiling)
 		{
+            PBXCore_Debug.Print("Ricochet");
 			Invoker.Owner.LineAttack(NextShotAngle,8192,NextShotPitch,35,damageType,puffType,LAF_ABSPOSITION | LAF_ABSOFFSET,null,NextShotPosition.Z,NextShotPosition.x,NextShotPosition.y);
 			let ricochettracer = Invoker.owner.spawn("decorativetracer",nextshotposition);
 			If(ricochettracer)
 			{
+                PBXCore_Debug.Print("Ricochet Tracer");
 				ricochettracer.angle = nextshotangle;
 				ricochettracer.pitch = nextshotpitch;
 				ricochettracer.vel3dfromangle(140,nextshotangle,nextshotpitch);
@@ -348,6 +352,11 @@ class PBX_WeaponBase : PB_WeaponBase abstract
 	}
 
 //////////////////////////// OTHERS ////////////////////////////////////////////////////////////////////////////////////
+    action bool PBX_CheckUpgradeToken(name upgradeToken)
+    {
+        return FindInventory(upgradeToken);
+    }
+
     action bool PlayerPressedOnce(int button)
 	{
 		int bt = player.cmd.buttons;
@@ -364,6 +373,26 @@ class PBX_WeaponBase : PB_WeaponBase abstract
 		else 
             return resolvestate(null);
 	}
+
+//////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
+    States
+    {
+        // Used by monster weapons since they have durability
+        WeaponBreak:
+			TNT1 A 0 {
+				for(int i = 0; i < 5; i++)
+				{
+					A_CustomMissile ("MetalShard1", 5, 0, random (-10, -20), 2, random (0, 30));
+					A_CustomMissile ("MetalShard2", 5, 0, random (-10, -20), 2, random (0, 30));
+					A_CustomMissile ("MetalShard3", 5, 0, random (-10, -20), 2, random (0, 30));
+				}
+				A_ALertMonsters();
+				A_Startsound("meleeweapon/break");
+                player.pendingweapon = player.mo.BestWeapon(null);
+                self.RemoveInventory(invoker);
+            }
+			Stop;
+    }
 
     // Proof of concept weapon inspect system
     // will probably lag a lot since its iterating through an array every tic

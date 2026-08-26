@@ -163,7 +163,7 @@ extend class PBX_Excavator
             }
 			EX_A L 1 BRIGHT A_ZoomFactor(0.97);
 			EX_A M 1 BRIGHT A_ZoomFactor(0.98);
-            TNT1 A 0 A_JumpIf(invoker.burstcount < 4, "AltFire_UpgradedBola");
+            TNT1 A 0 A_JumpIf(invoker.burstcount < 6, "AltFire_UpgradedBola");
 		FinishBurst:
 			EX_A N 1 A_ZoomFactor(0.99);
 			TNT1 A 0 A_ZoomFactor(1.0);

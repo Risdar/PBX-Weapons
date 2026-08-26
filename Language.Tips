@@ -8,9 +8,11 @@ PBX_PlasmaBlaster_Tip1 = "The Plasma Blaster has 4 modes, two for each primary a
 PBX_PlasmaBlaster_Tip2 = "You can switch modes using %s";
 
 // Lever Action
-PBX_LeverAction_Tip1 = "The Lever Action Rifle can use two types of ammo.";
-PBX_LeverAction_Tip2 = "The .444 Marlin rounds deal high damage but only has %d shots.";
-PBX_LeverAction_Tip3 = "While the .357 Magnum rounds deal less damage but has %d shots.";
+PBX_LeverAction_Tip1 = "The Lever Action Rifle is a precision weapon.";
+PBX_LeverAction_Tip2 = "Every shot deals massive damage but takes %d low caliber ammo.";
+
+PBX_LeverActionUpgrade_Tip1 = "You just unlocked the .444 Marlin ammo.";
+PBX_LeverActionUpgrade_Tip2 = "The .444 Marlin deals increased damage but takes %d low caliber ammo and halves your magazine capacity to %d.";
 
 //////////////////////////// SLOT 3 ///////////////////////////////////////////////////////////////////////////////
 // CSSG 
@@ -32,9 +34,6 @@ PBX_PSG_Tip5 = "You can recover any thrown equipment by coming near and pressing
 // BattleRifle 
 PBX_BattleRifle_Tip1 = "The Battle Rifle can be switched between Burst fire and Semi-auto using %s";
 PBX_BattleRifle_Tip2 = "You can get the Smart Scope and Ricochet Bullets by picking it's upgrade that spawn on Tier 2 backpacks.";
-
-PBX_BattleRifleUpgrade_Tip1 = "You just picked up Battle Rifle Upgade.";
-PBX_BattleRifleUpgrade_Tip2 = "The Scope will now show have the target analysis ablity and every bullet will ricochet";
 
 // Metal Sniper
 PBX_MetalSniper_Tip1 = "The Metal Sniper two AltFire modes and an Advanced Targeting Scope.";
@@ -62,7 +61,6 @@ PBX_NeoHMG_Tip1 = "The HMG is an automatic heavy weapon that has an overheat sys
 PBX_NeoHMG_Tip2 = "When the overheat system reaches %d° C, the weapon will modify the projectile to a more powerful version.";
 PBX_NeoHMG_Tip3 = "You can activate the shield by holding %s, it will then block any damage and recharge when not in use.";
 PBX_NeoHMG_Tip4 = "Pressing the %s key while the shield is active will detonate the shield stunning nearby enemies.";
-PBX_NeoHMG_Tip5 = "The Stun Area and Damage is based on the remaining shield charges.";
 
 // Super Nailgun
 PBX_SuperNailgun_Tip1 = "The Super Nailgun has an overheat system and will overheat at %d° C.";
@@ -81,7 +79,6 @@ PBX_Excavator_Tip4 = "Both modes deals high explosive damage, and can be manuall
 PBX_ExcavatorUpgrade_Tip1 = "The Excavator Upgrade adds 2 new projectile types on top of the normal Drill and Drop Charges.";
 PBX_ExcavatorUpgrade_Tip2 = "The Explosive Bolas mode will launch sticky bolas to enemies that detonates after a while, the AltFire will shoot 4 burst of Sticky Grenades.";
 PBX_ExcavatorUpgrade_Tip3 = "The Razorblade mode will launch saw blades that ricochet, the AltFire will charge the Razorblade for incresed damage.";
-
 
 // CyberdemonRL
 PBX_CyberRL_Tip1 = "The Cyberdemon's Rocket Launcher has two modes, extreme explosion and piercing rockets, they have high pierce but deal less damage.";

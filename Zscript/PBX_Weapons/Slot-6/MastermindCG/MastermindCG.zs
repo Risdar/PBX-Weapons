@@ -2,12 +2,11 @@
 // Lighting - Sechtera
 // Pickup - Turbo
 // Dox778 -  Original Brutal Doom Addon Creator
-// Port to PB By Jenny / Jeniffer & 517qwerty
-
-
+// Port to PB By Jenny / Jeniffer
+// Updated by 17qwerty
 
 // Includes
-#include "./MastermindCG_Functions.zs"
+// #include "./MastermindCG_Functions.zs"
 
 class PBX_MastermindChaingun : PBX_WeaponBase
 {
@@ -31,7 +30,7 @@ class PBX_MastermindChaingun : PBX_WeaponBase
 		Scale 0.9;
 //////////////////////////// AMMO ///-/////////////////////////////////////////////////////////////////////////////////
 		Weapon.AmmoType1 "PB_RocketAmmo";
-	    Weapon.AmmoGive1 50;
+	    Weapon.AmmoGive1 25;
 		
 //////////////////////////// MESSAGES & SOUNDS ////////////////////////////////////////////////////////////////////////////////////
 		Obituary "Mowed down by Mastermind's Chaingun.";
@@ -54,6 +53,67 @@ class PBX_MastermindChaingun : PBX_WeaponBase
 	const DURABILITY = 200; // Durability Amount
 	const DURABILITY_NAME = "MastermindCGDurability"; 
       
+//////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
+    override void PostBeginPlay()
+    {
+        SoulSeekerMode = false;
+        Super.PostBeginPlay();
+    }
+
+	override bool TryPickup(in out Actor toucher)
+    {
+        bool pickup = Super.TryPickup(toucher);
+        if (pickup)
+			toucher.A_giveinventory(DURABILITY_NAME,DURABILITY);
+		
+        return pickup;
+    }
+
+//////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
+	action void MastermindCG_FireWeapon(int ticCount)
+	{
+		name tofire = invoker.SoulSeekerMode ? "MastermindCG_SoulSeeker" : "MastermindCGProjectile";
+
+		switch (ticCount)
+		{
+			default:
+			case 1:
+				A_AlertMonsters();
+				A_StartSound("CHGNSHOT", CHAN_WEAPON, CHANF_OVERLAP, 1.0);
+				A_StartSound("FARMGN", CHAN_WEAPON, CHANF_OVERLAP, 1.0);
+				A_ZoomFactor(0.98, SPF_INTERPOLATE);
+				// PB_FireBullets("CyberBallsPlayer", 1, frandom(-2,2), 0, 0, frandom(-0.5, 0.5));
+				PB_LowAmmoSoundWarning("default", invoker.ammotype1.getclassname());
+				// PB_TakeAmmo(invoker.ammotype2,1);
+				A_TakeInventory(invoker.AmmoType1, invoker.ammoTake, TIF_NOTAKEINFINITE);
+				A_TakeInventory(DURABILITY_NAME,1,TIF_NOTAKEINFINITE);
+				A_SpawnItemEx("PlayerMuzzle2",30,5,27);
+				A_FireCustomMissile("YellowFlareSpawn", 15, 0, 0, 0);
+				A_FireCustomMissile("YellowFlareSpawn", -15, 0, 0, 0);
+				PB_FireBullets(tofire, 1, frandom(-2,2), 0, 0, frandom(3,-3));
+				PB_FireOffset();
+				PB_IncrementHeat(4);
+				break;
+
+			case 2: case 3:
+				if(ticCount == 2)
+				{
+					A_ZoomFactor(1.0, SPF_INTERPOLATE);
+					A_FireCustomMissile("EmptyGrenadeBrass", random(-2,2), 0, 0, -12, 0, random(-2,2));
+					// A_FireCustomMissile("PBX_20mmDoomguy", random(-2,2), 0, 0, -12, 0, random(-2,2));
+				}
+				PB_WeaponRecoil(-0.75,frandom(-0.75,0.75));
+				break;
+		}
+	}
+
+	action state MastermindCG_HandleAmmo()
+	{
+		if (CountInv(DURABILITY_NAME) < 1)		return ResolveState("WeaponBreak");
+		if (invoker.ammo1.amount < ammoTake)	return ResolveState("NoAmmo");
+		return ResolveState(null);
+	}
+
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
 	States
 	{
@@ -109,32 +169,6 @@ class PBX_MastermindChaingun : PBX_WeaponBase
 			goto Ready3;
 
 //////////////////////////// ALT FIRE ////////////////////////////////////////////////////////////////////////////////////
-		// AltFire:
-		// 	TNT1 A 0 { invoker.shotCount = 0; }
-		// AltFireLoop:
-		// 	TNT1 A 0 CyberRL_HandleAmmo();
-		// 	CYBF A 1 Bright CyberRl_FireWeapon(0, 1);
-		// 	CYBF B 1 Bright CyberRl_FireWeapon(0, 2);
-		// 	CYBF C 1 A_SetPitch(pitch - 1, SPF_INTERPOLATE);
-		// 	CYBF D 1 Bright A_SetPitch(pitch + 0.6, SPF_INTERPOLATE);
-		// 	CYBF EFG 1 Bright A_SetPitch(pitch + 0.8, SPF_INTERPOLATE);
-		// 	TNT1 A 0 { invoker.shotCount++; }
-		// 	TNT1 A 0 A_JumpIf(invoker.shotCount < 3, "AltFireLoop");
-		// 	// Shot 4
-		// 	TNT1 A 0 CyberRL_HandleAmmo();
-		// 	CYBF A 1 Bright CyberRl_FireWeapon(0, 1);
-		// 	CYBF B 1 Bright CyberRl_FireWeapon(0, 2);
-		// 	CYBF C 1 A_SetPitch(pitch - 1, SPF_INTERPOLATE);
-		// 	CYBF D 3 Bright;
-		// 	CYBF D 1 Bright A_SetPitch(pitch + 0.6, SPF_INTERPOLATE);
-		// 	CYBF EEFFGG 1 Bright A_SetPitch(pitch + 0.4, SPF_INTERPOLATE);
-		// 	// TNT1 A 0 A_FireCustomMissile("SmokeSpawner11", 0, 0, 0, 7);
-		// 	CYBF HHJ 1 Bright;
-		// 	CYBF IJIJIJ 1 Bright;
-		// 	// TNT1 A 0 A_FireCustomMissile("SmokeSpawner11", 0, 0, 0, 7);
-		// 	TNT1 A 0 PB_ReFire();
-		// 	goto Ready3;
-
         NoAmmo:
 			RMNG C 2 A_DoPBWeaponAction(WRF_NOFIRE);
 			RMNG D 2 A_DoPBWeaponAction(WRF_NOFIRE);
@@ -142,20 +176,6 @@ class PBX_MastermindChaingun : PBX_WeaponBase
 			RMNG F 3 A_DoPBWeaponAction();
             TNT1 A 0 A_PlaySound("weapons/empty", 4);
 		   	goto Ready3;
-
-		WeaponBreak:
-			TNT1 A 0 {
-				for(int i = 0; i < 5; i++)
-				{
-					A_CustomMissile ("MetalShard1", 5, 0, random (-10, -20), 2, random (0, 30));
-					A_CustomMissile ("MetalShard2", 5, 0, random (-10, -20), 2, random (0, 30));
-					A_CustomMissile ("MetalShard3", 5, 0, random (-10, -20), 2, random (0, 30));
-				}
-				A_TakeInventory("PBX_MastermindChaingun",1);
-				A_Startsound("meleeweapon/break");
-				A_ALertMonsters();
-				}
-			Stop;
 		
 //////////////////////////// WEAPON SPECIAL ////////////////////////////////////////////////////////////////////////////////////
 		Weaponspecial:

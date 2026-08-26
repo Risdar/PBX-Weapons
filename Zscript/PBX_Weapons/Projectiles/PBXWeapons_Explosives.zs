@@ -985,7 +985,7 @@ class SeekerRocket : PB_ProjectileAlt
 {
     Default
     {
-        PB_Projectile.BaseDamage 100;
+        PB_Projectile.BaseDamage 300;
 		+PB_PROJECTILE.NOCRITICALS
         Radius 11;
         Height 8;
@@ -1037,7 +1037,6 @@ class SeekerRocket : PB_ProjectileAlt
             MISL A 0;
             M1SL ABCD 1 Bright {
                 A_SpawnItemEx("SeekerFlare");
-                // A_SeekerMissile(7, 10, SMF_PRECISE|SMF_LOOK, 256, 10);
                 A_SpawnItemEx("SeekerRocketSmokeTrail",-14,0,0,0,FRandom(-0.5,0.5),FRandom(-0.5,0.5),0,0,64);
             }
             Loop;
@@ -1050,7 +1049,6 @@ class SeekerRocket : PB_ProjectileAlt
                 A_SpawnItem ("RicoChet", 0, -30);
                 A_SpawnItemEx ("DetectFloorCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
                 A_SpawnItemEx ("DetectCeilCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
-            //A_SpawnItemEx ("UnderwaterExplosion",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
             }
             TNT1 A 0 Bright {
                 A_SpawnItemEx ("ExplosionFlareSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);

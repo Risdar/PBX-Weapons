@@ -44,11 +44,9 @@ class PBX_SuperNailgun : PBX_WeaponBase
     }
 
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
-	bool isOverheating;
-    bool isSpinning;
-    bool isChargedNails;
+    bool mWeaponIsSpinning;
+    bool mChargedNailsMode;
 
-    const LIGTNING_DAMAGE       = 2;    // Damage per tics
     const NAIL_ALTFIRE_AMOUNT   = 5;   // How many nail is shot on the altfire
     const MAGAZINE_SIZE         = 100; 
 
@@ -74,7 +72,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
 
     action state SuperNailgun_CheckSpin(StateLabel spin = "SpinLoop")
     {
-        if(invoker.isSpinning) return resolvestate(spin);
+        if(invoker.mWeaponIsSpinning) return resolvestate(spin);
         return resolvestate(null);
     }
 
@@ -99,34 +97,32 @@ class PBX_SuperNailgun : PBX_WeaponBase
         A_ZoomFactor (0.98);
         A_AlertMonsters();
         PB_LowAmmoSoundWarning("hdmr");
+        SuperNailgun_FireNails();
         PB_TakeAmmo(invoker.ammo2.getClassName(),emptyMag:0,emptyChamber:0);
         A_PlaySound("SNFIRE", 50);
-        PB_FireBullets("PB_MGNail",1,0,7,0,1);
-        if(PB_GetOverheat() >= OVERHEAT_THRESHOLD)
-        {
-            A_StartSound("LGLoop", CHAN_WEAPON, CHANF_OVERLAP, 1.0, pitch: 1.2);
-            PB_FireBullets(invoker.isChargedNails ? "SuperNail_Lightning" : "SuperNail_Hot",1,0,7,0,1);
-            A_GunFlash();
-        }
         PB_WeaponRecoil(-0.6, 0);
-        PB_ModifyOverheat(invoker.isOverheating ? OVERHEAT_GIVE_OVR : OVERHEAT_GIVE_NORM);
     }
 
-    action void SuperNailgun_AltFire()
+    action void SuperNailgun_FireNails()
     {
-        A_ZoomFactor (0.96);
-        SuperNailgun_PLaysound();
-        A_PlaySound("SNFIRE", 52);
-        PB_LowAmmoSoundWarning("hdmr");
-        PB_TakeAmmo(invoker.ammo2.getClassName(),NAIL_ALTFIRE_AMOUNT,0,0);
-        PB_FireBullets("SuperNail_Hot",NAIL_ALTFIRE_AMOUNT,0,7,0,1);
-        if(PB_GetOverheat() >= OVERHEAT_THRESHOLD)
+        double spread;
+        bool isOverheating = PB_GetOverheat() > 0;
+		bool overThreshold = PB_GetOverheat() > OVERHEAT_THRESHOLD;
+
+        if(overThreshold)		spread = 7;
+		else if(isOverheating) 	spread = 1.0 + (PB_GetOverheat() / 100.0);
+		else					spread = 3;
+
+        name proj = "PB_MGNail";
+        if(overThreshold)
         {
+            proj = invoker.mChargedNailsMode ? "SuperNail_Lightning" : "SuperNail_Hot";
             A_StartSound("LGLoop", CHAN_WEAPON, CHANF_OVERLAP, 1.0, pitch: 1.2);
-            PB_FireBullets("SuperNail_Lightning",NAIL_ALTFIRE_AMOUNT,0,7,0,1);
             A_GunFlash();
         }
-        PB_ModifyOverheat(invoker.isOverheating ? OVERHEAT_GIVE_OVR*NAIL_ALTFIRE_AMOUNT : OVERHEAT_GIVE_NORM*NAIL_ALTFIRE_AMOUNT);
+
+        PB_FireBullets(proj, 1, spread, 0, 0, spread);
+        PB_ModifyOverheat(overThreshold ? OVERHEAT_GIVE_OVR : OVERHEAT_GIVE_NORM);
     }
 
     // To Reduce boilerplate
@@ -197,10 +193,9 @@ class PBX_SuperNailgun : PBX_WeaponBase
         Ready3:
             TNT1 A 0 SuperNailgun_CheckSpin();
         ReadyToFire:
-            TNT1 A 0 {invoker.isSpinning = false;}
+            TNT1 A 0 {invoker.mWeaponIsSpinning = false;}
 			SNLR A 1 {
                 if(PB_GetOverheat() > 1) {cooldownOverheat();}
-				if(PB_GetOverheat() == 0) {invoker.isOverheating = false;}
                 SuperNailgun_CoolDownBarrel();
 			    PB_HandleCrosshair(67);
                 superNailgun_setSprite("SNXL");
@@ -209,7 +204,6 @@ class PBX_SuperNailgun : PBX_WeaponBase
             loop;
 
         Cooling:
-			TNT1 A 1 {if(PB_GetOverheat() == 0) invoker.isOverheating = false;}
 			TNT1 A 8;
 			TNT1 A 4 {
 				PBXCore_Debug.Print("Lowered Overheat");
@@ -229,7 +223,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
             TNT1 A 0 PB_ReFire("Fire");
             TNT1 A 0 SuperNailgun_CheckSpin();
         SpinAfterFire:
-            TNT1 A 0 {invoker.isSpinning = false;}
+            TNT1 A 0 {invoker.mWeaponIsSpinning = false;}
             SNLR CDECD 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD);
             SNLR ECDE 2 A_DoPBWeaponAction(WRF_ALLOWRELOAD);
             goto Ready3;
@@ -245,7 +239,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
                 PB_HandleCrosshair(39);
                 A_TakeInventory("PB_LockScreenTilt",1);
                 A_AlertMonsters();
-                invoker.isSpinning = true;
+                invoker.mWeaponIsSpinning = true;
             }
             // This is the new AltFire
             SNLR GHI 1 A_DoPBWeaponAction();
@@ -254,42 +248,24 @@ class PBX_SuperNailgun : PBX_WeaponBase
             TNT1 A 0 PB_ReFire("SpinLoop");
             goto CheckSpin;
 
-            // Everything after this is unused
-            // its the old altfire
-            TNT1 A 0 PB_JumpIfNoAmmo(min:NAIL_ALTFIRE_AMOUNT);
-            TNT1 A 0 SuperNailgun_PLaysound();
-            SNR1 MNO 1 A_DoPBWeaponAction();
-            TNT1 A 0 SuperNailgun_PLaysound();
-            SNR1 MNO 1 A_DoPBWeaponAction();
-            TNT1 A 0 SuperNailgun_PLaysound();
-            SNR1 MNO 1;
-            TNT1 A 0 SuperNailgun_AltFire();
-            SNLR F 1 BRIGHT;
-            TNT1 A 0 PB_WeaponRecoil(-2.5, 0);
-            TNT1 A 0 A_ZoomFactor (1);
-            SNLR GHI 2;
-            TNT1 A 0 PB_ReFire("AltFire");
-            goto Ready3;
-
 //////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
         Reload:
             TNT1 A 0 PB_CheckReload("ReloadUnloaded",null,null,"Ready3","Ready3",MAGAZINE_SIZE);
             TNT1 A 0 A_ZoomFactor(1.0);
             TNT1 A 0 A_StartSound("IronSights", 30);
-            SNRL ABCD 1 PB_SetRoll(roll-2);
-            SNRL EF 1 PB_SetRoll(roll+2);
+            SNRL ABCD 2 PB_SetRoll(roll-2);
+            SNRL EF 2 PB_SetRoll(roll+2);
             TNT1 A 0 {
                 A_FireCustomMissile("EmptyASGDrum",-5,0,8,-4);
                 A_PlaysoundEx("weapons/shotgun/detach", "Auto");
                 PB_SetMagUnloaded(true);
             }
-            SNRL GH 1;
+            SNRL GH 2;
         ReloadUnloaded:
-            SNRL IJKLM 1;
-            SNRL NOP 1 PB_SetRoll(roll+2);
+            SNRL IJKLM 2;
+            SNRL NOP 2 PB_SetRoll(roll+2);
             TNT1 A 0 {
-				PB_SetOverheat(0);
-				invoker.isOverheating = false;
+				PB_SetOverheat(int(invoker.overheat/2)); // So it halves the current overheat
                 A_PlaysoundEx("weapons/riflemagslap", "Auto");
                 PB_AmmoIntoMag(
                     invoker.ammo2.getClassName(),
@@ -299,8 +275,8 @@ class PBX_SuperNailgun : PBX_WeaponBase
                 PB_SetMagUnloaded(false);
                 PB_SetMagEmpty(false);
             }
-            SNRL QR 1;
-            SNRL STUVWX 1 PB_SetRoll(roll-2);
+            SNRL QR 2;
+            SNRL STUVWX 2 PB_SetRoll(roll-2);
             TNT1 A 0 PB_SetRoll(0);
             goto CheckSpin;
             
@@ -317,7 +293,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
                 PB_SetChamberEmpty(true);
                 PB_SetMagUnloaded(true);
                 PB_SetMagEmpty(true);
-                invoker.isSpinning = false;
+                invoker.mWeaponIsSpinning = false;
             }
             SNRL GHI 1;
             goto Ready3;
@@ -326,9 +302,9 @@ class PBX_SuperNailgun : PBX_WeaponBase
         WeaponSpecial:
             TNT1 A 0 {
                 A_TakeInventory("GoWeaponSpecialAbility", 1);
-                invoker.isChargedNails = !invoker.isChargedNails;
+                invoker.mChargedNailsMode = !invoker.mChargedNailsMode;
                 A_StartSound("MS/Button", 22);
-                A_Print(invoker.isChargedNails ? "$PBX_SuperNailgun_ChargedNails" : "$PBX_SuperNailgun_HeatedNails");
+                A_Print(invoker.mChargedNailsMode ? "$PBX_SuperNailgun_ChargedNails" : "$PBX_SuperNailgun_HeatedNails");
             }
             TNT1 A 0 SuperNailgun_CheckSpin();
         SwitchAnimation:

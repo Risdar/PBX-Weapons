@@ -47,59 +47,16 @@ class PBXWeapons_Handler : EventHandler
 			PBXCore_Handler.TryGiveInventory(pm,whatToGive:'PBX_NormalRifle', diffCheck:false);
         if(pbxweapons_startwithblaster) 
 			PBXCore_Handler.TryGiveInventory(pm,whatToGive:'PBX_ProsurvBlaster', diffCheck:false);
+		if(pbxweapons_startwithcrossbow) 
+			PBXCore_Handler.TryGiveInventory(pm,whatToGive:'PBX_Prosurv_Ballista', diffCheck:false);
     }
 }
 
-// This handles the Mouse Wheel Zoom
-class PBXWeapons_ZoomHandler : EventHandler
-{
-    override bool InputProcess(InputEvent e)
-    {
-        if (e.Type == InputEvent.Type_None)
-            return false;
-
-        let plr = players[consoleplayer].mo;
-        if (!plr || !(plr.player.ReadyWeapon is "PBX_WeaponBase") || !plr.FindInventory("Zoomed"))
-            return false;
-
-		let weap = PBX_WeaponBase(plr.player.ReadyWeapon);
-		if(!weap || !weap.mScopedWeapon) 
-			return false;
-
-        if (e.KeyScan == InputEvent.Key_MWheelUp)
-        {
-        	PBXCore_Debug.Print("Wheel Up");
-            SendNetworkEvent("PBXWeapons_ZoomIn");
-            return true;
-        }
-
-        if (e.KeyScan == InputEvent.Key_MWheelDown)
-        {
-        	PBXCore_Debug.Print("Wheel Down");
-            SendNetworkEvent("PBXWeapons_ZoomOut");
-            return true;
-        }
-
-        return false;
-    }
-
-    override void NetworkProcess(ConsoleEvent e)
-    {
-        PlayerInfo player = players[e.Player];
-        let wpn = PBX_WeaponBase(player.ReadyWeapon);
-        if (!wpn || !wpn.mScopedWeapon || !player.mo || !player.mo.FindInventory("Zoomed")) return;
-
-        if (e.Name == "PBXWeapons_ZoomIn")
-            wpn.PBX_AdjustZoom(1);
-        else if (e.Name == "PBXWeapons_ZoomOut")
-            wpn.PBX_AdjustZoom(-1);
-    }
-}
-
-// This is from Doom Deluxe, all credits goes to Dox778 and the Doom Deluxe team
-// This handles the target analysis system
+// This is modified from Doom Deluxe, all credits goes to Dox778 and the Doom Deluxe team
+// This handles the target analysis system and scroll zoom inputs
 class PBXWeapons_ScopeHandler : EventHandler
 {
+	// Smart Scope System
 	ui bool 	mCanDraw;
 	ui int 		mMaxHealth, mCurrentHealth, mZoomScale, mPainChance;
 	ui string 	mActorName;
@@ -173,7 +130,50 @@ class PBXWeapons_ScopeHandler : EventHandler
 		// Screen.DrawText(BigFont, color, 190, 86, mActorName, DTA_Clean, true);
 		// Screen.DrawText(SmallFont, color, 190, 104, Wow, DTA_Clean, true);
 		// Screen.DrawText(SmallFont, color, 190, 74, DistanceInMeters, DTA_Clean, true);
-	}	
+	}
+	
+	// Scroll Zoom Input
+	override bool InputProcess(InputEvent e)
+    {
+        if (e.Type == InputEvent.Type_None)
+            return false;
+
+        let plr = players[consoleplayer].mo;
+        if (!plr || !(plr.player.ReadyWeapon is "PBX_WeaponBase") || !plr.FindInventory("Zoomed"))
+            return false;
+
+		let weap = PBX_WeaponBase(plr.player.ReadyWeapon);
+		if(!weap || !weap.mScopedWeapon) 
+			return false;
+
+        if (e.KeyScan == InputEvent.Key_MWheelUp)
+        {
+        	PBXCore_Debug.Print("Wheel Up");
+            SendNetworkEvent("PBXWeapons_ZoomIn");
+            return true;
+        }
+
+        if (e.KeyScan == InputEvent.Key_MWheelDown)
+        {
+        	PBXCore_Debug.Print("Wheel Down");
+            SendNetworkEvent("PBXWeapons_ZoomOut");
+            return true;
+        }
+
+        return false;
+    }
+
+    override void NetworkProcess(ConsoleEvent e)
+    {
+        PlayerInfo player = players[e.Player];
+        let wpn = PBX_WeaponBase(player.ReadyWeapon);
+        if (!wpn || !wpn.mScopedWeapon || !player.mo || !player.mo.FindInventory("Zoomed")) return;
+
+        if (e.Name == "PBXWeapons_ZoomIn")
+            wpn.PBX_AdjustZoom(1);
+        else if (e.Name == "PBXWeapons_ZoomOut")
+            wpn.PBX_AdjustZoom(-1);
+    }
 }
 
 // For easier testing, though you can also disable the upgrades in the backpack spawners
@@ -198,6 +198,9 @@ Class PBXWeapons_CheatsHandler : Eventhandler
 		}
 		if (e.Name ~== "PBX_AllUpgrades")
 		{
+			// Lever Action
+			pm.giveinventory("LeverAction_Upgrade",1);
+
 			// CSSG
 			pm.giveinventory("ExplosiveShellsUpgrade",1);
 			pm.giveinventory("WPShellsUpgrade",1);
@@ -205,9 +208,8 @@ Class PBXWeapons_CheatsHandler : Eventhandler
 			pm.giveinventory("DragonBreathUpgrade",1);
 			pm.giveinventory("DanmakuUpgrade",1);
 			pm.giveinventory("SubZeroUpgrade",1);
-
-			// Battle Rifle
-			pm.giveinventory("BattleRifle_Upgrade",1);
+			pm.giveinventory("HellFireShellsUpgrade",1);
+			pm.giveinventory("AcidShellsUpgradePickup",1);
 
 			// Metal Sniper
 			pm.giveinventory("MetalSniper_Upgrade",1);
@@ -315,9 +317,7 @@ class HomingShots_Aux : Inventory
 		if (owner.tracer != null && PBXCore_DebugCVAR)
 		{
 			if(owner.tracer.CountInv("PBX_RadiusVisualizer") < 1)
-			{
 				owner.tracer.GiveInventory("PBX_RadiusVisualizer",1);
-			}
 		}
 	}
 }
@@ -334,8 +334,8 @@ CLASS PBX_LaserSightProjectile : FastProjectile
 		Height 2;
 		Renderstyle "Add";
 		Alpha 0.8;
-		+NOBLOCKMAP;	+NOGRAVITY;		+BLOODLESSIMPACT;
-		+ALWAYSPUFF;	+PUFFONACTORS;	+DONTSPLASH;
+		+NOBLOCKMAP;		+NOGRAVITY;		+BLOODLESSIMPACT;
+		+ALWAYSPUFF;		+PUFFONACTORS;	+DONTSPLASH;
 		+FORCEXYBILLBOARD;
 	}
 

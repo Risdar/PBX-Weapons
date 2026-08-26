@@ -7,6 +7,7 @@ PBXWEAPONS_MENU_RESET_PBXWEAPONS_TOOLTIPS = "Reset PBX Weapons Tool Tips";
 
 PBXWEAPONS_START_WITH_BDP_RIFLE = "Start with the BDP Rifle";
 PBXWEAPONS_START_WITH_PISTOL_BLASTER = "Start with the Pistol Blaster";
+PBXWEAPONS_START_WITH_CROSSBOW = "Start with the Crossbow Ballista";
 PBXWEAPONS_MENU_ENABLE_SECRET_WEAPONS = "Enable Secret Weapons";
 
 
@@ -21,6 +22,7 @@ PBXWEAPONS_CSSG_LOCK_SWITCH = "CSSG Meathook Lock Switch";
 
 TIP_pbxweapons_normalriflereplace   = "Start the game with the Platinum Rifle on top of the Standard PB DMR";
 TIP_pbxweapons_startwithblaster     = "Start the game with the Pistol Blaster, a very weak pistol that has infinite ammo";
+TIP_pbxweapons_startwithcrossbow    = "Start the game with the Crossbow Ballista, a precision weapon with multiple arrow types";
 TIP_pbxweapons_enablesecretweapon   = "Enable or disable the secret weapons in the game, Currently there's only the Nuke Launcher";
 TIP_pbxweapons_cssghooklockswitch   = "If enabled will disable weapon switching when the CSSG Meathook is attached to a monster";
 
@@ -57,7 +59,7 @@ PBXWEAPONS_NUKE_LAUNCHER = "Enable Nuke Launcher";
 
 PBXWEAPONS_UAC_COMMANDER_BACKPACK = "Enable UAC Commander's Backpack";
 
-PBXWEAPONS_BATTLE_RIFLE_UPGRADE = "Enable Battle Rifle Upgrade"; 
+PBXWEAPONS_LEVER_ACTION_UPGRADE = "Enable Lever Action Rifle Upgrade"; 
 PBXWEAPONS_CROSSBOW_BALLISTA_UPGRADE = "Enable Crossbow Ballista Upgrade";
 PBXWEAPONS_METAL_SNIPER_UPGRADE = "Enable Metal Sniper Upgrade";
 

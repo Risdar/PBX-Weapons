@@ -616,15 +616,17 @@ class HellFireProjectile : PB_10GAPellet
     Default
     {
         PB_Projectile.BaseDamage 35;
+		+PB_PROJECTILE.NOCRITICALS
         RenderStyle "Add";
 		Height 6;
 		Radius 6;
 		Scale 0.3;
 		Alpha 0.80;
 		Speed 100;
-		Decal "DoomImpScorch";
+		Decal "Scorch";
+		// Deathsound "Weapons/Demontech/Crash";
 		Species "Player";
-		DamageType "HellFire";
+		DamageType "Disintegrate";
         +NOINTERACTION;
         +NOGRAVITY;
         +CLIENTSIDEONLY;

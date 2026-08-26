@@ -68,8 +68,7 @@ extend class PBX_WeaponBase
             {
                 Array<String> tips;
                 tips.Push("$PBX_LeverAction_Tip1");
-                tips.Push(string.format(StringTable.Localize("$PBX_LeverAction_Tip2"),PBX_Prosurv_LeverAction.MAGAZINE_SIZE/2));
-                tips.Push(string.format(StringTable.Localize("$PBX_LeverAction_Tip3"),PBX_Prosurv_LeverAction.MAGAZINE_SIZE));
+                tips.Push(string.format(StringTable.Localize("$PBX_LeverAction_Tip2"),PBX_Prosurv_LeverAction.AMMO_TAKE_MAGNUM));
                 PBXCore_TipsManager.SendTipArrayIfNeeded(tips, WEAPON_HELPTEXT, PBX_TIP_LEVERACTION);
             }
             break;
@@ -149,7 +148,6 @@ extend class PBX_WeaponBase
                 tips.Push(string.format(StringTable.Localize("$PBX_NeoHMG_Tip2"),PBX_NeoHMG.OVERHEAT_THRESHOLD));
                 tips.Push(string.format(StringTable.Localize("$PBX_NeoHMG_Tip3"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+ALTATTACK")));
                 tips.Push(string.format(StringTable.Localize("$PBX_NeoHMG_Tip4"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+pb_specialwheel")));
-                tips.Push("$PBX_NeoHMG_Tip5");
                 PBXCore_TipsManager.SendTipArrayIfNeeded(tips, WEAPON_HELPTEXT, PBX_TIP_NEOHMG);
             }
             break;

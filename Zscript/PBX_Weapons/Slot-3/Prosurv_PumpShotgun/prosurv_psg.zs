@@ -337,12 +337,15 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 			TNT1 A 0 PB_SetZoom(false);
 			Goto Ready3;
         
+        ReloadFromADS:
+            TNT1 A 0 PB_HandleCrosshair(46);
+			TNT1 A 0 PB_SetZoom(false);
+			ASS1 CBA 1;
         Reload:
+            TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");
 			TNT1 A 0 {
-                PB_SetZoom(false);
                 A_ZoomFactor(1.0);
                 A_Giveinventory("PB_LockScreenTilt",1);
-                A_SetCrosshair(-1);
 			}
             TNT1 A 0 PB_CheckReload(null,null,"Pump","Ready3","Ready3",MAGAZINE_SIZE);
 			TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");

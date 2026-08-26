@@ -48,15 +48,17 @@ class PBX_SPAS12 : PBX_WeaponBase
         switch(tic)
         {
             case 1:
+            
+                A_AlertMonsters();
+                PB_FireBullets("PB_12GAPellet", 12, 1.5, 0, 0, 1.5);
+				A_FireProjectile("ShotgunWad", random(-2,2), 0, random(-2,2), -3, FPF_NOAUTOAIM, random(-2,2));
+
                 A_Recoil(3);
                 A_SetPitch(pitch - 4.0);
 
-                PB_FireBullets("PB_12GAPellet", 9, 1.5, 0, 0, 1.5);
-
-				A_FireProjectile("ShotgunWad", random(-2,2), 0, random(-2,2), -3, FPF_NOAUTOAIM, random(-2,2));
 				PB_LowAmmoSoundWarning("shotgun");
 				PB_TakeAmmo(invoker.ammo2.getClassName(),1,0);
-				A_AlertMonsters();
+
                 A_StartSound("DRBTFIRE", CHAN_WEAPON, pitch:frandom(0.95, 1.05));
 				PB_IncrementHeat();
 				A_FireCustomMissile("YellowFlareSpawn", 0, 0, 0, 0);
@@ -92,8 +94,8 @@ class PBX_SPAS12 : PBX_WeaponBase
     action state SPAS_HandleAlt()
     {
         PB_SetRoll(0);
-            PB_HandleCrosshair(46);
-            A_TakeInventory("PB_LockScreenTilt",1);
+        PB_HandleCrosshair(46);
+        A_TakeInventory("PB_LockScreenTilt",1);
 
         if(invoker.dualfiremode)
             return ResolveState("HL2Fire");
@@ -293,11 +295,17 @@ class PBX_SPAS12 : PBX_WeaponBase
 			}
             Goto Ready2;
 
-        Reload:
-            TNT1 A 0 {
+        ReloadFromADS:
+            TNT1 A 0 {	
+				PB_HandleCrosshair(46);
                 PB_SetZoom(false);
+            }
+            S12X FEDCBA 1;
+        Reload:
+            TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");
+            TNT1 A 0 {
+                A_ZoomFactor(1.0);
                 A_Giveinventory("PB_LockScreenTilt",1);
-                A_SetCrosshair(-1);
 			}
             TNT1 A 0 PB_CheckReload(null,null,"Pump","Ready3","Ready3",MAGAZINE_SIZE);
 			TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");

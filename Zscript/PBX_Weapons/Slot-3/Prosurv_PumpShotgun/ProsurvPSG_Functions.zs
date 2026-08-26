@@ -3,13 +3,13 @@ extend class PBX_ProSurvPSG
     mixin PBX_LaserSight;
 
 	static const StateLabel blockedLaserStates[] = {
-		"Reload", "ShellChecker", "ChamberInsertShell", "ReloadFinished",
+		"Reload", "ShellChecker", "ChamberInsertShell", "ReloadFinished", "ReloadFromADS",
 		"Unload", "RemoveBullets", "FinishUnload", "SelectAnimation",
 		"Pump", "PumpBegin", "PumpEnd", "WeaponRespect", "Deselect",
 		"FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
 	};
 
-	override void PBX_DoEffectWeaponReady(Weapon weap)
+	override void PBX_DoEffectWeaponReady()
     {
 		PBX_SpawnLaserSight(PBX_LaserSightProjectile.GREEN_DOT);
     }
@@ -171,7 +171,7 @@ extend class PBX_ProSurvPSG
 				A_TakeInventory("PB_LockScreenTilt", 1);
 				if (ads) A_SetCrosshair(-1);
 
-				PB_FireBullets("PB_12GAPellet", 9, 1.5, 0, 0, 1.5);
+				PB_FireBullets("PB_12GAPellet", 12, 1.5, 0, 0, 1.5);
 
 				A_FireProjectile("ShotgunWad", random(-2,2), 0, random(-2,2), wadOfsY, FPF_NOAUTOAIM, random(-2,2));
 				PB_LowAmmoSoundWarning("shotgun");

@@ -158,12 +158,13 @@ Class PBX_MetalSniper : PBX_WeaponBase
                 A_SetInventory("PB_LockScreenTilt", 0);
             }
             TNT1 A 0 A_JumpIf(PB_GetZoom(), "Fire_ADS");
-            TNT1 A 0 PB_JumpIfNoAmmo("Reload", 1);
+            TNT1 A 0 PB_JumpIfNoAmmo("Reload");
             TNT1 A 0 A_AlertMonsters();
             MSNF B 1 bright MetalSniperFire();
             MSNF C 1 bright;
             MSNF DDDEF 1;
-            MSNF GHAAAAAAAAAA 1 {
+            MSNF GHAAAAAA 1;
+            MSNF AAAA 1 {
                 if (PlayerPressedOnce(BT_ATTACK)) return resolvestate("Fire");
                 return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOFIRE);
             }
@@ -204,14 +205,15 @@ Class PBX_MetalSniper : PBX_WeaponBase
         // ── Fire (ADS) ────────────────────────────────────────────────────
 		Fire2:
         Fire_ADS:
-            TNT1 A 0 PB_JumpIfNoAmmo("ReloadFromADS", 1);
+            TNT1 A 0 PB_JumpIfNoAmmo();
         ActualFireADS:
             MSNS B 1 bright MetalSniperFireADS();
         FireADSContinue:
             MSNS C 1 bright;
             MSNS DDD 1;
             MSNS EFG 1;
-            MSNS HIAAAAAAAAAA 1 {
+            MSNS HIAAAAAA 1;
+            MSNS AAAA 1 {
                 // A_SetInventory("CantDoAction", 0);
                 if (PB_GetAimMode())
                 {
@@ -277,16 +279,13 @@ Class PBX_MetalSniper : PBX_WeaponBase
         // ── Reload ────────────────────────────────────────────────────────
         ReloadFromADS:
             TNT1 A 0 A_StartSound("IronSights", 29);
-            MSNA F 1 A_ZoomFactor(3.5);
-            MSNA E 1 A_ZoomFactor(3.0);
-            MSNA D 1 A_ZoomFactor(2.5);
-            MSNA C 1 A_ZoomFactor(2.0);
-            MSNA B 1 A_ZoomFactor(1.5);
-            MSNA A 1 A_ZoomFactor(1.0);
+            TNT1 A 0 A_ZoomFactor(1.5);
+            MSNA FED 1;
+            TNT1 A 0 PB_SetZoom(false);
+            MSNA CBA 1;
         Reload:
-            TNT1 A 0{
-                PB_SetZoom(false);
-            }
+            TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");
+            TNT1 A 0 A_ZoomFactor(1.0);
             TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, "Start_Rechamber", "Ready3", "NoAmmo", invoker.currentMaxAmmo, invoker.ReserveToMagAmmoFactor);
         // ── Raise weapon  ──────────────────
         StandardReload:

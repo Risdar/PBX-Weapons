@@ -355,11 +355,15 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
 		   TNT1 A 0 HandleWheel();
 		   goto Unload;
 
+        ReloadFromADS:
+            TNT1 A 0 PB_SetZoom(false);
+            TNT1 A 0 PB_HandleCrosshair(29);
+            CB1T DCBA 1 setCrossbowSprite("CB0T","CB1T","CB2T","CB3T","CB4T");
         Reload:
+            TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");
             TNT1 A 0 {
-                A_SetCrosshair(-1);
+                A_ZoomFactor(1.0);
                 A_Giveinventory("PB_LockScreenTilt",1);
-                PB_SetZoom(false);
             }
             TNT1 A 0 A_JumpIf(invoker.ammo1.amount < invoker.ReserveToMagAmmoFactor, "Ready3");
             TNT1 A 0 A_JumpIf(invoker.unwindString, "ContinueReload");

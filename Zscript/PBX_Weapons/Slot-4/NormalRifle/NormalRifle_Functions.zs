@@ -6,7 +6,7 @@ extend class PBX_NormalRifle
     static const StateLabel blockedLaserStates[] = {
         "Deselect", "NormalDeselect", "DualWieldDeselect", "FinishDeselect",
 
-        "SelectAnimationDualWield", "SelectAnimation",
+        "SelectAnimationDualWield", "SelectAnimation", "ReloadFromADS",
 
         "SwitchToDualWield", "StopDualWield",
 
@@ -23,7 +23,7 @@ extend class PBX_NormalRifle
         "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
     };
 
-    override void PBX_DoEffectWeaponReady(Weapon weap)
+    override void PBX_DoEffectWeaponReady()
     {
 		PBX_SpawnLaserSight(PBX_LaserSightProjectile.RED_DOT);
     }

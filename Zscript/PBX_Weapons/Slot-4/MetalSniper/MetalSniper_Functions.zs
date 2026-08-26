@@ -3,7 +3,7 @@ extend class PBX_MetalSniper
     mixin PBX_LaserSight;
 
     static const StateLabel blockedLaserStates[] = {
-        "Reload", "Reload_Grenade", "StandardReload", "WeaponRespect",
+        "Reload", "Reload_Grenade", "StandardReload", "WeaponRespect", "ReloadFromADS",
         "TakeMagStandard", "TakeMagResonance", "InsertMag", "ReloadFromSpecial", "Deselect",
         "FinishReload", "RaiseFromEmpty", "Start_Rechamber", "Rechamber", "ChangeAnim",
         "UnloadFromSpecial","Unload","UnloadRaise","UnloadMagStandard", "UnloadMagEmpty",
@@ -20,7 +20,7 @@ extend class PBX_MetalSniper
     }
 
     bool mShouldResetVariables;
-    override void PBX_DoEffectWeaponReady(Weapon weap)
+    override void PBX_DoEffectWeaponReady()
 	{
         PBX_SpawnLaserSight(PBX_LaserSightProjectile.GREEN_DOT);
 
@@ -269,7 +269,6 @@ extend class PBX_MetalSniper
         PB_IncrementHeat(4, true);
         PB_FireOffset();
         PB_GunSmoke(0, 0, -1);
-        PB_WeaponRecoil(-4, frandom(-1.5, 1.5));
         PB_WeaponRecoil(-3, frandom(-0.5, 0.5));
         PB_SpawnCasing("LMGCasingStandard", 26, 2, 28, 0, frandom(5, 8), frandom(1, 4));
     }

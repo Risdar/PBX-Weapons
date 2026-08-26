@@ -30,6 +30,9 @@ PBX_LeverAction_Tag                 = "UAC M1893 Mod 0 Lever Action";
 PBX_LeverAction_Marlin              = "\cd.444 Marlin \c-Mode";
 PBX_LeverAction_Magnum              = "\cd.357 Magnum \c-Mode";
 
+PBX_LeverAction_UpgradePickup       = "Lever Action Rifle Upgrade (Slot 2)";
+PBX_LeverAction_UpgradeTag          = "Lever Action Rifle Upgrade";
+
 //////////////////////////// SLOT 3 ///////////////////////////////////////////////////////////////////////////////
 // PSG
 PBX_PSG_PICKUP                      = "Commander Pump Shotgun (Slot 3)";
@@ -108,9 +111,6 @@ PBX_BattleRifle_Tag                 = "UAC M1 'BDP' Battle Rifle";
 
 PBX_BattleRifle_SemiAuto            = "\cdSemi-Auto \c-Mode";
 PBX_BattleRifle_Burst               = "\ciBurst Fire \c-Mode";
-
-PBX_BattleRifle_UpgradePickup       = "Battle Rifle Ricochet and Scope Upgrade (Slot 4)";
-PBX_BattleRifle_UpgradeTag          = "Battle Rifle Upgrade";
 
 // Normal RIfle
 PBX_NormalRifle_Pickup              = "Assault Rifle (Slot 4)";

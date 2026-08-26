@@ -15,7 +15,7 @@ class PB_444Marlin : PB_500SW
 {
 	Default
 	{
-		PB_Projectile.BaseDamage 180;
+		PB_Projectile.BaseDamage 210;
 		PB_Projectile.RipperCount 5;
 		PB_Projectile.PenetrationCount 5;
 		+PB_Projectile.WHIZCRACK;
@@ -30,8 +30,8 @@ class MS_ResonanceRounds : PB_Projectile
 	Default
 	{
 		PB_Projectile.BaseDamage 300;
-		PB_Projectile.RipperCount 3;
-		PB_Projectile.PenetrationCount 3;
+		PB_Projectile.RipperCount 8;
+		PB_Projectile.PenetrationCount 5;
         DamageType "Stun";
 		RipperLevel 1;
 		+PB_Projectile.WHIZCRACK;

@@ -1,12 +1,11 @@
 // Battle Rifle from Brutal Doom Platinum by EmeraldCoasttt and the BDP Team
 
 // Includes
-#include "./BattleRifle_Functions.zs"
+// #include "./BattleRifle_Functions.zs"
 #include "./BattleRifle_Wheel.zs"
 #include "./BattleRifle_helpers.zs"
 
 class BR_Select_FireMode : inventory {default{inventory.maxamount 1;}}
-class BattleRifle_Upgraded : inventory {default{inventory.maxamount 1;}}
 
 class PBX_BDPBattleRifle : PBX_WeaponBase
 {
@@ -21,7 +20,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 		inventory.maxamount 1;
 		PB_WeaponBase.UsesWheel true;
 		PB_WeaponBase.WheelInfo "BattleRifleWheel";
-		PB_WeaponBase.ReserveToMagAmmoFactor 1;
+		PB_WeaponBase.ReserveToMagAmmoFactor 2;
         PBX_WeaponBase.ScopeConfiguration true, MINZOOM, MAXZOOM; 
 		Scale 1.0;
 		
@@ -53,6 +52,99 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 	const MAXZOOM = 9.0;
 	const MINZOOM  = 1.5;
 	
+//////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
+	override void postbeginplay()
+	{
+		semiClear = false;
+		isSemiAuto = true;
+		super.postbeginplay();
+	}
+
+	// Laser sight stuff
+	mixin PBX_LaserSight;
+	static const StateLabel blockedLaserStates[] = {
+		"Reload", "ReloadFromADS", "ContinueReload", "RaiseFromEmpty",
+		"Unload", "SwitchAnimation","WeaponRespect", "Deselect", "SelectAnimation",
+		"FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
+	};
+	override void PBX_DoEffectWeaponReady()
+	{
+		PBX_SpawnLaserSight(PBX_LaserSightProjectile.GREEN_DOT);
+	}
+   
+//////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
+	action void cleanmodetokens()
+	{
+		A_SetInventory("BR_Select_FireMode",0);
+		A_SetInventory("PBX_Toggle_Laser",0);
+		A_SetInventory("PBX_CloseWheel",0);
+	}
+
+	action bool getSemiAuto()
+	{
+		return invoker.isSemiAuto;
+	}
+
+    // FIRE FUNCTION
+	action void FireWeapon()
+	{
+		// Set up Variables
+		bool ads 	  = PB_GetZoom();
+		double recoil = ads ? -1.5 : -3;
+		double smoke  = ads ? -2   : -1;
+		double zoom	  = ads ? PBX_GetZoomLevel() : 1.0;
+
+		A_AlertMonsters();
+		PB_DynamicTail("lmg", "lmg");
+
+		PBX_FireRicochet("PB_762x51mmAP","PB_EmptyBrass",1,0.1,0,0,0.1,puffType:"BR45BulletPuff");
+
+		// Everything Else
+		PB_LowAmmoSoundWarning("default");
+		pb_takeammo(invoker.ammotype2,1,0);
+		A_StartSound("BR45FIRE", CHAN_WEAPON, 0, 1.0, pitch: 1.2);
+		invoker.burstcount++;
+		PB_IncrementHeat(4);
+
+		PB_GunSmoke(0,0,smoke);
+		PB_WeaponRecoil(recoil,frandom(-0.3,0.3));
+		A_ZoomFactor(zoom, SPF_INTERPOLATE);
+	}
+
+	action state checkSpecial()
+	{
+		bool toggleFireMode 	= countinv("BR_Select_FireMode")  	> 0;
+		bool toggleLaser 		= countinv("PBX_Toggle_Laser")  	> 0;
+
+		if(countinv("PBX_CloseWheel") > 0)
+		{
+			cleanmodetokens();
+			return resolvestate("Ready3");
+		}
+
+		if(toggleFireMode)
+		{
+			invoker.isSemiAuto = !invoker.isSemiAuto;
+			A_Print(invoker.isSemiAuto ? "$PB_FIREMODE_SEMI" : "$PB_FIREMODE_BURST");
+		}
+
+		if(toggleLaser)	PBX_ToggleLaserSight(skipPlaySound:true);
+
+		// Always remove the tokens regardless
+		cleanmodetokens();
+
+		// Play sound when opening the wheel in ADS
+		if(PB_GetZoom())
+		{
+			A_StartSound("MS/Button", 26); 
+			return resolvestate("Ready2");
+		}
+
+		// Fallthrough to Switch Animation
+		// The mode switch sound is played there
+		return resolvestate(null);
+	}
+
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
 	States
 	{
@@ -107,10 +199,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 			BR4Z D 1 Bright  {
 				PB_CoolDownBarrel();
 				A_ZoomFactor(PBX_GetZoomLevel());
-
-				if(isUpgraded())
-					PBX_ReadySmartScope();
-
+				PBX_ReadySmartScope();
 				return PB_ReadyFire(ads:true);
             }
 			Loop;
@@ -219,9 +308,17 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 			goto Ready3;
 
         // RELOAD
+		ReloadFromADS:
+			TNT1 A 0 PB_HandleCrosshair(42);
+			TNT1 A 0 A_startsound("IronSights",29);
+            TNT1 A 0 A_ZoomFactor(1.5);
+			BR4Z CB 1;
+			TNT1 A 0 PB_SetZoom(false);
+			BR4Z A 1;
 		Reload:
-            TNT1 A 0 PB_SetZoom(false);
-            TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, null, "Ready3", "Ready3", MAGAZINE_SIZE);
+            TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");
+			TNT1 A 0 A_ZoomFactor(1.0);
+			TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, null, "Ready3", "Ready3", MAGAZINE_SIZE);
 			TNT1 A 0 A_startsound("BR45OPEN",3,CHANF_OVERLAP);
             BR4R ABCDE 1;
             TNT1 A 0

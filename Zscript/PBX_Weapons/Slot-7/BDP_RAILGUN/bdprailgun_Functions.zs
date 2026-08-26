@@ -5,13 +5,13 @@ extend class PBX_BDPRailgun
     static const StateLabel blockedLaserStates[] = {
         "Pumping", "FinishPump", "FinishPump2", "Reload",
         "ShellChecker", "ReloadFinished", "ReloadFromPump", "ReloadFromPumpInsertShells",
-        "FinishReloadFromPump", 
+        "FinishReloadFromPump", "ReloadFromADS",
 
         "WeaponRespect", "Deselect", "SelectAnimation",
         "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
     };
 
-	override void PBX_DoEffectWeaponReady(Weapon weap)
+	override void PBX_DoEffectWeaponReady()
     {
 		PBX_SpawnLaserSight(PBX_LaserSightProjectile.BLUE_DOT);
     }

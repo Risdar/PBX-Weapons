@@ -62,13 +62,9 @@ class PBX_Paingiver : PBX_WeaponBase
 		super.postbeginplay();
 	}
 
-    override void DoEffect() 
+    override void PBX_DoEffectWeaponReady()
     {
-        super.DoEffect();
-
-		If(!owner.player || !(owner.player.readyweapon is "PBX_Paingiver"))
-            return;
-        if(!enragedState) 
+		if(!enragedState) 
             return;
 
         if(CountInv("SoulCharge") <= 0)
@@ -82,7 +78,6 @@ class PBX_Paingiver : PBX_WeaponBase
         }
 
         TakeInventory("SoulCharge",soulTake,TIF_NOTAKEINFINITE);
-
     }
 
     override void ModifyDamage(int damage, Name damageType, out int newDamage, bool passive, Actor inflictor, Actor source, int flags)
@@ -94,7 +89,6 @@ class PBX_Paingiver : PBX_WeaponBase
 				newDamage = damage/4;
 			}
 		}
-
     }
 
     action state rapidFire()

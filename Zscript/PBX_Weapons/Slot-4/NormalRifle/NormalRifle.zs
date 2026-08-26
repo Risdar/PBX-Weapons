@@ -272,11 +272,16 @@ Class PBX_NormalRifle : PBX_WeaponBase
             RIFR ABCDEFG 1;
             goto ContinueReload;
 
-        Reload:
+        ReloadFromADS:
             TNT1 A 0 {
-                A_Zoomfactor(1.0);
                 PB_SetZoom(false);
+                A_startsound("IronSights",29);
+			    PB_HandleCrosshair(55);
             }
+            RIFZ BA 1;
+        Reload:
+            TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");
+            TNT1 A 0 A_Zoomfactor(1.0);
             TNT1 A 0 A_JumpIf(A_CheckAkimbo(), "ReloadDualWield");
             TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, "ChamberFromReload", "Ready3", "Ready3", MAGAZINE_SIZE);
             TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");

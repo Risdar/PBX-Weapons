@@ -2,7 +2,7 @@ extend class PBX_Excavator
 {
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
     
-	override void PBX_DoEffectWeaponReady(Weapon weap)
+	override void PBX_DoEffectWeaponReady()
     {
 		bool pressingAlt = owner.player.cmd.buttons & BT_ALTATTACK;
 		bool hasDetonator = owner.countinv("GrenadeDetonator") > 0;

@@ -261,11 +261,21 @@ Class PBX_BDPRailgun : PBX_WeaponBase
             RAIZ DCBA 1;
             Goto Ready3;
 
+        ReloadFromADS:
+            TNT1 A 0 {
+			    A_startsound("BEP",29);
+                PB_HandleCrosshair(97);
+                PB_SetUsableWheel(false);
+            }
+            TNT1 A 0 A_ZoomFactor(1.5);
+            RAIZ FE 1;
+            TNT1 A 0 PB_SetZoom(false);
+            RAIZ DCBA 1;
         Reload:
+            TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");
 			TNT1 A 0 {
-                PB_SetZoom(false);
+                A_ZoomFactor(1.0);
                 A_Giveinventory("PB_LockScreenTilt",1);
-                A_SetCrosshair(-1);
 			}
             TNT1 A 0 PB_CheckReload(null,null,"Pumping","Ready3","Ready3",MAGAZINE_SIZE);
 			TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
