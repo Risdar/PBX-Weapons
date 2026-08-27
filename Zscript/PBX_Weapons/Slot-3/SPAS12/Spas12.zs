@@ -30,7 +30,7 @@ class PBX_SPAS12 : PBX_WeaponBase
 		Inventory.MaxAmount 1;
 		Weapon.SlotNumber 3;
 		Weapon.SlotPriority 2.4;
-		// Obituary "$OB_PB_SPAS12";
+		Obituary "$OB_WEAP_SPAS12";
 		Scale 0.40;
 		Tag "$PBX_SPAS12_TAG";
         +FLOORCLIP;

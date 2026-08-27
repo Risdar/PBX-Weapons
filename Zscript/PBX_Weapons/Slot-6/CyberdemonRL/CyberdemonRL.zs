@@ -28,7 +28,7 @@ class PBX_CyberdemonRL : PBX_WeaponBase
 	    Weapon.AmmoGive1 30;
 		
 //////////////////////////// MESSAGES & SOUNDS ////////////////////////////////////////////////////////////////////////////////////
-		Obituary "%o was blown up by %k's Cyberdemon missile launcher. Ouch!";
+		Obituary "$OB_WEAP_CYBERRL";
 		Inventory.Pickupmessage "$PBX_CyberdemonRL_Pickup";
 		Inventory.PickupSound "BFGREADY";
 		Tag "$PBX_CyberdemonRL_Tag";

@@ -25,7 +25,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 		Scale 1.0;
 		
         // Messages
-	    Obituary "%o was pierced by %k's Battle Rifle.";
+	    Obituary "$OB_WEAP_BATTLERIFLE";
 	    Inventory.Pickupmessage "$PBX_BattleRifle_Pickup";
 		Tag "$PBX_BattleRifle_Tag";
 		

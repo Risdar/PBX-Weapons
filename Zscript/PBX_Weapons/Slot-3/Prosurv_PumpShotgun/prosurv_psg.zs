@@ -38,7 +38,7 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 		PB_WeaponBase.UsesWheel true;
 		PB_WeaponBase.WheelInfo "PSGWheel";
         Damagetype "Shotgun";
-        Obituary "%k Opened %o with a Pump Shotgun";
+        Obituary "$OB_WEAP_PSG";
         AttackSound "None";
         Tag "$PBX_PSG_TAG";
         +DONTGIB;

@@ -30,7 +30,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
 //////////////////////////// MESSAGES & SOUNDS ////////////////////////////////////////////////////////////////////////////////////
         Inventory.Pickupmessage  "$PBX_SuperNailgun_Pickup";
         Inventory.PickupSound "CBOXPKUP";
-        Obituary "Became a Leaking Piece Of Meat By The Super Nailgun";
+        Obituary "$OB_WEAP_SUPERNAILGUN";
         AttackSound "None";
         Tag "$PBX_SuperNailgun_Tag";
         Scale 0.4;

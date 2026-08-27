@@ -169,35 +169,6 @@ extend class PBX_CSSG
 		PB_SpawnCasing(shelltype,random(10,14),random(-1,3),random(26,28),random(1,3),random(-5,-2),random(4,7));
 	}
 	
-	//just the pb_Firebullets but with a null check added
-	//might remove this when the null check is added in pb itself
-	action void CSSG_FireBullets(string type, int amount, double angle, double offs, double height, double pitch)
-	{
-		vector2 spread;
-		for(int i = amount; i > 0; i--)
-		{
-			spread.x = frandom(-angle, angle);
-			spread.y = frandom(-pitch, pitch);
-
-			if(i == amount) 
-			{
-				spread.x *= PB_Math.LinearMap(pb_weapon_recoil_mod_horizontal, 0.0, 1.0, 1.0, 0.2);
-				spread.y *= PB_Math.LinearMap(pb_weapon_recoil_mod_vertical, 0.0, 1.0, 1.0, 0.2);
-				// spread *= clamp((invoker.sustainedFire / 5), 0, 1);
-				spread *= GetCrouchFactor();
-			}
-
-			Actor p1, p2 = A_FireProjectile(type, spread.x, 0, offs, height, FPF_NOAUTOAIM, spread.y);
-
-            if(p2)
-            {
-                PB_Projectile pbProj = PB_Projectile(p2);
-				if(pbProj)
-					pbProj.isBloodExplosionGenerator = amount > 4 && i == amount;
-            }
-		}
-	}
-	
 	//the nexts funcions exist only to not bloat the code and dont make a lot of different fire states
 	//so all is handled here, so if something goes wrong, i can fix it here once, and not in every state
 	Action Void FireCSSGFirst()
@@ -216,9 +187,9 @@ extend class PBX_CSSG
 				PB_FireBullets("PB_MGNail",12,3,0,0,3); 
 				break;
 			case Shell_Flak: 
-				CSSG_FireBullets("chunk1",3,5,0,0,3); 
-				CSSG_FireBullets("chunk2",3,3,0,0,4);
-				CSSG_FireBullets("chunk4",2,4,0,0,3);
+				PBX_FireBullets("chunk1",3,5,0,0,3); 
+				PBX_FireBullets("chunk2",3,3,0,0,4);
+				PBX_FireBullets("chunk4",2,4,0,0,3);
 				break;
 			case Shell_Drgn: 
 				PB_FireBullets("PB_DragonsBreathTracer",10,6,0,0,6); 
@@ -237,7 +208,7 @@ extend class PBX_CSSG
 				PB_FireBullets("PB_8GAPellet",10,16,0,0,12);
 				break;
 			case Shell_Damn:
-				CSSG_FireBullets("DanmakuProjectile",16,4.0,0,0,2.5);
+				PBX_FireBullets("DanmakuProjectile",16,4.0,0,0,2.5);
 				break;
 			case Shell_SubZ:
 				A_SpawnItemEx("BlueFlareSpawn", 0, 0, -3);
@@ -272,8 +243,8 @@ extend class PBX_CSSG
 				PB_FireBullets("PB_MGNail",6,3,0,0,3); 
 				break;
 			case Shell_Flak: 
-				CSSG_FireBullets("chunk1",2,3,0,0,3); 
-				CSSG_FireBullets("chunk4",2,3,0,0,3);
+				PBX_FireBullets("chunk1",2,3,0,0,3); 
+				PBX_FireBullets("chunk4",2,3,0,0,3);
 				break;
 			case Shell_Drgn: 
 				PB_FireBullets("PB_DragonsBreathTracer",5,6,0,0,6); 
@@ -291,7 +262,7 @@ extend class PBX_CSSG
 				PB_FireBullets("PB_8GAPellet",5,13,0,0,8);
 				break;
 			case Shell_Damn:
-				CSSG_FireBullets("DanmakuProjectile",8,1.5,2,0,1.2);
+				PBX_FireBullets("DanmakuProjectile",8,1.5,2,0,1.2);
 				break;
 			case Shell_SubZ:
 				A_SpawnItemEx("BlueFlareSpawn", 0, 0, -3);
@@ -325,7 +296,7 @@ extend class PBX_CSSG
 				PB_FireBullets("PB_MGNail",6,3,0,0,3); 
 				break;
 			case Shell_Flak: 
-				CSSG_FireBullets("chunk2",4,3,0,0,3); 
+				PBX_FireBullets("chunk2",4,3,0,0,3); 
 				break;
 			case Shell_Drgn: 
 				PB_FireBullets("PB_DragonsBreathTracer",5,6,0,0,6); 
@@ -343,7 +314,7 @@ extend class PBX_CSSG
 				PB_FireBullets("PB_8GAPellet",5,12,0,0,8);
 				break;
 			case Shell_Damn:
-				CSSG_FireBullets("DanmakuProjectile",8,1.6,-2,0,1.2);
+				PBX_FireBullets("DanmakuProjectile",8,1.6,-2,0,1.2);
 				break;
 			case Shell_SubZ:
 				A_SpawnItemEx("BlueFlareSpawn", 0, 0, -3);

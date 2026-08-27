@@ -16,7 +16,7 @@ Class PBX_CSSG : PBX_WeaponBase
 	{
 		weapon.slotnumber 3;
 		Inventory.PickupMessage "$PBX_CSSG_PICKUP";
-		Obituary "%o was devastated by %k.";
+		Obituary "$OB_WEAP_CSSG";
 		Inventory.PickupSound "COMSSGUP";
 		Tag "$PBX_CSSG_TAG";
 		Inventory.AltHUDIcon "SG43A0";

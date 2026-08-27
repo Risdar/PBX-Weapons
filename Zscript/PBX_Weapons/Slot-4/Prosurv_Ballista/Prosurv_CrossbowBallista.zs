@@ -37,7 +37,7 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
         Weapon.BobStyle "InverseSmooth";
         Scale 0.7;
 
-        Obituary "%k Speared %o with a Ballista";
+        Obituary "$OB_WEAP_CROSSBOWBALLISTA";
         Inventory.PickupMessage "$PBX_CrossbowBallista_Pickup";
         Inventory.PickupSound "weapons/ballista/drawstring";
 	    Tag "$PBX_CrossbowBallista_Tag";

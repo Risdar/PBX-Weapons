@@ -15,7 +15,7 @@ class Razorblade : PB_ProjectileAlt
 		+PB_PROJECTILE.NOCRITICALS
         SeeSound "";
         DeathSound "";
-        Obituary "%o's guts were shredded by %k's flying blade.";
+        Obituary "$OB_PROJ_RAZORBLADE";
         DamageType "Cut";
         Gravity 0;
         WallBounceFactor 1;
@@ -861,7 +861,7 @@ class CRL_NormalRockets : PB_ProjectileAlt
         Scale 2.0;
         SeeSound "DSCANFIR";
         DeathSound "Explosion";
-        Obituary "%o was blown up by %k's Cyberdemon missile launcher. Ouch!";
+        Obituary "$OB_PROJ_CYBERRL";
     }
 
     States
@@ -1116,19 +1116,22 @@ class SeekerRocketSmokeTrail : actor
 }
 
 //////////////////////////// NUCLEAR WARHEAD ////////////////////////////////////////////////////////////////////////////////////
-class NuclearRocket : actor
+class NuclearRocket : PB_ProjectileAlt
 {
     Default
     {
         Gravity 0.2;
-        DamageFunction 20000;
+		PB_Projectile.BaseDamage 20000;
+		PB_Projectile.RipperCount 0;
+		PB_Projectile.PenetrationCount 0;
+		+PB_PROJECTILE.NOCRITICALS
         Speed 100;
         Scale 1.0;
         Radius 6;
         Height 6;
         Damagetype "Nuke";
         Species "None";
-        Obituary "$OBBD_NUKELAUNCHER";
+        Obituary "$OB_PROJ_NUKE";
         Projectile;
         MeleeDamage 0;
         Decal "Scorch";

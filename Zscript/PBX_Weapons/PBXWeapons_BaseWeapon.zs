@@ -280,6 +280,35 @@ class PBX_WeaponBase : PB_WeaponBase abstract
     }
 
 //////////////////////////// FIRING ////////////////////////////////////////////////////////////////////////////////////
+    // PB's firebullets modified to shoot non pb_projectile projectiles
+    // Taken from one of CSSG's function
+    action void PBX_FireBullets(string type, int amount, double angle, double offs, double height, double pitch)
+	{
+		vector2 spread;
+		for(int i = amount; i > 0; i--)
+		{
+			spread.x = frandom(-angle, angle);
+			spread.y = frandom(-pitch, pitch);
+
+			if(i == amount) 
+			{
+				spread.x *= PB_Math.LinearMap(pb_weapon_recoil_mod_horizontal, 0.0, 1.0, 1.0, 0.2);
+				spread.y *= PB_Math.LinearMap(pb_weapon_recoil_mod_vertical, 0.0, 1.0, 1.0, 0.2);
+				// spread *= clamp((invoker.sustainedFire / 5), 0, 1);
+				spread *= GetCrouchFactor();
+			}
+
+			Actor p1, p2 = A_FireProjectile(type, spread.x, 0, offs, height, FPF_NOAUTOAIM, spread.y);
+
+            if(p2)
+            {
+                PB_Projectile pbProj = PB_Projectile(p2);
+				if(pbProj)
+					pbProj.isBloodExplosionGenerator = amount > 4 && i == amount;
+            }
+		}
+	}
+
     // Ricochet function from BDP
     Action void PBX_FireRicochet(
         name projectileName, 
@@ -366,10 +395,10 @@ class PBX_WeaponBase : PB_WeaponBase abstract
 		return false;
 	}
 
-    action state A_PressingReload()
+    action state A_PressingReload(StateLabel st)
 	{
 		if ((player.cmd.buttons & BT_RELOAD) || (player.oldbuttons & BT_RELOAD)) 
-            return resolvestate("ReloadFromPump");
+            return resolvestate(st);
 		else 
             return resolvestate(null);
 	}
@@ -388,6 +417,10 @@ class PBX_WeaponBase : PB_WeaponBase abstract
 				}
 				A_ALertMonsters();
 				A_Startsound("meleeweapon/break");
+            }
+        // So any weapon can go to this state if they want to be safely removed
+        SafelyRemoveWeapon:
+            TNT1 A 0 {
                 player.pendingweapon = player.mo.BestWeapon(null);
                 self.RemoveInventory(invoker);
             }

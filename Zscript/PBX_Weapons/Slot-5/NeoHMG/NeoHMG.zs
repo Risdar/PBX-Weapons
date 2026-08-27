@@ -38,7 +38,7 @@ class PBX_NeoHMG : PBX_WeaponBase
 		PB_WeaponBase.TailPitch 0.8;
 
 //////////////////////////// MESSAGES & SOUNDS ////////////////////////////////////////////////////////////////////////////////////
-        // Obituary "Shattered Into Pieces By Excavator Launcher. Ouch!";
+        Obituary "$OB_WEAP_NEOHMG";
         Inventory.PickupMessage "$PBX_NeoHMG_Pickup";
         Inventory.PickupSound "LMGPKP";
 	    Tag "$PBX_NeoHMG_Tag";

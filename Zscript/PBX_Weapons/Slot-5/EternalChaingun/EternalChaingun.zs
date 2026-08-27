@@ -25,7 +25,7 @@ class PBX_EternalMinigun : PBX_WeaponBase
 //////////////////////////// MESSAGES & SOUNDS ////////////////////////////////////////////////////////////////////////////////////
         Inventory.Pickupmessage  "$PBX_EternalChaingun_Pickup";
         Inventory.PickupSound "CBOXPKUP";
-        Obituary "%o was decapitated by %k's Assasin.";
+        Obituary "$OB_WEAP_ETERNALCHAINGUN";
         AttackSound "None";
         Tag "$PBX_EternalChaingun_Tag";
         Scale 0.9;

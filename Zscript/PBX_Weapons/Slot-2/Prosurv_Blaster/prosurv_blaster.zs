@@ -21,7 +21,7 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
         Inventory.Amount 1;
         +FLOORCLIP;
         +DONTGIB;
-        Obituary "%k Zapped %o with a Blaster Pistol";
+        Obituary "$OB_WEAP_PROSURVBLASTER";
         AttackSound "None";
         Tag "$PBX_ProsurvBlaster_Tag";
         Inventory.Icon "BRPIA0";

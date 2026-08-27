@@ -39,7 +39,7 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
         Scale 0.4;
 
 //////////////////////////// MESSAGES & SOUNDS ////////////////////////////////////////////////////////////////////////////////////
-		Obituary "%k Drew a Bead On %o with a Lever Action";
+		Obituary "$OB_WEAP_LEVERACTION";
 		Inventory.PickupMessage "$PBX_LeverAction_Pickup";
 		Inventory.PickupSound "weapons/leveraction/rechamber";
 	    Tag "$PBX_LeverAction_Tag";

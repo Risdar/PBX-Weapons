@@ -21,7 +21,7 @@ Class PBX_DemonExt : PBX_WeaponBase
 		Tag "$PBX_DemonExt_Tag";
 		inventory.pickupsound "UNMPCK";
 		inventory.pickupmessage "$PBX_DemonExt_Pickup";
-		Obituary "Was Undone By UnMaker Extermination Type.";
+		Obituary "$OB_WEAP_DEMONEXT";
 		Weapon.AmmoType1 "PB_DTech";
 		Weapon.AmmoType2 "SoulCharge";
 		Weapon.AmmoUse1 2;

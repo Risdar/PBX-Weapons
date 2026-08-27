@@ -80,18 +80,13 @@ class PBX_NukeLauncher : PBX_WeaponBase
             }
             NKLF A 1 BRIGHT {
                 A_ZoomFactor(1.0);
-                A_FireCustomMissile("NuclearRocket", 0, 1, 0, -6);
+                PB_FireBullets("NuclearRocket", 1, 0.1, 0, 0, 0.1);
                 A_TakeInventory(invoker.ammo1.GetClassName(),1,TIF_NOTAKEINFINITE);
             }
             NKLF B 2 BRIGHT;
             NKLF CDEFGHIJKL 1;
 			NKLS EFGH 1 A_WeaponOffset(0, 8, WOF_ADD);
-            "####" "#" 0 {
-                player.pendingweapon = player.mo.BestWeapon(null);
-                self.RemoveInventory(invoker);
-            }
-            stop;
-            Goto Ready;
+            Goto SafelyRemoveWeapon;
   
         WeaponSpecial:
             TNT1 A 0 A_TakeInventory("GoWeaponSpecialAbility", 1);

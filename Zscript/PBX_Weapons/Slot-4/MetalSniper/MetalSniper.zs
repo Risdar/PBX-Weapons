@@ -17,7 +17,6 @@ Class PBX_MetalSniper : PBX_WeaponBase
     default
     {
         weapon.slotnumber 4;
-        Tag "$PBX_MetalSniper_Tag";
         inventory.pickupsound "CLIPIN";
         inventory.pickupmessage "$PBX_MetalSniper_Pickup";
         Inventory.AltHudIcon "MSNWA0";
@@ -28,6 +27,8 @@ Class PBX_MetalSniper : PBX_WeaponBase
         PB_WeaponBase.WheelInfo "MetalSniperWheel";
 		PB_WeaponBase.ReserveToMagAmmoFactor AMMO_TAKE_NORMAL;
         PBX_WeaponBase.ScopeConfiguration true, MINZOOM, MAXZOOM; 
+        Tag "$PBX_MetalSniper_Tag";
+		Obituary "$OB_WEAP_METALSNIPER";
         scale 0.62;
         +weapon.noalert;
         +weapon.noautofire;

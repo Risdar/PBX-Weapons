@@ -31,6 +31,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
         PB_WeaponBase.WheelInfo "NormalRifleWheel";
 		PB_WeaponBase.ReserveToMagAmmoFactor 1;
         
+		Obituary "$OB_WEAP_ASSAULTRIFLE";
         Tag "$PBX_NormalRifle_Tag";
         scale 0.5;
         +weapon.noalert;

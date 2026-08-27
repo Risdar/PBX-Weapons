@@ -44,7 +44,7 @@ class PBX_Excavator : PBX_WeaponBase
         FloatBobStrength 0.5;
 
 //////////////////////////// MESSAGES & SOUNDS ////////////////////////////////////////////////////////////////////////////////////
-        Obituary "Shattered Into Pieces By Excavator Launcher. Ouch!";
+        Obituary "$OB_WEAP_EXCAVATOR";
         Inventory.PickupMessage "$PBX_Excavator_Pickup";
         Inventory.PickupSound "misc/ROCKBOXA";
 	    Tag "$PBX_Excavator_Tag";

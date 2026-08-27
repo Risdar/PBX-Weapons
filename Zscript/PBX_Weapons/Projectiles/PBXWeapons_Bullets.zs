@@ -6,8 +6,9 @@ class PB_357Magnum : PB_500SW
 		PB_Projectile.BaseDamage 120;
 		PB_Projectile.RipperCount 4;
 		PB_Projectile.PenetrationCount 5;
+		// PB_Projectile.SpeedFPS 1670;
 		+PB_Projectile.WHIZCRACK;
-		Obituary "%o was shot at somewhere else by %k.";
+		Obituary "$OB_PROJ_357MAGNUM";
 	}
 }
 
@@ -18,14 +19,15 @@ class PB_444Marlin : PB_500SW
 		PB_Projectile.BaseDamage 210;
 		PB_Projectile.RipperCount 5;
 		PB_Projectile.PenetrationCount 5;
+		// PB_Projectile.SpeedFPS 2450;
 		+PB_Projectile.WHIZCRACK;
 		DamageType "SSG";
-		Obituary "%o was Hard hit with punch of Marlin by %k.";
+		Obituary "$OB_PROJ_444MARLIN";
 	}
 }
 
 //////////////////////////// METAL SNIPER ////////////////////////////////////////////////////////////////////////////////////
-class MS_ResonanceRounds : PB_Projectile
+class MS_ResonanceRounds : PB_762x51mmAP
 {
 	Default
 	{
@@ -33,9 +35,8 @@ class MS_ResonanceRounds : PB_Projectile
 		PB_Projectile.RipperCount 8;
 		PB_Projectile.PenetrationCount 5;
         DamageType "Stun";
-		RipperLevel 1;
 		+PB_Projectile.WHIZCRACK;
-		Obituary "%o was shredded by %k.";
+		Obituary "$OB_PROJ_RESOROUND";
 	}
 	
 	override int SpecialMissileHit(Actor victim)
@@ -75,21 +76,7 @@ class PB_792x57mm_Heated : PB_792x57mm
 		+PB_Projectile.WHIZCRACK;
 		+PB_Projectile.SMALLIMPACT;
 		DamageType "Fire";
-		// Obituary "%k forced %o to read Mein Kampf.";
-	}
-}
-
-class PB_792x57mm_Charged : PB_792x57mm
-{
-	Default
-	{
-		PB_Projectile.BaseDamage 35;
-		PB_Projectile.RipperCount 1;
-		PB_Projectile.PenetrationCount 3;
-		+PB_Projectile.WHIZCRACK;
-		+PB_Projectile.SMALLIMPACT;
-		DamageType "Plasma";
-		// Obituary "%k forced %o to read Mein Kampf.";
+		Obituary "$OB_PROJ_792x57MM_HEATED";
 	}
 }
 

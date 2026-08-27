@@ -1,0 +1,56 @@
+[enu default]
+//////////////////////////// PROJECTILES ///////////////////////////////////////////////////////////////////////////////
+// Bullets
+OB_PROJ_357MAGNUM       = "%o was shot at somewhere else by %k.";
+OB_PROJ_444MARLIN       = "%o was Hard hit with punch of Marlin by %k.";
+OB_PROJ_RESOROUND       = "%o was shredded by %k.";
+OB_PROJ_792x57MM_HEATED = "%o was melted by %k.";
+
+// Shells
+
+// Explosives
+OB_PROJ_NUKE        = "\cr%o\c- was nuked by \cr%k\c-.";
+OB_PROJ_RAZORBLADE  = "%o's guts were shredded by %k's flying blade.";
+OB_PROJ_CYBERRL     = "%o was blown up by %k's Cyberdemon missile launcher. Ouch!.";
+
+// Demon
+OB_PROJ_DEMONEXT_ENERGYBLAST = "%o was barbequed by %k's Lasergun.";
+OB_PROJ_DEMONEXT_REAPERSHOT  = "%o could not evade %k soul-seekers.";
+OB_GENERIC_REAPED_BY         = "%o was reaped by %k.";
+
+//////////////////////////// WEAPONS ///////////////////////////////////////////////////////////////////////////////
+// Slot 2
+OB_WEAP_PLASMABLASTER = "%o was decapitated by %k's Assasin.";
+OB_WEAP_PROSURVBLASTER = "%k Zapped %o with a Blaster Pistol.";
+OB_WEAP_LEVERACTION = "%k Drew a Bead On %o with a Lever Action.";
+
+// Slot 3
+OB_WEAP_PSG = "%k Opened %o with a Pump Shotgun.";
+OB_WEAP_CSSG = "%o was devastated by %k.";
+OB_WEAP_SPAS12 = "%o was blasted by %k's SPAS-12.";
+
+// Slot 4
+OB_WEAP_BATTLERIFLE = "%o was pierced by %k's Battle Rifle.";
+OB_WEAP_ASSAULTRIFLE = "%o was killed by %k's Assault Rifle.";
+OB_WEAP_METALSNIPER = "%o was killed by %k's Metal Sniper.";
+OB_WEAP_CROSSBOWBALLISTA = "%k Speared %o with a Crossbow.";
+
+// Slot 5
+OB_WEAP_NEOHMG = "%o is riddled with bullets by %k's HMG.";
+OB_WEAP_ETERNALCHAINGUN = "%o is unrecognizable because of %k's Chaingun.";
+OB_WEAP_SUPERNAILGUN = "Became a Leaking Piece Of Meat By The Super Nailgun.";
+
+// Slot 6
+OB_WEAP_CYBERRL = "%o was blown up by %k's Cyberdemon missile launcher. Ouch!.";
+OB_WEAP_EXCAVATOR = "Shattered Into Pieces By Excavator Launcher. Ouch!.";
+OB_WEAP_PAINGIVER = "Death By Paingiver. Ouch!.";
+OB_WEAP_MASTERMINDCG = "Mowed down by Mastermind's Chaingun.";
+
+// Slot 7
+OB_WEAP_RAILGUN = "%o was pierced by %k's Railgun.";
+
+// Slot 9
+OB_WEAP_DEMONEXT = "%o was Undone by UnMaker Extermination Type.";
+
+
+

@@ -20,7 +20,7 @@ Class PBX_BDPRailgun : PBX_WeaponBase
         PB_WeaponBase.UsesWheel false; // We dont want the player to be able to use the wheel on start
         PB_WeaponBase.WheelInfo "BDPRailgun_Wheel";
         PBX_WeaponBase.ScopeConfiguration true, MINZOOM, MAXZOOM; 
-		Obituary "%o was pierced by %k's Railgun.";
+		Obituary "$OB_WEAP_RAILGUN";
 		Inventory.PickupSound "PLSDRAW";
 		Inventory.Pickupmessage "$PBX_BDPRailgun_Pickup";
 		DamageType "Railgun";
@@ -189,8 +189,10 @@ Class PBX_BDPRailgun : PBX_WeaponBase
 				if(invoker.ammo2.amount < 1) return resolvestate("ReloadFromPump");
 				else return resolvestate(null);
 			}
-			// TNT1 A 0 A_AutoReloadMag(1,"ReloadFromPump");
-			TNT1 A 0 {if(invoker.ammo2.amount < MAGAZINE_SIZE && invoker.ammo1.amount > 9) A_PressingReload();}
+			TNT1 A 0 {
+                if(invoker.ammo2.amount < MAGAZINE_SIZE && invoker.ammo1.amount >= invoker.ReserveToMagAmmoFactor) 
+                    A_PressingReload("ReloadFromPump");
+            }
 			Goto FinishPump2;
 
 		FinishPump:

@@ -438,57 +438,67 @@ Class U64BurningPiece : DTechBurningPiece
 		super.beginplay();
 	}
 }
-Class UnmakerLaser64 : UNMK_DExtActor{
-	Default{
-	Radius 18;
-	Height 18;
-	Speed 40;
-	Damage 20;
-	Projectile;
-	+NOGRAVITY
-	MissileType "UnmakerLaser64Trail";
-	DamageType "Fire";
-	DeathSound "";
-	Scale 0.1;
+Class UnmakerLaser64 : UNMK_DExtActor
+{
+	Default
+	{
+		Radius 18;
+		Height 18;
+		Speed 40;
+		Damage 20;
+		Projectile;
+		+NOGRAVITY
+		MissileType "UnmakerLaser64Trail";
+		DamageType "Fire";
+		DeathSound "";
+		Scale 0.1;
 	}
-	States{
-	Spawn:
-	TNT1 A 1;
-	Loop;
-	Death:
-	TNT1 A 0 A_SetScale(1);
-	LENR C 1	A_FadeOut(0.02);
-	Stop;
+
+	States
+	{
+		Spawn:
+			TNT1 A 1;
+			Loop;
+		Death:
+			TNT1 A 0 A_SetScale(1);
+			LENR C 1 A_FadeOut(0.02);
+			Stop;
 	}
 }
-Class DExtShoque : UNMK_DExtActor{
-	Default{
-	Radius 1;
-	Height 1;
-	Speed 2;
-	Damage 0;
-	RenderStyle "Add";
-	Scale 0.7;
-	Gravity 0;
-	Alpha 0.5;
-	+NOBLOCKMAP
-	+NOTELEPORT
-	+DONTSPLASH
-	+MISSILE
-	+FORCEXYBILLBOARD
-	+ROLLSPRITE
-	+ROLLCENTER
+Class DExtShoque : UNMK_DExtActor
+{
+	Default
+	{
+		Radius 1;
+		Height 1;
+		Speed 2;
+		Damage 0;
+		RenderStyle "Add";
+		Scale 0.7;
+		Gravity 0;
+		Alpha 0.5;
+		+NOBLOCKMAP
+		+NOTELEPORT
+		+DONTSPLASH
+		+MISSILE
+		+FORCEXYBILLBOARD
+		+ROLLSPRITE
+		+ROLLCENTER
 	}
-	States{
-	Spawn:
-		TNT1 A 1;
-		SHOQ ABCDEFG 1 BRIGHT;
-		Stop;
+
+	States
+	{
+		Spawn:
+			TNT1 A 1;
+			SHOQ ABCDEFG 1 BRIGHT;
+			Stop;
 	}
 }
 
-Class DemonExterminatorEnergyBlast : PlasmaBall{
-	Default{
+Class DemonExterminatorEnergyBlast : PlasmaBall
+{
+	Default
+	{
 		Scale 0.8;
 		Speed 85;
 		Damagefunction 216;
@@ -508,7 +518,7 @@ Class DemonExterminatorEnergyBlast : PlasmaBall{
 		+BOUNCEONWALLS
 		+EXPLODEONWATER
 		+PAINLESS
-		Obituary "%o was barbequed by %k's Lasergun.";
+		Obituary "$OB_PROJ_DEMONEXT_ENERGYBLAST";
 		SeeSound "";
 		BounceFactor 0.95;
 		ReactionTime 45;
@@ -756,7 +766,7 @@ Class HolyMissile2 : HolyMissile replaces HolyMissile
 		RenderStyle "None";
 		Alpha 0.50;
 		Damagetype "wepsoul";
-		Obituary "%o was reaped by %k.";
+		Obituary "$OB_GENERIC_REAPED_BY";
 		+Bright
 		+EXTREMEDEATH
 		+FORCEXYBILLBOARD
@@ -766,10 +776,10 @@ Class HolyMissile2 : HolyMissile replaces HolyMissile
 
 	States
 	{
-	Spawn:
-		TNT1 A 0 ;
-		TNT1 A 1 A_CHolyAttack2;
-		Stop;
+		Spawn:
+			TNT1 A 0 ;
+			TNT1 A 1 A_CHolyAttack2;
+			Stop;
 	}
 }
 
@@ -782,7 +792,7 @@ Class ReaperBall : Cacodemonball //Thanks to Xaser for spiraling projectile code
 		Speed 25;
 		Damage 100;
 		Damagetype "wepsoul";
-		Obituary "%o was reaped by %k.";
+		Obituary "$OB_GENERIC_REAPED_BY";
 		SeeSound "none";
 		DeathSound "weapons/solexp";
 		RENDERSTYLE "ADD";
@@ -888,7 +898,7 @@ Class ReaperShot : CacodemonBall
 		Renderstyle "Add";
 		Alpha 0.85 ;
 		Damagetype "wepsoul";
-		Obituary "%o could not evade %k soul-seekers.";
+		Obituary "$OB_PROJ_DEMONEXT_REAPERSHOT";
 		SeeSound "weapons/ghomis";
 		DeathSound "weapons/ghohit";
 		+SEEKERMISSILE

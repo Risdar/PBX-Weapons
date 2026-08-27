@@ -29,7 +29,7 @@ class PBX_Paingiver : PBX_WeaponBase
 	    Weapon.AmmoGive1 30;
 		
 //////////////////////////// MESSAGES & SOUNDS ////////////////////////////////////////////////////////////////////////////////////
-        Obituary "Death By Paingiver. Ouch!";
+        Obituary "$OB_WEAP_PAINGIVER";
 		Inventory.Pickupmessage "$PBX_Paingiver_Pickup";
 	    Inventory.PickupSound "misc/rockboxa";
 		Tag "$PBX_Paingiver_Tag";

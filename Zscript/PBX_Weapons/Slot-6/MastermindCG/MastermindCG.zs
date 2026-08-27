@@ -33,7 +33,7 @@ class PBX_MastermindChaingun : PBX_WeaponBase
 	    Weapon.AmmoGive1 25;
 		
 //////////////////////////// MESSAGES & SOUNDS ////////////////////////////////////////////////////////////////////////////////////
-		Obituary "Mowed down by Mastermind's Chaingun.";
+		Obituary "$OB_WEAP_MASTERMINDCG";
 		Inventory.Pickupmessage "$PBX_MastermindCG_Pickup";
 		Inventory.PickupSound "CBOXPKUP";
 		Tag "$PBX_MastermindCG_Tag";
