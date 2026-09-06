@@ -133,6 +133,7 @@ class PBX_EternalMinigun : PBX_WeaponBase
         PB_SpawnCasing("PB_EmptyBrass", 19,-13,24,0,-frandom(3,6),frandom(-1,1), false);
         PB_WeaponRecoil(-0.6,frandom(1.6, -1.6));
         // A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+        A_FlashOverlay();
     }
 
     action state EChaingun_Ready()
@@ -363,6 +364,19 @@ class PBX_EternalMinigun : PBX_WeaponBase
             Goto Ready3;
             
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////
+        MuzzleFlash:
+            PLSE B 1 bright {
+                let psp = player.FindPSprite(OverlayID());
+                psp.frame += random[sfx](0, 2);
+                psp.x = 162;
+                psp.y = 110;
+                psp.pivot = (0.5, 0.5);
+                psp.scale *= frandom[sfx](0.9, 1.2);
+                psp.rotation = frandom[sfx](0, 360);
+                psp.alpha = frandom[sfx](0.8, 1.2);
+            }
+            stop;
+
         FlashPunching:
             CHGS ABCCDDD 1;
             CHGS DDDCCBA 1;      // 14 frames

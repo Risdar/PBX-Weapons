@@ -4,40 +4,33 @@
 // Animations by ikdfa
 
 // Includes
-#include "./PlasmaBlaster_Functions.zs"
-#include "./PlasmaBlaster_Projectiles.zs"
-#include "./PlasmaBlaster_Wheel.zs"
+// #include "./PlasmaBlaster_Functions.zs"
 
-class Plasma_Select_Auto : inventory {default{inventory.maxamount 1;}}
-class Plasma_Select_Semi : inventory {default{inventory.maxamount 1;}}
-class Plasma_Select_Burst : inventory {default{inventory.maxamount 1;}}
-class Plasma_Select_Charge : inventory {default{inventory.maxamount 1;}}
+// class Detonate_Lightning_Ball : inventory {default{inventory.maxamount PBX_TeslaGun.LIGHTBALL_CHARGE;}}
 
 // Actual Weapon
-class PBX_PlasmaBlaster : PB_WeaponBase
+class PBX_TeslaGun : PBX_WeaponBase
 {
     Default
     {
 //////////////////////////// WEAPON DATA ////////////////////////////////////////////////////////////////////////////////////
-        Weapon.SelectionOrder 2545;
-        Weapon.SlotNumber 2;
-        Weapon.SlotPriority 0.5;
-        PB_WeaponBase.UsesWheel true;
-        PB_WeaponBase.WheelInfo "PlasmaBlasterWheel";
-	    Inventory.AltHUDIcon "ARMZA0";
+        Weapon.SelectionOrder 110;
+        Weapon.SlotNumber 8;
+        Weapon.SlotPriority 1;
+	    Inventory.AltHUDIcon "ETROA0";
 
 //////////////////////////// AMMO ////////////////////////////////////////////////////////////////////////////////////
         Weapon.AmmoType1 "PB_Cell";
-        Weapon.AmmoType2 "HellPistolerAmmo";
-        Weapon.AmmoGive1 30;
+        Weapon.AmmoType2 "TeslaAmmo";
+        Weapon.AmmoGive1 50;
 
 //////////////////////////// MESSAGES & SOUNDS ////////////////////////////////////////////////////////////////////////////////////
-        Inventory.Pickupmessage  "$PBX_PlasmaBlaster_Pickup";
-        Inventory.PickupSound "CHGNPKUP";
+        Inventory.Pickupmessage  "$PBX_TeslaGun_Pickup";
+        Inventory.PickupSound "PLSDRAW";
         Obituary "%o was decapitated by %k's Assasin.";
         AttackSound "None";
-        Tag "$PBX_PlasmaBlaster_Tag";
-        Scale 0.8;
+        Tag "$PBX_TeslaGun_Tag";
+        Scale 1.0;
 
 //////////////////////////// WEAPON FLAGS ////////////////////////////////////////////////////////////////////////////////////
         +WEAPON.NOAUTOAIM;
@@ -46,46 +39,182 @@ class PBX_PlasmaBlaster : PB_WeaponBase
     }
 
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
-    bool blasterPrimary;
-    bool blasterSecondary;
-    int burstcount;
-    const MAXCHARGE = 16;
-    enum blasterEnum {
-        PRIM_SEMI       = 0,
-        PRIM_AUTO       = 1,
-        SEC_BURST       = 0,
-        SEC_CHARGE      = 1,
-        TAKE_CHARGE     = 2   // Ammo take charge
-    }
+    int mTeslaCancelAnimation; // Used for the cancel animation since its just a loop
+    int mTeslaAltFireAnimation; // Used for the altfire animation
+
+    const CELL_SIZE = 100;
+    const ARCFIRE_DAMAGE = 30;
+
+    const ALTFIRE_AMMOTAKE = 25;
+    const DECHARGE_GIVE = 5; // MAKE SURE THIS VALUE CAN CLEANLY DIVIDE ALTFIRE_AMMOTAKE
+    const DECHARGE_LOOP = ALTFIRE_AMMOTAKE/DECHARGE_GIVE;
+
+    const LIGHTNING_SPECIAL_NAME = "Tesla_LightningCharge";
+    const LIGHTNING_SPECIAL_MAXCHARGE = 100;
+    const LIGHTNING_SPECIAL_MINIMUM = 30; // How many charges it'll take
+
+    const LIGHTNING_RANGE = 716; // How long is the normal fire length
+    const LIGHTBALL_DAMAGE = 200; // How much damage does the lightball do per bounce
+    const LIGHTBALL_LIGHTNING_DAMAGE = 20; // How much damage does the lightball do per arc
+    const LIGHTBALL_MAXCHARGE = 20; // How much charges does the lightball need before summoning lightning
+    const LIGHTBALL_LIFETIME = 10; // How long should the lightball stay in flight
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
+
+    action void Tesla_ChargeLightningBall()
+    {
+        FLineTraceData traceData;
+        double pz = height * 0.5 - floorclip + player.mo.AttackZOffset * player.crouchFactor;
+        bool hit = LineTrace(Angle, LIGHTNING_RANGE, Pitch, 0, offsetz: pz, data: traceData);
+        
+        if(hit && traceData.HitActor && traceData.HitActor is "Tesla_LightningBall")
+        {
+            let lightball = Tesla_LightningBall(traceData.HitActor);
+            if(lightball)
+            {
+                lightball.increaseCharge();
+            }
+        }
+    }
+
+    action void Tesla_FireLightningBall()
+    {
+        A_ZoomFactor(1.0);
+        A_FireCustomMissile("ElectroBlastTrail2", 0, 0, 0, 0);
+        // A_StartSound("TESLAH", CHAN_WEAPON, CHANF_LOOPING, starttime: frandom[sfx](0, 0.5));
+        A_StartSound("PLSULT", CHAN_WEAPON);
+        A_FireCustomMissile("Tesla_LightningBall",0,0,0,0);
+        A_FlashOverlay();
+        Tesla_GiveLightningCharge(LIGHTNING_SPECIAL_MINIMUM);
+    }
+
+    action void Tesla_GiveLightningCharge(int mAmount = 1)
+    {
+        A_GiveInventory(LIGHTNING_SPECIAL_NAME,mAmount);
+    }
+
+    action state Tesla_LightningSpecial()
+    {
+        if(CountInv(LIGHTNING_SPECIAL_NAME) < LIGHTNING_SPECIAL_MINIMUM)
+        {
+            A_Print(String.Format(StringTable.Localize("$PBX_TeslaGun_NoLightningCharge"),LIGHTNING_SPECIAL_MINIMUM));
+            return ResolveState("Ready3");
+        }
+        return ResolveState(null);
+    }
+
+    action void PBX_FireLightningStorm(
+        int damage = 100, 
+        int numrays = 32, 
+        double coneAngle = 90, 
+        double distance = 1024, 
+        double vrange = 0, 
+        int duration = 5, 
+        int delay = 0, 
+        int maxChains = 1, 
+        int maxlinks = 5,
+        name damageType = 'plasma'
+    )
+    {
+        Vector3 beamstart = PBXCore_LightningController.L_GetBeamAttachPos(self);
+        Array<Actor> alreadyChained;
+
+        for (int i = 0; i < numrays; i++)
+        {
+            double an = angle - coneAngle * 0.5 + (numrays > 1 ? coneAngle / (numrays - 1) * i : 0);
+
+            FTranslatedLineTarget t;
+            AimLineAttack(an, distance, t, vrange);
+
+            Vector3 beamEnd;
+            if (t.linetarget && PBXCore_LightningController.L_IsValidVictim(t.linetarget, self))
+            {
+                beamEnd = PBXCore_LightningController.L_GetBeamAttachPos(t.linetarget);
+
+                if (alreadyChained.Find(t.linetarget) == alreadyChained.Size())
+                {
+                    PBXCore_LightningController.L_StartChain(self, t.linetarget, damage, distance, duration, delay, maxChains, maxlinks, damageType:damageType);
+                    Spawn("LightningBolt", t.linetarget.pos);
+                    S_StartSound("Thunder",0);
+                    alreadyChained.Push(t.linetarget);
+                }
+            }
+            else
+            {
+                beamEnd = beamstart + (cos(an), sin(an), 0) * distance;
+            }
+
+            PBXCore_LightningController.L_DrawLightning(beamstart, beamEnd, spawnSpark: (t.linetarget != null), playersource: player);
+        }
+        A_TakeInventory(LIGHTNING_SPECIAL_NAME,LIGHTNING_SPECIAL_MINIMUM);
+    }
+
+    action void Tesla_ArcFire()
+    {
+        A_SetWeaponFrame(random[sfx](4,7));
+        A_FireProjectile("RailGunTrailSpark_Fast", random(-2,2), 0, random(-5,5), -15, 0, random(-2,2));
+        A_FireProjectile("BlueFlareSpawn",0,0,0,0);
+        A_FireCustomMissile("PlasmaFlareSpawner", 0, 0, 0,spawnheight:-5);
+        A_StartSound("TESLAH2", CHAN_WEAPON, CHANF_LOOPING);
+        PBX_FireLightningGun(ARCFIRE_DAMAGE, spawnheight:-10, range:LIGHTNING_RANGE, duration:1, delay:0, maxChains:1, maxlinks:5, damageType:'Stun');
+        PB_TakeAmmo(invoker.ammotype2,emptyMag:0);
+        A_WeaponOffset(frandom[sfx](-0.5, 0.5), WEAPONTOP + frandom(0, 0.75), WOF_INTERPOLATE);
+        A_FlashOverlay();
+        Tesla_ChargeLightningBall();
+        Tesla_GiveLightningCharge();
+    }
+ 
+    action state Tesla_CheckDecharge()
+    {
+        A_FireCustomMissile("PlasmaFlareSpawner",0,0,0,0);
+        A_FireProjectile("BlueFlareSpawn",0,0,0,0);
+        A_FireProjectile("RailGunTrailSpark_Fast", random(-2,2), 0, random(-2,2), -15, 0, random(-2,2));
+        A_FlashOverlay();
+        if(JustPressed(BT_RELOAD))
+            return resolvestate("DeCharge");
+        return resolvestate(null);
+    }
 
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
     States
     {
 //////////////////////////// SETUP ////////////////////////////////////////////////////////////////////////////////////
         Spawn:
-            ARMZ A -1;
+            ETRO A -1;
             Stop;
 
         WeaponRespect:
-            AMGR ABCD 1 A_DoPBWeaponAction();
-            AMGZ ABC 1 A_DoPBWeaponAction();
-            AMGR QRSTUV 1 A_DoPBWeaponAction();
-            TNT1 A 0 A_PlaySound("CELLIN2", 6);
-            AMGR WXY 1 A_DoPBWeaponAction();
+            ETRG A 1 offset(-20, 46) A_DoPBWeaponAction();
+			ETRG A 1 offset(-12, 42) A_DoPBWeaponAction();
+            TNT1 A 0 A_StartSound("weapons/plasma/startup", 16,CHANF_OVERLAP);
+			ETRG A 15 offset(-4, 38) A_DoPBWeaponAction();
+            ET1R ABC 2 A_DoPBWeaponAction();
+            TNT1 A 0 A_StartSound("PLSCOOL",CHAN_WEAPON);
+			ETRR K 15 A_DoPBWeaponAction();
+            TNT1 A 0 {
+                A_FireProjectile("PlasmaFlareSpawner",0,0,-15,5);
+				A_FireProjectile("BlueFlareSpawn",0,0,-15,5);
+                A_StartSound("BEPBEP",CHAN_WEAPON);
+                return A_DoPBWeaponAction();
+            }
+            TNT1 A 0 A_StartSound("weapons/plasma/cellin",17,CHANF_OVERLAP);
+			ETRR LMNOP 2 A_DoPBWeaponAction();
+            TNT1 A 0 {
+                A_StartSound("PLSCOOL",CHAN_WEAPON,CHANF_OVERLAP);
+                A_FireProjectile("BluePlasmaParticle",random(340,350),0,6,0,0,-random(7,18));
+                A_FireProjectile("SmokeSpawner",0,0,0,5);
+                return A_DoPBWeaponAction();
+            }
+			ETRR EDCBA 2 A_DoPBWeaponAction();
+            TNT1 A 0 A_StartSound("ULTCHAR",CHAN_WEAPON,CHANF_OVERLAP);
             Goto Ready3;
 
         Deselect:
-			TNT1 A 0 {
-				A_WeaponOffset(0,32);
-				PB_SetRoll(0);
-				PB_HandleCrosshair(39);
-				A_TakeInventory("PB_LockScreenTilt",1);
-                A_StopSound(1);
-			}
-			AMGR ABCDEF 1;
+            TNT1 A 0 PBX_WeaponLower();
+			ETRG A 1 offset(-4,38);
+			ETRG A 1 offset(-12,42);
+			ETRG A 1 offset(-20,46);
 			TNT1 A 0 A_Lower();
 			Wait;
 
@@ -93,136 +222,217 @@ class PBX_PlasmaBlaster : PB_WeaponBase
             TNT1 A 0 {
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
-			    PB_HandleCrosshair(39);
+			    PB_HandleCrosshair(18);
 				A_SetInventory("PB_LockScreenTilt",0);
-                PBX_WeaponBase("weapons/smg_magfly1");
+                PBX_WeaponRaise("PLSDRAW");
 			    return PB_RespectIfNeeded();
 			}
         SelectAnimation:
-            AMGR FEDCBA 1;
+            ETRG A 1 offset(-20, 46);
+			ETRG A 1 offset(-12, 42);
+			ETRG A 1 offset(-4, 38);
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
         Ready3:
-			AMGL A 1 {
-                PB_HandleCrosshair(39);
+			ETRG A 1 {
+                PB_HandleCrosshair(18);
                 return A_DoPBWeaponAction();
             }
             loop;
 
+        CoolDown:
+            ETRG ABCDEF 1;
+            TNT1 A 0 A_StartSound("BEPBEP",CHAN_WEAPON,CHANF_OVERLAP);
+            ETRG G 15 {
+                A_StartSound("PLSCOOL",CHAN_VOICE);
+                A_FireProjectile("PlasmaFlareSpawner",0,0,10,5);
+				A_FireProjectile("BlueFlareSpawn",0,0,10,5);
+                A_FireProjectile("BluePlasmaParticle",random(340,350),0,6,0,0,-random(7,18));
+                A_FireProjectile("SmokeSpawner",0,0,0,5);
+            }
+            ETRG EDCBA 1;
+            TNT1 A 0 A_JumpIf(PB_GetMagEmpty(),"Ready3");
+			Goto Ready3;
+
+        Decharge:
+			PLSN A 0 A_StopSound(6);
+            PLSN A 0 A_StartSound("PLSDEARG",1);
+            PLSN A 0 {invoker.mTeslaCancelAnimation = 0;}
+        DechargeLoop:
+            ETRF A 1 BRIGHT A_FireCustomMissile("PlasmaFlareSpawner",0,0,0,0);
+            ETRF B 1 BRIGHT A_GiveInventory(invoker.ammotype2,DECHARGE_GIVE);
+            ETRF C 1 BRIGHT A_FireCustomMissile("PlasmaFlareSpawner",0,0,0,0);
+            ETRF D 1 BRIGHT {
+                invoker.mTeslaCancelAnimation++;
+                if (invoker.mTeslaCancelAnimation == Int(DECHARGE_LOOP/2))
+                    A_StartSound("PLSCOOL",CHAN_VOICE);
+                if (invoker.mTeslaCancelAnimation < DECHARGE_LOOP) // Loop this until all the taken ammo is given
+                    return ResolveState("DechargeLoop");
+                return ResolveState(null);
+            }
+            PLSN A 0 A_PlaySound("BEPBEP", 5, 1.2);
+            PLSN A 0 A_ClearReFire();
+			Goto Ready3;
+
 //////////////////////////// FIRE ////////////////////////////////////////////////////////////////////////////////////
         Fire:
-            TNT1 A 0    fireWeapon(0);
-            AMGF A 1;
-            AMGF B 1 A_PlaySound("BEP",3);
-            AMGF CD 1;
-        AutoFire:
-            AMGF E 1    fireWeapon(1);
-            AMGF FG 1   fireWeapon(2);
-            TNT1 A 0    fireWeapon(3);
-            Goto Ready3;
-  
+            TNT1 A 0 PB_jumpIfNoAmmo(chamber:false,emptysound:"BEP");
+			TNT1 A 0 A_StartSound("ULTCHAR",CHAN_WEAPON,CHANF_OVERLAP);
+			ETRF ABCB 1 BRIGHT A_FireProjectile("RailGunTrailSpark_Fast", random(-2,2), 0, random(-5,5), -15, 0, random(-2,2));
+			ETRF CBE 1 BRIGHT A_FireProjectile("RailGunTrailSpark_Fast", random(-2,2), 0, random(-5,5), -15, 0, random(-2,2));
+			ETRF BD 1 BRIGHT A_FireProjectile("RailGunTrailSpark_Fast", random(-2,2), 0, random(-5,5), -15, 0, random(-2,2));
+		Hold:
+            TNT1 A 0 PB_jumpIfNoAmmo(chamber:false,emptysound:"BEP");
+			ETRF D 1 BRIGHT;
+            ETRF F 1 BRIGHT Tesla_ArcFire();
+			ETRF A 1 BRIGHT PB_ReFire();
+			ETRF BC 1 BRIGHT A_StartSound("LGEnd1",CHAN_WEAPON);
+			ETRF ABCB 1 BRIGHT A_FireProjectile("RailGunTrailSpark_Fast", random(-2,2), 0, random(-5,5), -15, 0, random(-2,2));
+			Goto CoolDown;
+
 //////////////////////////// ALT FIRE ////////////////////////////////////////////////////////////////////////////////////
         AltFire:
-            TNT1 A 0 {
-                A_WeaponOffset(0,32);
-                PB_SetRoll(0);
-                PB_HandleCrosshair(39);
-                A_TakeInventory("PB_LockScreenTilt",1);
+            TNT1 A 0 PB_jumpIfNoAmmo(min:ALTFIRE_AMMOTAKE,chamber:false,emptysound:"BEP");
+			TNT1 A 0 {
+                PB_HandleCrosshair(90);
+			    A_StartSound("ULTCHAR",CHAN_AUTO,CHANF_OVERLAP);
+                invoker.mTeslaAltFireAnimation = 0;
             }
-            TNT1 A 0 A_JumpIf(getSecondary() == SEC_CHARGE, "ChargeFire");
-            TNT1 A 0 PB_JumpIfNoAmmo(chamber:false);
-            AMGF A 1 A_PlaySound("BEP",7);
-            AMGF B 1 A_PlaySound("BEP",8);
-            AMGF CD 1 A_PlaySound("BEP",9);
-            TNT1 A 0 {invoker.burstcount = 0;}
-        AltFireBurst:
-            TNT1 A 0 PB_JumpIfNoAmmo(chamber:false);
-            AMGF E 0 A_PlaySound("HRFire");
-            AMGF E 1 {
-		        PB_FireBullets("HellPistolNormal", 1, 0, 0, 0, 0);
-                PB_TakeAmmo(invoker.ammo2.getClassName());
-                invoker.burstcount++;
+        AltFireAnimation:
+			ETRF A 1 BRIGHT {
+                frame = random[sfx](0,7);
+				A_StartSound("PLSC_1",CHAN_AUTO,CHANF_OVERLAP);
+                A_FireProjectile("RailGunTrailSpark_Fast", random(-2,2), 0, random(-2,2), -15, 0, random(-2,2));
+                A_FireCustomMissile("PlasmaFlareSpawner",0,0,0,0);
+                PB_TakeAmmo(invoker.ammotype2,takeNum:DECHARGE_GIVE,emptyMag:0);
+                invoker.mTeslaAltFireAnimation++;
+                
+                if(invoker.mTeslaAltFireAnimation < DECHARGE_LOOP)
+                    return resolvestate("AltFireAnimation");
+                return resolvestate(null);
             }
-            AMGF FG 1;
-            TNT1 A 0 A_JumpIf(invoker.burstcount < 3, "AltFireBurst");
-        EndBurst:
-            TNT1 A 0 {invoker.burstcount = 0;}
-            AMGL A 10{
-                if(JustPressed(BT_ATTACK)) return ResolveState("Fire");
-                return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOPRIMARY);
-            }
-            TNT1 A 0 PB_ReFire("AltFireBurst");
-            Goto Ready3;
+        AltHold:
+			ETRF A 0 A_StartSound("PLSFULL",1,CHANF_LOOPING);
+			ETRF F 1 BRIGHT offset (0, 32) Tesla_CheckDecharge();
+			ETRF G 1 BRIGHT offset (0, 33) Tesla_CheckDecharge();
+			ETRF H 1 BRIGHT offset (1, 32) Tesla_CheckDecharge();
+			ETRF F 1 BRIGHT offset (-1, 32) Tesla_CheckDecharge();
+			PLSN A 0 PB_ReFire();
+        FireElectricBall:
+			ETRF A 0 A_ZoomFactor(0.9);
+			ETRF EFF 2 BRIGHT A_Recoil(5);
+			TNT1 A 0 Tesla_FireLightningBall();
+			Goto CoolDown;
 
 //////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
         Reload:
-            TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null,null,"Ready3","Ready3",MAXCHARGE);
+            TNT1 A 0 A_StopSound(1);
+            TNT1 A 0 A_StopSound(6);
+			TNT1 A 0 A_ClearReFire();
+            TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null,null,"Ready3","Ready3",CELL_SIZE);
+            TNT1 A 0 A_PlaySound("IronSights", CHAN_WEAPON);
             TNT1 A 0 A_ZoomFactor(1.0);
-            TNT1 A 0 A_PlaySound("weapons/smg_magfly1");
-            AMGR ABCDEF 1;
-            TNT1 A 0 A_PlaySound("weapons/smg_magfly2");
-            AMGR GHIJK 1;
+            ETRR AABBCCDDEFGHHHIJ 1;
             TNT1 A 0 {
-                A_PlaySound("CELLOUT2", 5);
-                PB_SetMagEmpty(true);
+                A_StartSound("weapons/plasma/cellout",18,CHANF_OVERLAP);
+                if(PB_GetMagEmpty())
+					PB_SpawnCasing("EmptyCell",29,random(10,12),20,0,random(-4,-2),2);
                 PB_SetMagUnloaded(true);
                 PB_SetChamberEmpty(true);
             }
-            AMGR LMNOP 1;
         ContinueReload:
-            AMGR QRS 1;
-            AMGR TUV 1;
+			ETRR K 10;
+			ETRR LMNOP 2;
             TNT1 A 0 {
-                A_PlaySound("CELLIN2", 6);
+                A_StartSound("weapons/plasma/cellin",17,CHANF_OVERLAP);
                 PB_AmmoIntoMag(
                     invoker.ammo2.getClassName(),
                     invoker.ammo1.getClassName(),
-                    MAXCHARGE);
+                    CELL_SIZE);
                 PB_SetMagEmpty(false);
                 PB_SetMagUnloaded(false);
                 PB_SetChamberEmpty(false);
             }
-            AMGR WXY 1;
+        FinishReload:
+			ETRR EDCBA 2;
+            TNT1 A 0 A_StartSound("BEPBEP", CHAN_WEAPON);
             Goto Ready3;
         
         RaiseFromEmpty:
-            AMGR ABCD 1;
-            AMGZ ABC 1;
+            ET1R ABC 2;
             Goto ContinueReload;
 
 //////////////////////////// UNLOAD ////////////////////////////////////////////////////////////////////////////////////
         Unload:
 			TNT1 A 0 A_Jumpif(pb_getmagunloaded(),"Ready3");
+            TNT1 A 0 A_PlaySound("IronSights", CHAN_WEAPON);
+            TNT1 A 0 A_ZoomFactor(1.0);
+            ETRR AABBCCDDEFGHHHIJ 1;
             TNT1 A 0 {
 				PB_UnloadMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname());
+                PB_SetMagEmpty(true);
 				PB_SetMagUnloaded(true);
 				PB_SetChamberEmpty(true);
 			}
+            ET1R CBA 2;
             goto Ready3;
 
 //////////////////////////// WEAPON SPECIAL ////////////////////////////////////////////////////////////////////////////////////
         WeaponSpecial:
-            TNT1 A 0 A_TakeInventory("GoWeaponSpecialAbility", 1);
-            Goto Ready3;            
+            TNT1 A 0 {
+                A_TakeInventory("GoWeaponSpecialAbility", 1);
+                A_StartSound("weapons/plasma/startup", 16,CHANF_OVERLAP);
+            }
+            TNT1 A 0 Tesla_LightningSpecial();
+        FireLightning:
+			ETRF A 0 A_StopSound(6);
+            TNT1 A 0 A_StartSound("PLSULT", CHAN_WEAPON);
+			ETRF A 0 A_ZoomFactor(0.9);
+			ETRF I 2 BRIGHT;
+			ETRF J 2 BRIGHT;
+			TNT1 A 0 {
+                PBX_FireLightningStorm();
+                A_FlashOverlay();
+            }
+			ETRF KL 2 BRIGHT;
+			ETRF A 0 A_StopSound(6);
+			ETRF A 0 A_ZoomFactor(1.0);
+			ETRF EBCDBCACABAA 1 BRIGHT;
+			Goto CoolDown;
 
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////
+        MuzzleFlash:
+            PLSE B 1 bright {
+                let psp = player.FindPSprite(OverlayID());
+                psp.frame += random[sfx](0, 2);
+                psp.x = 162;
+                psp.y = 110;
+                psp.pivot = (0.5, 0.5);
+                psp.scale *= frandom[sfx](0.9, 1.2);
+                psp.rotation = frandom[sfx](0, 360);
+                psp.alpha = frandom[sfx](0.8, 1.2);
+            }
+            stop;
+
         FlashPunching:
-            MSNQ ABCDEFGHFEDCBA 1;      // 14 frames
+            ETRG ABCDEFFFFEDCBA 1;      // 14 frames
             goto Ready3;
 
         FlashKicking:
-            MSNK ABCDEFGHGFEDCBA 1;     // 15 frames
+            ETRG ABCDEFFFFFEDCBA 1;     // 15 frames
             goto Ready3;
 
         FlashAirKicking:
-            MSNQ ABCDEFGHHGFEDCBA 1;    // 16 frames
+            ETRG ABCDEFFFFFFEDCBA 1;    // 16 frames
             goto Ready3;
 
         FlashSlideKicking:
-            MSNK ABCDEFGHHHHHHHHHHHHHGFEDCBA 1; // 27 frames
+            ETRG ABCDE 1;
+            ETRG F 17;
+            ETRG EDCBA 1; // 27 frames
             goto Ready3;
 
         FlashSlideKickingStop:
-            MSNK GFEDCBA 1;             // 7 frames
+            ETRG FFEDCBA 1;             // 7 frames
             goto Ready3;
     }
 }

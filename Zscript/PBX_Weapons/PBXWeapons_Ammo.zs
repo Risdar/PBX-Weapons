@@ -5,9 +5,9 @@ Class HellPistolerAmmo : PB_Ammo
 	Default
 	{
 		inventory.amount 0;
-		inventory.maxamount PBX_PlasmaBlaster.MAXCHARGE;
+		inventory.maxamount PBX_PlasmaBlaster.CELL_SIZE;
 		ammo.backpackamount 0;
-		ammo.backpackmaxamount PBX_PlasmaBlaster.MAXCHARGE;
+		ammo.backpackmaxamount PBX_PlasmaBlaster.CELL_SIZE;
 	    Inventory.Icon "ARMZA0";
         +INVENTORY.IGNORESKILL;
 	}
@@ -19,9 +19,9 @@ Class BlasterPistolCharge : PB_Ammo
 	Default
 	{
 		inventory.amount 0;
-		inventory.maxamount PBX_ProsurvBlaster.MAXCHARGE;
+		inventory.maxamount PBX_ProsurvBlaster.CELL_SIZE;
 		ammo.backpackamount 0;
-		ammo.backpackmaxamount PBX_ProsurvBlaster.MAXCHARGE;
+		ammo.backpackmaxamount PBX_ProsurvBlaster.CELL_SIZE;
 	    Inventory.Icon "ARMZA0";
         +INVENTORY.IGNORESKILL;
 	}
@@ -513,7 +513,27 @@ Class BDPRailgunAmmo : PB_Ammo
 }
 
 //////////////////////////// SLOT 8 ////////////////////////////////////////////////////////////////////////////////////
+// Tesla Gun
+Class TeslaAmmo : PB_Ammo
+{
+	Default
+	{
+		inventory.amount 0;
+		inventory.maxamount PBX_TeslaGun.CELL_SIZE;
+		ammo.backpackamount 0;
+		ammo.backpackmaxamount PBX_TeslaGun.CELL_SIZE;
+	    Inventory.Icon "ETROA0";
+        +INVENTORY.IGNORESKILL;
+	}
+}
 
+class Tesla_LightningCharge : PB_Ammo 
+{
+    Default 
+	{
+        Inventory.MaxAmount PBX_TeslaGun.LIGHTNING_SPECIAL_MAXCHARGE;
+    }
+}
 
 //////////////////////////// SLOT 9 ////////////////////////////////////////////////////////////////////////////////////
 

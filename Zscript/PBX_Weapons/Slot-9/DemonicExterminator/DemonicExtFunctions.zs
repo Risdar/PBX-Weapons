@@ -15,22 +15,33 @@ extend class PBX_DemonExt{
 
 	Action void WeaponSpecialCheck()
 	{
+		bool closeWheel = countinv("PBX_CloseWheel") > 0;
+		bool noIncinerator = countinv("UMDE_Select_NoIncinerationMode") > 0;
+		bool noLightning = countinv("UMDE_Select_NoLightningMode") > 0;
+
 		bool goLaser = countinv("UMDE_Select_LaserMode") > 0;
-		bool goIncenartor = countinv("UMDE_Select_IncinerationMode") > 0;
+		bool goIncinerator = countinv("UMDE_Select_IncinerationMode") > 0;
 		bool goLightning = countinv("UMDE_Select_LightningMode") > 0;
 
-		if(FindInventory("GoWeaponSpecialAbility") || goLaser || goIncenartor || goLightning)
+		if(FindInventory("GoWeaponSpecialAbility"))
 		{
 			A_TakeInventory("GoWeaponSpecialAbility",1);
 			
-			if(countinv("PBX_CloseWheel") > 0)
+			if(closeWheel)
 			{
-				A_TakeInventory("PBX_CloseWheel",1);
+				cleanmodetokens();
+				return;
+			}
+
+			if(noIncinerator || noLightning)
+			{
+				A_Print(noIncinerator ? "$PBX_DemonExt_NoIncin" : "$PBX_DemonExt_NoLightning");
+				cleanmodetokens();
 				return;
 			}
 
 			if((goLaser      && invoker.ExterminatorMode == LaserMode) 
-			|| (goIncenartor && invoker.ExterminatorMode == IncinerationMode) 
+			|| (goIncinerator && invoker.ExterminatorMode == IncinerationMode) 
 			|| (goLightning  && invoker.ExterminatorMode == LightningMode))
 			{
 				A_print("$PBX_AlreadySelected");
@@ -44,7 +55,7 @@ extend class PBX_DemonExt{
 				A_print("$PBX_DemonExt_Laser");
 			}
 			
-			if(goIncenartor)
+			if(goIncinerator)
 			{
 				DEUM_SetMode(IncinerationMode);
 				A_print("$PBX_DemonExt_Incin");
@@ -66,22 +77,28 @@ extend class PBX_DemonExt{
 	const IncinerationMode = 1;
 	const LightningMode = 2;
 
-	action void DEUM_SetMode(int set = 0){invoker.ExterminatorMode = set;}
+	action void DEUM_SetMode(int set = 0)
+	{
+		invoker.ExterminatorMode = set;
+	}
 
 	action void cleanmodetokens()
 	{
+		A_TakeInventory("PBX_CloseWheel",1);
 		A_TakeInventory("UMDE_Select_LaserMode",1);
 		A_TakeInventory("UMDE_Select_IncinerationMode",1);
 		A_TakeInventory("UMDE_Select_LightningMode",1);
+		A_TakeInventory("UMDE_Select_NoIncinerationMode",1);
+		A_TakeInventory("UMDE_Select_NoLightningMode",1);
 	}
 
 	action void DemonExtCrosshair()
 	{
 		switch(invoker.ExterminatorMode)
 		{
-			case 0 : PB_HandleCrosshair(26); break;
-			case 1 : PB_HandleCrosshair(14); break;
-			case 2 : PB_HandleCrosshair(90); break;
+			case LaserMode: 		PB_HandleCrosshair(26); break;
+			case IncinerationMode: 	PB_HandleCrosshair(14); break;
+			case LightningMode: 	PB_HandleCrosshair(90); break;
 			default : PB_HandleCrosshair(0); break;
 		}
 	}
@@ -91,9 +108,9 @@ extend class PBX_DemonExt{
 		WeaponSpecialCheck();
 		DemonExtCrosshair();
 		A_TakeInventory("CantDoAction",0);
-		if(!invoker.ExterminatorWeaponSpecial){
+		if(!invoker.ExterminatorWeaponSpecial)
 			A_DoPBWeaponAction(0);
-		}
+		
 		return ResolveState(NULL);
 	}
 
@@ -112,41 +129,36 @@ extend class PBX_DemonExt{
 	
 	action void UNM_FireBeams(int ofs = 0)
 	{
-		/*
-		ofs = clamp(ofs,0,PB_DemonExt.UN_LevelOfs.size()-1);	//make sure it doesnt go out of bounds
-		int lv = PB_DemonExt.UN_LevelOfs[ofs];
-		for(int i = -lv; i <= lv; i += lv)
-			A_FireProjectile("UNMK_Projectile",i,0);
-			*/
 		int lv = Player.ReFire%3*5+5;
 		for(int i = -lv; i <= lv; i += lv) A_FireProjectile("UNMK_Projectile",i,0);
-		//A_RailAttack(54, 0, 0, "none", "red", RGF_SILENT | RGF_FULLBRIGHT | RGF_EXPLICITANGLE, 0, "Unmaker64Puff", i, 0, 0, 0, 5, 2, "UnmakerLaser64Spark", -1,270,1);
 	}
-	//A_FireProjectile("UNMK_StormSpray",0,0);
 
 	action void UNM_FireLasers()
 	{
 		int lv = Player.ReFire%3*5+5;
 		for(int i = -lv; i <= lv; i += lv) 
+		{
 			A_RailAttack(
 				LASER_DAMAGE, 0, 0, 
 				"", "red", 
 				RGF_SILENT | RGF_FULLBRIGHT | RGF_EXPLICITANGLE | RGF_NORANDOMPUFFZ, 
-				0, "Unmaker64Puff", i, 0, 0, 0, 5, 2, "UnmakerLaser64Spark", -1,270,1);
+				0, "Unmaker64Puff", i, 0, 0, 0, 5, 2, "UnmakerLaser64Spark", -1,270,1
+			);
+		}
 	}
 	
 	action void UNM_FireStorm(int stormLayers = 2, int distanceIntervals = 40)
 	{
-		//A_SpawnItemEx("UNMK_StormSpray", 0, 0, 0, 0, 0, 0, 0, SXF_SETTARGET|SXF_ORIGINATOR, 0);
-		for(int i = 0; i < stormLayers; i++){
+		for(int i = 0; i < stormLayers; i++)
+		{
 			actor a = A_FireProjectile("UNMK_StormSpray",0,0);
-			if(a){
-				if(i == 0){a.bFALLING = true;}
-				//a.target = self;
-				//a.A_Warp(AAPTR_TARGET,10*i);
-				a.Warp( a , distanceIntervals * i );
+			if(a)
+			{
+				if(i == 0)
+					a.bFALLING = true;
+
+				a.Warp(a,distanceIntervals * i);
 			}
-			
 		}
 	}
 	

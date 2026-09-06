@@ -75,7 +75,7 @@ class ProsurvBlasterProjectile : PB_ProjectileAlt
     States
     {
          Spawn:
-            TNT1 A 1 BRIGHT { 
+            TNT1 A 1 NoDelay BRIGHT { 
                 A_SpawnItemEx("ProsurvBlasterTracerTrail", 0, 0, 2); 
                 SpawnTrail(); 
             }

@@ -123,6 +123,7 @@ class PBXWeapons_HUDHandler : EventHandler
                 );
                 break;
 
+            // Draw enraged bar
             case 'PBX_Paingiver':
                 let pngv = PBX_Paingiver(pbWeap);
                 // Show Fuel if Demonic Mode, Show Rocket if Standard Mode
@@ -137,6 +138,18 @@ class PBXWeapons_HUDHandler : EventHandler
                     enraged ? "ABAR7"                         : "ABAR11",
                     "SoulCharge",
                     enraged ? Font.FindFontColor("PB_DTech")  : Font.CR_DARKRED
+                );
+                break;
+
+            // Draw lightning charge bar
+            case 'PBX_TeslaGun':
+                PBXCore_HUDHandler.PBX_DrawAmmoBar(
+                    phud,
+                    PBXCore_HUDHandler.DRAW_THIRD_BAR,
+                    "BARBACC3",
+                    "ABAR8",
+                    "Tesla_LightningCharge",
+                    Font.FindFontColor("HUDBLUEBAR")
                 );
                 break;
 

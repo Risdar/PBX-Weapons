@@ -98,6 +98,11 @@ PBX_BDPRailgun_Tip3 = "You can project the holograms using the Weapon Special Ke
 PBX_BDPRailgun_Tip4 = "Pressing the Weapon Special Key %s when \cdZoomed \c-in will let you select the Scoped Modes";
 
 //////////////////////////// SLOT 8 ///////////////////////////////////////////////////////////////////////////////
+PBX_Teslagun_Tip1 = "The Tesla Gun Primary fires a constant arc of electricity, while the altfire fires a lightning ball.";
+PBX_Teslagun_Tip2 = "The Lightning ball will bounce on walls and you can charge it by using the primary at the ball.";
+PBX_Teslagun_Tip3 = "When charged, the lightning ball will arc to any nearby enemies and with full charge it will summon lightning to everything near it.";
+PBX_Teslagun_Tip4 = "The weapon also holds lightning charges that can be used to summon lightning using %s.";
+PBX_Teslagun_Tip5 = "The Lightning charge automatically recharges when firing.";
 
 //////////////////////////// SLOT 9 ///////////////////////////////////////////////////////////////////////////////
 // Demonic Exterminator

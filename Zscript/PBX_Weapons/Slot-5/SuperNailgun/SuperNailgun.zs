@@ -99,7 +99,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
         PB_LowAmmoSoundWarning("hdmr");
         SuperNailgun_FireNails();
         PB_TakeAmmo(invoker.ammo2.getClassName(),emptyMag:0,emptyChamber:0);
-        A_PlaySound("SNFIRE", 50);
+        A_StartSound("SNFIRE", CHAN_WEAPON, CHANF_OVERLAP, 1.0);
         PB_WeaponRecoil(-0.6, 0);
     }
 
@@ -117,7 +117,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
         if(overThreshold)
         {
             proj = invoker.mChargedNailsMode ? "SuperNail_Lightning" : "SuperNail_Hot";
-            A_StartSound("LGLoop", CHAN_WEAPON, CHANF_OVERLAP, 1.0, pitch: 1.2);
+            A_StartSound("LGLoop", CHAN_WEAPON, CHANF_OVERLAP, 1.0);
             A_GunFlash();
         }
 
@@ -128,8 +128,8 @@ class PBX_SuperNailgun : PBX_WeaponBase
     // To Reduce boilerplate
     action void SuperNailgun_PLaysound()
     {
-        A_Playsound("SNGA", 50);
-        A_Playsound("SNGB", 51);
+        A_StartSound("SNGA", CHAN_WEAPON, CHANF_OVERLAP, 1.0);
+        A_StartSound("SNGB", CHAN_WEAPON, CHANF_OVERLAP, 1.0);
     }
 
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
@@ -171,6 +171,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
 				PB_HandleCrosshair(39);
 				A_TakeInventory("PB_LockScreenTilt",1);
                 A_StopSound(1);
+                PB_SetOverheat(0);
 			}
 			SNSE GFEDCBA 1 superNailgun_setSprite("SNSU");
 			TNT1 A 0 A_Lower();

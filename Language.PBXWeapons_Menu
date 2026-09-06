@@ -1,6 +1,7 @@
 [enu default]
 //////////////////////////// GENERAL MENU ///////////////////////////////////////////////////////////////////////////////
 PBXWEAPONS_MENU_ENABLE_TOOLTIPS = "Enable Weapon Tooltips";
+PBXWEAPONS_MENU_ENABLE_KEEPWEAPONS = "Keep Unupgraded Weapons";
 PBXWEAPONS_MENU_ENABLE_SPAWNERS = "Enable All PBX Weapons Spawners";
 PBXWEAPONS_MENU_RESET_PBTOOLTIPS = "Reset PB Tool Tips";
 PBXWEAPONS_MENU_RESET_PBXWEAPONS_TOOLTIPS = "Reset PBX Weapons Tool Tips";
@@ -21,7 +22,6 @@ PBXWEAPONS_MENU_RESET_WEAPON_DURATIONS = "Reset PBX Weapons Values";
 PBXWEAPONS_CSSG_LOCK_SWITCH = "CSSG Meathook Lock Switch";
 
 TIP_pbxweapons_normalriflereplace   = "Start the game with the Platinum Rifle on top of the Standard PB DMR";
-TIP_pbxweapons_startwithblaster     = "Start the game with the Pistol Blaster, a very weak pistol that has infinite ammo";
 TIP_pbxweapons_startwithcrossbow    = "Start the game with the Crossbow Ballista, a precision weapon with multiple arrow types";
 TIP_pbxweapons_enablesecretweapon   = "Enable or disable the secret weapons in the game, Currently there's only the Nuke Launcher";
 TIP_pbxweapons_cssghooklockswitch   = "If enabled will disable weapon switching when the CSSG Meathook is attached to a monster";
@@ -40,7 +40,7 @@ PBXWEAPONS_LEVER_ACTION_RIFLE = "Enable Lever Action Rifle";
 PBXWEAPONS_CROSSBOW_BALLISTA = "Enable Crossbow Ballista";
 
 PBXWEAPONS_SPAS12 = "Enable SPAS-12";
-PBXWEAPONS_COMMANDER_SHOTGUN = "Enable Commander Shotgun";
+PBXWEAPONS_CSSG = "Enable Commander SuperShotgun";
 PBXWEAPONS_BATTLE_RIFLE = "Enable Battle Rifle";
 PBXWEAPONS_METAL_SNIPER = "Enable Metal Sniper";
 PBXWEAPONS_NEOHMG = "Enable Neo HMG";
@@ -53,8 +53,10 @@ PBXWEAPONS_CYBERRL = "Cyberdemon drop their Weapon";
 PBXWEAPONS_SPIDERCG = "Spider Mastermind drop their Weapon";
 
 PBXWEAPONS_PLATINUM_RAILGUN = "Enable Platinum Railgun"; 
+PBXWEAPONS_TESLAGUN = "Enable Tesla Gun"; 
 
 PBXWEAPONS_DEMONIC_EXTERMINATOR = "Enable Demonic Exterminator";
+PBXWEAPONS_DEMONEXT_ARTIFACT = "Enable Demonic Exterminator Artifacts";
 PBXWEAPONS_NUKE_LAUNCHER = "Enable Nuke Launcher";
 
 PBXWEAPONS_UAC_COMMANDER_BACKPACK = "Enable UAC Commander's Backpack";

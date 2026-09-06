@@ -5,5 +5,5 @@ Gameinfo
 	addeventhandlers = "PBXWeapons_WeaponSpawner"
 	addeventhandlers = "PBXWeapons_ScopeHandler"
 	addeventhandlers = "PBXWeapons_Handler"
-	addeventhandlers = "ExterminatorStuff"
+	addeventhandlers = "ExterminatorHandler"
 }

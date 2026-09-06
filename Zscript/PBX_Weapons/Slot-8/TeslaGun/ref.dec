@@ -1,58 +1,3 @@
-Actor Schism_TeslaGiver : Schism_BaseWeaponGiver
-{
-	Inventory.PickupMessage "You got the Tesla Cannon!"
-	Inventory.ForbiddenTo Schism_Paladin, Sorcerer, Schism_Corvus
-	States
-	{
-		Spawn:
-			ETRO A -1
-			Stop
-
-		Pickup:
-			TNT1 A 0
-			TNT1 A 0 A_JumpIfInventory("Schism_Tesla", 1, "GiveAmmo")
-			TNT1 A 0 A_JumpIf(ACS_NamedExecuteWithResult("Schism_CounInvG", 7) >= 2, "DontGive")
-			TNT1 A 0 A_GiveInventory("Schism_Tesla", 1)
-			Goto GiveAmmo
-
-		GiveAmmo:
-			TNT1 A 0 A_GiveInventory("AmmoCell", 50)
-			Stop
-
-		DontGive:
-			TNT1 A 0 A_Print("You can't carry more than 2 energy weapons", -30)
-			Fail
-
-	}
-}
-
-Actor Schism_TeslaEmptyGiver : Schism_BaseWeaponGiver
-{
-	Inventory.PickupMessage "You got the Tesla Cannon!"
-	Inventory.ForbiddenTo Schism_Paladin, Sorcerer, Schism_Corvus
-	States
-	{
-		Spawn:
-			ETRO A -1
-			Stop
-
-		Pickup:
-			TNT1 A 0
-			TNT1 A 0 A_JumpIfInventory("Schism_Tesla", 1, "DontGiveSecondWeapon")
-			TNT1 A 0 A_JumpIf(ACS_NamedExecuteWithResult("Schism_CounInvG", 7) >= 2, "DontGive")
-			TNT1 A 0 A_GiveInventory("Schism_Tesla", 1)
-			Stop
-
-		DontGive:
-			TNT1 A 0 A_Print("You can't carry more than 2 energy weapons", -30)
-			Fail
-
-		DontGiveSecondWeapon:
-			ETRO A 30
-			Fail
-	}
-}
-
 Actor Schism_Tesla : Schism_Weapon
 {
 	Weapon.SelectionOrder 110
@@ -72,48 +17,6 @@ Actor Schism_Tesla : Schism_Weapon
 	Tag "Tesla"
 	States
 	{
-		Spawn:
-			TNT1 A 2
-			TNT1 A 1 A_SpawnItem("Schism_TeslaEmptyGiver", 50)
-			Stop
-
-		Select:
-			TNT1 A 0 A_Raise
-			Wait
-
-		Deselect:
-			TNT1 A 0 A_TakeInventory("Reloading", 1)
-			TNT1 A 0 A_TakeInventory("HasPlasmaWeapon", 1)
-			TNT1 A 0 A_TakeInventory("TossGrenade", 1)
-			ETRG A 1 offset(-4,38)
-			ETRG A 1 offset(-12,42)
-			ETRG A 1 offset(-20,46)
-			DeselectLoop:
-			TNT1 A 0 A_Lower
-			Wait
-
-		Ready:
-			TNT1 A 0 A_TakeInventory("StartDualWield", 1)
-			TNT1 A 0 A_Giveinventory("HasPlasmaWeapon", 1)
-			TNT1 A 0 A_TakeInventory("TossGrenade", 1)
-			ETRG A 0 A_JumpIfInventory("GoFatality", 1, "Steady")
-			TNT1 A 0 A_PlaySound("PLSDRAW")
-			ETRG A 1 offset(-20, 46)
-			ETRG A 1 offset(-12, 42)
-			ETRG A 1 offset(-4, 38)
-			ReadyLoop:
-			ETRG A 0 A_JumpIfInventory("Kicking", 1, "DoKick")
-			ETRG A 0 A_JumpIfInventory("Taunting", 1, "Taunt")
-			ETRG A 0 A_JumpIfInventory("Salute1", 1, "ClearInv")
-			ETRG A 0 A_JumpIfInventory("Salute2", 1, "ClearInv")
-			ETRG A 0 A_JumpIfInventory("Reloading", 1, "Reload")
-			ETRG A 0 A_JumpIfInventory("TossGrenade", 1, "TossGrenade")
-			ETRG A 0 A_JumpIfInventory("StartDualWield", 1, "ChangeMode")
-			ETRG A 0 A_JumpIfInventory("GoFatality", 1, "Steady")
-			ETRG A 0 A_GiveInventory("HasPlasmaWeapon", 1)
-			ETRG A 0 A_SetCrosshair(18)
-			ETRG A 1 A_WeaponReady(WRF_ALLOWRELOAD)
-			Loop
 
 		Fire:
 			TNT1 A 0 A_JumpIfNoAmmo("NoAmmo")
@@ -122,8 +25,7 @@ Actor Schism_Tesla : Schism_Weapon
 			ETRF ABCB 1 BRIGHT A_FireCustomMissile("PlasmaFlareSpawn", 0, 0, 0, 0)
 			ETRF CBE 1 BRIGHT A_FireCustomMissile("PlasmaFlareSpawn", 0, 0, 0, 0)
 			ETRF BD 1 BRIGHT A_FireCustomMissile("PlasmaFlareSpawn", 0, 0, 0, 0)
-
-			Hold:
+		Hold:
 			TNT1 A 0 A_JumpIfNoAmmo("NoAmmo")
 			TNT1 A 0 A_JumpIfCloser(180,"DaggerFire")
 			ETRF D 1 BRIGHT A_PlaySound("electrogun/shoot")
@@ -250,7 +152,7 @@ Actor Schism_Tesla : Schism_Weapon
 			ETRF H 1 BRIGHT
 			ETRF A 0 A_PlaySound("PLSFULL", 6, 0.8, 1)
 			ETRF A 0 A_ReFire
-			AltHold:
+		AltHold:
 			ETRF A 0 A_FireCustomMissile("PlasmaFlareSpawn",0,0,0,0)
 			ETRF A 0 A_JumpIfInventory("Reloading",1,"Cancel")
 			ETRF F 1 BRIGHT offset (0, 32)
@@ -264,7 +166,7 @@ Actor Schism_Tesla : Schism_Weapon
 			ETRF A 0 A_JumpIfInventory("Reloading",1,"Cancel")
 			ETRF F 1 BRIGHT offset (-1, 32)
 			PLSN A 0 A_ReFire
-			LetFly:
+		LetFly:
 			TNT1 A 0 A_JumpIfInventory("TeslaModifier", 1, "LetFlyMod")
 			ETRF A 0 A_StopSound(6)
 			ETRF A 1 A_PlaySound("PLSALTFR")
@@ -352,51 +254,9 @@ Actor Schism_Tesla : Schism_Weapon
 			PLSN A 0 A_ClearReFire
 			Goto ReadyLoop
 
-		Reload:
-			TNT1 A 0 A_TakeInventory("Reloading", 1)
-			TNT1 A 0 A_ClearReFire
-			TNT1 A 0 A_JumpIfInventory("Schism_TeslaAmmo", 50, "ReadyLoop")
-			TNT1 A 0 A_JumpIfInventory("AmmoCell", 1, 2)
-			Goto ReadyLoop
-			TNT1 A 0
-			TNT1 A 0 A_JumpIfInventory("TurboReload", 1, "Refillto50")
-			ETRR AABBCCDDEFGHHHIJ 1
-			TNT1 A 0 A_PlaySound("BEPBEP", 5, 1.2)
-			TNT1 A 0 A_FireCustomMissile("PlasmaCaseSpawn", -210, 0, 20, -20)
-			ETRR K 10
-			ETRR MNOP 2
-			TNT1 A 0 A_PlaySound("PLREADY", CHAN_WEAPON)
-			ETRR EDCBA 2
-			Goto Refillto50
-
-		Refillto50:
-			TNT1 A 0 A_Giveinventory("Schism_TeslaAmmo", 1)
-			TNT1 A 0 ACS_NamedExecuteAlways("Schism_TakePlasmaAmmo", 0, 1, 1)
-			TNT1 A 0 A_JumpIfInventory("Schism_TeslaAmmo", 50, "FinishReload")
-			TNT1 A 0 A_JumpIfInventory("AmmoCell", 1, "Refillto50")
-			Goto FinishReload
-
-		FinishReload:
-			TNT1 A 0 A_ReFire
-			Goto ReadyLoop
-
-		Steady:
-			TNT1 A 1
-			Goto ReadyLoop
-
-		NoAmmo:
-			ETRG A 0 A_JumpIfInventory("noautoreload", 1, 1)
-			Goto Reload
-			ETRG A 0 A_JumpIfInventory("turboreload", 1, "Refillto50")
-			ETRG A 3 A_PlaySound("BEP", CHAN_WEAPON)
-			Goto ReadyLoop
-
 		ChangeMode:
 			ETRG A 1
 			TNT1 A 0 A_TakeInventory("StartDualWield", 1)
-			TNT1 A 0 A_JumpIfInventory("Schism_PlasmaRifle", 1, 2)
-			Goto SynergyMessage
-			TNT1 A 0
 			TNT1 A 0 A_JumpIfInventory("TeslaModifier", 1, "ChangeMode2")
 			TNT1 A 0 A_GiveInventory("TeslaModifier", 1)
 			TNT1 A 0 A_Print("Pulse mode Selected.", 2)
@@ -410,208 +270,6 @@ Actor Schism_Tesla : Schism_Weapon
 			ETRF AD 2
 			Goto ReadyLoop
 
-		SynergyMessage:
-			TNT1 A 0 A_Print("You need more energy weapons for that", 2)
-			Goto ReadyLoop
-
-		Taunt:
-			TNT1 A 0 A_SetCrosshair(41)
-			TNT1 A 0 A_TakeInventory("Taunting", 1)
-			TNT1 A 10
-			FUCK A 1
-			TNT1 A 0 BRIGHT A_FireCustomMissile("Taunter", 0, 0, -1, 0)
-			TNT1 A 0 BRIGHT A_FireCustomMissile("Taunter", -9, 0, -1, 0)
-			TNT1 A 0 BRIGHT A_FireCustomMissile("Taunter", 9, 0, -1, 0)
-			FUCK B 1 A_PlaySound("FUCK", 2)
-			FUCK CD 1 A_AlertMonsters
-			FUCK E 15 A_TakeInventory("Taunting",1)
-			FUCK DCBA 1
-			TNT1 A 10
-			Goto ReadyLoop
-
-		TossGrenade:
-			"####" "#" 0 A_TakeInventory("TossGrenade", 1)
-			"####" "#" 0 A_JumpIfInventory("GrenadeAmmo", 1, 2)
-			"####" "#" 0 A_Print("No Grenades Left.")
-			Goto ReadyLoop
-			"####" "#" 0 A_GunFlash("GrenadeFlash")
-			TNT1 A 10
-			GRTH ABCD 1
-			"####" "#" 0 A_GiveInventory("FiredGrenade", 1)
-			"####" "#" 0 A_Giveinventory("Punching",1)
-			"####" "#" 0 A_Giveinventory("GoSpecial",1)
-			"####" "#" 0 A_PlaySound("GRNPIN")
-			GRTH EEFG 1
-			"####" "#" 0 A_PlaySound("GRNTOSS")
-			GRTH HI 1
-			"####" "#" 0 A_TakeInventory("GrenadeAmmo", 1)
-			"####" "#" 0 A_FireCustomMissile("HandGrenade", random(-2, 2), 0, 0, 0, 0, 0)
-			"####" "#" 0 A_TakeInventory("FiredGrenade", 1)
-			GRTH JKLM 1
-			Goto Ready
-
-		DoKick: //14 tic
-			TNT1 A 0 A_GunFlash("KickFlash")
-			TNT1 A 0 A_TakeInventory("Kicking", 1)
-			TNT1 A 0 A_TakeInventory("Zoomed", 1)
-			TNT1 A 0 A_TakeInventory("PowerLightAmp", 1)
-			TNT1 A 0 A_ZoomFactor(1.0)
-			TNT1 A 0 A_TakeInventory("ADSmode", 1)
-			TNT1 A 0 A_JumpIf (momZ > 0, "KickInAir")
-			TNT1 A 0 A_JumpIf (momZ < 0, "KickInAir")
-			TNT1 A 0 A_JumpIf((Abs(VelY) < 1) && (Abs(VelX) < 1), 2)
-			TNT1 A 0 A_JumpIfInventory("IsCrouching", 1, "SlideAttack")
-			TNT1 A 0 A_JumpIfInventory("PowerStrength", 1, "DoKickWithBerserk")
-			TNT1 A 0 A_PlaySound("KICK")
-			TNT1 A 0 SetPlayerProperty(0, 1, 0)
-			KICK A 0
-			"####" BCD 1
-			"####" A 0 A_FireCustomMissile("KickAttack", 0, 0, 0, -7)
-			"####" H 3
-			"####" IGF 1
-			"####" "#" 0 SetPlayerProperty(0, 0, 0)
-			"####" EDCBA 1 A_JumpIfInventory("Kicking", 1, "KickRight")
-			TNT1 A 0 A_JumpIfInventory("Kicking", 1, "KickRight")
-			Goto ReadyLoop
-
-		DoKickWithBerserk:
-			TNT1 A 0 A_PlaySound("KICK")
-			KICK A 0
-			"####" BCD 1
-			"####" A 0 A_FireCustomMissile("SuperKickAttack", 0, 0, 0, -7)
-			"####" H 3
-			"####" IGF 1
-			"####" ED 1
-			"####" CBA 1 A_JumpIfInventory("Kicking", 1, "KickRight")
-			TNT1 A 0 A_JumpIfInventory("Kicking", 1, "KickRight")
-			Goto ReadyLoop
-
-		KickRight: // 15 tic
-			TNT1 A 0 A_GunFlash("RightKickFlash")
-			KIK2 A 0
-			"####" "#" 0 A_TakeInventory("Kicking", 1)
-			"####" ABC 1
-			"####" A 0 A_PlaySound("KICK")
-			"####" A 0
-			"####" A 0 A_SetPitch(pitch-9)
-			"####" A 0 A_SetAngle(angle+9)
-			"####" A 0 A_FireCustomMissile("KickAttack", 0, 0, 0, 0)
-			"####" D 1
-			"####" A 0 A_SetPitch(pitch+2)
-			"####" A 0 A_SetAngle(angle-2)
-			"####" D 1
-			"####" A 0 A_SetPitch(pitch+2)
-			"####" A 0 A_SetAngle(angle-2)
-			"####" E 1
-			"####" A 0 A_SetPitch(pitch+1)
-			"####" A 0 A_SetAngle(angle-1)
-			"####" E 1
-			"####" A 0 A_SetPitch(pitch+1)
-			"####" A 0 A_SetAngle(angle-1)
-			"####" C 1 A_JumpIfInventory("Kicking", 1, "KickInAir")
-			"####" A 0 A_SetPitch(pitch+1)
-			"####" A 0 A_SetAngle(angle-1)
-			"####" B 2 A_JumpIfInventory("Kicking", 1, "KickInAir")
-			"####" A 0 A_SetPitch(pitch+1)
-			"####" A 0 A_SetAngle(angle-1)
-			"####" A 2 A_JumpIfInventory("Kicking", 1, "KickInAir")
-			"####" A 0 A_SetPitch(pitch+1)
-			"####" A 0 A_SetAngle(angle-1)
-			"####" A 2 A_JumpIfInventory("Kicking", 1, "KickInAir")
-			"####" A 1 A_JumpIfInventory("Kicking", 1, "KickInAir")
-			Goto ReadyLoop
-
-		KickInAir: // 18 tics
-			TNT1 A 0 A_GunFlash("KickInAirFlash")
-			TNT1 A 0 A_TakeInventory("Kicking", 1)
-			KICK J 1
-			"####" A 0 A_JumpIfInventory("PowerStrength", 1, "KickInAirWithBerserk")
-			"####" A 0 A_PlaySound("KICK")
-			"####" A 0 A_Recoil(-15)
-			"####" JKLMN 1
-			"####" A 0 A_FireCustomMissile("AirKickAttack", 0, 0, 0, -31)
-			"####" O 3
-			"####" PQ 2
-			"####" RS 1
-			"####" T 1 A_JumpIfInventory("Kicking", 1, "LeftFinishingKick")
-			"####" A 2 A_JumpIfInventory("Kicking", 1, "LeftFinishingKick")
-			"####" A 1 A_JumpIfInventory("Kicking", 1, "LeftFinishingKick")
-			Goto ReadyLoop
-
-		KickInAirWithBerserk: //18 tics
-			KICK J 0
-			"####" A 0 A_PlaySound("KICK")
-			"####" A 0 A_Recoil (-15)
-			"####" JKLMN 1
-			"####" A 0 A_FireCustomMissile("SuperAirKickAttack", 0, 0, 0, -31)
-			"####" O 3
-			"####" PQ 2
-			"####" RS 1
-			"####" T 1 A_JumpIfInventory("Kicking", 1, "LeftFinishingKick")
-			"####" A 2 A_JumpIfInventory("Kicking", 1, "LeftFinishingKick")
-			"####" A 1 A_JumpIfInventory("Kicking", 1, "LeftFinishingKick")
-			Goto ReadyLoop
-
-		LeftFinishingKick: // 11 tics
-			TNT1 A 0 A_GunFlash("LeftKickFlash")
-			KIK3 A 0
-			"####" "#" 0 A_TakeInventory("Kicking", 1)
-			"####" A 0 A_Recoil(-10)
-			"####" ABC 1
-			"####" A 0 A_PlaySound("KICK")
-			"####" A 0 A_SetPitch(pitch-9)
-			"####" A 0 A_SetAngle(angle-9)
-			"####" D 1 A_FireCustomMissile("KickAttack", 0, 0, 0, 0)
-			"####" A 0 A_SetPitch(pitch+2)
-			"####" A 0 A_SetAngle(angle+3)
-			"####" E 1
-			"####" A 0 A_SetPitch(pitch+2)
-			"####" A 0 A_SetAngle(angle+3)
-			"####" F 1 A_FireCustomMissile("KickAttack", 0, 0, 0, 0)
-			"####" A 0 A_SetPitch(pitch+1)
-			"####" A 0 A_SetAngle(angle+3)
-			"####" G 1
-			"####" A 0 A_SetPitch(pitch+1)
-			"####" A 0 A_SetAngle(angle+2)
-			"####" H 1 A_FireCustomMissile("KickAttack", 0, 0, 0, 0)
-			"####" A 0 A_SetPitch(pitch+1)
-			"####" A 0 A_SetAngle(angle+2)
-			"####" I 1
-			"####" A 0 A_SetPitch(pitch+1)
-			"####" A 0 A_SetAngle(angle+1)
-			"####" J 1 A_FireCustomMissile("KickAttack", 0, 0, 0, 0)
-			"####" A 0 A_SetPitch(pitch+1)
-			"####" A 0 A_SetAngle(angle+1)
-			"####" K 1
-			Goto ReadyLoop
-
-		KickFlash: // 14 tics
-			ETRG ABCDEFFFFEDCBA 1
-			Stop
-
-		LeftKickFlash: // 11 tics
-			ETRG FFFFFFEDCBA 1
-			Stop
-
-		RightKickFlash: // 15 tics
-			ETRG FFFFFFFFFFEDCBA 1
-			Stop
-
-		KickInAirFlash: // 19 tics
-			ETRG ABCDEFFFFFFFFFEDCBA 1
-			Stop
-
-		SlideKickFlashStart: // 39 tics
-			TNT1 A 39
-			Stop
-
-		SlideKickFlashEnd: // 10 tics
-			TNT1 A 10
-			Stop
-
-		GrenadeFlash: // 24 tics
-			TNT1 A 24
-			Stop
 	}
 }
 

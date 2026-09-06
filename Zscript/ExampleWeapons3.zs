@@ -119,8 +119,9 @@ class PBX_PlasmaBlaster : PB_WeaponBase
             Goto Ready3;
 
         Deselect:
-            AMGR ABCDEF 1;
             TNT1 A 0 PBX_WeaponLower();
+            AMGR ABCDEF 1;
+			TNT1 A 0 A_Lower();
 			Wait;
 
         Select:
@@ -129,7 +130,7 @@ class PBX_PlasmaBlaster : PB_WeaponBase
 				PB_SetRoll(0);
 			    PB_HandleCrosshair(39);
 				A_SetInventory("PB_LockScreenTilt",0);
-                PBX_WeaponBase("weapons/smg_magfly1");
+                PBX_WeaponRaise("weapons/smg_magfly1");
 			    return PB_RespectIfNeeded();
 			}
         SelectAnimation:
@@ -188,9 +189,17 @@ class PBX_PlasmaBlaster : PB_WeaponBase
             Goto Ready3;
 
 //////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
-        Reload:
+        ReloadFromADS:
+			TNT1 A 0 PB_HandleCrosshair(42);
+			TNT1 A 0 A_startsound("IronSights",29);
+            TNT1 A 0 A_ZoomFactor(1.5);
+			BR4Z CB 1;
+			TNT1 A 0 PB_SetZoom(false);
+			BR4Z A 1;
+		Reload:
+            TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");
+			TNT1 A 0 A_ZoomFactor(1.0);
             TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null,null,"Ready3","Ready3",MAXCHARGE);
-            TNT1 A 0 A_ZoomFactor(1.0);
             TNT1 A 0 A_PlaySound("weapons/smg_magfly1");
             AMGR ABCDEF 1;
             TNT1 A 0 A_PlaySound("weapons/smg_magfly2");
@@ -230,6 +239,7 @@ class PBX_PlasmaBlaster : PB_WeaponBase
 				PB_UnloadMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname());
 				PB_SetMagUnloaded(true);
 				PB_SetChamberEmpty(true);
+                PB_SetMagEmpty(true);
 			}
             goto Ready3;
 

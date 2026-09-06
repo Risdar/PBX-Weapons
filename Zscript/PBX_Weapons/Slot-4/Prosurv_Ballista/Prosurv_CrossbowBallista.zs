@@ -53,7 +53,7 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
 	int currentMode;
 	const ARROW_AMOUNT	 	= 1;  // This is kinda dumb lol but oh well... consistency
 	const ammoTakeNormal	= 1;  // Standard Bolt
-	const ammoTakeDemonic 	= 5;  // Demonic Bolt
+	const ammoTakeDemonic 	= 15;  // Demonic Bolt
 	const ammoTakeShock 	= 15; // Shock Bolt
 
 	const HIGHCAL_AMMO_GIVE = 15; 

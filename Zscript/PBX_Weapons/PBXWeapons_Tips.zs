@@ -22,9 +22,11 @@ enum PBXWeapons_eWeaponTipFlags
     PBX_TIP_PAINGIVER           = 1 << 14,
     // SLOT 7
     PBX_TIP_BDPRAILGUN          = 1 << 15,
+    // SLOT 8
+    PBX_TIP_TESLAGUN            = 1 << 16,
     // SLOT 9
-    PBX_TIP_DEMONMINIGUN        = 1 << 16,
-    PBX_TIP_DEMONEXT            = 1 << 17,
+    PBX_TIP_DEMONMINIGUN        = 1 << 17,
+    PBX_TIP_DEMONEXT            = 1 << 18,
     // OTHERS
     PBX_TIP_SCROLLZOOM          = 1 << 28,
     PBX_TIP_COMMANDERWEAPON     = 1 << 29,
@@ -211,6 +213,20 @@ extend class PBX_WeaponBase
                 PBXCore_TipsManager.SendTipArrayIfNeeded(tips, WEAPON_HELPTEXT, PBX_TIP_BDPRAILGUN);
             }
             break;
+
+            // SLOT 8
+            case 'PBX_TeslaGun':
+            {
+                Array<String> tips;
+                tips.Push("$PBX_Teslagun_Tip1");
+                tips.Push("$PBX_Teslagun_Tip2");
+                tips.Push("$PBX_Teslagun_Tip3");
+                tips.Push(string.format(StringTable.Localize("$PBX_Teslagun_Tip4"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+pb_specialwheel")));
+                tips.Push("$PBX_Teslagun_Tip5");
+                PBXCore_TipsManager.SendTipArrayIfNeeded(tips, WEAPON_HELPTEXT, PBX_TIP_TESLAGUN);
+            }
+            break;
+            
 
             // SLOT 9
             case 'PBX_DemonExt':

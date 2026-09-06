@@ -1,8 +1,10 @@
 Class LeverActionWheel : wheelinfocontainer
 {
+	mixin PBX_GenericSpecialWheel;
+	
 	override int GetSPCount(actor requester)
 	{
-		return 4;
+		return 4; // Close Wheel (1) + Laser Sight (1) + Ammo Types (2)
 	}
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
@@ -10,66 +12,19 @@ Class LeverActionWheel : wheelinfocontainer
 		if(!spw || !requester)
 			return;
 			
-		let la = PBX_Prosurv_LeverAction(requester.player.readyweapon);
-        if(!la) return;
+		PBX_InitializeWheel(spw,requester,scale:(0.5,0.5));
+		mDisabled = pbxweapons_backpack_filter & DisablePBX_LeverActionUpgrade;
 
-		bool isUpgraded = requester.FindInventory("LA_Upgraded");
-		bool disabled = pbxweapons_backpack_filter & DisablePBX_LeverActionUpgrade;
-
-		super.GetSpecials(spw,requester);
-
-		vector2 iconscale = (0.6,0.6);
-
-		PB_SpecialWheel_Mode Weapon_Close = new ("PB_SpecialWheel_Mode");
-		Weapon_Close.img = "graphics/WeaponWheel/CloseMenu.png";
-		Weapon_Close.Alias = "$PBX_CloseMenu";
-		Weapon_Close.tokentogive = "PBX_CloseWheel";
-		Weapon_Close.scalex = WHEEL_CLOSEMENU_SCALE;
-		Weapon_Close.scaley = WHEEL_CLOSEMENU_SCALE;
-		spw.push(Weapon_Close);
-
-		PB_SpecialWheel_Mode LA_357Magnum = new ("PB_SpecialWheel_Mode");
-		LA_357Magnum.img = "graphics/WeaponWheel/LeverAction/Magnum.png";
-		LA_357Magnum.Alias = "$PBX_LeverAction_Magnum";
-		LA_357Magnum.tokentogive = "LA_Select_Magnum";
-		LA_357Magnum.scalex = iconscale.x;
-		LA_357Magnum.scaley = iconscale.y;
-		spw.push(LA_357Magnum);
+		// Magnum
+		PBX_AddWheel(spw,     img:"LeverAction/Magnum",	  alias:"$PBX_LeverAction_Magnum", token:"LA_Select_Magnum");
 		
-		if(isUpgraded || disabled)
-		{
-			PB_SpecialWheel_Mode LA_Marlin = new ("PB_SpecialWheel_Mode");
-			LA_Marlin.img = "graphics/WeaponWheel/LeverAction/Marlin.png";
-			LA_Marlin.Alias = "$PBX_LeverAction_Marlin";
-			LA_Marlin.tokentogive = "LA_Select_Marlin";
-			LA_Marlin.scalex = iconscale.x;
-			LA_Marlin.scaley = iconscale.y;
-			spw.push(LA_Marlin);
-		}
+		// Marlin
+		if(PBX_CheckInv("LA_Upgraded")) 
+			PBX_AddWheel(spw, img:"LeverAction/Marlin",	  alias:"$PBX_LeverAction_Marlin", token:"LA_Select_Marlin");
 		else
-		{
-			PB_SpecialWheel_Mode LA_NoUpgrade = new ("PB_SpecialWheel_Mode");
-			LA_NoUpgrade.img = "graphics/WeaponWheel/LeverAction/NoMarlin.png";
-			LA_NoUpgrade.Alias = "$PBX_AmmoNotAvailable";
-			LA_NoUpgrade.tokentogive = "LA_Select_No";
-			LA_NoUpgrade.scalex = iconscale.x;
-			LA_NoUpgrade.scaley = iconscale.y;
-			spw.push(LA_NoUpgrade);
-		}
-		
-		PB_SpecialWheel_Mode LA_Laser = new ("PB_SpecialWheel_Mode");
-		if(la.mLaserSightActivated) {
-			LA_Laser.Alias = "$PBX_LaserOff";
-			LA_Laser.img = "graphics/WeaponWheel/LeverAction/LaserOff.png";
-		}
-		else {
-			LA_Laser.Alias = "$PBX_LaserON";
-			LA_Laser.img = "graphics/WeaponWheel/LeverAction/LaserOn.png";
-		}
-		LA_Laser.tokentogive = "PBX_Toggle_Laser";
-		LA_Laser.scalex = iconscale.x;
-		LA_Laser.scaley = iconscale.y;
-		spw.push(LA_Laser);
-		
+			PBX_AddWheel(spw, img:"LeverAction/NoMarlin", alias:"$PBX_AmmoNotAvailable",   token:"LA_Select_No");
+	
+		// Laser
+		PBX_LaserWheel(spw,"LeverAction",laserWheelScale:(0.5,0.5));
 	}
 }

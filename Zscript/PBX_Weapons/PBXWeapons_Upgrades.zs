@@ -25,7 +25,7 @@ class LeverAction_Upgrade : PB_UpgradeItem
 		-COUNTITEM;
 		Inventory.Pickupsound "CLIPIN";
 		Inventory.PickupMessage "$PBX_LeverAction_UpgradePickup";
-		Inventory.althudicon "BRXUA0";
+		Inventory.althudicon "LVR5A0";
 		Tag "$PBX_LeverAction_UpgradeTag";
 		Scale 0.4;
 		FloatBobStrength 0.5;

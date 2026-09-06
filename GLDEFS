@@ -1,0 +1,8 @@
+flickerlight2 TPortZap
+{
+    color 0.45 0.45 0.9
+    size 88
+    secondarySize 128
+    interval 0.01
+    offset 0 32 0
+}

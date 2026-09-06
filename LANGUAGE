@@ -1,7 +1,7 @@
 [enu default]
 //////////////////////////// GENERAL ///////////////////////////////////////////////////////////////////////////////
 PBXWeapons_Settings                 = "\cg⟁\c- PBX - Weapons Settings";
-PBXWeapons_Version                  = "\cgPBX - Weapons Version: 2.8";
+PBXWeapons_Version                  = "\cgPBX - Weapons Version: 2.9";
 
 PBXWeapons_SmartScope_MaxHP         = "Max. HP: %u";
 PBXWeapons_SmartScope_CurrHP        = "HP: %u";
@@ -216,6 +216,14 @@ PBX_BDPRailgun_SpawnHologram        = "Spawn Hologram";
 PBX_BDPRailgun_NoHologram           = "Hologram is Charging";
 
 //////////////////////////// SLOT 8 ///////////////////////////////////////////////////////////////////////////////
+// Tesla Gun
+PBX_TeslaGun_Pickup              = "Tesla Gun (Slot 8)";
+PBX_TeslaGun_Tag                 = "Prototype Tesla-Lightning Accelerator";
+
+PBX_TeslaGun_Arc                 = "\cnArc \c-Mode";
+PBX_TeslaGun_Pulse               = "\cvPulse \c-Mode";
+
+PBX_TeslaGun_NoLightningCharge   = "You Need Atleast \ci%d \cyLightning Charges \c\nTo Summon A Lightning Storm";
 
 //////////////////////////// SLOT 9 ///////////////////////////////////////////////////////////////////////////////
 // Demonic Exterminator
@@ -224,6 +232,12 @@ PBX_DemonExt_Tag                    = "UnMaker Extermination Type";
 PBX_DemonExt_Laser                  = "\caLaser \c-Mode";
 PBX_DemonExt_Incin                  = "\crDark Incinerator \c-Mode";
 PBX_DemonExt_Lightning              = "\cjSoul Lightning \c-Mode";
+
+PBX_DemonExt_NoIncin                = "You Need the Tome of Intimidation for this Mode";
+PBX_DemonExt_NoLightning            = "You Need the Soul Chalice for this Mode";
+
+PBX_DemonExt_IncinArtifact          = "Tome of Intimidation";
+PBX_DemonExt_LightningArtifact      = "Soul Chalice.";
 
 // Nuke Launcher
 PBX_NukeLauncher_Pickup             = "You Have Found The Nuke Launcher! (Slot 9)";

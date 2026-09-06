@@ -7,6 +7,7 @@ enum PBXWeapons_eWeaponSpecialSpawns
 	DisablePBX_CrossbowBallistaUpgrade		= 1 << 3,
 	DisablePBX_UACBackpack					= 1 << 4,
 	DisablePBX_ExcavatorUpgrade				= 1 << 5,
+	DisablePBX_DemonExtArtifacts			= 1 << 6,
 ////// Monster Drops /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// SLOT 6
 	DisablePBX_CyberdemonRL			        = 1 << 0,
@@ -53,7 +54,8 @@ enum PBXWeapons_eRocketLauncherSpawns
 enum PBXWeapons_ePlasmaRifleSpawns
 {
 ////// SLOT 7 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	DisablePBX_BDPRailgun					= 1 << 0
+	DisablePBX_BDPRailgun					= 1 << 0,
+	DisablePBX_TeslaGun						= 1 << 1
 }
 
 enum PBXWeapons_eBFGSpawns
@@ -181,6 +183,11 @@ class PBXPlasma_Injector : PBInjector
 		{
 		   handler.InjectSpawn("PB_PlasSpawnerT2","PBX_BDPRailgun",255,1);
 		}
+		// Tesla Gun
+		if(!(pbxweapons_plasmarifle_filter & DisablePBX_TeslaGun))
+		{
+		   handler.InjectSpawn("PB_PlasSpawnerT2","PBX_TeslaGun",255,1);
+		}
     }
 }
 //////////////////////////// BFG ////////////////////////////////////////////////////////////////////////////////////
@@ -191,7 +198,7 @@ class PBXBFG_Injector : PBInjector
 		// Demon Ext
 		if(!(pbxweapons_bfg_filter & DisablePBX_DemonExt))
 		{
-		   handler.InjectSpawn("PB_BFGSpawnerT4","PBX_DemonExt",255,1);
+		   handler.InjectSpawn("PB_BFGSpawnerT1","PBX_DemonExt",255,1);
 		}
     }
 }
@@ -297,11 +304,6 @@ class PBXWeapons_WeaponSpawner : EventHandler
 		}
 	}
 
-	override void WorldUnloaded(WorldEvent e)
-	{
-		mSecretWeaponSpawned = false;
-	}
-
 	override void WorldThingSpawned (WorldEvent e)
     {
         if (!e || !e.thing) return;
@@ -344,9 +346,17 @@ class PBX_SpecialWeaponSpawner : PBRandomSpawner
 {
 	Default
 	{
+		DropItem 'PBX_NukeSpawner', 255, 1;
+	}
+}
+
+class PBX_NukeSpawner : PB_WeaponSpawner 
+{
+	Default
+	{
 		DropItem 'PBX_NukeLauncher', 255, 1;
 	}
-
+	
 	override bool HandleSpawnExceptions(name toSpawn)
 	{
 		if(toSpawn == "PBX_NukeLauncher" && (PBXWeapons_specialdrop_filter & DisablePBX_NukeLauncher))

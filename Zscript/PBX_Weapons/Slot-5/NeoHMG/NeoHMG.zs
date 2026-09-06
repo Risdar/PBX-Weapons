@@ -299,7 +299,7 @@ class PBX_NeoHMG : PBX_WeaponBase
 			HG0R U 1;
 			HG0R V 1 setMagSprite("HG0R","XHR4","XHR3","XHR2","XHR1");
 			"####" A 0 {
-				PB_SetOverheat(0);
+				PB_SetOverheat(int(invoker.overheat/2)); // So it halves the current overheat
 				PB_AmmoIntoMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname(),MAGAZINE_SIZE);
 				PB_SetMagEmpty(false);
 				PB_SetMagUnloaded(false);

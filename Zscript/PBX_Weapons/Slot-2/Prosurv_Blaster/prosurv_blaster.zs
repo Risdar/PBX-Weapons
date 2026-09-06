@@ -28,6 +28,7 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
         DamageType "Plasma";
         Inventory.PickupSound "weapons/pistolup";
         Inventory.Pickupmessage "$PBX_ProsurvBlaster_Pickup";
+        // PB_WeaponBase.Upgrade "PBX_PlasmaBlaster";
         +WEAPON.WIMPY_WEAPON;
         +WEAPON.NOAUTOAIM;
         +WEAPON.NOAUTOFIRE;
@@ -49,7 +50,7 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
         TAKECHARGE      = 5, // Take this many charge each shot
         CHARGERELOAD    = 3  // How fast should the reload charge the battery
     }
-    const MAXCHARGE = 100;
+    const CELL_SIZE = 100;
     const MUZZLELAYER = -5;
 
     mixin PBX_LaserSight;
@@ -66,7 +67,7 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
         if(!owner || !owner.player || !owner.player.readyweapon) return;
 
         // This way the blaster will always recharge even if not selected
-        if(self.ammo1.amount < MAXCHARGE)
+        if(self.ammo1.amount < CELL_SIZE)
             giveBlasterCharge();
 
     }
@@ -206,7 +207,7 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
 				PB_SetRoll(0);
 			    PB_HandleCrosshair(65);
 				A_SetInventory("PB_LockScreenTilt",0);
-                modifyBlasterCharge(SET,MAXCHARGE);
+                modifyBlasterCharge(SET,CELL_SIZE);
                 PBX_WeaponRaise("weapons/blasterpistol/ready");
 			    return PB_RespectIfNeeded();
 			}
@@ -316,7 +317,7 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
                 A_Giveinventory("PB_LockScreenTilt",1);
                 A_SetCrosshair(-1);
 			}
-            TNT1 A 0 PB_CheckReload(null, null, null, "Ready3", "Ready3", MAXCHARGE);
+            TNT1 A 0 PB_CheckReload(null, null, null, "Ready3", "Ready3", CELL_SIZE);
         Recharge:
             TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
             BRGC CDEF 1 PB_SetRoll(roll+.2);

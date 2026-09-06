@@ -1,8 +1,10 @@
 Class NormalRifleWheel : wheelinfocontainer
 {
+	mixin PBX_GenericSpecialWheel;
+	
 	override int GetSPCount(actor requester)
 	{
-		return 4;
+		return 4; // Close Wheel (1) + Toggle Fire (1) + Dual Wield (1) + Laser Sight (1)
 	}
 	
 	override void GetSpecials(in out array <PB_SpecialWheel_Mode> spw, actor requester)
@@ -10,20 +12,8 @@ Class NormalRifleWheel : wheelinfocontainer
 		if(!spw || !requester)
 			return;
 			
-		let nr = PBX_NormalRifle(requester.player.readyweapon);
-        if(!nr) return;
-		
-		super.GetSpecials(spw,requester);
-
-        vector2 scale = (0.8,0.8);
-
-		PB_SpecialWheel_Mode Weapon_Close = new ("PB_SpecialWheel_Mode");
-		Weapon_Close.img = "graphics/WeaponWheel/CloseMenu.png";
-		Weapon_Close.Alias = "$PBX_CloseMenu";
-		Weapon_Close.tokentogive = "PBX_CloseWheel";
-		Weapon_Close.scalex = WHEEL_CLOSEMENU_SCALE;
-		Weapon_Close.scaley = WHEEL_CLOSEMENU_SCALE;
-		spw.push(Weapon_Close);
+		PBX_InitializeWheel(spw,requester,scale:(0.8,0.8));
+		let nr = PBX_NormalRifle(mWeap); if(!nr) return;
 		
 		// Toggle Fire
 		PB_SpecialWheel_Mode NR_ToggleFire = new ("PB_SpecialWheel_Mode");
@@ -38,8 +28,8 @@ Class NormalRifleWheel : wheelinfocontainer
 			NR_ToggleFire.Alias = "$PB_WHEEL_FULL";
 		}
 		NR_ToggleFire.tokentogive = "NR_Select_FireMode";
-		NR_ToggleFire.scalex = scale.x;
-		NR_ToggleFire.scaley = scale.y;
+		NR_ToggleFire.scalex = mIconScale.x;
+		NR_ToggleFire.scaley = mIconScale.y;
 		spw.push(NR_ToggleFire);
 
 		// Dual Wield
@@ -53,24 +43,12 @@ Class NormalRifleWheel : wheelinfocontainer
 			NR_DualWield.img = "graphics/WeaponWheel/NormalRifle/dualwield.png";
 		}
 		NR_DualWield.tokentogive = "NR_Select_DualWield";
-		NR_DualWield.scalex = scale.x;
-		NR_DualWield.scaley = scale.y;
+		NR_DualWield.scalex = mIconScale.x;
+		NR_DualWield.scaley = mIconScale.y;
 		spw.push(NR_DualWield);
 
 		// Laser
-		PB_SpecialWheel_Mode BR_Laser = new ("PB_SpecialWheel_Mode");
-		if(nr.mLaserSightActivated) {
-			BR_Laser.Alias = "$PBX_LaserOff";
-			BR_Laser.img = "graphics/WeaponWheel/NormalRifle/LaserOff.png";
-		}
-		else {
-			BR_Laser.Alias = "$PBX_LaserON";
-			BR_Laser.img = "graphics/WeaponWheel/NormalRifle/LaserOn.png";
-		}
-		BR_Laser.tokentogive = "PBX_Toggle_Laser";
-		BR_Laser.scalex = scale.x;
-		BR_Laser.scaley = scale.y;
-		spw.push(BR_Laser);
+		PBX_LaserWheel(spw,"NormalRifle",mIconScale);
 		
 	}
 }

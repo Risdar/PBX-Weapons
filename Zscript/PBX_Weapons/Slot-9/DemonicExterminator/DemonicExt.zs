@@ -2,7 +2,6 @@
 
 // Includes
 #include "./DemonicExtFunctions.zs"
-#include "./DemonicExtAttacks.zs"
 #include "./DemonicExtStuff.zs"
 #include "./DemonicExt_Wheel.zs"
 
@@ -10,6 +9,9 @@
 class UMDE_Select_LaserMode : inventory{default{inventory.maxamount 1;}}
 class UMDE_Select_IncinerationMode : inventory{default{inventory.maxamount 1;}}
 class UMDE_Select_LightningMode : inventory{default{inventory.maxamount 1;}}
+
+class UMDE_Select_NoIncinerationMode : inventory{default{inventory.maxamount 1;}}
+class UMDE_Select_NoLightningMode : inventory{default{inventory.maxamount 1;}}
 
 // The Actual Weapon
 Class PBX_DemonExt : PBX_WeaponBase
@@ -73,7 +75,7 @@ Class PBX_DemonExt : PBX_WeaponBase
 			    return PB_RespectIfNeeded();
 			}
 		SelectAnimation:
-			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == 2,"SelectSoul");
+			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == LightningMode,"SelectSoul");
 			UNMS ABCDE 1; 
 			goto Ready3;
 		SelectSoul:
@@ -82,7 +84,7 @@ Class PBX_DemonExt : PBX_WeaponBase
 		
 		Deselect:
 			TNT1 A 0 A_stopsound(chan_unmkidle);
-			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == 2,"DeselectSoul");
+			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == LightningMode,"DeselectSoul");
 			UNMD ABCDE 1; 
 			TNT1 A 0 A_Lower;
 			wait;
@@ -114,15 +116,14 @@ Class PBX_DemonExt : PBX_WeaponBase
 			UNMI AAAA 1 UNM_WeaponReady();
 		Ready3:
 			TNT1 A 0 A_Startsound("unmaker/hum",chan_unmkidle,CHANF_LOOPING);
-			//UNMI A 0 A_JumpIf(invoker.ExterminatorMode == 2,"Ready.Soul");
 			UNMI AAAAAAAAAAAAAAABBBCCCDDDEEEFFFFFFFFFFFFFFFFFFEEEDDDCCCBBBAAA 1 {
-				if(invoker.ExterminatorMode == 2){return ResolveState("Ready.Soul");}
+				if(invoker.ExterminatorMode == LightningMode){return ResolveState("Ready.Soul");}
 				return UNM_WeaponReady();
 			}
 			loop;
 		Ready.Soul:
 			UNMI IIIIIIJJJJKKKKJJJJIIIIIIIIIIIIJJJJKKKKJJJJIIIIII 1 {
-				if(invoker.ExterminatorMode != 2){return ResolveState("Ready3");}
+				if(invoker.ExterminatorMode != LightningMode){return ResolveState("Ready3");}
 				return UNM_WeaponReady();
 			}
 			goto Ready3;
@@ -160,15 +161,14 @@ Class PBX_DemonExt : PBX_WeaponBase
 			TNT1 A 0 A_refire("AltFire");
 			goto ready3;
 		Fire:
-			// TNT1 A 0 PB_CheckBarrelThrow1();
 			TNT1 A 0 {
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 				DemonExtCrosshair();
 				A_SetInventory("PB_LockScreenTilt",0);
 			}
-			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == 1,"Fire.Incineration");
-			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == 2,"Fire.Soul");
+			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == IncinerationMode,"Fire.Incineration");
+			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == LightningMode,"Fire.Soul");
 		Fire.Laser:
 			
 			TNT1 A 0 A_jumpif(countinv(invoker.ammotype1) < invoker.primammouse, "FireNoAmmo");
@@ -186,28 +186,14 @@ Class PBX_DemonExt : PBX_WeaponBase
 			TNT1 A 0 A_refire("Fire");
 			UNMI AAAAAA 1 bright {
 				PB_GunSmoke(random(-1,1),random(-1,1),random(1,5));
-				if(invoker.ExterminatorWeaponSpecial){
+
+				if(invoker.ExterminatorWeaponSpecial)
 					return A_DoPBWeaponAction(WRF_NOFIRE|WRF_NOSWITCH);
-				}else{
+				else
 					return A_DoPBWeaponAction();
-				}
+				
 			}
 			goto ready3;
-			/*
-			TNT1 AAA 0 A_PlaySound("weapons/shock",CHAN_AUTO);
-			UNMI H 1 Bright Offset(0,33);
-			UNMI H 1 Bright Offset(1,34);
-			UNMI H 1 Bright Offset(0,35);
-			UNMF G 1 Bright Offset(-1,34);
-			TNT1 AAA 0 A_startsound("unmaker/stormfire1",CHAN_AUTO);
-			UNMF H 1 Bright Offset(0,33);
-			UNMF I 1 Bright Offset(1,34);
-			UNMF J 1 Bright Offset(0,35);
-			UNMF K 1 Bright Offset(-1,34);
-			UNMF K 1 Bright Offset(0,32);
-			TNT1 A 0 A_overlay(-64,"StormMuzzleFlash");
-			//TNT1 A 0 A_Stopsounds(1,3);
-			*/
 		FireRecoilScale:
 			TNT1 A 1 {A_OverlayPivotAlign(PSP_WEAPON,PSPA_CENTER,PSPA_TOP);A_OverlayScale(PSP_WEAPON,1.2);}
 			TNT1 A 1 {A_OverlayScale(PSP_WEAPON,1.175);}
@@ -236,22 +222,6 @@ Class PBX_DemonExt : PBX_WeaponBase
 			stop;
 		Fire.Soul:
 			TNT1 A 0 A_jumpif(countinv(invoker.ammotype2) < invoker.primammo2use3, "FireNoAmmo");
-			/*
-			UNMI H 3 Bright {A_WeaponOffset(0,32);A_overlay(65,"OverchargeFlash");}
-			TNT1 AAAA 0 A_PlaySound("DSREAFI1",CHAN_AUTO);
-			UNMI H 21 BRIGHT A_WeaponOffset(0,32);
-			UNMF A 1 bright A_FireProjectile("ReaperBall",0,0);//UNMK_StormShot1
-			TNT1 A 0 A_TakeInventory(invoker.ammotype2,invoker.primammo2use3);
-			TNT1 A 0 PB_FireOffset();
-			TNT1 A 0 PB_WeaponRecoil(-4.25,frandom(-1.7,1.7));
-			UNMF BC 1 bright A_weaponoffset(0,36);
-			//bright
-			UNMF LMNO 1 bright A_WeaponOffset(0,-1,WOF_ADD);
-			UNMI ABCDEFEDCBAABCDEFEDC 1 PB_GunSmoke(random(-1,1),random(-1,1),random(1,5));
-			TNT1 A 0 A_refire("Fire");
-			goto ready3;
-			UNMI0
-			*/
 			UNMI K 3 Bright {A_WeaponOffset(0,32);A_overlay(65,"OverchargeFlash");}
 			TNT1 AAAA 0 A_PlaySound("DSREAFI1",CHAN_AUTO);
 			UNMI K 21 BRIGHT A_WeaponOffset(0,32);
@@ -269,27 +239,35 @@ Class PBX_DemonExt : PBX_WeaponBase
 			TNT1 A 0 A_refire("Fire");
 			goto ready3;
 		Fire.Incineration:
-			
 			TNT1 A 0 A_jumpif(countinv(invoker.ammotype1) < invoker.primammouse2, "FireNoAmmo");
-			UNMF A 1 bright {A_overlay(muzzleLayer,"MuzzleFlash0");A_startsound("unmaker/fire",21);UNM_FireBeams(invoker.U_Level);A_TakeInventory(invoker.ammotype1,invoker.primammouse2,TIF_NOTAKEINFINITE);UNM_Add_level();}
-			TNT1 A 0 {PB_FireOffset();PB_WeaponRecoil(-0.32,frandom(-0.25,0.25));}
+			UNMF A 1 bright {
+				A_overlay(muzzleLayer,"MuzzleFlash0");
+				A_startsound("unmaker/fire",21);
+				UNM_FireBeams(invoker.U_Level)
+				;A_TakeInventory(invoker.ammotype1,invoker.primammouse2,TIF_NOTAKEINFINITE);
+				UNM_Add_level();
+			}
+			TNT1 A 0 {
+				PB_FireOffset();
+				PB_WeaponRecoil(-0.32,frandom(-0.25,0.25));
+			}
 			UNMF BC 1 bright A_weaponoffset(0,35);
 			UNMF MNO 1 bright A_WeaponOffset(0,-1,WOF_ADD);
 			TNT1 A 0 A_refire("Fire");
 			UNMI AAAAAA 1 bright {
 				PB_GunSmoke(random(-1,1),random(-1,1),random(1,5));
-				if(invoker.ExterminatorWeaponSpecial){
+
+				if(invoker.ExterminatorWeaponSpecial)
 					return A_DoPBWeaponAction(WRF_NOFIRE|WRF_NOSWITCH);
-				}else{
+				else
 					return A_DoPBWeaponAction();
-				}
+				
 			}
 			goto ready3;
 
 		AltFire:
-			//TNT1 A 0 A_JumpIf(PressingReload() && PressingAltFire(),"Altfire.Soul");
-			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == 1,"AltFire.Incineration");
-			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == 2,"Altfire.Soul");
+			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == IncinerationMode,"AltFire.Incineration");
+			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == LightningMode,"Altfire.Soul");
 		Altfire.Laser:
 			TNT1 A 0 A_jumpif(countinv(invoker.ammotype1) < invoker.secammouse, "FireNoAmmo");
 			UNMI F 0 Bright Offset(0,32) A_PlaySound("RCHARGE",CHAN_ITEM);

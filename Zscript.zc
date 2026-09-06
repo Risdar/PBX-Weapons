@@ -11,13 +11,7 @@ Version 4.13
 #include "Zscript/PBX_Weapons/PBXWeapons_Tips.zs"
 
 // Projectiles
-#include "Zscript/PBX_Weapons/Projectiles/PBXWeapons_Bullets.zs"
-#include "Zscript/PBX_Weapons/Projectiles/PBXWeapons_Demon.zs"
-#include "Zscript/PBX_Weapons/Projectiles/PBXWeapons_Energy.zs"
-#include "Zscript/PBX_Weapons/Projectiles/PBXWeapons_Explosives.zs"
-#include "Zscript/PBX_Weapons/Projectiles/PBXWeapons_Nails.zs"
-#include "Zscript/PBX_Weapons/Projectiles/PBXWeapons_Rail.zs"
-#include "Zscript/PBX_Weapons/Projectiles/PBXWeapons_Shells.zs"
+#include "Zscript/PBX_Weapons/Projectiles/PBXWeapons_Projectiles.zs"
 
 // Some weapon has their own includes (basically helper files), you cen see these in each weapon files
 // Slot 1
@@ -54,6 +48,7 @@ Version 4.13
 #include "Zscript/PBX_Weapons/Slot-7/BDP_Railgun/bdp_railgun.zs" // BDP Railgun
 
 // Slot 8
+#include "Zscript/PBX_Weapons/Slot-8/TeslaGun/TeslaGun.zs" // Tesla Gun
 
 // Slot 9
 #include "Zscript/PBX_Weapons/Slot-9/DemonicExterminator/DemonicExt.zs" // Demonic Exterminator

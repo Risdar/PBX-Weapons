@@ -12,7 +12,7 @@ class PBXWeapons_Handler : EventHandler
         if (level.MapName == "TITLEMAP") return;
 
         // SLOT 2
-		PBXCore_Handler.TryGiveInventory(pm,'PBX_PlasmaBlaster', 'HellPistolerAmmo', PBX_PlasmaBlaster.MAXCHARGE);
+		PBXCore_Handler.TryGiveInventory(pm,'PBX_PlasmaBlaster', 'HellPistolerAmmo', PBX_PlasmaBlaster.CELL_SIZE);
 		PBXCore_Handler.TryGiveInventory(pm,'PBX_Prosurv_LeverAction', 'LeverActionAmmo', PBX_Prosurv_LeverAction.MAGAZINE_SIZE);
 
 		// SLOT 3
@@ -38,15 +38,17 @@ class PBXWeapons_Handler : EventHandler
 		// SLOT 7
 		PBXCore_Handler.TryGiveInventory(pm,'PBX_BDPRailgun', 'BDPRailgunAmmo', PBX_BDPRailgun.MAGAZINE_SIZE);
 
+		// SLOT 8
+		PBXCore_Handler.TryGiveInventory(pm,'PBX_TeslaGun', 'TeslaAmmo', PBX_TeslaGun.CELL_SIZE);
+
         // SLOT 9
 		PBXCore_Handler.TryGiveInventory(pm,'PBX_DemonExt', 'SoulCharge', PBX_DemonExt.SOUL_CAPACITY);
 
         // OTHERS
+		PBXCore_Handler.TryGiveInventory(pm,whatToGive:'PBX_ProsurvBlaster', diffCheck:false); // The player will always start with this weapon
 		PBXCore_Handler.TryGiveInventory(pm,whatToGive:'PBXWeapons_TipsManager', diffCheck:false);
         if(pbxweapons_normalriflereplace) 
 			PBXCore_Handler.TryGiveInventory(pm,whatToGive:'PBX_NormalRifle', diffCheck:false);
-        if(pbxweapons_startwithblaster) 
-			PBXCore_Handler.TryGiveInventory(pm,whatToGive:'PBX_ProsurvBlaster', diffCheck:false);
 		if(pbxweapons_startwithcrossbow) 
 			PBXCore_Handler.TryGiveInventory(pm,whatToGive:'PBX_Prosurv_Ballista', diffCheck:false);
     }
@@ -225,235 +227,6 @@ Class PBXWeapons_CheatsHandler : Eventhandler
 	}
 }
 
-// Homing Projectiles Base
-// The code is from ToxicFrog's Gun Bonsai
-class HomingShots_Aux : Inventory 
-{
-	uint level;
-
-	States 
-	{
-		Homing:
-			TNT1 A 0 DoHoming();
-			TNT1 A 2;
-			LOOP;
-	}
-
-	// Check if we're in the terminal homing phase of flight. In order to qualify
-	// we need to have a target, have a clear line of sight to it, and to have
-	// passed those checks twice in a row.
-	bool TerminalHoming() 
-	{
-		return owner.tracer && owner.CheckLOF(
-			0, 			 // flags
-			64+level*32, // range, 2m + 1m/level
-			0, 			 // minrange
-			0, 0, 		 // angles
-			0, 0, 		 // offset
-			AAPTR_TRACER
-		);
-	}
-
-	void DoHoming() 
-	{
-		if (!owner) 
-		{
-			// Our owning projectile vanished. Ideally this should have destroyed us
-			// as well, but sometimes that doesn't happen.
-			Destroy();
-			return;
-		}
-
-		// This is kind of gross.
-		// Ideally, we'd just call A_SeekerMissile and let it do its thing. However,
-		// when it acquires a lock on something it adjusts the Z velocity without
-		// any concern for the maximum turn angle settings, which results in a lot
-		// of flying directly into a wall/ceiling.
-
-		// So instead, when we're in target-seek mode, we save our current vectors
-		// and call A_SeekerMissile() to find a target, then restore the old vectors
-		// so even if we find a target the shot continues to fly straight.
-		// Note that in some cases, even if it can't acquire a lock (tracer=null after
-		// it returns), it'll still fuck with our vectors!
-		if (!TerminalHoming()) 
-		{
-			//   DEBUG("%s: terminal: no, tracer: %s", TAG(owner), TAG(owner.tracer));
-			owner.tracer = null;
-			let vel = owner.vel;
-			let angle = owner.angle;
-			
-			owner.A_SeekerMissile(
-			0, // terminal homing cone radius
-			1, // max turn angle per tic, degrees
-			
-			SMF_LOOK | SMF_PRECISE | SMF_CURSPEED,
-			min(level*256, 256), // chance of acquiring a new target if it doesn't have one
-			min(ceil((64 + level*32)/128.0), 8)); // scan range for new targets in blocks
-
-			// Reject anything that is not a PB_Monster
-			if (owner.tracer && !(owner.tracer is "PB_Monster")) owner.tracer = null;
-
-			owner.vel = vel;
-			owner.angle = angle;
-		} 
-		else 
-		{
-			//   DEBUG("%s: terminal: yes, tracer: %s", TAG(owner), TAG(owner.tracer));
-			// If we get here we are in "terminal homing mode", which means that:
-			// - we have a target
-			// - the target is within our terminal homing radius, which depends on
-			//   the upgrade level
-			// - we have a clear line of sight to the target
-			// - all of these conditions have been true two updates in a row
-			// which means we should let A_SeekerMissile take over flight control and
-			// guide us in.
-			owner.A_SeekerMissile(
-				0, 				// terminal homing cone radius
-				min(level, 90), // max turn angle per tic, degrees
-				SMF_PRECISE | SMF_CURSPEED
-			);
-		}
-
-		if (owner.tracer != null && PBXCore_DebugCVAR)
-		{
-			if(owner.tracer.CountInv("PBX_RadiusVisualizer") < 1)
-				owner.tracer.GiveInventory("PBX_RadiusVisualizer",1);
-		}
-	}
-}
-
-// Laser sights
-CLASS PBX_LaserSightProjectile : FastProjectile
-{ 
-	Default
-	{
-		Decal "None";
-		Mass 0;
-		Scale 0.2;
-		Radius 1;
-		Height 2;
-		Renderstyle "Add";
-		Alpha 0.8;
-		+NOBLOCKMAP;		+NOGRAVITY;		+BLOODLESSIMPACT;
-		+ALWAYSPUFF;		+PUFFONACTORS;	+DONTSPLASH;
-		+FORCEXYBILLBOARD;
-	}
-
-	int mColor;
-
-	enum PBX_LaserColor
-    {
-        RED_DOT = 17,
-        GREEN_DOT = 6,
-        BLUE_DOT = 1
-    }
-
-	States
-	{
-		Spawn:
-			LEYS RR 0;
-			LEYS B 1 BRIGHT {frame = mColor;}
-			Stop;
-	}
-}
-
-// Cubes
-Class PBX_CubeRadius : actor
-{
-	DEFAULT
-	{
-		Radius 20;
-		Height 20;
-		Scale 32.0;
-		//RenderStyle "STYLE_Translucent";
-		//Alpha 0.8;
-		+NOINTERACTION
-		+NOBLOCKMAP
-		+THRUACTORS
-		-RANDOMIZE
-	}
-
-	int mColor;
-
-	enum PBX_CubeColor
-	{
-		RED,
-		GREEN,
-		BLUE
-	}
-
-	States
-	{
-		Spawn:
-			0001 A 0;
-			0000 A 1 {
-				if(mColor == BLUE)
-					sprite = GetSpriteIndex("0001");
-			}
-			stop;
-	}
-}
-
-Class PBX_CubeRadiusLoop : PBX_CubeRadius
-{
-	States
-	{
-		Spawn:
-			0000 A 0;
-			0000 A 1;
-			wait;
-	}
-}
-
-class PBX_RadiusVisualizer : Inventory
-{
-    Actor currentCube;
-
-    Default
-    {
-        +INVENTORY.UNDROPPABLE;
-    }
-
-    override void DoEffect()
-    {
-        Super.DoEffect();
-
-        if (!owner) return;
-
-        if (currentCube && currentCube.bDestroyed)
-        {
-            currentCube = null;
-        }
-
-        // Spawn and size — runs once when cube is null
-        if (!currentCube)
-        {
-            currentCube = Spawn("PBX_CubeRadiusLoop", owner.pos);
-            if (!currentCube) return;
-
-            // Set size once on spawn
-            currentCube.scale.x = double(owner.radius) * 2;
-            currentCube.scale.y = double(owner.height);
-        }
-
-        // Every tic change position only
-        currentCube.SetOrigin(owner.pos, true);
-        currentCube.vel = owner.vel;
-        currentCube.angle = owner.angle;
-    }
-
-    override void OnDestroy()
-    {
-        if (currentCube && !currentCube.bDestroyed)
-        {
-            currentCube.Destroy();
-            currentCube = null;
-        }
-
-        Super.OnDestroy();
-    }
-}
-
 // Code that I think could be useful but unused
 // and I dont know where else to put them lol
 
@@ -478,36 +251,6 @@ class PBX_RadiusVisualizer : Inventory
 // 		vector3 traceDir = (cos(pitch) * cos(angle), cos(pitch) * sin(angle), -sin(pitch));
 // 		targetpos -= traceDir * 2;
 // 		break;
-// }
-
-// action void MS_ReadyNormal()
-// {
-//     FLineTraceData Bule;
-//     bool hit = LineTrace(Angle, 6000, Pitch, 0, player.ViewHeight, 0, 0, Bule);
-//     if(hit)
-//     {
-//         if(Bule.HitActor && Bule.HitActor.bISMONSTER && Bule.HitActor.bFRIENDLY == false && Bule.HitActor is "PB_Monster")
-//         {				
-//             if(!invoker.LockedOn)
-//             {
-//                 invoker.LockedOn = true;
-//                 A_StartSound("IronSights", CHAN_WEAPON, volume:0.5, pitch:1.4);
-//             }
-//             // let damn = player.FindPSprite(1);
-//             // if(damn)
-//             // {
-//             //     damn.frame = 3;
-//             //     damn.sprite = GetSpriteIndex("SPRF");
-//             // }
-//         }
-//         else
-//         if(invoker.LockedOn)
-//         {
-//             invoker.LockedOn = false;
-//             A_StartSound("IronSights", CHAN_WEAPON, volume:0.5, pitch:1.3);
-//         }
-//     }	
-//     // return A_DoPBWeaponAction();
 // }
 
 // // Replace the DMR if the replace cvar is enabled

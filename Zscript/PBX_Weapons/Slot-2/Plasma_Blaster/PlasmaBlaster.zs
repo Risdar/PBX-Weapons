@@ -20,6 +20,7 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
         Weapon.SlotPriority 0.5;
         PB_WeaponBase.UsesWheel true;
         PB_WeaponBase.WheelInfo "PlasmaBlasterWheel";
+        // PB_WeaponBase.Downgrade "PBX_ProsurvBlaster";
         Inventory.PickupSound "CHGNPKUP";
         Inventory.Pickupmessage  "$PBX_PlasmaBlaster_Pickup";
 	    Inventory.AltHUDIcon "ARMZA0";
@@ -35,7 +36,7 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
     bool blasterPrimary;
     bool blasterSecondary;
     int burstcount;
-    const MAXCHARGE = 16;
+    const CELL_SIZE = 16;
     enum blasterEnum {
         PRIM_SEMI       = 0,
         PRIM_AUTO       = 1,
@@ -268,7 +269,7 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
             Goto Ready3;
 
         Reload:
-            TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null,null,"Ready3","Ready3",MAXCHARGE);
+            TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null,null,"Ready3","Ready3",CELL_SIZE);
             TNT1 A 0 A_ZoomFactor(1.0);
             TNT1 A 0 A_PlaySound("weapons/smg_magfly1");
             AMGR ABCDEF 1;
@@ -289,7 +290,7 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
                 PB_AmmoIntoMag(
                     invoker.ammo2.getClassName(),
                     invoker.ammo1.getClassName(),
-                    MAXCHARGE);
+                    CELL_SIZE);
                 PB_SetMagEmpty(false);
                 PB_SetMagUnloaded(false);
                 PB_SetChamberEmpty(false);

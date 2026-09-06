@@ -4,7 +4,7 @@ class PBX_Toggle_Scope : inventory {default{inventory.maxamount 1;}}
 class PBX_Toggle_NVG   : inventory {default{inventory.maxamount 1;}}
 class PBX_CloseWheel   : inventory {default{inventory.maxamount 1;}}
 
-// What gives the playr Nightvision, its basically a powerup
+// What gives the player Nightvision, its basically a powerup
 class PBX_Infrared : PB_PowerLightAmp  {default{Powerup.Duration -1800;}}
 
 // Laser sight
@@ -79,6 +79,11 @@ class PBX_WeaponBase : PB_WeaponBase abstract
         PBXCore_Debug.Print("WeaponRaise Called");
         PB_WeaponRaise(upSnd);
         if(pbxweapons_sendTip) PBX_WeaponHelpText(); // This function is in PBXWeapons_Tips.zs
+        // if(!pbxweapons_keepweapons)
+        // {
+        //     if(invoker.UpgradedWeapon) PB_SelectIfUpgrade(invoker.UpgradedWeapon.getclassname());
+        //     if(invoker.DowngradeWeapon) PB_TakeIfUpgrade(invoker.DowngradeWeapon.getclassname());
+        // }
     }
 
     // Same as above
@@ -309,6 +314,39 @@ class PBX_WeaponBase : PB_WeaponBase abstract
 		}
 	}
 
+    // Fire Lighting
+    action void PBX_FireLightningGun(
+        int damage, 
+        double horOfs = 0, 
+        double spawnheight = 0, 
+        double range = 512, 
+        int duration = 1, 
+        int delay = 0, 
+        int maxChains = 1, 
+        int maxlinks = 5,
+        name damageType = 'plasma'
+    )
+	{
+		// beamstart is where the lightning appears from:
+		Vector3 beamstart = PBXCore_LightningController.L_GetBeamAttachPos(self, horOfs, spawnheight);
+		Vector3 beamEnd;
+
+		// hit victim:
+		FLineTraceData tr;
+		LineTrace(angle, range, pitch, offsetz: PBXCore_LightningController.L_GetAttackHeight(PlayerPawn(self)), data: tr);
+		if (tr.HitType == TRACE_HitActor && tr.hitActor && PBXCore_LightningController.L_IsValidVictim(tr.hitActor, self))
+		{
+			beamEnd = PBXCore_LightningController.L_GetBeamAttachPos(tr.HitActor);
+			PBXCore_LightningController.L_StartChain(self, tr.HitActor, damage, range, duration, delay, maxChains, maxlinks, damageType:damageType);
+		}
+		// hit nothing:
+		else
+		{
+			beamEnd = tr.HitLocation;
+		}
+		PBXCore_LightningController.L_DrawLightning(beamstart, beamend, spawnSpark: (tr.HitType != TRACE_HitNone), playersource: player);
+	}
+
     // Ricochet function from BDP
     Action void PBX_FireRicochet(
         name projectileName, 
@@ -343,8 +381,7 @@ class PBX_WeaponBase : PB_WeaponBase abstract
 		Vector3 PlayerAngle = BDPMATH.AngletoVector3(1.0,invoker.owner.angle,invoker.owner.pitch);
 		Vector3 BounceAngle = BDPMATH.BounceNormal(PlayerAngle,hitNormal);
 		
-		Double NextShotAngle;
-		Double NextShotPitch;
+		Double NextShotAngle,NextShotPitch;
 		[NextShotAngle, NextShotPitch] = BDPMATH.Vector3toangles(BounceAngle);
 
 		double anglediff = BDPMath.AngleDiff(invoker.owner.angle % 360.0,nextshotangle % 360.0);
@@ -381,11 +418,6 @@ class PBX_WeaponBase : PB_WeaponBase abstract
 	}
 
 //////////////////////////// OTHERS ////////////////////////////////////////////////////////////////////////////////////
-    action bool PBX_CheckUpgradeToken(name upgradeToken)
-    {
-        return FindInventory(upgradeToken);
-    }
-
     action bool PlayerPressedOnce(int button)
 	{
 		int bt = player.cmd.buttons;
@@ -458,4 +490,243 @@ class PBX_WeaponBase : PB_WeaponBase abstract
     //         owner.A_SetZoom(1.0);
     //     }
     // }
+}
+//////////////////////////// WEAPON WHEEL ////////////////////////////////////////////////////////////////////////////////////
+mixin class PBX_GenericSpecialWheel
+{
+    PBX_WeaponBase mWeap; // Weapon pointer (Needs to be casted again for specific weapon vars)
+    actor mRequester;     // Player pointer
+    bool mDisabled;       // For upgrades if they're disabled
+    vector2 mIconScale;   // Icon scale
+
+    // Bundles the close wheel, laser, scope mode, and nvg
+    void PBX_GenericWheel(in out array <PB_SpecialWheel_Mode> spw, string wheelFolder, vector2 laserWheelScale = (1.0,1.0))
+    {
+		PBX_LaserWheel(spw,wheelFolder,laserWheelScale);
+		PBX_ScopeWheel(spw);
+        PBX_NVGWheel(spw);
+    }
+
+    // Set up class fields
+    void PBX_InitializeWheel(in out array <PB_SpecialWheel_Mode> spw, actor requester, vector2 scale = (1.0,1.0))
+    {
+		super.GetSpecials(spw,requester);
+        mRequester = requester;
+        mWeap = PBX_WeaponBase(requester.player.readyweapon);
+        mIconScale = scale;
+        PBX_CloseWheel(spw);
+    }
+
+    void PBX_AddWheel(in out array <PB_SpecialWheel_Mode> spw, string img, string alias, string token, vector2 scale = (0,0))
+    {
+        vector2 scl = scale == (0,0) ? mIconScale : scale;
+        PB_SpecialWheel_Mode newWheel = new ("PB_SpecialWheel_Mode");
+		newWheel.img = "graphics/WeaponWheel/"..img..".png";
+		newWheel.Alias = alias;
+		newWheel.tokentogive = token;
+		newWheel.scalex = scl.x;
+		newWheel.scaley = scl.y;
+		spw.push(newWheel);
+    }
+
+    bool PBX_CheckInv(name inv, bool checkDisabled = true)
+    {
+        if(checkDisabled)
+            return (mRequester && mRequester.CountInv(inv) > 0) || mDisabled;
+        else
+            return (mRequester && mRequester.CountInv(inv) > 0);
+    }
+
+    void PBX_CloseWheel(in out array <PB_SpecialWheel_Mode> spw)
+    {
+        PB_SpecialWheel_Mode PBX_CloseWheel = new ("PB_SpecialWheel_Mode");
+		PBX_CloseWheel.img = "graphics/WeaponWheel/CloseMenu.png";
+		PBX_CloseWheel.Alias = "$PBX_CloseMenu";
+		PBX_CloseWheel.tokentogive = "PBX_CloseWheel";
+		PBX_CloseWheel.scalex = WHEEL_CLOSEMENU_SCALE;
+		PBX_CloseWheel.scaley = WHEEL_CLOSEMENU_SCALE;
+		spw.push(PBX_CloseWheel);
+    }
+
+    void PBX_LaserWheel(in out array <PB_SpecialWheel_Mode> spw, string wheelFolder, vector2 laserWheelScale = (1.0,1.0))
+    {
+        if(!mWeap) return;
+
+        PB_SpecialWheel_Mode PBX_ToggleLaser = new("PB_SpecialWheel_Mode");
+		if(!mWeap.mLaserSightActivated) 
+        {
+            PBX_ToggleLaser.Alias = "$PBX_LaserON";
+            PBX_ToggleLaser.img = "graphics/WeaponWheel/"..wheelFolder.."/LaserOn.png";
+		}
+		else 
+        {
+            PBX_ToggleLaser.Alias = "$PBX_LaserOff";
+            PBX_ToggleLaser.img = "graphics/WeaponWheel/"..wheelFolder.."/LaserOff.png";
+		}
+		PBX_ToggleLaser.tokentogive = "PBX_Toggle_Laser";
+		PBX_ToggleLaser.scalex = laserWheelScale.x;
+		PBX_ToggleLaser.scaley = laserWheelScale.y;
+		spw.push(PBX_ToggleLaser);
+    }
+
+    void PBX_ScopeWheel(in out array <PB_SpecialWheel_Mode> spw)
+    {
+        PB_SpecialWheel_Mode PBX_ToggleScope = new ("PB_SpecialWheel_Mode");
+		PBX_ToggleScope.img = "graphics/WeaponWheel/ScopeMode.png";
+		PBX_ToggleScope.Alias = "$PBX_GoScope";
+		PBX_ToggleScope.tokentogive = "PBX_Toggle_Scope";
+		PBX_ToggleScope.scalex = WHEEL_SCOPE_SCALE;
+		PBX_ToggleScope.scaley = WHEEL_SCOPE_SCALE;
+		spw.push(PBX_ToggleScope);
+    }
+
+    void PBX_NVGWheel(in out array <PB_SpecialWheel_Mode> spw)
+    {
+        if(!mWeap) return;
+
+        PB_SpecialWheel_Mode PBX_ToggleNVG = new ("PB_SpecialWheel_Mode");
+		PBX_ToggleNVG.img = "GRAPHICS/HiResPickups/Powerups/VISR1.png";
+		if(mWeap.mNightVisionActivated) 
+			PBX_ToggleNVG.Alias = "$PBX_nvgOffWW";
+		else 
+			PBX_ToggleNVG.Alias = "$PBX_nvgOnWW";
+		PBX_ToggleNVG.tokentogive = "PBX_Toggle_NVG";
+		PBX_ToggleNVG.scalex = WHEEL_NVG_SCALE;
+		PBX_ToggleNVG.scaley = WHEEL_NVG_SCALE;
+		spw.push(PBX_ToggleNVG);
+    }
+}
+
+//////////////////////////// LASER SIGHTS ////////////////////////////////////////////////////////////////////////////////////
+// Laser sights
+CLASS PBX_LaserSightProjectile : FastProjectile
+{ 
+	Default
+	{
+		Decal "None";
+		Mass 0;
+		Scale 0.2;
+		Radius 1;
+		Height 2;
+		Renderstyle "Add";
+		Alpha 0.8;
+		+NOBLOCKMAP;		+NOGRAVITY;		+BLOODLESSIMPACT;
+		+ALWAYSPUFF;		+PUFFONACTORS;	+DONTSPLASH;
+		+FORCEXYBILLBOARD;
+	}
+
+	int mColor;
+
+	enum PBX_LaserColor
+    {
+        RED_DOT = 17,
+        GREEN_DOT = 6,
+        BLUE_DOT = 1
+    }
+
+	States
+	{
+		Spawn:
+			LEYS RR 0;
+			LEYS B 1 BRIGHT {frame = mColor;}
+			Stop;
+	}
+}
+
+//////////////////////////// CUBES ////////////////////////////////////////////////////////////////////////////////////
+// Cubes
+Class PBX_CubeRadius : actor
+{
+	DEFAULT
+	{
+		Radius 20;
+		Height 20;
+		Scale 32.0;
+		//RenderStyle "STYLE_Translucent";
+		//Alpha 0.8;
+		+NOINTERACTION
+		+NOBLOCKMAP
+		+THRUACTORS
+		-RANDOMIZE
+	}
+
+	int mColor;
+
+	enum PBX_CubeColor
+	{
+		RED,
+		GREEN,
+		BLUE
+	}
+
+	States
+	{
+		Spawn:
+			0001 A 0;
+			0000 A 1 {
+				if(mColor == BLUE)
+					sprite = GetSpriteIndex("0001");
+			}
+			stop;
+	}
+}
+
+Class PBX_CubeRadiusLoop : PBX_CubeRadius
+{
+	States
+	{
+		Spawn:
+			0000 A 0;
+			0000 A 1;
+			wait;
+	}
+}
+
+class PBX_RadiusVisualizer : Inventory
+{
+    Actor currentCube;
+
+    Default
+    {
+        +INVENTORY.UNDROPPABLE;
+    }
+
+    override void DoEffect()
+    {
+        Super.DoEffect();
+
+        if (!owner) return;
+
+        if (currentCube && currentCube.bDestroyed)
+        {
+            currentCube = null;
+        }
+
+        // Spawn and size — runs once when cube is null
+        if (!currentCube)
+        {
+            currentCube = Spawn("PBX_CubeRadiusLoop", owner.pos);
+            if (!currentCube) return;
+
+            // Set size once on spawn
+            currentCube.scale.x = double(owner.radius) * 2;
+            currentCube.scale.y = double(owner.height);
+        }
+
+        // Every tic change position only
+        currentCube.SetOrigin(owner.pos, true);
+        currentCube.vel = owner.vel;
+        currentCube.angle = owner.angle;
+    }
+
+    override void OnDestroy()
+    {
+        if (currentCube && !currentCube.bDestroyed)
+        {
+            currentCube.Destroy();
+            currentCube = null;
+        }
+
+        Super.OnDestroy();
+    }
 }
