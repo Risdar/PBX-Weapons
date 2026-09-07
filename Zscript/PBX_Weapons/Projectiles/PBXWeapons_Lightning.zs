@@ -322,19 +322,6 @@ class BFGBlueSuperParticle : actor
     }
 }
 
-class VisualSpecialEffect : actor
-{
-    Default
-    {
-        +CLIENTSIDEONLY
-        +NOINTERACTION
-        +NOBLOCKMAP
-        +NOGRAVITY
-        +NOTELEPORT
-        +FORCEXYBILLBOARD
-    }
-}
-
 class TPortLightning : actor
 {
     Default
@@ -387,8 +374,18 @@ class TPortLightningWave : actor
 }
 
 // Spawns lightning waves
-class TPortLightningWaveSpawner : VisualSpecialEffect
+class TPortLightningWaveSpawner : actor
 {
+    Default
+    {
+        +CLIENTSIDEONLY
+        +NOINTERACTION
+        +NOBLOCKMAP
+        +NOGRAVITY
+        +NOTELEPORT
+        +FORCEXYBILLBOARD
+    }
+
 	States
 	{
         Spawn:

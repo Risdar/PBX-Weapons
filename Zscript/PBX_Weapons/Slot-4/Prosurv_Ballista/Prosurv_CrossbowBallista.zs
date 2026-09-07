@@ -50,6 +50,7 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
 	}
 	
     bool unwindString;
+    bool firedFromADS;  // Because somehow the checkreload function resets zoom
 	int currentMode;
 	const ARROW_AMOUNT	 	= 1;  // This is kinda dumb lol but oh well... consistency
 	const ammoTakeNormal	= 1;  // Standard Bolt
@@ -203,6 +204,7 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
                 PB_SetRoll(0);
                 A_TakeInventory("PB_LockScreenTilt",1);
                 PB_HandleCrosshair(29);
+                invoker.firedFromADS = false;
             }
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"Ready2");
             TNT1 A 0 readyCheck("ReadyToFireDemonic","ReadyToFireExplosive","ReadyToFireShock");
@@ -287,7 +289,7 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             CB_B C 1 A_SetPitch(+1.0 + pitch);
             CB_B CC 1 A_SetPitch(+1.0 + pitch);
             CB_B C 1 A_SetPitch(+0.5 + pitch);
-            CB_B C 2 A_WeaponReady(WRF_NOFIRE|WRF_NOBOB);
+            CB_B C 2 A_DoPBWeaponAction(WRF_NOFIRE|WRF_NOBOB);
             goto Reload;
 
         FireDemonic:
@@ -302,16 +304,16 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
 			TNT1 A 0 A_SetCrosshair(-1);
             TNT1 A 0 A_JumpIf(getCrossbowMode() == DEMONIC_BOLT,"Fire2Demonic");
             TNT1 A 0 A_PlaySoundEx("weapons/ballista/firebolt","Auto");
-            CB_M A 1 ;
+            CB_M A 1;
             TNT1 A 0 FireWeapon();
-            CB_M B 1 ;
+            CB_M B 1;
         ContinueFire2:
             CB_M C 0 A_SetPitch(-1.2 + pitch);
             CB_M C 0 A_ZoomFactor(1.5);
             CB_M C 1 A_SetPitch(+0.7 + pitch);
             CB_M CC 1 A_SetPitch(+0.7 + pitch);
             CB_M C 1 A_SetPitch(+0.2 + pitch);
-            CB_M C 2 A_WeaponReady(WRF_NOFIRE| WRF_NOBOB);
+            CB_M C 2 A_DoPBWeaponAction(WRF_NOFIRE|WRF_NOBOB);
             goto Reload;
 
         Fire2Demonic:
@@ -369,6 +371,7 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             TNT1 A 0 A_JumpIf(invoker.unwindString, "ContinueReload");
             TNT1 A 0 PB_CheckReload(null, null, null, "Ready3", "Ready3", ARROW_AMOUNT, invoker.ReserveToMagAmmoFactor);
         StandardReload:
+            TNT1 A 0 {pbxcore_debug.printInt("%d",PB_GetZoom());}
             TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
             CB_E ABCDEF 1 PB_SetRoll(roll-.4);
             CB_E GGGGGGGGG 1 ;
@@ -403,6 +406,12 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             TNT1 A 0 {
                 invoker.unwindString = false;
                 PB_SetReloading(false);
+                if(invoker.firedFromADS)
+                {
+                    invoker.firedFromADS = false;
+                    return resolvestate("ZoomIn");
+                }
+                return resolvestate(null);
             }
             Goto Ready3;
 

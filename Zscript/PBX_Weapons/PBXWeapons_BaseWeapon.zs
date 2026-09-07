@@ -138,7 +138,7 @@ class PBX_WeaponBase : PB_WeaponBase abstract
 
     action void PBX_ResetZoom()
     {
-        invoker.mZoomLevel = 1.0;
+        // invoker.mZoomLevel = 1.0;
         PB_SetZoom(false);
     }
 
@@ -316,15 +316,15 @@ class PBX_WeaponBase : PB_WeaponBase abstract
 
     // Fire Lighting
     action void PBX_FireLightningGun(
-        int damage, 
-        double horOfs = 0, 
-        double spawnheight = 0, 
-        double range = 512, 
-        int duration = 1, 
-        int delay = 0, 
-        int maxChains = 1, 
-        int maxlinks = 5,
-        name damageType = 'plasma'
+        int     damage, 
+        double  horOfs      = 0, 
+        double  spawnheight = 0, 
+        double  range       = 512, 
+        int     duration    = 1, 
+        int     delay       = 0, 
+        int     maxChains   = 1, 
+        int     maxlinks    = 5,
+        name    damageType  = 'plasma'
     )
 	{
 		// beamstart is where the lightning appears from:

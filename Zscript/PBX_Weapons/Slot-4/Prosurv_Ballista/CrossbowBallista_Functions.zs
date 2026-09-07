@@ -216,6 +216,7 @@ extend class PBX_Prosurv_Ballista
 			case DEMONIC_BOLT: 		projectile = "PBX_DemonicBolt"; 	break;
 			case SHOCK_BOLT: 		projectile = "PBX_ShockBolt"; 	break;
 		}
+		if(PB_GetZoom()) invoker.firedFromADS = true;
 		PB_FireBullets(projectile, 1, 0, 0, 0, PB_GetZoom() ? 1 : 3);
 		pb_takeammo(invoker.ammotype2,invoker.ReserveToMagAmmoFactor,0,0);
 	}	

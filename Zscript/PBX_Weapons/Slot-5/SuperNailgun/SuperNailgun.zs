@@ -171,7 +171,6 @@ class PBX_SuperNailgun : PBX_WeaponBase
 				PB_HandleCrosshair(39);
 				A_TakeInventory("PB_LockScreenTilt",1);
                 A_StopSound(1);
-                PB_SetOverheat(0);
 			}
 			SNSE GFEDCBA 1 superNailgun_setSprite("SNSU");
 			TNT1 A 0 A_Lower();

@@ -186,7 +186,7 @@ class PBXPlasma_Injector : PBInjector
 		// Tesla Gun
 		if(!(pbxweapons_plasmarifle_filter & DisablePBX_TeslaGun))
 		{
-		   handler.InjectSpawn("PB_PlasSpawnerT2","PBX_TeslaGun",255,1);
+		   handler.InjectSpawn("PB_PlasSpawnerT3","PBX_TeslaGun",255,1);
 		}
     }
 }
