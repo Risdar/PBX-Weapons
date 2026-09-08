@@ -21,10 +21,11 @@ PBXWEAPONS_HOLOGRAM_LIFETIME = "Platinum Railgun's Hologram Lifetime";
 PBXWEAPONS_MENU_RESET_WEAPON_DURATIONS = "Reset PBX Weapons Values";
 PBXWEAPONS_CSSG_LOCK_SWITCH = "CSSG Meathook Lock Switch";
 
-TIP_pbxweapons_normalriflereplace   = "Start the game with the Platinum Rifle on top of the Standard PB DMR";
-TIP_pbxweapons_startwithcrossbow    = "Start the game with the Crossbow Ballista, a precision weapon with multiple arrow types";
-TIP_pbxweapons_enablesecretweapon   = "Enable or disable the secret weapons in the game, Currently there's only the Nuke Launcher";
-TIP_pbxweapons_cssghooklockswitch   = "If enabled will disable weapon switching when the CSSG Meathook is attached to a monster";
+TIP_pbxweapons_keepweapons          = "Keep unupgraded weapons (PBX Weapons Only)";
+TIP_pbxweapons_normalriflereplace   = "Start the game with the Platinum Rifle";
+TIP_pbxweapons_startwithcrossbow    = "Start the game with the Crossbow Ballista";
+TIP_pbxweapons_enablesecretweapon   = "Toggle secret weapon spawns, Currently there's only the Nuke Launcher";
+TIP_pbxweapons_cssghooklockswitch   = "Disable weapon switching when the CSSG Meathook is attached to a monster";
 
 TIP_pbxweapons_secretweapon_spawnchance = "How frequent should the secret weapons spawn (In Percent)";
 
@@ -52,6 +53,7 @@ PBXWEAPONS_PAINGIVER = "Enable Paingiver";
 PBXWEAPONS_CYBERRL = "Cyberdemon drop their Weapon";
 PBXWEAPONS_SPIDERCG = "Spider Mastermind drop their Weapon";
 
+PBXWEAPONS_CRYOSG = "Enable Plasma Shotgun"; 
 PBXWEAPONS_PLATINUM_RAILGUN = "Enable Platinum Railgun"; 
 PBXWEAPONS_TESLAGUN = "Enable Tesla Gun"; 
 

@@ -169,8 +169,7 @@ extend class PBX_MetalSniper
         {
             case CLOSE_WHEEL:
                 cleanmodetokens();
-                if(PB_GetZoom()) return resolvestate("Ready2");
-			    else return resolvestate("Ready3");
+                return PBX_ReturnReady();
 
             case NO_UPGRADE:
                 cleanmodetokens();

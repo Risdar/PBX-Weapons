@@ -55,7 +55,8 @@ enum PBXWeapons_ePlasmaRifleSpawns
 {
 ////// SLOT 7 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	DisablePBX_BDPRailgun					= 1 << 0,
-	DisablePBX_TeslaGun						= 1 << 1
+	DisablePBX_TeslaGun						= 1 << 1,
+	DisablePBX_CryoSG						= 1 << 2
 }
 
 enum PBXWeapons_eBFGSpawns
@@ -131,7 +132,6 @@ class PBXChaingun_Injector : PBInjector
 		// Metal Sniper
 		if(!(pbxweapons_chaingun_filter & DisablePBX_MetalSniper))
 		{
-			handler.InjectSpawn('PB_MGSpawnerT2', 'PBX_MetalSniper', 255, 1);
 			handler.InjectSpawn('PB_MGSpawnerT3', 'PBX_MetalSniper', 255, 1);
 		}
 		// Neo HMG
@@ -187,6 +187,11 @@ class PBXPlasma_Injector : PBInjector
 		if(!(pbxweapons_plasmarifle_filter & DisablePBX_TeslaGun))
 		{
 		   handler.InjectSpawn("PB_PlasSpawnerT3","PBX_TeslaGun",255,1);
+		}
+		// Cryo SG
+		if(!(pbxweapons_plasmarifle_filter & DisablePBX_CryoSG))
+		{
+		   handler.InjectSpawn("PB_PlasSpawnerT2","PBX_CryoSG",255,1);
 		}
     }
 }
@@ -278,11 +283,16 @@ class PBXWeapons_WeaponSpawner : EventHandler
 
 	override void WorldLoaded(WorldEvent e)
 	{
+		PBX_SpawnSecretWeapons();
+	}
+
+	void PBX_SpawnSecretWeapons()
+	{
 		// Only do it once
 		if(mSecretWeaponSpawned || !pbxweapons_enablesecretweapon) return;
 
 		int mSpawnChance = random(1,100);
-		if(mSpawnChance > PBXCore_Duration.GetByCVar("pbxweapons_secretweapon_spawnchance")) //10% chance of spawning by default
+		if(mSpawnChance > pbxweapons_secretweapon_spawnchance) //10% chance of spawning by default
 		{
 			PBXCore_Debug.PrintInt("PBX_SpecialWeaponSpawner not Spawned!, got %d",mSpawnChance);
 			return;

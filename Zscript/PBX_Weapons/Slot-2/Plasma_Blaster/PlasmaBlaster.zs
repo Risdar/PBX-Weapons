@@ -20,7 +20,7 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
         Weapon.SlotPriority 0.5;
         PB_WeaponBase.UsesWheel true;
         PB_WeaponBase.WheelInfo "PlasmaBlasterWheel";
-        // PB_WeaponBase.Downgrade "PBX_ProsurvBlaster";
+        PBX_WeaponBase.TakeWeaponDowngrade "PBX_ProsurvBlaster";
         Inventory.PickupSound "CHGNPKUP";
         Inventory.Pickupmessage  "$PBX_PlasmaBlaster_Pickup";
 	    Inventory.AltHUDIcon "ARMZA0";

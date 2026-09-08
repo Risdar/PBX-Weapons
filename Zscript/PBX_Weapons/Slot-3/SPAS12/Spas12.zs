@@ -55,6 +55,7 @@ class PBX_SPAS12 : PBX_WeaponBase
 
                 A_Recoil(3);
                 A_SetPitch(pitch - 4.0);
+				PB_FireOffset();
 
 				PB_LowAmmoSoundWarning("shotgun");
 				PB_TakeAmmo(invoker.ammo2.getClassName(),1,0);
@@ -83,7 +84,6 @@ class PBX_SPAS12 : PBX_WeaponBase
 
             case 5:
 				PB_SpawnCasing("ShotgunCasing",15,-5,26,0,3,3);
-                // A_PlaySound("H4SGCOCK", CHAN_AUTO);
 				if(!PB_GetMagEmpty()) PB_SetChamberEmpty(false);
                 A_ZoomFactor(PB_GetZoom() ? 1.48 : 1.0);
                 break;

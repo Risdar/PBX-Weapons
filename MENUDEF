@@ -31,6 +31,7 @@ OptionMenu "PBXWeapons_Menu"
     SafeCommand "$PBXWEAPONS_MENU_RESET_PBXWEAPONS_TOOLTIPS", "set PBXWeapons_WeaponHelpFlags 0; set PBXWeapons_UpgradeHelpFlags 0"
     StaticText " "
     StaticText	"--------- Weapon Settings ---------", 1
+    Option "$PBXWEAPONS_MENU_ENABLE_KEEPWEAPONS", "pbxweapons_keepweapons", "OnOff"
     Option "$PBXWEAPONS_CSSG_LOCK_SWITCH", "pbxweapons_cssghooklockswitch", "OnOff"
     StaticText " "
     Option "$PBXWEAPONS_MENU_ENABLE_SECRET_WEAPONS", "pbxweapons_enablesecretweapon", "OnOff"
@@ -80,15 +81,16 @@ AddOptionMenu "AddonWeaponSpawns" after "CHNT1"
     FlagOption    "$PBXWEAPONS_BATTLE_RIFLE",           "PBXWeapons_chaingun_filter",    "OffOn", 0
 }
 // TIER 2
-AddOptionMenu "AddonWeaponSpawns" after "CHNT2"
+/* AddOptionMenu "AddonWeaponSpawns" after "CHNT2"
 {
     // SLOT 4
-    FlagOption    "$PBXWEAPONS_METAL_SNIPER",           "PBXWeapons_chaingun_filter",    "OffOn", 1
-}
+} */
+
 // TIER 3
 AddOptionMenu "AddonWeaponSpawns" after "CHNT3"
 {
     // SLOT 5
+    FlagOption    "$PBXWEAPONS_METAL_SNIPER",           "PBXWeapons_chaingun_filter",    "OffOn", 1
     FlagOption    "$PBXWEAPONS_NEOHMG",                "PBXWeapons_chaingun_filter",    "OffOn", 2
 }
 
@@ -114,6 +116,9 @@ AddOptionMenu "AddonWeaponSpawns" after "LAUT3"
 // TIER 2
 AddOptionMenu "AddonWeaponSpawns" after "PLST2"
 {
+    // SLOT 3
+    FlagOption    "$PBXWEAPONS_CRYOSG",               "PBXWeapons_plasmarifle_filter",    "OffOn", 2
+
     // SLOT 7
     FlagOption    "$PBXWEAPONS_PLATINUM_RAILGUN",               "PBXWeapons_plasmarifle_filter",    "OffOn", 0
 }

@@ -320,6 +320,7 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 			}
 			TNT1 A 0 A_StartSound("IronSights", 0);
 			TNT1 A 0 A_JumpIf(PB_GetZoom(),"Zoomout");
+		ZoomIn:
 			TNT1 A 0 A_ZoomFactor(1.5);
 			ASS1 ABC 1;
 			TNT1 A 0 {
@@ -328,7 +329,7 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 			}
 			Goto Ready2;
 			
-		Zoomout:
+		ZoomOut:
 			TNT1 A 0 {	
 				PB_HandleCrosshair(46);
 				A_ZoomFactor(1.0);

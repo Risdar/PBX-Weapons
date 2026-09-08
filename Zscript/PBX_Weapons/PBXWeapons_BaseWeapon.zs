@@ -50,6 +50,8 @@ class PBX_WeaponBase : PB_WeaponBase abstract
     Default
     {
         PBX_WeaponBase.ScopeConfiguration false, 1.0, 1.0; 
+        PBX_WeaponBase.SelectWeaponUpgrade "";
+        PBX_WeaponBase.TakeWeaponDowngrade "";
     }
 
     override void PostBeginPlay()
@@ -79,12 +81,17 @@ class PBX_WeaponBase : PB_WeaponBase abstract
         PBXCore_Debug.Print("WeaponRaise Called");
         PB_WeaponRaise(upSnd);
         if(pbxweapons_sendTip) PBX_WeaponHelpText(); // This function is in PBXWeapons_Tips.zs
-        // if(!pbxweapons_keepweapons)
-        // {
-        //     if(invoker.UpgradedWeapon) PB_SelectIfUpgrade(invoker.UpgradedWeapon.getclassname());
-        //     if(invoker.DowngradeWeapon) PB_TakeIfUpgrade(invoker.DowngradeWeapon.getclassname());
-        // }
+        if(!pbxweapons_keepweapons)
+        {
+            if(invoker.mUpgradeWeapon != "") PB_SelectIfUpgrade(invoker.mUpgradeWeapon);
+            if(invoker.mDowngradeWeapon != "") PB_TakeIfUpgrade(invoker.mDowngradeWeapon);
+        }
     }
+
+    name mUpgradeWeapon;
+    name mDowngradeWeapon;
+    property SelectWeaponUpgrade: mUpgradeWeapon;
+    property TakeWeaponDowngrade: mDowngradeWeapon;
 
     // Same as above
     action void PBX_WeaponLower()
@@ -434,6 +441,13 @@ class PBX_WeaponBase : PB_WeaponBase abstract
 		else 
             return resolvestate(null);
 	}
+
+    // Return to a ready state based on zoom
+    action state PBX_ReturnReady(StateLabel zoomed = "Ready2", StateLabel normal = "Ready3")
+    {
+        if(PB_GetZoom()) return resolvestate(zoomed);
+        return resolvestate(normal);
+    }
 
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
     States

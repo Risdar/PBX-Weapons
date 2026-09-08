@@ -28,7 +28,7 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
         DamageType "Plasma";
         Inventory.PickupSound "weapons/pistolup";
         Inventory.Pickupmessage "$PBX_ProsurvBlaster_Pickup";
-        // PB_WeaponBase.Upgrade "PBX_PlasmaBlaster";
+        PBX_WeaponBase.SelectWeaponUpgrade "PBX_PlasmaBlaster";
         +WEAPON.WIMPY_WEAPON;
         +WEAPON.NOAUTOAIM;
         +WEAPON.NOAUTOFIRE;

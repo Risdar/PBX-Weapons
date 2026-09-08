@@ -126,12 +126,15 @@ extend class PBX_Prosurv_LeverAction
 		{
 			clearLAModeTokens();
 			A_Print("$PBX_AmmoNotAvailable");
-			if(PB_GetZoom()) return resolvestate("Ready2");
-			return resolvestate("Ready3");
+			return PBX_ReturnReady();
 		}
 		
 		if(goMarlin && getLAMode() == LA_444Marlin || goMagnum && getLAMode() == LA_357Magnum)
+		{
+			clearLAModeTokens();
 			A_Print("$PB_ALREADYSELECTED");
+			return PBX_ReturnReady();
+		}
 
 		if(toggleLaser)
 		{

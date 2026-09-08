@@ -28,6 +28,7 @@ OB_WEAP_LEVERACTION = "%k Drew a Bead On %o with a Lever Action.";
 OB_WEAP_PSG = "%k Opened %o with a Pump Shotgun.";
 OB_WEAP_CSSG = "%o was devastated by %k.";
 OB_WEAP_SPAS12 = "%o was blasted by %k's SPAS-12.";
+OB_WEAP_CRYOSG = "%o got frozen to death by %k's Cryo Shotgun.";
 
 // Slot 4
 OB_WEAP_BATTLERIFLE = "%o was pierced by %k's Battle Rifle.";

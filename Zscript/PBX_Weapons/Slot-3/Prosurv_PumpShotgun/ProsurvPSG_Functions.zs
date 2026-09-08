@@ -179,6 +179,7 @@ extend class PBX_ProSurvPSG
 				A_AlertMonsters();
 				A_StartSound("weapons/sg", CHAN_WEAPON, pitch:frandom(0.95, 1.05));
 				PB_IncrementHeat();
+				PB_FireOffset();
 				A_FireCustomMissile("YellowFlareSpawn", 0, 0, 0, 0);
 				_SpawnMuzzleSparksSG(0, 0, -4);
 				PB_MuzzleFlashEffects(0, 0, -4);

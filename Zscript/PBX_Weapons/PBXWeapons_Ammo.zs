@@ -229,6 +229,20 @@ class PBX_SPAS12Mag : Ammo
     }
 }
 
+// Cryo SG
+class CryoSGAmmo : PB_Ammo
+{
+	default
+	{
+		Inventory.Amount 0;
+		inventory.maxamount PBX_CryoSG.MAGAZINE_SIZE;
+		Ammo.BackpackAmount 0;
+		Ammo.BackpackMaxAmount PBX_CryoSG.MAGAZINE_SIZE;
+        Inventory.Icon "FZSGA0";
+        +INVENTORY.IGNORESKILL;
+	}
+}
+
 //////////////////////////// SLOT 4 ////////////////////////////////////////////////////////////////////////////////////
 // Battle Rifle
 class BR_Ammo : Ammo

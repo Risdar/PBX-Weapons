@@ -9,7 +9,7 @@ class Plasma_Select_Burst : inventory {default{inventory.maxamount 1;}}
 class Plasma_Select_Charge : inventory {default{inventory.maxamount 1;}}
 
 // Actual Weapon
-class PBX_PlasmaBlaster : PB_WeaponBase
+class PBX_PlasmaBlaster : PBX_WeaponBase
 {
     Default
     {
@@ -88,6 +88,7 @@ class PBX_PlasmaBlaster : PB_WeaponBase
     
     action int getTokens()
 	{
+		// Prioritize checking the tokens
 		if(FindInventory("CB_Select_ShockMode"))
 			return SHOCK_BOLT;
 		else if(FindInventory("CB_Select_DemonicMode"))
@@ -98,8 +99,10 @@ class PBX_PlasmaBlaster : PB_WeaponBase
 			return NORMAL_BOLT;
 		else if (FindInventory("CB_Select_NO"))
 			return NO_UPGRADE;
-		else
+		else if (FindInventory("PBX_CloseWheel"))
 			return CLOSE_WHEEL;
+		else
+			return ERROR_WHEEL;
 	}
 
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
@@ -138,6 +141,7 @@ class PBX_PlasmaBlaster : PB_WeaponBase
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
         Ready3:
 			AMGL A 1 {
+                PB_CoolDownBarrel();
                 PB_HandleCrosshair(39);
                 return A_DoPBWeaponAction();
             }
@@ -250,23 +254,28 @@ class PBX_PlasmaBlaster : PB_WeaponBase
 
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////
         FlashPunching:
-            MSNQ ABCDEFGHFEDCBA 1;      // 14 frames
+            // 14 frames
+            MSNQ ABCDEFGHFEDCBA 1;      
             goto Ready3;
 
         FlashKicking:
-            MSNK ABCDEFGHGFEDCBA 1;     // 15 frames
+            // 15 frames
+            MSNK ABCDEFGHGFEDCBA 1;     
             goto Ready3;
 
         FlashAirKicking:
-            MSNQ ABCDEFGHHGFEDCBA 1;    // 16 frames
+            // 16 frames
+            MSNQ ABCDEFGHHGFEDCBA 1;    
             goto Ready3;
 
         FlashSlideKicking:
-            MSNK ABCDEFGHHHHHHHHHHHHHGFEDCBA 1; // 27 frames
+            // 27 frames
+            MSNK ABCDEFGHHHHHHHHHHHHHGFEDCBA 1; 
             goto Ready3;
 
         FlashSlideKickingStop:
-            MSNK GFEDCBA 1;             // 7 frames
+            // 7 frames
+            MSNK GFEDCBA 1;             
             goto Ready3;
     }
 }

@@ -278,7 +278,6 @@ class PBX_DemonicBallistaUpgrade : PB_UpgradeItem
 			Array<String> tips;
 			tips.Push("$PBX_DemonicBallista_Tip1");
 			tips.Push("$PBX_DemonicBallista_Tip2");
-			tips.Push(string.format(StringTable.Localize("$PBX_DemonicBallista_Tip3"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+pb_specialwheel")));
 			PBXCore_TipsManager.SendTipArrayIfNeeded(tips,"PBXWeapons_UpgradeHelpFlags", PBX_TIP_CROSSBOW_UPGRADE);
 		}
 		return pickup;

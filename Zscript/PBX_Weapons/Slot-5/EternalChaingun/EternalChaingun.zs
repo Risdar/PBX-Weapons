@@ -31,7 +31,7 @@ class PBX_EternalMinigun : PBX_WeaponBase
         Scale 0.9;
 
 //////////////////////////// WEAPON FLAGS ////////////////////////////////////////////////////////////////////////////////////
-        // +WEAPON.CHEATNOTWEAPON;
+        +WEAPON.CHEATNOTWEAPON;
         +WEAPON.NOAUTOAIM;
         +WEAPON.NOAUTOFIRE;
         +WEAPON.NO_AUTO_SWITCH;

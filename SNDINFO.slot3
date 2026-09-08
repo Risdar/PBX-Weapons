@@ -90,3 +90,5 @@ spas12f2 "sounds/Weapons/Slot-3/SPAS12/SPASFIRE3.wav"
 $rolloff weapons/spas12/fire 200 1800
 $volume weapons/spas12/fire 1.0  */
 
+//CryoShotgun
+M1014RE M1014RE
