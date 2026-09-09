@@ -22,6 +22,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 		PB_WeaponBase.WheelInfo "BattleRifleWheel";
 		PB_WeaponBase.ReserveToMagAmmoFactor 2;
         PBX_WeaponBase.ScopeConfiguration true, MINZOOM, MAXZOOM; 
+        PBX_WeaponBase.SelectWeaponUpgrade "PBX_MetalSniper";
 		Scale 1.0;
 		
         // Messages

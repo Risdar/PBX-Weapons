@@ -27,6 +27,7 @@ Class PBX_MetalSniper : PBX_WeaponBase
         PB_WeaponBase.WheelInfo "MetalSniperWheel";
 		PB_WeaponBase.ReserveToMagAmmoFactor AMMO_TAKE_NORMAL;
         PBX_WeaponBase.ScopeConfiguration true, MINZOOM, MAXZOOM; 
+        PBX_WeaponBase.TakeWeaponDowngrade "PBX_BDPBattleRifle";
         Tag "$PBX_MetalSniper_Tag";
 		Obituary "$OB_WEAP_METALSNIPER";
         scale 0.62;

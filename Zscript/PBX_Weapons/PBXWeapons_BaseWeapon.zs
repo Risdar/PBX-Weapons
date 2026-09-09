@@ -299,8 +299,8 @@ class PBX_WeaponBase : PB_WeaponBase abstract
 		vector2 spread;
 		for(int i = amount; i > 0; i--)
 		{
-			spread.x = frandom(-angle, angle);
-			spread.y = frandom(-pitch, pitch);
+			spread.x = frandom[sfx](-angle, angle);
+			spread.y = frandom[sfx](-pitch, pitch);
 
 			if(i == amount) 
 			{
@@ -399,7 +399,7 @@ class PBX_WeaponBase : PB_WeaponBase abstract
         // Actually fire
         PBXCore_Debug.Print("Projectile Fired");
 		PB_FireBullets(projectileName, projectileAmount, angle, offsets, height, pitch);
-        PB_SpawnCasing(casingName,22,2,28,Frandom(-2, -1),Frandom(5,8),Frandom(3,4));
+        PB_SpawnCasing(casingName,22,2,28,frandom[sfx](-2, -1),frandom[sfx](5,8),frandom[sfx](3,4));
 
 		If(pitchdiff > 45 || anglediff > 45 || pitchdiff < -45 || anglediff < -45)
 			return;
@@ -457,9 +457,9 @@ class PBX_WeaponBase : PB_WeaponBase abstract
 			TNT1 A 0 {
 				for(int i = 0; i < 5; i++)
 				{
-					A_CustomMissile ("MetalShard1", 5, 0, random (-10, -20), 2, random (0, 30));
-					A_CustomMissile ("MetalShard2", 5, 0, random (-10, -20), 2, random (0, 30));
-					A_CustomMissile ("MetalShard3", 5, 0, random (-10, -20), 2, random (0, 30));
+					A_CustomMissile ("MetalShard1", 5, 0, random[sfx](-10, -20), 2, random[sfx](0, 30));
+					A_CustomMissile ("MetalShard2", 5, 0, random[sfx](-10, -20), 2, random[sfx](0, 30));
+					A_CustomMissile ("MetalShard3", 5, 0, random[sfx](-10, -20), 2, random[sfx](0, 30));
 				}
 				A_ALertMonsters();
 				A_Startsound("meleeweapon/break");

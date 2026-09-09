@@ -126,8 +126,8 @@ class PBXChaingun_Injector : PBInjector
 		// Battle Rifle
 		if(!(pbxweapons_chaingun_filter & DisablePBX_BattleRifle))
 		{
-			handler.InjectSpawn('PB_MGSpawnerT1', 'PBX_BattleRifle', 255, 1);
-			handler.InjectSpawn('PB_MGSpawnerT2', 'PBX_BattleRifle', 255, 1);
+			handler.InjectSpawn('PB_MGSpawnerT1', 'PBX_BDPBattleRifle', 255, 1);
+			handler.InjectSpawn('PB_MGSpawnerT2', 'PBX_BDPBattleRifle', 255, 1);
 		}
 		// Metal Sniper
 		if(!(pbxweapons_chaingun_filter & DisablePBX_MetalSniper))
@@ -317,25 +317,26 @@ class PBXWeapons_WeaponSpawner : EventHandler
 	override void WorldThingSpawned (WorldEvent e)
     {
         if (!e || !e.thing) return;
-        let  actor = e.Thing;
+        let  mActor = e.Thing;
 
         // Check and Spawn
-        switch(actor.GetClassName())
+        switch(mActor.GetClassName())
         {
             case 'XDeathCyberdemonGun':
                 if(!(PBXWeapons_monsterdrop_filter & DisablePBX_CyberdemonRL))
                 { 
-					PBXCore_Debug.PrintString("Spawning CyberdemonRL from %s", actor.GetClassName());
-                   	actor.spawn("PBX_CyberdemonRL", actor.pos);
-                    actor.destroy(); 
+					PBXCore_Debug.PrintString("Spawning CyberdemonRL from %s", mActor.GetClassName());
+                   	actor.spawn("PBX_CyberdemonRL", mActor.pos);
+                    mActor.destroy(); 
                 } 
                 break;
 
 			case 'XDeathSpiderPart6':
                 if(!(PBXWeapons_monsterdrop_filter & DisablePBX_MastermindCG))
                 { 
-                   	actor.spawn("PBX_MastermindChaingun", actor.pos);
-                    actor.destroy(); 
+					PBXCore_Debug.PrintString("Spawning MastermindCG from %s", mActor.GetClassName());
+                   	actor.spawn("PBX_MastermindChaingun", mActor.pos);
+                    mActor.destroy(); 
                 } 
                 break;
 
