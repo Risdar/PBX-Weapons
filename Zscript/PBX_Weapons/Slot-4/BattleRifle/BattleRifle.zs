@@ -98,7 +98,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 		A_AlertMonsters();
 		PB_DynamicTail("lmg", "lmg");
 
-		PBX_FireRicochet("PB_762x51mmAP","PB_EmptyBrass",1,0.1,0,0,0.1,puffType:"BR45BulletPuff");
+		PBX_FireRicochet("PB_762x51mm","PB_EmptyBrass",1,0.1,0,0,0.1,puffType:"BR45BulletPuff");
 
 		// Everything Else
 		PB_LowAmmoSoundWarning("default");
