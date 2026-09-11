@@ -243,6 +243,19 @@ class CryoSGAmmo : PB_Ammo
 	}
 }
 
+// class CryoASGAmmo : PB_Ammo
+// {
+//     default
+// 	{
+// 		Inventory.Amount 0;
+// 		inventory.maxamount PBX_CryoASG.DRUM_SIZE;
+// 		Ammo.BackpackAmount 0;
+// 		Ammo.BackpackMaxAmount PBX_CryoASG.DRUM_SIZE;
+//         Inventory.Icon "412PA0";
+//         +INVENTORY.IGNORESKILL;
+// 	}
+// }
+
 //////////////////////////// SLOT 4 ////////////////////////////////////////////////////////////////////////////////////
 // Battle Rifle
 class BR_Ammo : Ammo

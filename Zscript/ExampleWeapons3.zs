@@ -105,6 +105,14 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
 			return ERROR_WHEEL;
 	}
 
+    action void cleanTokens()
+    {
+        A_SetInventory("CryoSG_Select_PlasmaBlast",0);
+        A_SetInventory("CryoSG_Select_PlasmaBreath",0);
+        A_SetInventory("CryoSG_Select_Freeze",0);
+        A_SetInventory("PBX_CloseWheel",0);
+    }
+
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
     States
     {

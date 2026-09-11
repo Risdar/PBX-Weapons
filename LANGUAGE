@@ -112,6 +112,13 @@ PBX_CryoSG_PlasmaBlast              = "\cvPlasma Blast \c-Mode";
 PBX_CryoSG_PlasmaBreath             = "\cnPlasma Breath \c-Mode";
 PBX_CryoSG_Freeze                   = "\cyFreeze \c-Mode";
 
+// CryoASG
+PBX_CryoASG_Pickup                  = "Plasma Auto Shotgun (Slot 3)";
+PBX_CryoASG_Tag                     = "TeiTenga C-3-2 Automatic Plasma Shotgun";
+
+PBX_CryoASG_PlasmaBlast              = "\cvPlasma Blast \c-Mode";
+PBX_CryoASG_PlasmaBreath             = "\cnPlasma Breath \c-Mode";
+PBX_CryoASG_Freeze                   = "\cyFreeze \c-Mode";
 
 //////////////////////////// SLOT 4 ///////////////////////////////////////////////////////////////////////////////
 // BattleRifle 

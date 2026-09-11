@@ -134,7 +134,7 @@ extend class PBX_WeaponBase
             {
                 Array<String> tips;
                 tips.Push(string.format(StringTable.Localize("$PBX_BDPRailgun_Tip1"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+pb_specialwheel")));
-                tips.Push("$PBX_BDPRailgun_Tip2");
+                tips.Push(string.format(StringTable.Localize("$PBX_BDPRailgun_Tip2"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+pb_specialwheel")));
                 PBXCore_TipsManager.SendTipArrayIfNeeded(tips, WEAPON_HELPTEXT, PBX_TIP_BDPRAILGUN);
             }
             break;

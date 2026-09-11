@@ -1,15 +1,18 @@
-// Includes
-#include "./PlasmaBlaster_Functions.zs"
-#include "./PlasmaBlaster_Projectiles.zs"
-#include "./PlasmaBlaster_Wheel.zs"
+// Cryo Auto Shotgun from Cat's Frozen Addon Pack
+// by SchrödingCat, Eriance/Amuscaria, Realm667
+// Bloax, ZZrionTheInsect, Xaser & Ethrill, Tomtefar, SchrödingCat
+// Dox778
 
-class Plasma_Select_Auto : inventory {default{inventory.maxamount 1;}}
-class Plasma_Select_Semi : inventory {default{inventory.maxamount 1;}}
-class Plasma_Select_Burst : inventory {default{inventory.maxamount 1;}}
-class Plasma_Select_Charge : inventory {default{inventory.maxamount 1;}}
+// Includes
+// #include "./PlasmaBlaster_Functions.zs"
+// #include "./PlasmaBlaster_Projectiles.zs"
+#include "./CryoASG_Wheel.zs"
+
+class CryoASG_Select_Plasma : inventory {default{inventory.maxamount 1;}}
+class CryoASG_Select_Freeze : inventory {default{inventory.maxamount 1;}}
 
 // Actual Weapon
-class PBX_PlasmaBlaster : PBX_WeaponBase
+class PBX_CryoASG : PBX_WeaponBase
 {
     Default
     {
@@ -19,19 +22,19 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
         Weapon.SlotPriority 0.5;
         PB_WeaponBase.UsesWheel true;
         PB_WeaponBase.WheelInfo "PlasmaBlasterWheel";
-	    Inventory.AltHUDIcon "ARMZA0";
+	    Inventory.AltHUDIcon "412PA0";
 
 //////////////////////////// AMMO ////////////////////////////////////////////////////////////////////////////////////
         Weapon.AmmoType1 "PB_Cell";
-        Weapon.AmmoType2 "HellPistolerAmmo";
-        Weapon.AmmoGive1 30;
+        Weapon.AmmoType2 "CryoASGAmmo";
+        Weapon.AmmoGive1 16;
 
 //////////////////////////// MESSAGES & SOUNDS ////////////////////////////////////////////////////////////////////////////////////
-        Inventory.Pickupmessage  "$PBX_PlasmaBlaster_Pickup";
-        Inventory.PickupSound "CHGNPKUP";
-        Obituary "%o was decapitated by %k's Assasin.";
+        Inventory.Pickupmessage  "$PBX_CryoASG_Pickup";
+        Inventory.PickupSound "weapons/sgpump";
+        Obituary "$OB_WEAP_CRYOASG";
         AttackSound "None";
-        Tag "$PBX_PlasmaBlaster_Tag";
+        Tag "$PBX_CryoASG_Tag";
         Scale 0.8;
 
 //////////////////////////// WEAPON FLAGS ////////////////////////////////////////////////////////////////////////////////////
@@ -41,49 +44,70 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
     }
 
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
-    bool blasterPrimary;
-    bool blasterSecondary;
-    int burstcount;
-    const MAXCHARGE = 16;
-    enum blasterEnum {
-        PRIM_SEMI       = 0,
-        PRIM_AUTO       = 1,
-        SEC_BURST       = 0,
-        SEC_CHARGE      = 1,
-        TAKE_CHARGE     = 2   // Ammo take charge
+    int mCurrentMode;
+
+    const DRUM_SIZE = 10;
+
+    enum CryoSGModes {
+        ERROR_WHEEL = -2,
+        CLOSE_WHEEL,
+        PLASMA_MODE,
+        FREEZE_MODE,
+        LIGHTNING_MODE
     }
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
-    action void setCrossbowSprite(name unloaded = '', name bolt = '', name explosive = '', name demonic = '', name shock = '')
-	{
-		int mode = getCrossbowMode();
-		name spriteToUse = '';
-		
-		if(PB_GetChamberEmpty())
-			spriteToUse = unloaded;
+    action void FireCurrentMode()
+    {
+        int ofs = PB_GetZoom() ? 3 : 6;
+        PB_IncrementHeat();
+        A_GunFlash();
+        PB_FireOffset();
+        PB_LowAmmoSoundWarning("shotgun");
 
-		switch(mode)
-		{
-			case NORMAL_BOLT: 	  spriteToUse = bolt;		break;
-			case EXPLOSIVE_BOLT:  spriteToUse = explosive;	break;
-			case DEMONIC_BOLT: 	  spriteToUse = demonic;	break;
-			case SHOCK_BOLT: 	  spriteToUse = shock;		break;
-			default: break;
-		}
+        PB_TakeAmmo(invoker.ammo2.getClassName());
+        A_SpawnItemEx("BlueFlareSpawn", 0, 0, -3);
+        A_SpawnItemEx("BlueFlareSpawn", 0, 0, 3);
 
-		if(spriteToUse != '')
-			A_SetWeaponSpriteEx(spriteToUse);
-	}
+        switch(getCurrentMode())
+        {
+            case PLASMA_MODE:
+                PB_FireBullets("Plasma_Ball",6,ofs,0,0,ofs);
+                // PBX_FireLightningShotgun();
+                break;
+
+            case FREEZE_MODE:
+				A_StartSound("PLSTHRW",CHAN_WEAPON,CHANF_OVERLAP);
+                PBX_FireBullets("HotPlasmaGas",6,ofs,0,0,ofs);
+                break;
+                
+            case LIGHTNING_MODE:
+                PB_FireBullets("SubZeroProjectile",6,ofs,0,0,ofs);
+         		A_FireBullets(8, 6, 6, 18, "SubZ_Puff",FBF_NORANDOM,8192,"CSSG_FrozenTracer",-12);
+                break;
+        }
+    }
+
+    action void FirePrimary()
+    {
+        A_AlertMonsters();
+        PB_WeaponRecoil(random[sfx](-2,2),-1.6);
+        A_StartSound("weapons/sg", CHAN_WEAPON);
+        A_StartSound("weapons/CryoRifle/missile1", CHAN_AUTO);
+        FireCurrentMode();
+        PB_DynamicTail("shotgun", "shotgun");
+        A_ZoomFactor(0.95);
+    }
     
-    action int getCrossbowMode()
+    action CryoSGModes getCurrentMode()
 	{
-		return invoker.currentMode;
+		return invoker.mCurrentMode;
 	}
 
-	action void setCrossbowMode(int mode)
+	action void setCurrentMode(CryoSGModes mode)
 	{
-		invoker.currentMode = mode;
+		invoker.mCurrentMode = mode;
 	}
     
     action int getTokens()
@@ -110,20 +134,25 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
     {
 //////////////////////////// SETUP ////////////////////////////////////////////////////////////////////////////////////
         Spawn:
-            ARMZ A -1;
+            412P A -1;
             Stop;
 
         WeaponRespect:
-            AMGR ABCD 1 A_DoPBWeaponAction();
-            AMGZ ABC 1 A_DoPBWeaponAction();
-            AMGR QRSTUV 1 A_DoPBWeaponAction();
-            TNT1 A 0 A_PlaySound("CELLIN2", 6);
-            AMGR WXY 1 A_DoPBWeaponAction();
+            A12R ABCD 1 A_DoPBWeaponAction();
+            A12G TGGGGHIJK 1 A_DoPBWeaponAction();
+            "####" X 0 A_PlaySound("CHAINSPI",1);
+            "####" L 6 A_DoPBWeaponAction();
+            "####" MNOONNOONNNOOO 1 A_DoPBWeaponAction();
+            "####" A 0 A_StopSound(1)
+            "####" PQRSGGG 1 A_DoPBWeaponAction();
+            "####" X 0 A_PlaySound("Shotgun/Pump2", 5);
+            "####" T 1 A_DoPBWeaponAction();
+            A12R DCBA 1 A_DoPBWeaponAction();
             Goto Ready3;
 
         Deselect:
             TNT1 A 0 PBX_WeaponLower();
-            AMGR ABCDEF 1;
+            A12S ABCDE 1;
 			TNT1 A 0 A_Lower();
 			Wait;
 
@@ -137,7 +166,7 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
 			    return PB_RespectIfNeeded();
 			}
         SelectAnimation:
-            AMGR FEDCBA 1;
+            A12S EDCBA 1;
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
         Ready3:
 			AMGL A 1 {
@@ -149,15 +178,24 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
 
 //////////////////////////// FIRE ////////////////////////////////////////////////////////////////////////////////////
         Fire:
-            TNT1 A 0    fireWeapon(0);
-            AMGF A 1;
-            AMGF B 1 A_PlaySound("BEP",3);
-            AMGF CD 1;
-        AutoFire:
-            AMGF E 1    fireWeapon(1);
-            AMGF FG 1   fireWeapon(2);
-            TNT1 A 0    fireWeapon(3);
-            Goto Ready3;
+            TNT1 A 0 {
+                A_WeaponOffset(0,32);
+                PB_SetRoll(0);
+                PB_HandleCrosshair(39);
+                A_TakeInventory("PB_LockScreenTilt",1);
+            }
+            TNT1 A 0 PB_JumpIfNoAmmo();
+		    A12F AB 1 BRIGHT;
+            TNT1 A 0 FirePrimary();
+            A12F C 1;
+            A12F C 2;
+            TNT1 A 0 A_ZoomFactor(1.0);
+            A12F D 2 PB_WeaponRecoil(+0.4,0);
+            A12F EFG 1 PB_WeaponRecoil(+0.4,0);
+            TNT1 A 0 A_WeaponOffset(0,32);
+            A12G A 1;
+            TNT1 A 0 PB_Refire();
+		    Goto Ready3;
   
 //////////////////////////// ALT FIRE ////////////////////////////////////////////////////////////////////////////////////
         AltFire:
@@ -193,16 +231,7 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
             Goto Ready3;
 
 //////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
-        ReloadFromADS:
-			TNT1 A 0 PB_HandleCrosshair(42);
-			TNT1 A 0 A_startsound("IronSights",29);
-            TNT1 A 0 A_ZoomFactor(1.5);
-			BR4Z CB 1;
-			TNT1 A 0 PB_SetZoom(false);
-			BR4Z A 1;
 		Reload:
-            TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");
-			TNT1 A 0 A_ZoomFactor(1.0);
             TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null,null,"Ready3","Ready3",MAXCHARGE);
             TNT1 A 0 A_PlaySound("weapons/smg_magfly1");
             AMGR ABCDEF 1;
@@ -255,27 +284,35 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////
         FlashPunching:
             // 14 frames
-            MSNQ ABCDEFGHFEDCBA 1;      
+            A12G BCDEF 1;
+            A12G F 4;
+            A12G FEDCB 1;  
             goto Ready3;
 
         FlashKicking:
             // 15 frames
-            MSNK ABCDEFGHGFEDCBA 1;     
+            A12G BCDEF 1;
+            A12G F 5;
+            A12G FEDCB 1; 
             goto Ready3;
 
         FlashAirKicking:
             // 16 frames
-            MSNQ ABCDEFGHHGFEDCBA 1;    
+            A12G BCDEF 1;
+            A12G F 6;
+            A12G FEDCB 1; 
             goto Ready3;
 
         FlashSlideKicking:
             // 27 frames
-            MSNK ABCDEFGHHHHHHHHHHHHHGFEDCBA 1; 
+            A12G BCDEF 1;
+            A12G F 17;
+            A12G FEDCB 1; 
             goto Ready3;
 
         FlashSlideKickingStop:
             // 7 frames
-            MSNK GFEDCBA 1;             
+            A12G FFFEDCB 1;             
             goto Ready3;
     }
 }
