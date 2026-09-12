@@ -124,10 +124,17 @@ AddOptionMenu "AddonWeaponSpawns" after "PLST2"
 }
 
 // TIER 3
-AddOptionMenu "AddonWeaponSpawns" after "PLST2"
+AddOptionMenu "AddonWeaponSpawns" after "PLST3"
 {
     // SLOT 8
     FlagOption    "$PBXWEAPONS_TESLAGUN",                       "PBXWeapons_plasmarifle_filter",    "OffOn", 1
+}
+
+// TIER 4
+AddOptionMenu "AddonWeaponSpawns" after "PLST4"
+{
+    // SLOT 3
+    FlagOption    "$PBXWEAPONS_CRYOASG",                       "PBXWeapons_plasmarifle_filter",    "OffOn", 3
 }
 
 // BFG /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

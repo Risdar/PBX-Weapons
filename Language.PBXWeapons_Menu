@@ -56,6 +56,7 @@ PBXWEAPONS_SPIDERCG = "Spider Mastermind drop their Weapon";
 PBXWEAPONS_CRYOSG = "Enable Plasma Shotgun"; 
 PBXWEAPONS_PLATINUM_RAILGUN = "Enable Platinum Railgun"; 
 PBXWEAPONS_TESLAGUN = "Enable Tesla Gun"; 
+PBXWEAPONS_CRYOASG = "Enable Plasma Auto Shotgun"; 
 
 PBXWEAPONS_DEMONIC_EXTERMINATOR = "Enable Demonic Exterminator";
 PBXWEAPONS_DEMONEXT_ARTIFACT = "Enable Demonic Exterminator Artifacts";

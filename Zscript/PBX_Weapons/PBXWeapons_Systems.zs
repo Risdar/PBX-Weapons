@@ -19,6 +19,8 @@ class PBXWeapons_Handler : EventHandler
 		PBXCore_Handler.TryGiveInventory(pm,'PBX_ProSurvPSG', 'PumpShotgunAmmo', PBX_ProSurvPSG.MAGAZINE_SIZE);
 		PBXCore_Handler.TryGiveInventory(pm,'PBX_CSSG', 'CSSGShellsIn', PBX_CSSG.BARREL_CAPACITY);
 		PBXCore_Handler.TryGiveInventory(pm,'PBX_SPAS12', 'PBX_SPAS12Mag', PBX_SPAS12.MAGAZINE_SIZE);
+		PBXCore_Handler.TryGiveInventory(pm,'PBX_CryoSG', 'CryoSGAmmo', PBX_CryoSG.MAGAZINE_SIZE);
+		PBXCore_Handler.TryGiveInventory(pm,'PBX_CryoASG', 'CryoASGAmmo', PBX_CryoASG.DRUM_SIZE);
 
 		// SLOT 4
 		PBXCore_Handler.TryGiveInventory(pm,'PBX_NormalRifle', 'NormalRifleAmmo', PBX_NormalRifle.MAGAZINE_SIZE);

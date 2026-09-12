@@ -25,6 +25,7 @@ class PBX_CryoSG : PBX_WeaponBase
         PB_WeaponBase.UsesWheel true;
         PB_WeaponBase.WheelInfo "CryoSGWheel";
         PB_WeaponBase.ReserveToMagAmmoFactor 12;
+        PBX_WeaponBase.SelectWeaponUpgrade "PBX_CryoASG";
 	    Inventory.AltHUDIcon "FZSGA0";
 
 //////////////////////////// AMMO ////////////////////////////////////////////////////////////////////////////////////
@@ -68,12 +69,13 @@ class PBX_CryoSG : PBX_WeaponBase
         {
             case 1:
                 A_AlertMonsters();
-				A_StartSound("weapons/sg", CHAN_WEAPON);
-				A_StartSound("weapons/CryoRifle/missile1", CHAN_AUTO);
+				A_StartSound("weapons/sg",CHAN_WEAPON,CHANF_OVERLAP);
+                A_StartSound("weapons/CryoRifle/missile1",CHAN_AUTO,CHANF_OVERLAP);
 				FireCurrentMode();
 				A_SetInventory("CantDoAction", 1);
 				PB_DynamicTail("shotgun", "shotgun");
 				PB_SetChamberEmpty(true);
+                A_FlashOverlay();
                 break;
 
             case 2:
@@ -82,46 +84,6 @@ class PBX_CryoSG : PBX_WeaponBase
                 break;
         }
     }
-
-    // action void PBX_FireLightningShotgun(
-    //     int damage = 50,
-    //     int numrays = 32,
-    //     double coneAngle = 40,
-    //     double distance = 1024,
-    //     double vrange = 30,
-    //     int duration = 15,
-    //     int delay = 0,
-    //     int maxChains = 10,
-    //     int maxLinks = 0,
-    //     name damageType = 'stun'
-    // )
-    // {
-    //     Vector3 beamstart = PBXCore_LightningController.L_GetBeamAttachPos(self);
-    //     Array<Actor> hitTargets;
-
-    //     for (int i = 0; i < numrays; i++)
-    //     {
-    //         double an = angle - coneAngle * 0.5 + (numrays > 1 ? coneAngle / (numrays - 1) * i : 0);
-
-    //         FTranslatedLineTarget t;
-    //         AimLineAttack(an, distance, t, vrange);
-
-    //         if (t.linetarget && PBXCore_LightningController.L_IsValidVictim(t.linetarget, self)
-    //             && hitTargets.Find(t.linetarget) == hitTargets.Size())
-    //         {
-    //             hitTargets.Push(t.linetarget);
-    //         }
-    //     }
-
-    //     for (int i = 0; i < hitTargets.Size(); i++)
-    //     {
-    //         PBXCore_LightningController.L_StartChain(self, hitTargets[i], damage, distance, duration, delay, maxChains, maxLinks, damageType:damageType);
-
-    //         Vector3 beamEnd = PBXCore_LightningController.L_GetBeamAttachPos(hitTargets[i]);
-    //         PBXCore_LightningController.L_DrawLightning(beamstart, beamEnd, spawnSpark: true, playersource: player);
-    //     }
-
-    // }
 
     action void FireCurrentMode()
     {
@@ -139,7 +101,6 @@ class PBX_CryoSG : PBX_WeaponBase
         {
             case PLASMA_BLAST:
                 PB_FireBullets("Plasma_Ball",6,ofs,0,0,ofs);
-                // PBX_FireLightningShotgun();
                 break;
 
             case PLASMA_BREATH:
@@ -178,16 +139,16 @@ class PBX_CryoSG : PBX_WeaponBase
         }
 
         setCurrentMode(tokens);
-        printMode();
+        printMode(tokens);
         cleanTokens();
         A_StartSound("BEPBEP", CHAN_WEAPON);
         return PBX_ReturnReady(normal:null);
     }
 
-    action void printMode()
+    action void printMode(CryoSGModes mode)
     {
         string str;
-        switch(getCurrentMode())
+        switch(mode)
         {
             case PLASMA_BLAST:  str = "$PBX_CryoSG_PlasmaBlast";    break;
             case PLASMA_BREATH: str = "$PBX_CryoSG_PlasmaBreath";   break;
@@ -380,7 +341,7 @@ class PBX_CryoSG : PBX_WeaponBase
 				PB_HandleCrosshair(46);
 				A_TakeInventory("PB_LockScreenTilt",1);
 			}
-			TNT1 A 0 A_StartSound("IronSights", 0);
+			TNT1 A 0 A_StartSound("IronSights", CHAN_WEAPON);
 			TNT1 A 0 A_JumpIf(PB_GetZoom(),"Zoomout");
 		ZoomIn:
 			TNT1 A 0 A_ZoomFactor(1.5);
@@ -503,6 +464,11 @@ class PBX_CryoSG : PBX_WeaponBase
             Goto Ready3;            
 
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////
+        MuzzleFlash:
+			P1SF D 1 BRIGHT {A_SetWeaponFrame(3 + random(0, 2)); A_GunFlash();}
+			P1SF G 1 BRIGHT {A_SetWeaponFrame(6 + random(0, 2)); A_GunFlash();}
+            stop;
+
         FlashPunching:
             // 14 frames
             FZGH ABCDE 1;

@@ -56,7 +56,8 @@ enum PBXWeapons_ePlasmaRifleSpawns
 ////// SLOT 7 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	DisablePBX_BDPRailgun					= 1 << 0,
 	DisablePBX_TeslaGun						= 1 << 1,
-	DisablePBX_CryoSG						= 1 << 2
+	DisablePBX_CryoSG						= 1 << 2,
+	DisablePBX_CryoASG						= 1 << 3
 }
 
 enum PBXWeapons_eBFGSpawns
@@ -193,6 +194,11 @@ class PBXPlasma_Injector : PBInjector
 		{
 		   handler.InjectSpawn("PB_PlasSpawnerT2","PBX_CryoSG",255,1);
 		}
+		// Cryo ASG
+		if(!(pbxweapons_plasmarifle_filter & DisablePBX_CryoASG))
+		{
+		   handler.InjectSpawn("PB_PlasSpawnerT4","PBX_CryoASG",255,1);
+		}
     }
 }
 //////////////////////////// BFG ////////////////////////////////////////////////////////////////////////////////////
@@ -233,7 +239,6 @@ class PBXUpgrades_Injector : PBInjector
 		// Metal Sniper Upgrade
 		if(!(pbxweapons_backpack_filter & DisablePBX_MetalSniperUpgrade))
 		{
-			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'MetalSniper_Upgrade', 255, 1);
 			handler.InjectSpawn('PB_UpgradeSpawnerT4', 'MetalSniper_Upgrade', 255, 1);
 			handler.InjectSpawn('PB_MGSpawnerT4', 'MetalSniper_Upgrade', 255, 1);
 		}
@@ -256,9 +261,7 @@ class PBXUpgrades_Injector : PBInjector
 		if(!(pbxweapons_backpack_filter & DisablePBX_ExcavatorUpgrade))
 		{
 			handler.InjectSpawn('PB_RLSpawnerT3', 'PBX_ExcavatorUpgrade', 255, 1);
-			handler.InjectSpawn('PB_RLSpawnerT4', 'PBX_ExcavatorUpgrade', 255, 1);
 			handler.InjectSpawn('PB_UpgradeSpawnerT3', 'PBX_ExcavatorUpgrade', 255, 1);
-			handler.InjectSpawn('PB_UpgradeSpawnerT4', 'PBX_ExcavatorUpgrade', 255, 1);
 		}
     }
 }
@@ -317,25 +320,31 @@ class PBXWeapons_WeaponSpawner : EventHandler
 	override void WorldThingSpawned (WorldEvent e)
     {
         if (!e || !e.thing) return;
-        let  mActor = e.Thing;
+        let mActor = e.Thing;
+		name mMonsterName = mActor.getClassName();
 
         // Check and Spawn
-        switch(mActor.GetClassName())
+        switch(mMonsterName)
         {
-            case 'XDeathCyberdemonGun':
+            case 'PB_Cyberdemon1': case 'PB_Cyberdemon1GK': case 'PB_Cyberdemon':
+			case 'PB_Annihilator': case 'PB_AnnihilatorGK':
                 if(!(PBXWeapons_monsterdrop_filter & DisablePBX_CyberdemonRL))
                 { 
-					PBXCore_Debug.PrintString("Spawning CyberdemonRL from %s", mActor.GetClassName());
+					PBXCore_Debug.PrintString("Spawning CyberdemonRL from %s", mMonsterName);
                    	actor.spawn("PBX_CyberdemonRL", mActor.pos);
                     mActor.destroy(); 
                 } 
                 break;
 
-			case 'XDeathSpiderPart6':
+			case 'PB_Mastermind': case 'PB_MastermindGK': 
+			case 'PB_Demolisher': case 'PB_DemolisherGK':
                 if(!(PBXWeapons_monsterdrop_filter & DisablePBX_MastermindCG))
                 { 
-					PBXCore_Debug.PrintString("Spawning MastermindCG from %s", mActor.GetClassName());
+					PBXCore_Debug.PrintString("Spawning MastermindCG from %s", mMonsterName);
                    	actor.spawn("PBX_MastermindChaingun", mActor.pos);
+					// Since the demolisher has two chainguns
+					if(mMonsterName == 'PB_Demolisher' || mMonsterName== 'PB_DemolisherGK')
+                   		actor.spawn("PBX_MastermindChaingun", mActor.pos);
                     mActor.destroy(); 
                 } 
                 break;

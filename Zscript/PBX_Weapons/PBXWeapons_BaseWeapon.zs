@@ -299,8 +299,8 @@ class PBX_WeaponBase : PB_WeaponBase abstract
 		vector2 spread;
 		for(int i = amount; i > 0; i--)
 		{
-			spread.x = frandom[sfx](-angle, angle);
-			spread.y = frandom[sfx](-pitch, pitch);
+			spread.x = frandom(-angle, angle);
+			spread.y = frandom(-pitch, pitch);
 
 			if(i == amount) 
 			{

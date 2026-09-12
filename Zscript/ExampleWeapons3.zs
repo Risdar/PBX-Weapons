@@ -14,9 +14,9 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
     Default
     {
 //////////////////////////// WEAPON DATA ////////////////////////////////////////////////////////////////////////////////////
-        Weapon.SelectionOrder 2545;
+        Weapon.SelectionOrder 1;
         Weapon.SlotNumber 2;
-        Weapon.SlotPriority 0.5;
+        Weapon.SlotPriority 1;
         PB_WeaponBase.UsesWheel true;
         PB_WeaponBase.WheelInfo "PlasmaBlasterWheel";
 	    Inventory.AltHUDIcon "ARMZA0";

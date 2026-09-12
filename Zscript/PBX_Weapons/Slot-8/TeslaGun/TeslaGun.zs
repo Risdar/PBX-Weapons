@@ -401,16 +401,8 @@ class PBX_TeslaGun : PBX_WeaponBase
 
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////
         MuzzleFlash:
-            PLSE B 1 bright {
-                let psp = player.FindPSprite(OverlayID());
-                psp.frame += random[sfx](0, 2);
-                psp.x = 162;
-                psp.y = 110;
-                psp.pivot = (0.5, 0.5);
-                psp.scale *= frandom[sfx](0.9, 1.2);
-                psp.rotation = frandom[sfx](0, 360);
-                psp.alpha = frandom[sfx](0.8, 1.2);
-            }
+			P1SF D 1 BRIGHT {A_SetWeaponFrame(3 + random(0, 2)); A_GunFlash();}
+			P1SF G 1 BRIGHT {A_SetWeaponFrame(6 + random(0, 2)); A_GunFlash();}
             stop;
 
         FlashPunching:
