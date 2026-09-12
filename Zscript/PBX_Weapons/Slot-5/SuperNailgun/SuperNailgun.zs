@@ -128,8 +128,8 @@ class PBX_SuperNailgun : PBX_WeaponBase
     // To Reduce boilerplate
     action void SuperNailgun_PLaysound()
     {
-        A_StartSound("SNGA", CHAN_WEAPON, CHANF_OVERLAP, 1.0);
-        A_StartSound("SNGB", CHAN_WEAPON, CHANF_OVERLAP, 1.0);
+        A_StartSound("SNGA", CHAN_WEAPON, CHANF_OVERLAP, 0.5);
+        A_StartSound("SNGB", CHAN_WEAPON, CHANF_OVERLAP, 0.5);
     }
 
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////

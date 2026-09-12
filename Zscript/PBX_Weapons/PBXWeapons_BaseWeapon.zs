@@ -7,43 +7,6 @@ class PBX_CloseWheel   : inventory {default{inventory.maxamount 1;}}
 // What gives the player Nightvision, its basically a powerup
 class PBX_Infrared : PB_PowerLightAmp  {default{Powerup.Duration -1800;}}
 
-// Laser sight
-// Call in DoEffect()
-mixin class PBX_LaserSight
-{
-    void PBX_SpawnLaserSight(.PBX_LaserSightProjectile.PBX_LaserColor laserColor = PBX_LaserSightProjectile.RED_DOT, StateLabel defaultReadyState = "Ready3", int laserRange = 4096)
-    {
-        if(!mLaserSightActivated) return;
-
-		let psp = owner.player.FindPSprite(PSP_WEAPON);
-		if(!psp) return;
-
-        for (int i = 0; i < blockedLaserStates.Size(); i++)
-        {
-            if (InStateSequence(psp.curstate, ResolveState(blockedLaserStates[i])) 
-                && !InStateSequence(psp.curstate, ResolveState(defaultReadyState)))
-                return;
-        }
-
-        double pz = owner.height * 0.5 - owner.floorclip + owner.player.mo.AttackZOffset * owner.player.crouchFactor;
-
-        FLineTraceData lasersight;
-        owner.LineTrace(
-			owner.angle, 
-			laserRange, 
-			owner.pitch, 
-            TRF_SOLIDACTORS|TRF_THRUHITSCAN, 
-			offsetz: pz, 
-			data: lasersight);
-
-        let lasr = PBX_LaserSightProjectile(Spawn("PBX_LaserSightProjectile", lasersight.HitLocation));
-        if(lasr)
-        {
-            lasr.mColor = laserColor;
-        }
-    }
-}
-
 class PBX_WeaponBase : PB_WeaponBase abstract
 {
 //////////////////////////// WEAPON SETUP ////////////////////////////////////////////////////////////////////////////////////
@@ -613,6 +576,43 @@ mixin class PBX_GenericSpecialWheel
 
 //////////////////////////// LASER SIGHTS ////////////////////////////////////////////////////////////////////////////////////
 // Laser sights
+// Call in DoEffect()
+mixin class PBX_LaserSight
+{
+    void PBX_SpawnLaserSight(.PBX_LaserSightProjectile.PBX_LaserColor laserColor = PBX_LaserSightProjectile.RED_DOT, StateLabel defaultReadyState = "Ready3", int laserRange = 4096)
+    {
+        if(!mLaserSightActivated || PB_executingEnemy()) return;
+
+		let psp = owner.player.FindPSprite(PSP_WEAPON);
+		if(!psp) return;
+
+        for (int i = 0; i < blockedLaserStates.Size(); i++)
+        {
+            if (InStateSequence(psp.curstate, ResolveState(blockedLaserStates[i])) 
+                && !InStateSequence(psp.curstate, ResolveState(defaultReadyState)))
+                return;
+        }
+
+        double pz = owner.height * 0.5 - owner.floorclip + owner.player.mo.AttackZOffset * owner.player.crouchFactor;
+
+        FLineTraceData lasersight;
+        owner.LineTrace(
+			owner.angle, 
+			laserRange, 
+			owner.pitch, 
+            TRF_SOLIDACTORS|TRF_THRUHITSCAN, 
+			offsetz: pz, 
+			data: lasersight);
+
+        let lasr = PBX_LaserSightProjectile(Spawn("PBX_LaserSightProjectile", lasersight.HitLocation));
+        if(lasr)
+        {
+            lasr.mColor = laserColor;
+        }
+    }
+}
+
+// Laser Projectile
 CLASS PBX_LaserSightProjectile : FastProjectile
 { 
 	Default

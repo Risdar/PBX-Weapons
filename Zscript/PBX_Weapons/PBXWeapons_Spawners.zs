@@ -332,7 +332,6 @@ class PBXWeapons_WeaponSpawner : EventHandler
                 { 
 					PBXCore_Debug.PrintString("Spawning CyberdemonRL from %s", mMonsterName);
                    	actor.spawn("PBX_CyberdemonRL", mActor.pos);
-                    mActor.destroy(); 
                 } 
                 break;
 
@@ -345,7 +344,6 @@ class PBXWeapons_WeaponSpawner : EventHandler
 					// Since the demolisher has two chainguns
 					if(mMonsterName == 'PB_Demolisher' || mMonsterName== 'PB_DemolisherGK')
                    		actor.spawn("PBX_MastermindChaingun", mActor.pos);
-                    mActor.destroy(); 
                 } 
                 break;
 

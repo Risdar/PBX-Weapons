@@ -227,8 +227,6 @@ class MetalSniper_Upgrade : PB_UpgradeItem
 		{
 			Array<String> tips;
 			tips.Push("$PBX_MetalSniperUpgrade_Tip1");
-			tips.Push("$PBX_MetalSniperUpgrade_Tip2");
-			tips.Push("$PBX_MetalSniperUpgrade_Tip3");
 			PBXCore_TipsManager.SendTipArrayIfNeeded(tips,"PBXWeapons_UpgradeHelpFlags", PBX_TIP_METALSNIPER_UPGRADE);
 		}
 		return pickup;

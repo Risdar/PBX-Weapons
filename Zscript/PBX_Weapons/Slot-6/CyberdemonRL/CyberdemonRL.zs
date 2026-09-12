@@ -108,7 +108,7 @@ class PBX_CyberdemonRL : PBX_WeaponBase
 	{
 //////////////////////////// SETUP ////////////////////////////////////////////////////////////////////////////////////
 		Spawn:
-            HND7 E -1;
+            CYBF V -1;
             Stop;
 
         Deselect:

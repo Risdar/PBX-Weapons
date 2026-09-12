@@ -16,14 +16,14 @@ Class CrossbowBallistaWheel : wheelinfocontainer
 		mDisabled = PBXWeapons_backpack_filter & DisablePBX_CrossbowBallistaUpgrade;
 
 		// Standard and Explosive Bolt
-		PBX_AddWheel(spw, img:"ProsurvBallista/StandardBallista",	alias:"$PBX_Crossbow_Standard_WW",	token:"CB_Select_NormalMode");
-		PBX_AddWheel(spw, img:"ProsurvBallista/ExplosiveBallista",	alias:"$PBX_Crossbow_Explosive_WW",	token:"CB_Select_ExplosiveMode");
+		PBX_AddWheel(spw, img:"ProsurvBallista/StandardBallista",	alias:"$PBX_Crossbow_Standard",		token:"CB_Select_NormalMode");
+		PBX_AddWheel(spw, img:"ProsurvBallista/ExplosiveBallista",	alias:"$PBX_Crossbow_Explosive",	token:"CB_Select_ExplosiveMode");
 
 		// Demonic and Shock Bolt
 		if(PBX_CheckInv("Crossbow_Upgraded"))
         {
-			PBX_AddWheel(spw, img:"ProsurvBallista/DemonicBallista", alias:"$PBX_Crossbow_Demonic_WW",	token:"CB_Select_DemonicMode");
-			PBX_AddWheel(spw, img:"ProsurvBallista/ShockBallista",	 alias:"$PBX_Crossbow_Shock_WW",	token:"CB_Select_ShockMode");
+			PBX_AddWheel(spw, img:"ProsurvBallista/DemonicBallista", alias:"$PBX_Crossbow_Demonic",	token:"CB_Select_DemonicMode");
+			PBX_AddWheel(spw, img:"ProsurvBallista/ShockBallista",	 alias:"$PBX_Crossbow_Shock",	token:"CB_Select_ShockMode");
         } 
 		else
         {

@@ -123,13 +123,7 @@ extend class PBX_Prosurv_Ballista
 		}
 
 		// Switch modes
-		switch(tokens)
-		{
-			case NORMAL_BOLT: 		A_Print("$PBX_Crossbow_Standard"); 		break;
-			case EXPLOSIVE_BOLT: 	A_Print("$PBX_Crossbow_Explosive"); 	break;
-			case DEMONIC_BOLT: 		A_Print("$PBX_Crossbow_Demonic"); 		break;
-			case SHOCK_BOLT: 		A_Print("$PBX_Crossbow_Shock"); 		break;
-		}
+		printMode(tokens);
 
 		// Very specific case where you've already unloaded and mode switch
 		if(PB_GetChamberEmpty())
@@ -141,6 +135,19 @@ extend class PBX_Prosurv_Ballista
 		// Fallthrough to Unload Animation, the actual mode change is handled there
         return ResolveState(null);
     }
+
+	action void printMode(int tokens)
+	{
+		string str;
+		switch(tokens)
+		{
+			case NORMAL_BOLT: 		str = "$PBX_Crossbow_Standard"; 	break;
+			case EXPLOSIVE_BOLT: 	str = "$PBX_Crossbow_Explosive"; 	break;
+			case DEMONIC_BOLT: 		str = "$PBX_Crossbow_Demonic"; 		break;
+			case SHOCK_BOLT: 		str = "$PBX_Crossbow_Shock"; 		break;
+		}
+		A_Print(StringTable.Localize(str).." \c-Loaded");
+	}
 
 	// Check if the player still has a token
 	action bool checkTokens()

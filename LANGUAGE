@@ -168,27 +168,19 @@ PBX_MetalSniper_UpgradePickup       = "Metal Sniper Resonance Ammo Type Upgrade 
 PBX_MetalSniper_UpgradeTag          = "Metal Sniper Upgrade";
 
 PBX_MetalSniper_Tip1 = "You can switch Secondary modes using %s.";
-PBX_MetalSniper_Tip2 = "The Grenade AltFire needs to be primed before firing by pressing %s and then %s";
+PBX_MetalSniper_Tip2 = "The Grenade Secondary needs to be primed before firing by pressing %s and then %s";
 PBX_MetalSniper_Tip3 = "Opening the Weapon Special Wheel when \cdzoomed \c-in will let you select the Advanced Targeting Scope Modes.";
 
-PBX_MetalSniperUpgrade_Tip1 = "The Resonance Ammo is a special Anti Arachno-Shield round.";
-PBX_MetalSniperUpgrade_Tip2 = "Shooting it at an Arachnotron shield will ignite the shield and stun all nearby enemies.";
-PBX_MetalSniperUpgrade_Tip3 = "Every shot has a high chance to stun the target.";
-
+PBX_MetalSniperUpgrade_Tip1 = "Using the Resonance Ammo at an Arachnotron shield will cause it to explode and stun nearby enemies.";
 
 // Crossbow Ballista
-PBX_CrossbowBallista_Pickup         = "Ballista (Slot 4)";
+PBX_CrossbowBallista_Pickup         = "Crossbow (Slot 4)";
 PBX_CrossbowBallista_Tag            = "Composite Crossbow";
 
-PBX_Crossbow_Standard               = "\cdNormal Bolt \c-Loaded";
-PBX_Crossbow_Explosive              = "\crExplosive Bolt \c-Loaded";
-PBX_Crossbow_Demonic                = "\caDemonic Bolt \c-Loaded";
-PBX_Crossbow_Shock                  = "\cnShock Bolt \c-Loaded";
-
-PBX_Crossbow_Standard_WW            = "\cdNormal Bolt";
-PBX_Crossbow_Explosive_WW           = "\crExplosive Bolt";
-PBX_Crossbow_Demonic_WW             = "\caDemonic Bolt";
-PBX_Crossbow_Shock_WW               = "\cnShock Bolt";
+PBX_Crossbow_Standard               = "\cdNormal Bolt";
+PBX_Crossbow_Explosive              = "\crExplosive Bolt";
+PBX_Crossbow_Demonic                = "\caDemonic Bolt";
+PBX_Crossbow_Shock                  = "\cnShock Bolt";
 
 PBX_Crossbow_DemonicNoAmmo          = "You Don't Have Any Demonic Ammo";
 PBX_Crossbow_ShockNoAmmo            = "You Don't Have Any Energy Cells";

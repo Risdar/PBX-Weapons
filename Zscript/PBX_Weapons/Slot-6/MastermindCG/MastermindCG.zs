@@ -119,7 +119,7 @@ class PBX_MastermindChaingun : PBX_WeaponBase
 	{
 //////////////////////////// SETUP ////////////////////////////////////////////////////////////////////////////////////
 		Spawn:
-            TRP6 A -1;
+            RMN1 H -1;
             Stop;
         Deselect:
            TNT1 A 0 {
