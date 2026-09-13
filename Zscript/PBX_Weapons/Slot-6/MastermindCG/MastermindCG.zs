@@ -49,7 +49,7 @@ class PBX_MastermindChaingun : PBX_WeaponBase
 
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
 	bool SoulSeekerMode;
-	const ammoTake = 1; // How many rockets does it take for one point of durability
+	const AMMO_PER_DURABILITY = 1; // How many rockets does it take for one point of durability
 	const DURABILITY = 200; // Durability Amount
 	const DURABILITY_NAME = "MastermindCGDurability"; 
       
@@ -84,13 +84,12 @@ class PBX_MastermindChaingun : PBX_WeaponBase
 				A_ZoomFactor(0.98, SPF_INTERPOLATE);
 				// PB_FireBullets("CyberBallsPlayer", 1, frandom(-2,2), 0, 0, frandom(-0.5, 0.5));
 				PB_LowAmmoSoundWarning("default", invoker.ammotype1.getclassname());
-				// PB_TakeAmmo(invoker.ammotype2,1);
-				A_TakeInventory(invoker.AmmoType1, invoker.ammoTake, TIF_NOTAKEINFINITE);
+				A_TakeInventory(invoker.AmmoType1, invoker.AMMO_PER_DURABILITY, TIF_NOTAKEINFINITE);
 				A_TakeInventory(DURABILITY_NAME,1,TIF_NOTAKEINFINITE);
 				A_SpawnItemEx("PlayerMuzzle2",30,5,27);
 				A_FireCustomMissile("YellowFlareSpawn", 15, 0, 0, 0);
 				A_FireCustomMissile("YellowFlareSpawn", -15, 0, 0, 0);
-				PB_FireBullets(tofire, 1, frandom(-2,2), 0, 0, frandom(3,-3));
+				PB_FireBullets(tofire, 1, 2, 0, 0, 3);
 				PB_FireOffset();
 				PB_IncrementHeat(4);
 				break;
@@ -99,19 +98,11 @@ class PBX_MastermindChaingun : PBX_WeaponBase
 				if(ticCount == 2)
 				{
 					A_ZoomFactor(1.0, SPF_INTERPOLATE);
-					A_FireCustomMissile("EmptyGrenadeBrass", random(-2,2), 0, 0, -12, 0, random(-2,2));
-					// A_FireCustomMissile("PBX_20mmDoomguy", random(-2,2), 0, 0, -12, 0, random(-2,2));
+					A_FireCustomMissile("EmptyGrenadeBrass", random[sfx](-2,2), 0, 0, -12, 0, random[sfx](-2,2));
 				}
-				PB_WeaponRecoil(-0.75,frandom(-0.75,0.75));
+				PB_WeaponRecoil(-0.75,frandom[sfx](-0.75,0.75));
 				break;
 		}
-	}
-
-	action state MastermindCG_HandleAmmo()
-	{
-		if (CountInv(DURABILITY_NAME) < 1)		return ResolveState("WeaponBreak");
-		if (invoker.ammo1.amount < ammoTake)	return ResolveState("NoAmmo");
-		return ResolveState(null);
 	}
 
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
@@ -148,13 +139,13 @@ class PBX_MastermindChaingun : PBX_WeaponBase
 		
 //////////////////////////// FIRE ////////////////////////////////////////////////////////////////////////////////////
 		Fire:
-            TNT1 A 0 MastermindCG_HandleAmmo();
+            TNT1 A 0 PBX_HandleDurability(DURABILITY_NAME,AMMO_PER_DURABILITY);
             TNT1 AAAA 0;
 			RMNG A 1 BRIGHT MastermindCG_FireWeapon(1);
 			RMNG G 1 BRIGHT MastermindCG_FireWeapon(2);
 			RMNG HI 1 BRIGHT MastermindCG_FireWeapon(3);
 		FireSecondShot:
-            TNT1 A 0 MastermindCG_HandleAmmo();
+            TNT1 A 0 PBX_HandleDurability(DURABILITY_NAME,AMMO_PER_DURABILITY);
 			RMNG B 1 BRIGHT MastermindCG_FireWeapon(1);
 			RMNG G 1 BRIGHT MastermindCG_FireWeapon(2);
 			RMNG HI 1 BRIGHT MastermindCG_FireWeapon(3);

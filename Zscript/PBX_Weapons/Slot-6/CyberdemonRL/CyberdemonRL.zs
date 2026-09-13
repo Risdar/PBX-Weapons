@@ -47,7 +47,7 @@ class PBX_CyberdemonRL : PBX_WeaponBase
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
 	bool PiercingRockets;
 	int shotCount;
-	const ammoTake = 3; // How many rockets does it take for one point of durability
+	const AMMO_PER_DURABILITY = 3; // How many rockets does it take for one point of durability
 	const DURABILITY = 75; // Durability Amount
 	const DURABILITY_NAME = "CyberRLDurability"; 
       
@@ -79,11 +79,10 @@ class PBX_CyberdemonRL : PBX_WeaponBase
 			default:
 			case 1:
 				A_AlertMonsters();
-				A_StartSound("Rifle/DSCANFIR", CHAN_WEAPON, CHANF_OVERLAP, 1.0);
+				A_StartSound("0SRFIRE", CHAN_WEAPON, CHANF_OVERLAP);
 				A_ZoomFactor(0.98, SPF_INTERPOLATE);
 				PB_LowAmmoSoundWarning("default", invoker.ammotype1.getclassname());
-				// PB_TakeAmmo(invoker.ammotype2,1);
-				A_TakeInventory(invoker.AmmoType1, invoker.ammoTake, TIF_NOTAKEINFINITE);
+				A_TakeInventory(invoker.AmmoType1, invoker.AMMO_PER_DURABILITY, TIF_NOTAKEINFINITE);
 				A_TakeInventory(DURABILITY_NAME,1,TIF_NOTAKEINFINITE);
 				PB_FireBullets(tofire, 1, 0, 0, 0, 0.5);
 				PB_IncrementHeat(4);
@@ -91,16 +90,9 @@ class PBX_CyberdemonRL : PBX_WeaponBase
 			//Tic 2
 			case 2:
 				A_ZoomFactor(1.0, SPF_INTERPOLATE);
-				PB_WeaponRecoil(-2,frandom(-2,2));
+				PB_WeaponRecoil(-2,frandom[sfx](-2,2));
 				break;
 		}
-	}
-
-	action state CyberRL_HandleAmmo()
-	{
-		if (CountInv(DURABILITY_NAME) < 1) 		return ResolveState("WeaponBreak");
-		if (invoker.ammo1.amount < ammoTake) 	return ResolveState("NoAmmo");
-		return ResolveState(null);
 	}
 
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
@@ -149,7 +141,7 @@ class PBX_CyberdemonRL : PBX_WeaponBase
 		
 //////////////////////////// FIRE ////////////////////////////////////////////////////////////////////////////////////
 		Fire:
-            TNT1 A 0 CyberRL_HandleAmmo();
+            TNT1 A 0 PBX_HandleDurability(DURABILITY_NAME,AMMO_PER_DURABILITY);
             TNT1 AAAA 0;
 			CYBF A 1 BRIGHT CyberRl_FireWeapon(1);
 			CYBF B 1 BRIGHT CyberRl_FireWeapon(2);
@@ -176,7 +168,7 @@ class PBX_CyberdemonRL : PBX_WeaponBase
 		AltFire:
 			TNT1 A 0 { invoker.shotCount = 0; }
 		AltFireLoop:
-			TNT1 A 0 CyberRL_HandleAmmo();
+            TNT1 A 0 PBX_HandleDurability(DURABILITY_NAME,AMMO_PER_DURABILITY);
 			CYBF A 1 Bright CyberRl_FireWeapon(1);
 			CYBF B 1 Bright CyberRl_FireWeapon(2);
 			TNT1 A 0 A_JumpIf(invoker.shotCount == 4, "FinishLoop");

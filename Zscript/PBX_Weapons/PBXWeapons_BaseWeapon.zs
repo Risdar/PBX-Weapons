@@ -29,7 +29,7 @@ class PBX_WeaponBase : PB_WeaponBase abstract
 
         if (level.isFrozen()) return;
         
-		If(	owner.player && owner.player.readyweapon.GetClass() is self.GetClass())
+		If(owner.player && owner.player.readyweapon && owner.player.readyweapon.GetClass() is self.GetClass())
         {
 		    PBX_HandleNightVision();
             PBX_DoEffectWeaponReady();
@@ -85,6 +85,13 @@ class PBX_WeaponBase : PB_WeaponBase abstract
         // If you dont have 2 weapon
         A_Print(noAkimboMsg);
         return ResolveState("Ready3");
+    }
+
+    action state PBX_HandleDurability(name toCheck, int ammoTake)
+    {
+        if (CountInv(toCheck) < 1) 		        return ResolveState("WeaponBreak");
+		if (invoker.ammo1.amount < ammoTake) 	return ResolveState("NoAmmo");
+		return ResolveState(null);
     }
 
 //////////////////////////// ZOOM/NVG/SMART SCOPE ////////////////////////////////////////////////////////////////////////////////////
