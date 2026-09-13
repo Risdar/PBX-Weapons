@@ -428,32 +428,15 @@ class EternalChaingunTracer : PB_556x45mmAP
     }
 }
 
-class PBXWeapons_InfiniteAmmo : PBX_InfiniteAmmoGiver 
+mixin class PBXWeapons_EternalChaingun_Duration
 {
     override void BeginPlay()
     {
         super.BeginPlay();
-        EffectTics  = PBXCore_Duration.GetByCVar("pbxweapons_echaingun_duration");
+        EffectTics  = pbxweapons_echaingun_duration * TICRATE;
     }
 }
-class PBXWeapons_Drain : PBX_DrainGiver 
-{
-    override void BeginPlay()
-    {
-        super.BeginPlay();
-        EffectTics  = PBXCore_Duration.GetByCVar("pbxweapons_echaingun_duration");
-    }
-} 
-class PBXWeapons_Protection : PBX_ProtectionGiver 
-{
-    Default
-    {
-        DamageFactor "Normal", 0.75;
-    }
-    
-    override void BeginPlay()
-    {
-        super.BeginPlay();
-        EffectTics  = PBXCore_Duration.GetByCVar("pbxweapons_echaingun_duration");
-    }
-} 
+
+class PBXWeapons_InfiniteAmmo   : PBX_InfiniteAmmoGiver   {mixin PBXWeapons_EternalChaingun_Duration;}
+class PBXWeapons_Drain          : PBX_DrainGiver          {mixin PBXWeapons_EternalChaingun_Duration;} 
+class PBXWeapons_Protection     : PBX_ProtectionGiver     {mixin PBXWeapons_EternalChaingun_Duration; Default {DamageFactor "Normal", 0.75;}} 

@@ -99,8 +99,7 @@ class PBX_WeaponBase : PB_WeaponBase abstract
     double mZoomLevel;
 
     // This is set as a Property
-    double mMinZoom;
-    double mMaxZoom;
+    double mMinZoom, mMaxZoom;
     bool mScopedWeapon;
     property ScopeConfiguration: mScopedWeapon,mMinZoom,mMaxZoom;
 
@@ -110,8 +109,8 @@ class PBX_WeaponBase : PB_WeaponBase abstract
     {
         invoker.mZoomLevel = clamp(invoker.mZoomLevel + dir * step, invoker.mMinZoom, invoker.mMaxZoom);
         PBXCore_Debug.PrintInt("Zoom Adjusted with %d",invoker.mZoomLevel);
-        A_StartSound("IronSights", CHAN_WEAPON, CHANF_OVERLAP, 1.0);
-        A_StartSound("MS/Button", CHAN_WEAPON, CHANF_OVERLAP, 1.0);
+        A_StartSound("IronSights", CHAN_WEAPON, CHANF_OVERLAP);
+        A_StartSound("MS/Button", CHAN_AUTO, CHANF_OVERLAP);
         A_SetBlend("Black", 1, 35);
     }
 

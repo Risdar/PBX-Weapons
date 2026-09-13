@@ -52,12 +52,7 @@ extend class PBX_BDPRailgun
         if(toggleLaser)	PBX_ToggleLaserSight(skipPlaySound:true);
 		if(toggleScope) PBX_ToggleSmartScope();
 		if(toggleNVG) 	PBX_ToggleNightVision();
-
-        if(goHolo)
-        {
-            A_startsound("bepbep",4);
-            A_SpawnHologram();
-        }
+        if(goHolo)      A_SpawnHologram();
 
         A_StartSound("BEP", CHAN_WEAPON, CHANF_OVERLAP, 1.0);
         // Always clear the tokens
@@ -94,14 +89,15 @@ extend class PBX_BDPRailgun
 	{
         if(invoker.hologramCooldown > 0)
         {
-            A_startsound("weapons/carbine/respectbeep",4);
+            A_startsound("weapons/carbine/respectbeep",CHAN_WEAPON,CHANF_OVERLAP);
             A_Print("$PBX_BDPRailgun_NoHologram");
             return;
         }
 
-        invoker.hologramCooldown = PBXCore_Duration.GetByCVarInSeconds("pbxweapons_hologram_cooldown");
+        invoker.hologramCooldown = pbxweapons_hologram_cooldown;
+        PBXCore_Debug.PrintInt("Hologram Cooldown is %d",invoker.hologramCooldown);
 
-		A_radiusgive("KillHologram",10000,RGF_MONSTERS | RGF_NOSIGHT,1,"HoloPlayer");
+		A_radiusgive("KillHologram",10000,RGF_MONSTERS | RGF_NOSIGHT,1,"PBX_Hologram");
 		FLineTraceData lasersight;
         LineTrace(angle, 4096, pitch, TRF_SOLIDACTORS|TRF_THRUHITSCAN, offsetz: player.viewz - pos.z, data: lasersight);
         vector3 targetpos = lasersight.HitLocation;
@@ -116,14 +112,16 @@ extend class PBX_BDPRailgun
         {
             targetpos.z -= 13;
         }
-        Let HoloTarget = Spawn("Holotarget",targetpos);
-        Let HoloPlayer = Spawn("Holoplayer",pos);
-        If(HoloTarget && HoloPlayer)
-        {
-            HoloPlayer.angle = angle;
-            HoloPlayer.Tracer = Holotarget;
-            HoloPlayer.Translation = Invoker.owner.Translation;
-        }
+        invoker.hologram = PBX_Hologram(Spawn("PBX_Hologram", pos));
+		if(invoker.hologram)
+		{
+			invoker.hologram.angle = angle;
+			invoker.hologram.targetPos = targetpos;
+			invoker.hologram.Translation = Translation;
+			invoker.hologram.tracer = self;
+			invoker.hologram.angle = angle;
+		}
+        A_startsound("bepbep",CHAN_WEAPON,CHANF_OVERLAP);
 	}
 	
 	Action void a_firenurailgun()

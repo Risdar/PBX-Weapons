@@ -40,7 +40,8 @@ extend class PBX_CSSG
 			A_spawnprojectile("hook",32);
 			A_takeinventory("meathook",1);
 			a_startsound("MHKSTRT",193,CHANF_DEFAULT,1,ATTN_NONE);
-			invoker.hookCooldown = PBXCore_Duration.GetByCVarInSeconds("pbxweapons_meathook_cooldown");
+			invoker.hookCooldown = pbxweapons_meathook_cooldown;
+        	PBXCore_Debug.PrintInt("Meathook Cooldown is %d",invoker.hookCooldown);
 			return;
 		}
 		else

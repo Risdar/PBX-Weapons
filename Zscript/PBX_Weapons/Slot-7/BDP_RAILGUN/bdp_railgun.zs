@@ -32,8 +32,10 @@ Class PBX_BDPRailgun : PBX_WeaponBase
         scale 1.0;
     }
 
+    PBX_Hologram hologram;
     int hologramCooldown;
     double zoomstrength;
+
     const MAGAZINE_SIZE = 5;
     const bdpraildamage = 500;
     const MINZOOM = 2.0;
@@ -353,10 +355,7 @@ Class PBX_BDPRailgun : PBX_WeaponBase
                 return ResolveState(null);
             }
             // Otherwise go and do hologram spawn
-            TNT1 A 0 {
-                A_startsound("bepbep",4);
-                A_SpawnHologram();
-		    }
+            TNT1 A 0 A_SpawnHologram();
 		    Goto Ready3;
             
         // SlowHologram:

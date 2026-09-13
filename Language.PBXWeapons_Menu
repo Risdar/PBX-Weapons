@@ -2,7 +2,7 @@
 //////////////////////////// GENERAL MENU ///////////////////////////////////////////////////////////////////////////////
 PBXWEAPONS_MENU_ENABLE_TOOLTIPS = "Enable Weapon Tooltips";
 PBXWEAPONS_MENU_ENABLE_KEEPWEAPONS = "Keep Unupgraded Weapons";
-PBXWEAPONS_MENU_ENABLE_SPAWNERS = "Enable All PBX Weapons Spawners";
+PBXWEAPONS_MENU_RESET_SPAWNERS = "Reset PBX Weapons Spawners";
 PBXWEAPONS_MENU_RESET_PBTOOLTIPS = "Reset PB Tool Tips";
 PBXWEAPONS_MENU_RESET_PBXWEAPONS_TOOLTIPS = "Reset PBX Weapons Tool Tips";
 
