@@ -97,12 +97,6 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
         owner.A_GiveInventory(self.ammo1.getClassName(),1);
     }
 
-    action state A_PressingReload()
-	{
-		if ((player.cmd.buttons & BT_RELOAD) || (player.oldbuttons & BT_RELOAD)) return resolvestate("Reload");
-		else return resolvestate(null);
-	}
-
     action void fireweapon(int tic)
     {
         bool ads     = PB_GetZoom();
@@ -214,19 +208,21 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
         SelectAnimation:
             BRGT EDCB 1;
         Ready3:
-            TNT1 A 0 A_PressingReload();
             BRGT A 1 {
 			    PB_HandleCrosshair(65);
                 PB_CoolDownBarrel();
+                if(invoker.ammo1.amount < CELL_SIZE && (PressingReload() || (player.oldbuttons & BT_RELOAD)))
+                    return resolvestate("Reload");
                 return PB_ReadyFire(useMag:false);
             }
             Loop;
 
         Ready2:
-            TNT1 A 0 A_PressingReload();
             BRGG F 1 {
                 A_SetCrosshair(-1);
                 PB_CoolDownBarrel();
+                if(invoker.ammo1.amount < CELL_SIZE && (PressingReload() || (player.oldbuttons & BT_RELOAD)))
+                    return resolvestate("Reload");
                 return PB_ReadyFire(ads:true,useMag:false);
             }
             Loop;

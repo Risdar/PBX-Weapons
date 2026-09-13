@@ -44,17 +44,19 @@ class PBX_WeaponBase : PB_WeaponBase abstract
         PBXCore_Debug.Print("WeaponRaise Called");
         PB_WeaponRaise(upSnd);
         if(pbxweapons_sendTip) PBX_WeaponHelpText(); // This function is in PBXWeapons_Tips.zs
-        if(!pbxweapons_keepweapons)
-        {
-            if(invoker.mUpgradeWeapon != "") PB_SelectIfUpgrade(invoker.mUpgradeWeapon);
-            if(invoker.mDowngradeWeapon != "") PB_TakeIfUpgrade(invoker.mDowngradeWeapon);
-        }
+        PBX_UpgradeWeapon();
     }
 
-    name mUpgradeWeapon;
-    name mDowngradeWeapon;
+    name mUpgradeWeapon, mDowngradeWeapon;
     property SelectWeaponUpgrade: mUpgradeWeapon;
     property TakeWeaponDowngrade: mDowngradeWeapon;
+    action void PBX_UpgradeWeapon()
+    {
+        if(pbxweapons_keepweapons) return;
+
+        if(invoker.mUpgradeWeapon != "") PB_SelectIfUpgrade(invoker.mUpgradeWeapon);
+        if(invoker.mDowngradeWeapon != "") PB_TakeIfUpgrade(invoker.mDowngradeWeapon);
+    }
 
     // Same as above
     action void PBX_WeaponLower()
@@ -397,12 +399,11 @@ class PBX_WeaponBase : PB_WeaponBase abstract
 		return false;
 	}
 
-    action state A_PressingReload(StateLabel st)
+    action state A_PressingReload(StateLabel st = "Reload")
 	{
 		if ((player.cmd.buttons & BT_RELOAD) || (player.oldbuttons & BT_RELOAD)) 
             return resolvestate(st);
-		else 
-            return resolvestate(null);
+        return resolvestate(null);
 	}
 
     // Return to a ready state based on zoom

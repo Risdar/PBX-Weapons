@@ -26,7 +26,7 @@ extend class PBX_Prosurv_Ballista
 		bool skipUnloadedCheck = false
 	)
 	{
-		int mode = getCrossbowMode();
+		CrossbowMode mode = getCrossbowMode();
 		name spriteToUse = '';
 		
 		// Set the sprite based on mode
@@ -48,18 +48,18 @@ extend class PBX_Prosurv_Ballista
 			A_SetWeaponSpriteEx(spriteToUse);
 	}
 
-	action int getCrossbowMode()
+	action CrossbowMode getCrossbowMode()
 	{
 		return invoker.currentMode;
 	}
 
-	action void setCrossbowMode(int mode)
+	action void setCrossbowMode(CrossbowMode mode)
 	{
 		invoker.currentMode = mode;
 	}
 
 	// Convert tokens to Integers for easier use
-	action int getTokens()
+	action CrossbowMode getTokens()
 	{
 		// Prioritize checking the tokens
 		if(FindInventory("CB_Select_ShockMode"))
@@ -104,8 +104,8 @@ extend class PBX_Prosurv_Ballista
 	// The actual mode change is handled there
     action state HandleWheel()
     {
-		int tokens = getTokens();
-		int mode = getCrossbowMode();
+		CrossbowMode tokens = getTokens();
+		CrossbowMode mode = getCrossbowMode();
 		bool alreadySelected = tokens == mode;
 		bool notUpgraded = tokens == NO_UPGRADE;
 
@@ -116,20 +116,35 @@ extend class PBX_Prosurv_Ballista
 			if(alreadySelected || notUpgraded)
             	A_Print(alreadySelected ? "$PBX_AlreadySelected" : "$PBX_AmmoNotAvailable");
 
-			if(PB_GetZoom())
-				return resolvestate("Ready2");
-			else
-				return resolvestate("Ready3");
+			return PBX_ReturnReady();
 		}
 
 		// Switch modes
+		int ammoTake;
+		name ammo;
+		switch(tokens)
+		{
+			case NORMAL_BOLT: 	  ammoTake = ammoTakeNormal;  ammo = "PB_HighCalMag"; 	break;
+			case EXPLOSIVE_BOLT:  ammoTake = ammoTakeNormal;  ammo = "PB_RocketAmmo";	break;
+			case DEMONIC_BOLT: 	  ammoTake = ammoTakeDemonic; ammo = "PB_DTech";	 	break;
+			case SHOCK_BOLT: 	  ammoTake = ammoTakeShock;   ammo = "PB_Cell";	 		break;
+		}
+
+		// Check if the player actually have enough ammo for a mode change
+		if(CountInv(ammo) < ammoTake)
+		{
+			cleanmodetokens();
+			A_Print("$PBX_NotEnoughAmmo");
+			return PBX_ReturnReady();
+		}
+
 		printMode(tokens);
 
 		// Very specific case where you've already unloaded and mode switch
 		if(PB_GetChamberEmpty())
 		{
-			handleModeChange();
-        	return ResolveState("Reload");
+			invoker.modechangeUnloaded = true;
+        	return handleModeChange();
 		}
 
 		// Fallthrough to Unload Animation, the actual mode change is handled there
@@ -158,7 +173,7 @@ extend class PBX_Prosurv_Ballista
 	action state handleModeChange()
 	{
 		// Setup Variables
-		int mode = getTokens();
+		CrossbowMode mode = getTokens();
 		int ammoTake;
 		name ammo;
 		name icon;
@@ -175,29 +190,25 @@ extend class PBX_Prosurv_Ballista
 			case SHOCK_BOLT: 	  ammoTake = ammoTakeShock;   ammo = "PB_Cell";	 		icon = "CB_ZD0";	break;
 		}
 
-		// Check if the player has that ammo
-		if(CountInv(ammo) >= ammoTake)
-		{
-			// If it exists, do mode change
-			setCrossbowMode(mode);
-			invoker.ReserveToMagAmmoFactor = ammoTake;
-			invoker.ammo1 = Ammo(FindInventory(ammo));
-			invoker.AltHudIcon = TexMan.CheckForTexture(icon);
-		}
-		else if(mode == DEMONIC_BOLT)
-			self.A_Print("$PBX_Crossbow_DemonicNoAmmo"); // If it gets to this then the player doesnt have any dtech ammo
-		else if(mode == SHOCK_BOLT)
-			self.A_Print("$PBX_Crossbow_ShockNoAmmo"); // If it gets to this then the player doesnt have any pb cells
+		setCrossbowMode(mode);
+		invoker.ReserveToMagAmmoFactor = ammoTake;
+		invoker.ammo1 = Ammo(FindInventory(ammo));
+		invoker.AltHudIcon = TexMan.CheckForTexture(icon);
 		
 		// always clear tokens and go to continue reload
 		cleanmodetokens();
+		if(invoker.modechangeUnloaded) 
+		{
+			invoker.modechangeUnloaded = false;
+			return resolveState("StandardReload"); // Start reload animation if no arrow is loaded
+		}
 		return resolvestate("ContinueReload"); // Continue Reload also handles if the player does not have enough reserve when mode change
 	}
 
 	// Since some ready states have animations we made a simple "switch" so it goes to the right ready state
 	action state readyCheck(StateLabel demonic, StateLabel explosive, StateLabel shock)
 	{
-		int mode = getCrossbowMode();
+		CrossbowMode mode = getCrossbowMode();
 
 		if(PB_GetChamberEmpty())
 			return resolvestate(null);
@@ -216,16 +227,17 @@ extend class PBX_Prosurv_Ballista
 	action void FireWeapon()
 	{
 		string projectile;
+		int ofs = PB_GetZoom() ? 1 : 3;
 		switch (getCrossbowMode())
 		{
 			case NORMAL_BOLT: 		projectile = "PBX_BallistaBolt"; 	break;
 			case EXPLOSIVE_BOLT: 	projectile = "PBX_ExplosiveBolt"; 	break;
 			case DEMONIC_BOLT: 		projectile = "PBX_DemonicBolt"; 	break;
-			case SHOCK_BOLT: 		projectile = "PBX_ShockBolt"; 	break;
+			case SHOCK_BOLT: 		projectile = "PBX_ShockBolt"; 		break;
 		}
 		if(PB_GetZoom()) invoker.firedFromADS = true;
-		PB_FireBullets(projectile, 1, 0, 0, 0, PB_GetZoom() ? 1 : 3);
-		pb_takeammo(invoker.ammotype2,invoker.ReserveToMagAmmoFactor,0,0);
+		PB_FireBullets(projectile, 1, ofs, 0, 0, ofs);
+		pb_takeammo(invoker.ammotype2,ARROW_AMOUNT,0,0);
 	}	
 	
 	action void cleanmodetokens()

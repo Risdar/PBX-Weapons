@@ -386,7 +386,7 @@ class SuperNail_Lightning : PB_MGNail
 }
 
 //////////////////////////// UPGRADED EXCAVATOR ////////////////////////////////////////////////////////////////////////////////////
-class Razorblade : PB_NailgunGlue
+class Razorblade : PB_ProjectileAlt
 {
     Default
     {
@@ -430,22 +430,20 @@ class Razorblade : PB_NailgunGlue
             // TNT1 A 0 { bHITOWNER = true; }
             Loop;
 
-        Death:
-        XDeath:
-            CRBA L 1 {
-                A_Stop();
-                A_PlaySoundEx("weapons/ballista/razor", "Auto");
-                A_SetGravity(1.0);
+		Death:
+		XDeath:
+			TNT1 A 0 {
+				A_Stop();
+				A_PlaySoundEx("weapons/ballista/razor","Auto");
                 A_SpawnItem("ExplosionParticleSpawner");
                 A_CustomMissile("PBExplosionparticlesSmall", 8, 0, random(0, 180), 2, random(40, 90));
-                StickToWall();
-            }
-        DeathLoop:
-            CRBA L 38 Bright {tics = lifetime;}
-            TNT1 A 0 A_PlaySoundEx("RAILIMP", "Auto");
-        Fade:
-            #### # 1 A_FadeOut(0.05);
-            Loop;
+				A_SetGravity(1.0);
+			}
+			TNT1 A 0 A_SpawnItemEx ("RicoChet",0,0,-5,0,0,0,0,SXF_NOCHECKPOSITION,0);
+			EX_V N 100 BRIGHT;
+			EX_V NNNNNNNNNNNNNNN 1 A_FadeOut(0.15);
+			Stop;
+
     }
 }
 

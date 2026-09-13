@@ -37,10 +37,10 @@ OptionMenu "PBXWeapons_Menu"
     Option "$PBXWEAPONS_MENU_ENABLE_SECRET_WEAPONS", "pbxweapons_enablesecretweapon", "OnOff"
     Slider "$PBXWEAPONS_SECRETWEAPONS_SPAWNCHANCE",  "pbxweapons_secretweapon_spawnchance",     1, 100, 1,0,"pbxweapons_enablesecretweapon"
     StaticText " "
-    Slider "$PBXWEAPONS_ECHAINGUN_POWERTIME",  "pbxweapons_echaingun_duration",     1, 500, 1
-    Slider "$PBXWEAPONS_MEATHOOK_COOLDOWN",  "pbxweapons_meathook_cooldown",     1, 500, 1
-    Slider "$PBXWEAPONS_HOLOGRAM_COOLDOWN",  "pbxweapons_hologram_cooldown",     1, 500, 1
-    Slider "$PBXWEAPONS_HOLOGRAM_LIFETIME",  "pbxweapons_hologram_lifetime",     1, 500, 1
+    Slider "$PBXWEAPONS_ECHAINGUN_POWERTIME",   "pbxweapons_echaingun_duration",     1, 500, 1
+    Slider "$PBXWEAPONS_MEATHOOK_COOLDOWN",     "pbxweapons_meathook_cooldown",     1, 500, 1
+    Slider "$PBXWEAPONS_HOLOGRAM_COOLDOWN",     "pbxweapons_hologram_cooldown",     1, 500, 1
+    Slider "$PBXWEAPONS_HOLOGRAM_LIFETIME",     "pbxweapons_hologram_lifetime",     1, 500, 1
     SafeCommand "$PBXWEAPONS_MENU_RESET_WEAPON_DURATIONS", "resetcvar pbxweapons_secretweapon_spawnchance; resetcvar pbxweapons_echaingun_duration; resetcvar pbxweapons_meathook_cooldown; resetcvar pbxweapons_hologram_cooldown; resetcvar pbxweapons_hologram_lifetime"
     StaticText " "
 
@@ -106,11 +106,11 @@ AddOptionMenu "AddonWeaponSpawns" after "CHNT4"
 AddOptionMenu "AddonWeaponSpawns" after "LAUT3"
 {
     // SLOT 6
-    FlagOption    "$PBXWEAPONS_EXCAVATOR",                              "PBXWeapons_rocketlauncher_filter",    "OffOn", 0
-    FlagOption    "$PBXWEAPONS_PAINGIVER",                              "PBXWeapons_rocketlauncher_filter",    "OffOn", 1
+    FlagOption    "$PBXWEAPONS_EXCAVATOR",      "PBXWeapons_rocketlauncher_filter",    "OffOn", 0
+    FlagOption    "$PBXWEAPONS_PAINGIVER",      "PBXWeapons_rocketlauncher_filter",    "OffOn", 1
     // SPECIAL
-    FlagOption    "$PBXWEAPONS_CYBERRL",           "PBXWeapons_monsterdrop_filter",    "OffOn", 0
-    FlagOption    "$PBXWEAPONS_SPIDERCG",    "PBXWeapons_monsterdrop_filter",    "OffOn", 1
+    FlagOption    "$PBXWEAPONS_CYBERRL",        "PBXWeapons_monsterdrop_filter",    "OffOn", 0
+    FlagOption    "$PBXWEAPONS_SPIDERCG",       "PBXWeapons_monsterdrop_filter",    "OffOn", 1
 }
 // PLASMA /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // TIER 2

@@ -191,7 +191,8 @@ Class PBX_BDPRailgun : PBX_WeaponBase
 			}
 			TNT1 A 0 {
                 if(invoker.ammo2.amount < MAGAZINE_SIZE && invoker.ammo1.amount >= invoker.ReserveToMagAmmoFactor) 
-                    A_PressingReload("ReloadFromPump");
+                    return A_PressingReload("ReloadFromPump");
+                return resolvestate(null);
             }
 			Goto FinishPump2;
 

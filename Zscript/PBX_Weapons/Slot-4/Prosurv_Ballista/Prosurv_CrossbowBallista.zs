@@ -50,17 +50,18 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
 	}
 	
     bool unwindString;
+    bool modechangeUnloaded; // A very jank fix for a very rare edge case lol
     bool firedFromADS;  // Because somehow the checkreload function resets zoom
 	int currentMode;
 	const ARROW_AMOUNT	 	= 1;  // This is kinda dumb lol but oh well... consistency
 	const ammoTakeNormal	= 1;  // Standard Bolt
-	const ammoTakeDemonic 	= 15;  // Demonic Bolt
+	const ammoTakeDemonic 	= 15; // Demonic Bolt
 	const ammoTakeShock 	= 15; // Shock Bolt
 
 	const HIGHCAL_AMMO_GIVE = 15; 
 	const ROCKET_AMMO_GIVE 	= 10; 
 
-	enum crossbowMode
+	enum CrossbowMode
 	{
         ERROR_WHEEL = -2,
         CLOSE_WHEEL,
@@ -276,7 +277,7 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
 
         Fire:
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"Fire2");
-            TNT1 A 0 PB_JumpIfNoAmmo("Ready3");
+            TNT1 A 0 PB_JumpIfNoAmmo();
 			TNT1 A 0 PB_HandleCrosshair(29);
             TNT1 A 0 A_JumpIf(getCrossbowMode() == DEMONIC_BOLT,"FireDemonic");
             TNT1 A 0 A_PlaySoundEx("weapons/ballista/firebolt","Auto");
@@ -300,7 +301,7 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             goto ContinueFire;
 
         Fire2:
-            TNT1 A 0 PB_JumpIfNoAmmo("Ready2");
+            TNT1 A 0 PB_JumpIfNoAmmo();
 			TNT1 A 0 A_SetCrosshair(-1);
             TNT1 A 0 A_JumpIf(getCrossbowMode() == DEMONIC_BOLT,"Fire2Demonic");
             TNT1 A 0 A_PlaySoundEx("weapons/ballista/firebolt","Auto");
@@ -363,15 +364,10 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             CB1T DCBA 1 setCrossbowSprite("CB0T","CB1T","CB2T","CB3T","CB4T");
         Reload:
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");
-            TNT1 A 0 {
-                A_ZoomFactor(1.0);
-                A_Giveinventory("PB_LockScreenTilt",1);
-            }
             TNT1 A 0 A_JumpIf(invoker.ammo1.amount < invoker.ReserveToMagAmmoFactor, "Ready3");
             TNT1 A 0 A_JumpIf(invoker.unwindString, "ContinueReload");
             TNT1 A 0 PB_CheckReload(null, null, null, "Ready3", "Ready3", ARROW_AMOUNT, invoker.ReserveToMagAmmoFactor);
         StandardReload:
-            TNT1 A 0 {pbxcore_debug.printInt("%d",PB_GetZoom());}
             TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
             CB_E ABCDEF 1 PB_SetRoll(roll-.4);
             CB_E GGGGGGGGG 1 ;
@@ -381,7 +377,6 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             CB_E LMN 1;
             CB_E OPPPPP 1;
         ContinueReload: // Used by the mode change
-            TNT1 A 0 A_JumpIf(invoker.ammo1.amount < invoker.ReserveToMagAmmoFactor, "ContinueUnload"); // Edge case where you mode change but has no reserve
             TNT1 A 0 A_JumpIf(getCrossbowMode() == DEMONIC_BOLT,"ReloadDemonic");
             CB_F AB 1 setCrossbowSprite(bolt:"CB_F",explosive:"CB_G",shock:"CB_I",skipUnloadedCheck:true);
             "####" A 0 A_PlaySoundEx("weapons/ballista/boltin","Auto");
