@@ -319,7 +319,7 @@ class PBX_TeslaGun : PBX_WeaponBase
 			PLSN A 0 PB_ReFire();
         FireElectricBall:
 			ETRF A 0 A_ZoomFactor(0.9);
-			ETRF EFF 2 BRIGHT A_Recoil(5);
+			ETRF EFF 2 BRIGHT A_Recoil3D(5);
 			TNT1 A 0 Tesla_FireLightningBall();
 			Goto CoolDown;
 

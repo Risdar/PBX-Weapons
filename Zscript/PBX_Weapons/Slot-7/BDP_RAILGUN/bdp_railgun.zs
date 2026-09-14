@@ -20,6 +20,7 @@ Class PBX_BDPRailgun : PBX_WeaponBase
         PB_WeaponBase.UsesWheel false; // We dont want the player to be able to use the wheel on start
         PB_WeaponBase.WheelInfo "BDPRailgun_Wheel";
         PBX_WeaponBase.ScopeConfiguration true, MINZOOM, MAXZOOM; 
+        PB_WeaponBase.MuzzleSmokeColor "618DB8";
 		Obituary "$OB_WEAP_RAILGUN";
 		Inventory.PickupSound "PLSDRAW";
 		Inventory.Pickupmessage "$PBX_BDPRailgun_Pickup";
@@ -152,9 +153,7 @@ Class PBX_BDPRailgun : PBX_WeaponBase
 				A_overlay(HANDLE_LAYER,"DoNothing");
 				A_firenurailgun();
 				A_zoomfactor(0.7);
-                A_Overlay(MUZZLE_LAYER,"MuzzleFlash");
-                A_OverlayFlags(MUZZLE_LAYER,PSPF_RENDERSTYLE|PSPF_FORCESTYLE,true);
-                A_OverlayRenderStyle(MUZZLE_LAYER,STYLE_Add);
+                A_FlashOverlay(MUZZLE_LAYER);
 				A_GunLight();
 			}
 			RAIF B 1 {
@@ -181,10 +180,11 @@ Class PBX_BDPRailgun : PBX_WeaponBase
 				}
 			}
 			RAIL TWWVUUUUUUUUUUUUUUU 1 {
-				If(PB_GetChamberEmpty()) {
-                    PB_GunSmoke_Basic(0, 0, 0);
-                    PB_GunSmoke_Basic(0, 0, 0);
-                    PB_GunSmoke_Basic(0, 0, 0);
+				If(PB_GetChamberEmpty()) 
+                {
+                    PB_GunSmoke(0, 0, 0);
+                    PB_GunSmoke(0, 0, 0);
+                    PB_GunSmoke(0, 0, 0);
                 }
             }
 			TNT1 A 0 {
@@ -218,21 +218,21 @@ Class PBX_BDPRailgun : PBX_WeaponBase
 			}
         Fire2Actual:
             TNT1 A 0 PB_JumpIfNoAmmo(emptysound:"RAILDRY");
-            SNIP C 30 Bright {
+            SNIP B 30 Bright {
                 A_firenurailgun();
                 A_GunLight();
             }
             // TNT1 A 0 PB_JumpIfNoAmmo();
         FireAimCont:
             TNT1 A 0 A_StartSound("RAILMAG2", 5);
-            SNIP CC 1 BRIGHT;
+            SNIP BB 1 BRIGHT;
             TNT1 A 0 {
                 A_startsound("Railgun/Eject",2); 
                 PB_SpawnCasing("SpentRailgunShell");
 				if(!PB_GetMagEmpty()) PB_SetChamberEmpty(false);
             }
-            SNIP CCCCCCCCCCCCCCCCCCC 1 BRIGHT PB_GunSmoke(0,0,0);
-            SNIP CCCC 1 BRIGHT;
+            SNIP AAAAAAAAAAAAAAAAAAA 1 BRIGHT PB_GunSmoke(0,0,0);
+            SNIP AAAA 1 BRIGHT;
             TNT1 A 0 A_StartSound("RAILINSR", 5);
             SNIP CCCCCCCCCC 1 BRIGHT;
             TNT1 A 0 PB_Refire();
@@ -358,50 +358,12 @@ Class PBX_BDPRailgun : PBX_WeaponBase
             TNT1 A 0 A_SpawnHologram();
 		    Goto Ready3;
             
-        // SlowHologram:
-        //     TNT1 A 0 A_startsound("PISTFOL5",10);
-        //     RAIZ ABCD 1;
-        //     TNT1 A 0 
-        //     {
-        //         A_startsound("BEP",4);
-        //         A_SetCrosshairDX("Null");
-        //     }
-        // HoldHologram:
-        //     RAIZ D 1
-        //     {
-        //         FLineTraceData lasersight;
-        //         LineTrace(angle, 4096, pitch, TRF_SOLIDACTORS|TRF_THRUHITSCAN, offsetz: player.viewz - pos.z, data: lasersight);
-        //         vector3 targetpos = lasersight.HitLocation;
-        //         if (lasersight.HitLine)
-        //         {
-        //             vector2 wallnormal = (-lasersight.HitLine.delta.y,lasersight.HitLine.delta.x).unit();
-        //             if (!lasersight.LineSide)
-        //             wallnormal *= -1;
-        //             targetpos += (wallnormal * 18);
-        //         }
-        //         if (lasersight.hittype == trace_hitceiling)
-        //         {
-        //             targetpos.z -= 13;
-        //         }
-        //         if (lasersight.hittype == trace_hitfloor)
-        //         {
-        //             targetpos.z += 13;
-        //         }
-        //         Spawn("HoloLaser",targetpos);
-        //     }
-        //     TNT1 A 0 A_JumpIf(player.cmd.buttons & BT_USER3,"HoldHologram");
-        //     TNT1 A 0
-        //     {
-        //         A_startsound("bepbep",4);
-        //         A_SpawnHologram();
-        //         A_startsound("PISTFOL5",10);
-        //         A_SetCrosshairDX("RAILRet", 10000);
-        //     }
-        //     RAIZ DCBA 1;
-        //     TNT1 A 0 A_takeinventory("startdualwield",1);
-        //     Goto Ready;
-
         // FLASH STATES
+        MuzzleFlash:
+			P1SF D 1 BRIGHT {A_SetWeaponFrame(3 + random(0, 2)); A_GunFlash();}
+			P1SF G 1 BRIGHT {A_SetWeaponFrame(6 + random(0, 2)); A_GunFlash();}
+            stop;
+
         FlashPunching:
             TNT1 A 0 PB_SetUsableWheel(false);
             RAIK ABCD 1;

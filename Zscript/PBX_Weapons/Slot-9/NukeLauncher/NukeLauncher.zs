@@ -116,13 +116,13 @@ class PBX_NukeLauncher : PBX_WeaponBase
             goto Ready3;
 
         FlashSlideKicking:
-            MSNK BCDE 1; // 27 frames
+            NKLG BCDE 1; // 27 frames
 		    NKLG E 21;
             NKLG EDCB 1;     
             goto Ready3;
 
         FlashSlideKickingStop:
-            MSNK EEEEDCB 1;             // 7 frames
+            NKLG EEEEDCB 1;             // 7 frames
             goto Ready3;
     }
 }

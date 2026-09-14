@@ -126,6 +126,7 @@ extend class PBX_BDPRailgun
 	
 	Action void a_firenurailgun()
 	{
+        bool isZoom = PB_GetZoom();
 		FLineTraceData railspawn;
         LineTrace(angle, 8192, pitch, TRF_NOSKY | TRF_THRUACTORS, player.viewz - player.mo.pos.z - 5, data: railspawn);
         if (railspawn.HitType != TRACE_HitNone)
@@ -172,10 +173,13 @@ extend class PBX_BDPRailgun
         A_Fireprojectile ("PlasmaSmoke", 0, 0, 0, 2);
         A_StartSound("RAILF01", 1);
         PB_TakeAmmo(invoker.ammotype2,1,0);
-        PB_WeaponRecoil(-6,0);
+        PB_WeaponRecoil(isZoom ? -3 : -6,0);
+        PB_GunSmoke(0, 0, 0);
+        PB_GunSmoke(0, 0, 0);
+        PB_GunSmoke(0, 0, 0);
         if(invoker.owner.pos.z <= invoker.owner.floorz)
-            A_Recoil3d(3);
+            A_Recoil3d(isZoom ? 3 : 6);
         else
-            A_Recoil3d(20);
+            A_Recoil3d(isZoom ? 10 : 20);
     }
 }

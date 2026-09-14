@@ -7,7 +7,7 @@ server bool pbxweapons_startwithcrossbow = false;
 server bool pbxweapons_enablesecretweapon = true;
 server bool pbxweapons_cssghooklockswitch = true;
 server bool pbxweapons_keepweapons = false;
-server int pbxweapons_secretweapon_spawnchance = 10;
+server int pbxweapons_secretweapon_spawnchance = 5;
 
 // Tip Flags
 server int PBXWeapons_GeneralFlags = 0;
