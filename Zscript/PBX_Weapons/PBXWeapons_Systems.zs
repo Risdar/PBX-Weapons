@@ -45,6 +45,7 @@ class PBXWeapons_Handler : EventHandler
 
         // SLOT 9
 		PBXCore_Handler.TryGiveInventory(pm,'PBX_DemonExt', 'SoulCharge', PBX_DemonExt.SOUL_CAPACITY);
+		PBXCore_Handler.TryGiveInventory(pm,'PBX_HexaShotgun', 'HexaShotgunAmmo', PBX_HexaShotgun.BARREL_CAPACITY);
 
         // OTHERS
 		PBXCore_Handler.TryGiveInventory(pm,whatToGive:'PBX_ProsurvBlaster', diffCheck:false); // The player will always start with this weapon

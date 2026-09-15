@@ -10,6 +10,9 @@ PBXWEAPONS_START_WITH_BDP_RIFLE = "Start with the BDP Rifle";
 PBXWEAPONS_START_WITH_PISTOL_BLASTER = "Start with the Pistol Blaster";
 PBXWEAPONS_START_WITH_CROSSBOW = "Start with the Crossbow Ballista";
 PBXWEAPONS_MENU_ENABLE_SECRET_WEAPONS = "Enable Secret Weapons";
+PBXWEAPONS_MENU_SECRETWEAPON_BFGSPAWN = "Secret Weapons spawns in BFG spawners";
+
+TIP_pbxweapons_secretweapon_bfgspawn = "Secret weapons will also spawn in BFG spawners. Disabling the secret spawns will not affect this.";
 
 
 //////////////////////////// WEAPONS MENU ///////////////////////////////////////////////////////////////////////////////
@@ -61,6 +64,7 @@ PBXWEAPONS_CRYOASG = "Enable Plasma Auto Shotgun";
 PBXWEAPONS_DEMONIC_EXTERMINATOR = "Enable Demonic Exterminator";
 PBXWEAPONS_DEMONEXT_ARTIFACT = "Enable Demonic Exterminator Artifacts";
 PBXWEAPONS_NUKE_LAUNCHER = "Enable Nuke Launcher";
+PBXWEAPONS_HEXA_SHOTGUN = "Enable Hexa Shotgun";
 
 PBXWEAPONS_UAC_COMMANDER_BACKPACK = "Enable UAC Commander's Backpack";
 

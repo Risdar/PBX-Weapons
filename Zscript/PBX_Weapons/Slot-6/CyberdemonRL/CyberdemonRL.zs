@@ -80,7 +80,7 @@ class PBX_CyberdemonRL : PBX_WeaponBase
 			case 1:
 				A_AlertMonsters();
 				A_StartSound("0SRFIRE", CHAN_WEAPON, CHANF_OVERLAP);
-				A_ZoomFactor(0.98, SPF_INTERPOLATE);
+				A_ZoomFactor(0.98);
 				PB_LowAmmoSoundWarning("default", invoker.ammotype1.getclassname());
 				A_TakeInventory(invoker.AmmoType1, invoker.AMMO_PER_DURABILITY, TIF_NOTAKEINFINITE);
 				A_TakeInventory(DURABILITY_NAME,1,TIF_NOTAKEINFINITE);
@@ -89,7 +89,7 @@ class PBX_CyberdemonRL : PBX_WeaponBase
 				break;
 			//Tic 2
 			case 2:
-				A_ZoomFactor(1.0, SPF_INTERPOLATE);
+				A_ZoomFactor(1.0);
 				PB_WeaponRecoil(-2,frandom[sfx](-2,2));
 				break;
 		}
@@ -145,11 +145,11 @@ class PBX_CyberdemonRL : PBX_WeaponBase
             TNT1 AAAA 0;
 			CYBF A 1 BRIGHT CyberRl_FireWeapon(1);
 			CYBF B 1 BRIGHT CyberRl_FireWeapon(2);
-			CYBF C 1 A_SetPitch(pitch-1, SPF_INTERPOLATE);
+			CYBF C 1 PB_WeaponRecoil(0,-1);
 			CYBF D 1 BRIGHT;
-			CYBF D 1 BRIGHT A_SetPitch(pitch+0.6, SPF_INTERPOLATE);
+			CYBF D 1 BRIGHT PB_WeaponRecoil(0,+0.6);
 			CYBF EFG 1 BRIGHT {
-				A_SetPitch(pitch+0.8, SPF_INTERPOLATE);
+				PB_WeaponRecoil(0,+0.8);
 				if(JustPressed(BT_ATTACK)) return ResolveState("Fire");
                 return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOPRIMARY);
 			}
@@ -172,16 +172,16 @@ class PBX_CyberdemonRL : PBX_WeaponBase
 			CYBF A 1 Bright CyberRl_FireWeapon(1);
 			CYBF B 1 Bright CyberRl_FireWeapon(2);
 			TNT1 A 0 A_JumpIf(invoker.shotCount == 4, "FinishLoop");
-			CYBF C 1 A_SetPitch(pitch-1, SPF_INTERPOLATE);
-			CYBF D 1 Bright A_SetPitch(pitch + 0.6, SPF_INTERPOLATE);
-			CYBF EFG 1 Bright A_SetPitch(pitch + 0.8, SPF_INTERPOLATE);
+			CYBF C 1 PB_WeaponRecoil(0,-1);
+			CYBF D 1 Bright PB_WeaponRecoil(0,+0.6);
+			CYBF EFG 1 Bright PB_WeaponRecoil(0,+0.8);
 			TNT1 A 0 { invoker.shotCount++; }
 			TNT1 A 0 A_JumpIf(invoker.shotCount < 4, "AltFireLoop");
 		FinishLoop:
-			CYBF C 1 A_SetPitch(pitch - 1, SPF_INTERPOLATE);
+			CYBF C 1 PB_WeaponRecoil(0,-1);
 			CYBF D 3 Bright;
-			CYBF D 1 Bright A_SetPitch(pitch + 0.6, SPF_INTERPOLATE);
-			CYBF EEFFGG 1 Bright A_SetPitch(pitch + 0.4, SPF_INTERPOLATE);
+			CYBF D 1 Bright PB_WeaponRecoil(0,+0.6);
+			CYBF EEFFGG 1 Bright PB_WeaponRecoil(0,+0.4);
 			CYBF HHJ 1 Bright;
 			CYBF IJIJIJ 1 Bright;
 			TNT1 A 0 PB_ReFire();

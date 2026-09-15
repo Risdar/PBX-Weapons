@@ -172,7 +172,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
 				A_TakeInventory("PB_LockScreenTilt",1);
                 A_StopSound(1);
 			}
-			SNSE GFEDCBA 1 superNailgun_setSprite("SNSU");
+			SNSE GECA 1 superNailgun_setSprite("SNSU");
 			TNT1 A 0 A_Lower();
 			Wait;
 
@@ -188,7 +188,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
 			    return PB_RespectIfNeeded();
 			}
         SelectAnimation:
-            SNSE ABCDEFG 1 superNailgun_setSprite("SNSU");
+            SNSE ACEG 1 superNailgun_setSprite("SNSU");
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
         Ready3:
             TNT1 A 0 SuperNailgun_CheckSpin();

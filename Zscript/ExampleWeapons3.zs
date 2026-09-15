@@ -29,7 +29,7 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
 //////////////////////////// MESSAGES & SOUNDS ////////////////////////////////////////////////////////////////////////////////////
         Inventory.Pickupmessage  "$PBX_PlasmaBlaster_Pickup";
         Inventory.PickupSound "CHGNPKUP";
-        Obituary "%o was decapitated by %k's Assasin.";
+        Obituary "$OB_WEAP_HEXASG";
         AttackSound "None";
         Tag "$PBX_PlasmaBlaster_Tag";
         Scale 0.8;

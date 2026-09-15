@@ -55,7 +55,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
             RIR3 ABCDEFG 1 A_DoPBWeaponAction();
             RIFR HIJKLMNOPQR 1 A_DoPBWeaponAction();
             RIFL C 0 {
-                A_PlaySoundEx("weapons/rifle/magin", "Auto");
+                A_StartSound("weapons/rifle/magin",CHAN_WEAPON,CHANF_OVERLAP);
                 return A_DoPBWeaponAction();
             }
             RIFR STUVWXYZ 1 A_DoPBWeaponAction();
@@ -87,7 +87,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
 
         SelectAnimationDualWield:
             DURI FEDCB 1;
-            TNT1 A 0 A_PlaySoundEx("CLIPIN", "Auto");
+            TNT1 A 0 A_StartSound("CLIPIN",CHAN_WEAPON,CHANF_OVERLAP);
             Goto ReadyDualWield;
 
         Select:
@@ -269,7 +269,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
             Goto Ready3;
 
         RaiseFromEmpty:
-            TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
             RIFR ABCDEFG 1;
             goto ContinueReload;
 
@@ -285,7 +285,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
             TNT1 A 0 A_Zoomfactor(1.0);
             TNT1 A 0 A_JumpIf(A_CheckAkimbo(), "ReloadDualWield");
             TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, "ChamberFromReload", "Ready3", "Ready3", MAGAZINE_SIZE);
-            TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
             // Raise
             RIR2 BA 1;
             RIFR "][" 1;
@@ -293,20 +293,22 @@ Class PBX_NormalRifle : PBX_WeaponBase
             // Remove Mag
 		    RIFR UTSRQ 1;
             TNT1 A 0 {
-                A_PlaySoundEx("weapons/rifle/magout", "Auto");
+                A_StartSound("weapons/rifle/magout",CHAN_WEAPON,CHANF_OVERLAP);
                 if(PB_GetMagEmpty()) PB_SpawnCasing("EmptyDMRMag",38,26,7,frandom(0, 3.5),frandom(-7.2, -3.3),frandom(3,7));
                 PB_SetMagUnloaded(true);
             }
             // Put Away Mag
             RIFR PONMLKJIHG 1;
+            RIFR G 5;
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
         ContinueReload:
             // Insert Mag
-            TNT1 A 0 A_PlaySoundEx("weapons/rifle/magchange", "Auto");
+            TNT1 A 0 A_StartSound("weapons/rifle/magchange",CHAN_WEAPON,CHANF_OVERLAP);
             RIFR HIJKLMNN 1;
             RIFR OP 1;
             RIFR Q 3;
             RIFR R 1;
-            TNT1 A 0 A_PlaySoundEx("weapons/rifle/magin", "Auto");
+            TNT1 A 0 A_StartSound("weapons/rifle/magin",CHAN_WEAPON,CHANF_OVERLAP);
             RIFR S 1 {
 				PB_AmmoIntoMag(
                     invoker.ammo2.getclassname(), 
@@ -328,17 +330,17 @@ Class PBX_NormalRifle : PBX_WeaponBase
             RIFL HIJKLMNOP 1;
             TNT1 A 0 {
                 PB_SetChamberEmpty(false);
-                A_PlaySoundEx("RIFCL_CK", "Auto");
+                A_StartSound("RIFCL_CK",CHAN_WEAPON,CHANF_OVERLAP);
             }
             RIFL PONMLKJIH 1;   
             goto Ready3;
 
         Rechamber:
-            TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
             RIFR W 1;
             RIR2 CDEFGHII 1;
             RIR2 J 3;
-            TNT1 A 0 A_PlaySoundEx("RIFCL_CK", "Auto");
+            TNT1 A 0 A_StartSound("RIFCL_CK",CHAN_WEAPON,CHANF_OVERLAP);
             RIR2 LM 1;
             TNT1 A 0 PB_SetChamberEmpty(false);
             RIR2 N 4;
@@ -348,19 +350,19 @@ Class PBX_NormalRifle : PBX_WeaponBase
             goto FinishReload;
 
         ReloadUnloadRight:
-            TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
             RIR3 DEFG 1;
             goto ContinueReloadRight;
 
         ReloadUnloadLeft:
-            TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
             RIR5 DEFG 1;
             goto ContinueReloadLeft;
 
         ReloadDualWield:
             TNT1 A 0 PB_ClearDualWield();
             TNT1 A 0 PB_CheckReload("ReloadUnloadRight",null,null,"ReloadLeft","Ready3",MAGAZINE_SIZE);
-            TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
             // Raise
             // RIR2 BA 1;
             // RIFR "][" 1;
@@ -369,7 +371,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
             // Remove Right Mag
             RIR3 RQP 1;
             TNT1 A 0 {
-                A_PlaySoundEx("weapons/rifle/magout", "Auto");
+                A_StartSound("weapons/rifle/magout",CHAN_WEAPON,CHANF_OVERLAP);
                 if(PB_GetMagEmpty()) PB_SpawnCasing("EmptyDMRMag",38,26,7,frandom(0, 3.5),frandom(-7.2, -3.3),frandom(3,7));
                 PB_SetMagUnloaded(true);
             }
@@ -378,7 +380,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
             // Insert Right Mag
             RIR3 GHIJKLMNOPQR 1;
             RIR3 S 1 {
-                A_PlaySoundEx("weapons/rifle/magchange", "Auto");
+                A_StartSound("weapons/rifle/magchange",CHAN_WEAPON,CHANF_OVERLAP);
 				PB_AmmoIntoMag(
                     invoker.ammo2.getclassname(), 
                     invoker.ammo1.getclassname(), 
@@ -395,7 +397,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
         ReloadLeft:
             // TNT1 A 3;
             TNT1 A 0 PB_CheckReload("ReloadUnloadLeft",null,null,"Ready3","Ready3",MAGAZINE_SIZE,invoker.reservetomagammofactor,true);
-            TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
             // RIR6 BA
             // RIR5 "]["
             // RIR5 ZYXWVUTS
@@ -403,7 +405,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
             // Put Away Left Mag
             RIR5 RQP 1;
             TNT1 A 0 {
-                A_PlaySoundEx("weapons/rifle/magout", "Auto");
+                A_StartSound("weapons/rifle/magout",CHAN_WEAPON,CHANF_OVERLAP);
                 if(PB_GetMagEmpty(true)) PB_SpawnCasing("EmptyDMRMag",38,26,7,frandom(0, 3.5),frandom(-7.2, -3.3),frandom(3,7));
                 PB_SetMagUnloaded(true,true);
             }
@@ -412,7 +414,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
             // Insert Left Mag
             RIR5 GHIJKLMNOPQR 1;
             RIR5 S 1 {
-                A_PlaySoundEx("weapons/rifle/magchange", "Auto");
+                A_StartSound("weapons/rifle/magchange",CHAN_WEAPON,CHANF_OVERLAP);
 				PB_AmmoIntoMag(
                     invoker.ammoleft.getclassname(), 
                     invoker.ammo1.getclassname(), 
@@ -433,7 +435,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
                 PB_SetRoll(0);
 				// PB_HandleCrosshair(55);
             }
-            TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
             TNT1 A 0 A_JumpIf(PB_GetMagUnloaded() && !PB_GetChamberEmpty(), "UnloadChamber");
             TNT1 A 0 A_JumpIf(A_CheckAkimbo(), "UnloadDualWield");
             // Raise
@@ -441,11 +443,11 @@ Class PBX_NormalRifle : PBX_WeaponBase
             RIFR "][" 1;
 		    RIFR ZYXWVVV 1;
 		    RIFR UTSRQ 1;
-            TNT1 A 0 A_PlaySoundEx("weapons/rifle/magout", "Auto");
+            TNT1 A 0 A_StartSound("weapons/rifle/magout",CHAN_WEAPON,CHANF_OVERLAP);
             // Remove Mag
             RIFR PONMLKJIHG 1;
             TNT1 A 0 {
-                A_PlaySoundEx("weapons/rifle/magchange", "Auto");
+                A_StartSound("weapons/rifle/magchange",CHAN_WEAPON,CHANF_OVERLAP);
                 if(PB_GetMagEmpty()) PB_SpawnCasing("EmptyDMRMag",38,26,7,frandom(0, 3.5),frandom(-7.2, -3.3),frandom(3,7));
                 PB_UnloadMag(invoker.ammotype2,invoker.ammotype1,1,1,0,1);
                 PB_SetMagUnloaded(true);
@@ -455,7 +457,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
             RIFR GFEDCBA 1;
             RIR2 B 1;
         UnloadChamber:
-            TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
             RIFL HIJKLMNOP 1;
             TNT1 A 0 {
                 PB_SetChamberEmpty(true);
@@ -472,7 +474,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
             // Remove Right Mag
             RIR3 RQP 1;
             TNT1 A 0 {
-                A_PlaySoundEx("weapons/rifle/magout", "Auto");
+                A_StartSound("weapons/rifle/magout",CHAN_WEAPON,CHANF_OVERLAP);
                 if(PB_GetMagEmpty()) PB_SpawnCasing("EmptyDMRMag",38,26,7,frandom(0, 3.5),frandom(-7.2, -3.3),frandom(3,7));
                 PB_UnloadMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname());
                 PB_SetMagEmpty(false);
@@ -490,7 +492,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
             // Put Away Left Mag
             RIR5 RQP 1;
             TNT1 A 0 {
-                A_PlaySoundEx("weapons/rifle/magout", "Auto");
+                A_StartSound("weapons/rifle/magout",CHAN_WEAPON,CHANF_OVERLAP);
                 if(PB_GetMagEmpty(true)) PB_SpawnCasing("EmptyDMRMag",38,26,7,frandom(0, 3.5),frandom(-7.2, -3.3),frandom(3,7));
                 PB_UnloadMag(invoker.ammoleft.getclassname(),invoker.ammo1.getclassname());
                 PB_SetMagEmpty(true,true);

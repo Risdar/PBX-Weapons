@@ -53,6 +53,6 @@ OB_WEAP_RAILGUN = "%o was pierced by %k's Railgun.";
 
 // Slot 9
 OB_WEAP_DEMONEXT = "%o was Undone by UnMaker Extermination Type.";
-
+OB_WEAP_HEXASG  = "%o was eviscerated by %k's Hexa Shotgun";
 
 

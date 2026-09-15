@@ -475,6 +475,7 @@ class PBX_WeaponBase : PB_WeaponBase abstract
     //     }
     // }
 }
+
 //////////////////////////// WEAPON WHEEL ////////////////////////////////////////////////////////////////////////////////////
 mixin class PBX_GenericSpecialWheel
 {
@@ -505,7 +506,7 @@ mixin class PBX_GenericSpecialWheel
     {
         vector2 scl = scale == (0,0) ? mIconScale : scale;
         PB_SpecialWheel_Mode newWheel = new ("PB_SpecialWheel_Mode");
-		newWheel.img = "graphics/WeaponWheel/"..img..".png";
+		newWheel.img = IMAGE_DIRECTORY..img..".png";
 		newWheel.Alias = alias;
 		newWheel.tokentogive = token;
 		newWheel.scalex = scl.x;
@@ -540,12 +541,12 @@ mixin class PBX_GenericSpecialWheel
 		if(!mWeap.mLaserSightActivated) 
         {
             PBX_ToggleLaser.Alias = "$PBX_LaserON";
-            PBX_ToggleLaser.img = "graphics/WeaponWheel/"..wheelFolder.."/LaserOn.png";
+            PBX_ToggleLaser.img = IMAGE_DIRECTORY..wheelFolder.."/LaserOn.png";
 		}
 		else 
         {
             PBX_ToggleLaser.Alias = "$PBX_LaserOff";
-            PBX_ToggleLaser.img = "graphics/WeaponWheel/"..wheelFolder.."/LaserOff.png";
+            PBX_ToggleLaser.img = IMAGE_DIRECTORY..wheelFolder.."/LaserOff.png";
 		}
 		PBX_ToggleLaser.tokentogive = "PBX_Toggle_Laser";
 		PBX_ToggleLaser.scalex = laserWheelScale.x;

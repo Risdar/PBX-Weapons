@@ -1,0 +1,322 @@
+// Hexa Shotgun 
+// From Brutal Doom Addon made by Dox 778
+// Complex Doom LCA - Firing sound effect, reload/idle frames
+// ȽʘɌƉ ȽʘŦḢɅɌ - New Hexa Shotgun idle frame
+// Iamcarrotmaster - Polishing the idle sprite
+// leonelc - Firing frames
+// IDDQD_1337 - help with sprinting/firing frames, firing sound effect
+// Doom 3/ID Software - Reload sound effects
+
+// Actual Weapon
+class PBX_HexaShotgun : PBX_WeaponBase
+{
+    Default
+    {
+//////////////////////////// WEAPON DATA ////////////////////////////////////////////////////////////////////////////////////
+        Weapon.SelectionOrder 1;
+        Weapon.SlotNumber 9;
+        Weapon.SlotPriority 1;
+        Weapon.Kickback 76;
+	    Inventory.AltHUDIcon "HSGPA0";
+
+//////////////////////////// AMMO ////////////////////////////////////////////////////////////////////////////////////
+        Weapon.AmmoType1 "PB_Shell";
+        Weapon.AmmoType2 "HexaShotgunAmmo";
+        Weapon.AmmoGive1 6;
+
+//////////////////////////// MESSAGES & SOUNDS ////////////////////////////////////////////////////////////////////////////////////
+        Inventory.Pickupmessage  "$PBX_HexaShotgun_Pickup";
+        Inventory.PickupSound "CLIPINSS";
+        Obituary "$OB_WEAP_HEXASG";
+        Tag "$PBX_HexaShotgun_Tag";
+        Scale 0.9;
+
+//////////////////////////// WEAPON FLAGS ////////////////////////////////////////////////////////////////////////////////////
+        +WEAPON.NOAUTOAIM;
+        +WEAPON.NOAUTOFIRE;
+        +WEAPON.NO_AUTO_SWITCH;
+    }
+
+//////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
+    const BARREL_CAPACITY = 6;
+
+//////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
+    States
+    {
+//////////////////////////// SETUP ////////////////////////////////////////////////////////////////////////////////////
+        Spawn:
+            HSGP A -1;
+            Stop;
+
+        WeaponRespect:
+            HSGF T 1 {
+                A_WeaponOffset(-2,33);
+                return A_DoPBWeaponAction();
+            }
+            HSGF T 1 {
+                A_WeaponOffset(-4,34);
+                return A_DoPBWeaponAction();
+            }
+            HSGF T 1 {
+                A_WeaponOffset(-7,36);
+                return A_DoPBWeaponAction();
+            }
+            TNT1 A 0 {
+                A_WeaponOffset(0,32);
+                return A_DoPBWeaponAction();
+            }
+            HSGR ABCDEFG 1 A_DoPBWeaponAction();
+            HSGR H 4 A_DoPBWeaponAction();
+            HSGR IJKMOR 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_StartSound("QSGOPN",CHAN_WEAPON,CHANF_OVERLAP);
+            HSR3 G 2 {
+                A_WeaponOffset(9,38);
+                return A_DoPBWeaponAction();
+            }
+            HSR3 G 1 {
+                A_WeaponOffset(5,35);
+                return A_DoPBWeaponAction();
+            }
+            HSR3 G 1 {
+                A_WeaponOffset(2,33);
+                return A_DoPBWeaponAction();
+            }
+            HSR3 G 1 {
+                A_WeaponOffset(0,32);
+                return A_DoPBWeaponAction();
+            }
+            HSR3 G 14 A_DoPBWeaponAction();
+            HSR3 HIJ 1 A_DoPBWeaponAction();
+            HSR2 QRSTUVWX 1 A_DoPBWeaponAction();
+            HSR2 YYYZ 1 A_DoPBWeaponAction();
+            HSR3 A 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_StartSound("QSGCLSE",CHAN_WEAPON,CHANF_OVERLAP);
+            Goto Ready3;
+
+        Deselect:
+            TNT1 A 0 PBX_WeaponLower();
+            HSGS ABCDEF 1;
+			TNT1 A 0 A_Lower();
+			Wait;
+
+        Select:
+            TNT1 A 0 {
+				A_WeaponOffset(0,32);
+				PB_SetRoll(0);
+			    // PB_HandleCrosshair(41);
+                A_SetCrosshair(-1);
+				A_SetInventory("PB_LockScreenTilt",0);
+                PBX_WeaponRaise("CLIPINSS");
+			    return PB_RespectIfNeeded();
+			}
+        SelectAnimation:
+            TNT1 A 0 A_GunFlash();
+            HSGS FEDCBA 1;
+//////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
+        Ready3:
+		    TNT1 A 0 A_JumpIfTargetInLOS("BlinkBegin", 0, 0, JLOSF_COMBATANTONLY, 12000); //checks if an enemy/player is in sight
+			HSGF T 1 {
+                PB_CoolDownBarrel();
+                return A_DoPBWeaponAction();
+            }
+            loop;
+
+        BlinkBegin:
+            // TNT1 A 0 A_StartSound("QSGCHRG",CHAN_WEAPON,CHANF_OVERLAP);
+            HSGF U 1 A_DoPBWeaponAction();
+            HSGF V 1 A_DoPBWeaponAction();
+            HSGF W 1 A_DoPBWeaponAction();
+        Blink:
+            HSF2 A 1 A_DoPBWeaponAction(); //Blinking frame
+            TNT1 A 0 A_JumpIfTargetInLOS("Blink", 0, 0, JLOSF_COMBATANTONLY, 12000); //Still in sight? Then repeat!
+            HSGF WVU 1 A_DoPBWeaponAction();
+		    Goto Ready3;
+
+//////////////////////////// FIRE ////////////////////////////////////////////////////////////////////////////////////
+        Fire:
+            TNT1 A 0 PB_JumpIfNoAmmo(min:BARREL_CAPACITY);
+            TNT1 A 0 A_ZoomFactor(1.5);
+            TNT1 A 0 A_Recoil3D(20);
+            HSGF A 1 BRIGHT; 
+            TNT1 A 0 A_ZoomFactor(1.4);
+            HSGF B 1 BRIGHT;
+            TNT1 A 0 {
+                A_StartSound("QSGFIRE1", CHAN_WEAPON, CHANF_DEFAULT, 1.0);
+                PB_TakeAmmo(invoker.ammo2.getclassname(),BARREL_CAPACITY,0);
+                A_FireCustomMissile("YellowFlareSpawn", 15, 0, 0, 0);
+                A_FireCustomMissile("YellowFlareSpawn", -15, 0, 0, 0);
+                PB_FireBullets("PB_8GAPellet_LP", 6, 0, 0, 0, 0);				
+                PB_FireBullets("PB_8GAPellet", 72,7, 0, 0, 5);
+                A_FlashOverlay();
+                PB_IncrementHeat(20);
+            }
+            TNT1 A 0 PB_WeaponRecoil(0,-10);
+            TNT1 A 0 A_ZoomFactor(1.3);
+            HSGF C 1 BRIGHT;
+            TNT1 A 0 A_ZoomFactor(1.2);
+            TNT1 A 0 PB_WeaponRecoil(0,-8);
+            TNT1 A 0 A_ZoomFactor(1.00);
+            HSGF DE 1 PB_WeaponRecoil(0,-4);
+            HSGF EEEFGH 1 PB_WeaponRecoil(0,+1);
+            HSGF IJKLMNOPQR 1 PB_WeaponRecoil(0,+2);
+            HSGF S 1;
+            HSGF T 1 A_WeaponOffset(0,34);
+            QSGF AAA 0 PB_WeaponRecoil(0,+0.5);
+            HSGF TT 1 A_WeaponOffset(0,33);
+            HSGF T 1 A_WeaponOffset(0,32);
+            HSGF T 5 A_DoPBWeaponAction(WRF_NOFIRE|WRF_NOBOB);
+		    Goto Reload;
+  
+//////////////////////////// ALT FIRE ////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////// WEAPON SPECIAL ////////////////////////////////////////////////////////////////////////////////////
+        WeaponSpecial:
+            TNT1 A 0 {
+                A_TakeInventory("GoWeaponSpecialAbility", 1);
+                A_Print("$PBX_NoSpecial");
+            }
+        AltFire:
+            Goto Ready3;
+
+//////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
+		Reload:
+            TNT1 A 0 PB_CheckReload(null,null,null,"Ready3","Ready3",BARREL_CAPACITY);
+            //Reload 6 barrels
+            TNT1 A 0 A_WeaponOffset(20,48);
+            TNT1 A 0 A_WeaponOffset(0,32);
+            HSGF T 1 A_WeaponOffset(-2,33);
+            HSGF T 1 A_WeaponOffset(-4,34);
+            HSGF T 1 A_WeaponOffset(-7,36);
+            // Raise
+            HSGR ABCDEFG 1 A_WeaponOffset(0,32);
+            HSGR H 4;
+            // Open
+            HSGR HIJKLMN 1;
+            TNT1 A 0 A_StartSound("QSGOPN",CHAN_WEAPON,CHANF_OVERLAP);
+            TNT1 A 0 {
+                if(invoker.ammo2.amount == 4)
+                    return resolvestate("Insert6");
+                if(invoker.ammo2.amount == 2)
+                    return resolvestate("Insert4");
+                else
+                    return resolvestate(null);
+            }
+        Insert2:
+            TNT1 A 0 {
+                if(!PB_GetMagUnloaded())
+                {
+                    PB_SpawnCasing("ShotgunCasing",14,-3,28,-1,4,4);
+                    PB_SpawnCasing("ShotgunCasing",14,-3,32,-1,4,4);
+                    PB_SpawnCasing("ShotgunCasing",15,3,28,-1,4,4);
+                    PB_SpawnCasing("ShotgunCasing",15,3,32,-1,4,4);
+                    PB_SpawnCasing("ShotgunCasing",16,3,28,-1,4,4);
+                    PB_SpawnCasing("ShotgunCasing",16,3,32,-1,4,4);
+                }
+            }
+            HSGR S 2 A_WeaponOffset(9,38);
+            HSGR S 1 A_WeaponOffset(5,35);
+            HSGR S 1 A_WeaponOffset(2,33);
+            HSGR S 2 A_WeaponOffset(0,32);
+            HSGR TUVWWXX 1;
+            TNT1 A 0 {
+                A_StartSound("QSGIN",CHAN_WEAPON,CHANF_OVERLAP);
+                A_TakeInventory(invoker.ammo1.getclassname(),2);
+                A_GiveInventory(invoker.ammo2.getclassname(),2);
+                PB_SetChamberEmpty(false);
+			    PB_SetMagEmpty(false);
+            }
+            HSGR YZ 1;
+        Insert4:
+            HSR2 A 1;
+            HSR2 A 1 A_WeaponOffset(-2,31);
+            HSR2 A 1 A_WeaponOffset(-3,31);
+            HSR2 A 2 A_WeaponOffset(-4,33);
+            HSR2 A 1 A_WeaponOffset(-2,33);
+            HSR2 A 2 A_WeaponOffset(0,32);
+            HSR2 BCDEEFF 1;
+            TNT1 A 0 {
+                A_StartSound("QSGIN",CHAN_WEAPON,CHANF_OVERLAP);
+                A_TakeInventory(invoker.ammo1.getclassname(),2);
+                A_GiveInventory(invoker.ammo2.getclassname(),2);
+                PB_SetChamberEmpty(false);
+			    PB_SetMagEmpty(false);
+            }
+            HSR2 GH 1;
+            HSR2 I 1 A_WeaponOffset(-1,30);
+            HSR2 I 1 A_WeaponOffset(-2,29);
+            HSR2 I 3 A_WeaponOffset(-4,27);
+            HSR2 I 1 A_WeaponOffset(-3,28);
+            HSR2 I 2 A_WeaponOffset(-1,31);
+        Insert6:
+            HSR2 JKLMMNN 1 A_WeaponOffset(0,32);
+            TNT1 A 0 {
+                A_StartSound("QSGIN",CHAN_WEAPON,CHANF_OVERLAP);
+                A_TakeInventory(invoker.ammo1.getclassname(),2);
+                A_GiveInventory(invoker.ammo2.getclassname(),2);
+                PB_SetChamberEmpty(false);
+			    PB_SetMagEmpty(false);
+            }
+        FinishReload:
+            HSR2 OPQRSTUVWX 1;
+            HSR2 YYYZ 1;
+            HSR3 A 1;
+            TNT1 A 0 A_StartSound("QSGCLSE",CHAN_WEAPON,CHANF_OVERLAP);
+            Goto Ready3;
+        
+//////////////////////////// UNLOAD ////////////////////////////////////////////////////////////////////////////////////
+        Unload:
+			TNT1 A 0 A_Jumpif(PB_GetMagEmpty(),"Ready3");
+            HSGF T 1 A_DoPBWeaponAction();
+            QSGF P 0 A_ZoomFactor(1.0);
+            HSGS ABCDEF 1;
+            TNT1 A 0 A_StartSound("QSGOPN",CHAN_WEAPON,CHANF_OVERLAP);
+            TNT1 A 0 {
+				PB_UnloadMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname());
+				PB_SetMagUnloaded(true);
+				PB_SetChamberEmpty(true);
+                PB_SetMagEmpty(true);
+			}
+        FinishUnload:
+            TNT1 A 19;
+            HSR2 QRSTUVWX 1;
+            HSR2 YYYZ 1;
+            HSR3 A 1;
+            TNT1 A 0 A_StartSound("QSGCLSE",CHAN_WEAPON,CHANF_OVERLAP);
+            goto Ready3;
+
+//////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////
+        MuzzleFlash:
+			QSFM AB 1 Bright A_GunFlash();
+			Stop;
+
+        FlashPunching:
+            // 14 frames
+            HSGR BDEGHHHHHHGEDB 1;      
+            goto Ready3;
+
+        FlashKicking:
+            // 15 frames
+            HSR3 BCDEFFFFFFFEDCB 1;     
+            goto Ready3;
+
+        FlashAirKicking:
+            // 16 frames
+            HSR3 BCDEFFFFFFFFEDCB 1;    
+            goto Ready3;
+
+        FlashSlideKicking:
+            // 27 frames
+            HSR3 BCDEF 1;
+            HSR3 F 17;
+            HSR3 FEDCB 1; 
+            goto Ready3;
+
+        FlashSlideKickingStop:
+            // 7 frames
+            HSR3 FFFEDCB 1;             
+            goto Ready3;
+    }
+}

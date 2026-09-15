@@ -16,21 +16,10 @@ Class BattleRifleWheel : wheelinfocontainer
 		let br = PBX_BDPBattleRifle(mWeap); if(!br) return;
 		
 		// Toggle Fire
-		PB_SpecialWheel_Mode BR_ToggleFire = new ("PB_SpecialWheel_Mode");
 		if(br.isSemiAuto)
-		{
-			BR_ToggleFire.img 	= "graphics/WeaponWheel/BattleRifle/BR_Burst.png";
-			BR_ToggleFire.Alias = "$PB_WHEEL_BURST";
-		}
+			PBX_AddWheel(spw, img:"BattleRifle/BR_Burst",	alias:"$PB_WHEEL_BURST",	token:"BR_Select_FireMode");
 		else
-		{
-			BR_ToggleFire.img 	= "graphics/WeaponWheel/BattleRifle/BR_Semi.png";
-			BR_ToggleFire.Alias = "$PB_WHEEL_SEMI";
-		}
-		BR_ToggleFire.tokentogive = "BR_Select_FireMode";
-		BR_ToggleFire.scalex = mIconScale.x;
-		BR_ToggleFire.scaley = mIconScale.y;
-		spw.push(BR_ToggleFire);
+			PBX_AddWheel(spw, img:"BattleRifle/BR_Semi",	alias:"$PB_WHEEL_SEMI",		token:"BR_Select_FireMode");
 
 		// Laser
 		PBX_LaserWheel(spw,"BattleRifle",mIconScale);

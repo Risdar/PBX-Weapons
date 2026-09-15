@@ -14,7 +14,9 @@ enum PBXWeapons_eWeaponSpecialSpawns
 	DisablePBX_MastermindCG			        = 1 << 1,
 ////// Power / Secret Weapons /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	DisablePBX_EternalChaingun			    = 1 << 0,  // Spawns on Megaspheres
-	DisablePBX_NukeLauncher					= 1 << 1   // Spawns on Secrets
+	// Spawns on Secrets
+	DisablePBX_NukeLauncher					= 1 << 1, 
+	DisablePBX_HexaShotgun					= 1 << 2  
 }
 
 enum PBXWeapons_eShotgunSpawns
@@ -166,12 +168,6 @@ class PBXRocketLauncher_Injector : PBInjector
 		{
 			handler.InjectSpawn('PB_RLSpawnerT4', 'PBX_Paingiver', 255, 1);
 		}
-		// // Cyberdemon RL
-		// if(!(pbx_rocketlauncher_filter & DisablePBX_CyberdemonRL))
-		// {
-		// 	handler.InjectSpawn('PB_RLSpawnerT3', 'CyberdemonsMissileLauncher', 255, 1);
-		// handler.InjectSpawn('PB_RLSpawnerT4', 'CyberdemonsMissileLauncher', 255, 1);
-		// }
 	}
 }
 //////////////////////////// PLASMARIFLE ////////////////////////////////////////////////////////////////////////////////////
@@ -210,6 +206,13 @@ class PBXBFG_Injector : PBInjector
 		if(!(pbxweapons_bfg_filter & DisablePBX_DemonExt))
 		{
 		   handler.InjectSpawn("PB_BFGSpawnerT1","PBX_DemonExt",255,1);
+		}
+
+		// Secret Weapons
+		if(pbxweapons_secretweapon_bfgspawn)
+		{
+			handler.InjectSpawn("PB_BFGSpawnerT1","PBX_NukeLauncher",255,1);
+			handler.InjectSpawn("PB_BFGSpawnerT1","PBX_HexaSGSpawner",255,1);
 		}
     }
 }
@@ -289,13 +292,14 @@ class PBXWeapons_WeaponSpawner : EventHandler
 		PBX_SpawnSecretWeapons();
 	}
 
+	private
 	void PBX_SpawnSecretWeapons()
 	{
 		// Only do it once
 		if(mSecretWeaponSpawned || !pbxweapons_enablesecretweapon) return;
 
 		int mSpawnChance = random(1,100);
-		if(mSpawnChance > pbxweapons_secretweapon_spawnchance) //10% chance of spawning by default
+		if(mSpawnChance > pbxweapons_secretweapon_spawnchance) //5% chance of spawning by default
 		{
 			PBXCore_Debug.PrintInt("PBX_SpecialWeaponSpawner not Spawned!, got %d",mSpawnChance);
 			return;
@@ -317,7 +321,7 @@ class PBXWeapons_WeaponSpawner : EventHandler
 		}
 	}
 
-	override void WorldThingSpawned (WorldEvent e)
+	override void WorldThingDied (WorldEvent e)
     {
         if (!e || !e.thing) return;
         let mActor = e.Thing;
@@ -360,24 +364,19 @@ class PBXWeapons_WeaponSpawner : EventHandler
 	
 }
 
-class PBX_SpecialWeaponSpawner : PBRandomSpawner
+class PBX_SpecialWeaponSpawner : PB_WeaponSpawner
 {
 	Default
 	{
 		DropItem 'PBX_NukeSpawner', 255, 1;
+		DropItem 'PBX_HexaSGSpawner', 255, 1;
 	}
-}
 
-class PBX_NukeSpawner : PB_WeaponSpawner 
-{
-	Default
-	{
-		DropItem 'PBX_NukeLauncher', 255, 1;
-	}
-	
 	override bool HandleSpawnExceptions(name toSpawn)
 	{
 		if(toSpawn == "PBX_NukeLauncher" && (PBXWeapons_specialdrop_filter & DisablePBX_NukeLauncher))
+			return false;
+		if(toSpawn == "PBX_HexaSGSpawner" && (PBXWeapons_specialdrop_filter & DisablePBX_HexaShotgun))
 			return false;
 		return true;
 	}

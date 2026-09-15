@@ -563,6 +563,19 @@ class Tesla_LightningCharge : PB_Ammo
 }
 
 //////////////////////////// SLOT 9 ////////////////////////////////////////////////////////////////////////////////////
+// Hexa Shotgun
+Class HexaShotgunAmmo : PB_Ammo
+{
+	Default
+	{
+		inventory.amount 0;
+		inventory.maxamount PBX_HexaShotgun.BARREL_CAPACITY;
+		ammo.backpackamount 0;
+		ammo.backpackmaxamount PBX_HexaShotgun.BARREL_CAPACITY;
+	    Inventory.Icon "HSGPA0";
+        +INVENTORY.IGNORESKILL;
+	}
+}
 
 //////////////////////////// OTHERS ////////////////////////////////////////////////////////////////////////////////////
 // Soul Charge

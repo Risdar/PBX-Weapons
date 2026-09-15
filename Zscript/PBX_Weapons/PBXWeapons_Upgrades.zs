@@ -75,20 +75,14 @@ class CSSGUpgradeBase : PBXCore_UpgradeBase abstract
         +Inventory.AlwaysPickUp;
 	}
 
-    override bool TryPickup(in out Actor toucher)
-    {
-        bool pickup = Super.TryPickup(toucher);
-        if (pickup && pbxweapons_sendTip)
-		{
-			Array<String> tips;
-			tips.Push("$PBX_CSSGUpgrade_Tip1");
-			tips.Push("$PBX_CSSGUpgrade_Tip2");
-			PBXCore_TipsManager.SendTipArrayIfNeeded(tips, "PBXWeapons_UpgradeHelpFlags", PBX_TIP_CSSG_UPGRADE);
-		}
-		toucher.A_giveinventory("PB_Shell",12);
-		PBXCore_Debug.Print("Tried giving shells");
-        return pickup;
-    }
+	override bool TryPickup(in out Actor toucher) 
+	{
+		if(toucher.FindInventory("PBX_CSSG") && toucher.FindInventory(upgradetoken) && toucher.CountInv("PB_Shell") == toucher.GetAmmoCapacity("PB_Shell"))
+			return false;
+		
+		return super.TryPickup(toucher);
+	}
+	
 
     override void PBX_SetUpgradeSprite()
     {
@@ -110,6 +104,24 @@ class CSSGUpgradeBase : PBXCore_UpgradeBase abstract
 
     States
 	{
+		Pickup:
+			TNT1 A 0 {
+				A_GiveInventory("PB_Shell",12);
+				
+				if (pbxweapons_sendTip)
+				{
+					Array<String> tips;
+					tips.Push("$PBX_CSSGUpgrade_Tip1");
+					tips.Push("$PBX_CSSGUpgrade_Tip2");
+					PBXCore_TipsManager.SendTipArrayIfNeeded(tips, "PBXWeapons_UpgradeHelpFlags", PBX_TIP_CSSG_UPGRADE);
+				}
+				
+				if(!FindInventory(invoker.upgradetoken))
+					A_SetInventory(invoker.upgradetoken,1);
+				
+			}
+			Stop;
+
 		LoadSprites:
 			XHEL A 0; PHEL A 0; DHEL A 0; 
 			THEL A 0; FHEL A 0; HHEL A 0;

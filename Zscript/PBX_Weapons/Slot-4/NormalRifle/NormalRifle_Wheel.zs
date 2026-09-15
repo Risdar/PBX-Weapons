@@ -16,36 +16,16 @@ Class NormalRifleWheel : wheelinfocontainer
 		let nr = PBX_NormalRifle(mWeap); if(!nr) return;
 		
 		// Toggle Fire
-		PB_SpecialWheel_Mode NR_ToggleFire = new ("PB_SpecialWheel_Mode");
 		if(!nr.doBurst)
-		{
-			NR_ToggleFire.img 	= "graphics/WeaponWheel/NormalRifle/Burst.png";
-			NR_ToggleFire.Alias = "$PB_WHEEL_BURST";
-		}
+			PBX_AddWheel(spw, img:"NormalRifle/Burst",	alias:"$PB_WHEEL_BURST",	token:"NR_Select_FireMode");
 		else
-		{
-			NR_ToggleFire.img 	= "graphics/WeaponWheel/NormalRifle/fullauto.png";
-			NR_ToggleFire.Alias = "$PB_WHEEL_FULL";
-		}
-		NR_ToggleFire.tokentogive = "NR_Select_FireMode";
-		NR_ToggleFire.scalex = mIconScale.x;
-		NR_ToggleFire.scaley = mIconScale.y;
-		spw.push(NR_ToggleFire);
+			PBX_AddWheel(spw, img:"NormalRifle/fullauto",	alias:"PB_WHEEL_FULL",	token:"NR_Select_FireMode");
 
 		// Dual Wield
-		PB_SpecialWheel_Mode NR_DualWield = new ("PB_SpecialWheel_Mode");
-		if(nr.akimboMode) {
-			NR_DualWield.Alias = "$PBX_NormalRifle_Single";
-			NR_DualWield.img = "graphics/WeaponWheel/NormalRifle/LaserOff.png";
-		}
-		else {
-			NR_DualWield.Alias = "$PBX_NormalRifle_Akimbo";
-			NR_DualWield.img = "graphics/WeaponWheel/NormalRifle/dualwield.png";
-		}
-		NR_DualWield.tokentogive = "NR_Select_DualWield";
-		NR_DualWield.scalex = mIconScale.x;
-		NR_DualWield.scaley = mIconScale.y;
-		spw.push(NR_DualWield);
+		if(nr.akimboMode)
+			PBX_AddWheel(spw, img:"NormalRifle/LaserOff",	alias:"$PBX_NormalRifle_Single",	token:"NR_Select_DualWield");
+		else
+			PBX_AddWheel(spw, img:"NormalRifle/dualwield",	alias:"$PBX_NormalRifle_Akimbo",	token:"NR_Select_DualWield");
 
 		// Laser
 		PBX_LaserWheel(spw,"NormalRifle",mIconScale);

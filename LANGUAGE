@@ -315,6 +315,10 @@ PBX_DemonExt_Tip2 = "You can use the souls when in \cjSoul Lightning \c-Mode.";
 PBX_NukeLauncher_Pickup             = "You Have Found The Nuke Launcher! (Slot 9)";
 PBX_NukeLauncher_Tag                = "UAC Nuclear Warhead Launcher";
 
+// Hexa Shotgun
+PBX_HexaShotgun_Pickup              = "You Have Found The Hexa Shotgun! (Slot 9)";
+PBX_HexaShotgun_Tag                 = "Hexa Shotgun";
+
 //////////////////////////// OTHERS ///////////////////////////////////////////////////////////////////////////////
 // PBX Command Pack
 PBX_CommandPack_Pickup              = "You found the UAC Command Pack! You got the standard issue UAC Rifle and Pump Shotgun!";
