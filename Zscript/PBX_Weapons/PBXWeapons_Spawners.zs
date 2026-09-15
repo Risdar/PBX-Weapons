@@ -212,7 +212,7 @@ class PBXBFG_Injector : PBInjector
 		if(pbxweapons_secretweapon_bfgspawn)
 		{
 			handler.InjectSpawn("PB_BFGSpawnerT1","PBX_NukeLauncher",255,1);
-			handler.InjectSpawn("PB_BFGSpawnerT1","PBX_HexaSGSpawner",255,1);
+			handler.InjectSpawn("PB_BFGSpawnerT1","PBX_HexaShotgun",255,1);
 		}
     }
 }
@@ -369,14 +369,14 @@ class PBX_SpecialWeaponSpawner : PB_WeaponSpawner
 	Default
 	{
 		DropItem 'PBX_NukeSpawner', 255, 1;
-		DropItem 'PBX_HexaSGSpawner', 255, 1;
+		DropItem 'PBX_HexaShotgun', 255, 1;
 	}
 
 	override bool HandleSpawnExceptions(name toSpawn)
 	{
 		if(toSpawn == "PBX_NukeLauncher" && (PBXWeapons_specialdrop_filter & DisablePBX_NukeLauncher))
 			return false;
-		if(toSpawn == "PBX_HexaSGSpawner" && (PBXWeapons_specialdrop_filter & DisablePBX_HexaShotgun))
+		if(toSpawn == "PBX_HexaShotgun" && (PBXWeapons_specialdrop_filter & DisablePBX_HexaShotgun))
 			return false;
 		return true;
 	}
