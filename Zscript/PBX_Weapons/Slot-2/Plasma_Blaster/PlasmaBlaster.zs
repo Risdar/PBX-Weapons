@@ -168,11 +168,21 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
             Stop;
 
         WeaponRespect:
+            TNT1 A 0 A_StartSound("weapons/blasterpistol/ready",CHAN_WEAPON,CHANF_OVERLAP);
             AMGR ABCD 1 A_DoPBWeaponAction();
             AMGZ ABC 1 A_DoPBWeaponAction();
             AMGR QRSTUV 1 A_DoPBWeaponAction();
             TNT1 A 0 A_PlaySound("CELLIN2", 6);
             AMGR WXY 1 A_DoPBWeaponAction();
+            Goto Ready3;
+
+		WeaponInspect:
+            TNT1 A 0 A_StartSound("weapons/blasterpistol/ready",CHAN_WEAPON,CHANF_OVERLAP);
+            AMGR ABCDE 1 A_DoPBWeaponAction();
+            AMGR F 30 A_DoPBWeaponAction();
+            TNT1 A 0 A_StartSound("BEPBEP",CHAN_WEAPON,CHANF_OVERLAP);
+            AMGR EDCBA 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
             Goto Ready3;
 
         Deselect:
@@ -199,6 +209,7 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
         SelectAnimation:
             AMGR FEDCBA 1;
         Ready3:
+			TNT1 A 0 PBX_CheckInspect();
 			AMGL A 1 {
                 PB_HandleCrosshair(39);
                 return A_DoPBWeaponAction();
@@ -296,6 +307,12 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
                 PB_SetChamberEmpty(false);
             }
             AMGR WXY 1;
+        FinishReload:
+            AMGR FEDCBA 1;
+            TNT1 A 0 {
+                PB_SetReloading(false);
+                A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
+            }
             Goto Ready3;
 
         Unload:

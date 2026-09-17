@@ -169,6 +169,10 @@ class HomingShots_Aux : Inventory
 		else 
 		{
 			//   DEBUG("%s: terminal: yes, tracer: %s", TAG(owner), TAG(owner.tracer));
+			if(PBXCore_DebugCVAR)
+			{
+				console.printf("%s: terminal: yes, tracer: %s", owner.getTag(), owner.tracer.getTag());
+			}
 			// If we get here we are in "terminal homing mode", which means that:
 			// - we have a target
 			// - the target is within our terminal homing radius, which depends on

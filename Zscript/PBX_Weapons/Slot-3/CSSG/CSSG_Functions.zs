@@ -214,7 +214,7 @@ extend class PBX_CSSG
 			case Shell_SubZ:
 				A_SpawnItemEx("BlueFlareSpawn", 0, 0, -3);
 				A_SpawnItemEx("BlueFlareSpawn", 0, 0, 3);
-				PB_FireBullets("SubZeroProjectile",6,6,0,0,6);
+				PB_FireBullets("SubZeroProjectile",6,3,0,0,3);
          		A_FireBullets(8, 6, 10, 18, "SubZ_Puff",FBF_NORANDOM,8192,"CSSG_FrozenTracer",-12);
 				break;
 			case Shell_HellF:
@@ -268,7 +268,7 @@ extend class PBX_CSSG
 			case Shell_SubZ:
 				A_SpawnItemEx("BlueFlareSpawn", 0, 0, -3);
 				A_SpawnItemEx("BlueFlareSpawn", 0, 0, 3);
-				PB_FireBullets("SubZeroProjectile",3,6,0,0,6);
+				PB_FireBullets("SubZeroProjectile",3,3,0,0,3);
          		A_FireBullets(8, 6, 5, 18, "SubZ_Puff",FBF_NORANDOM,8192,"CSSG_FrozenTracer",-12);
 				break;
 			case Shell_HellF:
@@ -320,7 +320,7 @@ extend class PBX_CSSG
 			case Shell_SubZ:
 				A_SpawnItemEx("BlueFlareSpawn", 0, 0, -3);
 				A_SpawnItemEx("BlueFlareSpawn", 0, 0, 3);
-				PB_FireBullets("SubZeroProjectile",3,6,0,0,6);
+				PB_FireBullets("SubZeroProjectile",3,3,0,0,3);
          		A_FireBullets (8, 6, 5, 18, "SubZ_Puff",FBF_NORANDOM,8192,"CSSG_FrozenTracer",-12);
 				break;
 			case Shell_HellF:

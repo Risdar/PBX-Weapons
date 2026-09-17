@@ -116,7 +116,7 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
                     A_AlertMonsters();
                     PB_TakeAmmo(invoker.ammo1.getClassName(),TAKECHARGE,0);
                     // modifyBlasterCharge(TAKE,5);
-                    A_PlaySoundEx("weapons/blasterpistol/fire","Weapon");
+                    A_StartSound("weapons/blasterpistol/fire",CHAN_WEAPON,CHANF_OVERLAP);
                     PB_WeaponRecoil(-0.18,-0.08);
                     A_FireCustomMissile("BlueFlareSpawn", 0, 0, 0, 0, 0, 0);
 		            PB_FireBullets("ProsurvBlasterProjectile", 1, 0, 0, 0, frandom(-0.1, 0.1));
@@ -166,16 +166,33 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
                 A_SetCrosshair(-1);
             }
             TNT1 A 10 A_DoPBWeaponAction();
-            TNT1 A 0 A_PlaySoundEx("weapons/blasterpistol/ready", "Auto");
+            TNT1 A 0 A_StartSound("weapons/blasterpistol/ready",CHAN_WEAPON,CHANF_OVERLAP);
             BRGT EDCBAAAAA 1 A_DoPBWeaponAction();
             BRGC CDEF 1 {
                 PB_SetRoll(roll+.2);
                 return A_DoPBWeaponAction();
             }
-            TNT1 A 0 A_PlaySoundEx("weapons/blasterpistol/recharge","Weapon");
+            TNT1 A 0 A_StartSound("weapons/blasterpistol/recharge",CHAN_WEAPON,CHANF_OVERLAP);
             BRGC GHIJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJK 1 A_DoPBWeaponAction();
-            TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
             BRGC LM 1 A_DoPBWeaponAction();
+            BRGC NOPQ 1 {
+                PB_SetRoll(roll-.2);
+                return A_DoPBWeaponAction();
+            }
+            Goto Ready3;
+
+		WeaponInspect:
+            TNT1 A 0 A_StartSound("weapons/blasterpistol/ready",CHAN_WEAPON,CHANF_OVERLAP);
+            BRGC CDEF 1 {
+                PB_SetRoll(roll+.2);
+                return A_DoPBWeaponAction();
+            }
+            BRGC GLL 1 A_DoPBWeaponAction();
+            BRGC L 30 A_DoPBWeaponAction(); 
+            TNT1 A 0 A_StartSound("BEPBEP",CHAN_WEAPON,CHANF_OVERLAP);
+            BRGC LM 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
             BRGC NOPQ 1 {
                 PB_SetRoll(roll-.2);
                 return A_DoPBWeaponAction();
@@ -208,6 +225,7 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
         SelectAnimation:
             BRGT EDCB 1;
         Ready3:
+			TNT1 A 0 PBX_CheckInspect();
             BRGT A 1 {
 			    PB_HandleCrosshair(65);
                 PB_CoolDownBarrel();
@@ -315,20 +333,28 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
 			}
             TNT1 A 0 PB_CheckReload(null, null, null, "Ready3", "Ready3", CELL_SIZE);
         Recharge:
-            TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
             BRGC CDEF 1 PB_SetRoll(roll+.2);
-            TNT1 A 0 A_PlaySoundEx("weapons/blasterpistol/recharge","Weapon");
+            TNT1 A 0 A_StartSound("weapons/blasterpistol/recharge",CHAN_WEAPON,CHANF_OVERLAP);
             BRGC GH 1;
             BRGC I 1;
-            BRGC JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ 1 {
+            // BRGC JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ 1 {
+            //     modifyBlasterCharge(GIVE, CHARGERELOAD);
+            //     PB_SetMagEmpty(false);
+            //     PB_SetMagUnloaded(false);
+            //     PB_SetChamberEmpty(false);
+            // }
+        AddCharge:
+            BRGC J 1 {
                 modifyBlasterCharge(GIVE, CHARGERELOAD);
                 PB_SetMagEmpty(false);
                 PB_SetMagUnloaded(false);
                 PB_SetChamberEmpty(false);
             }
+            TNT1 A 0 A_JumpIf(invoker.ammo1.amount < CELL_SIZE,"AddCharge");
             BRGC JJJ 1;
             BRGC K 1;
-            TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
             BRGC LM 1;
             BRGC NOPQ 1 PB_SetRoll(roll-.2);
             TNT1 A 0 PB_SetReloading(false);

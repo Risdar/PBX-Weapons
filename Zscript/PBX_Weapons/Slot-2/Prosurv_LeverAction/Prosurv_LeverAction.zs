@@ -90,7 +90,7 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 				PB_SetRoll(roll-0.3);
                 return A_DoPBWeaponAction();
 			}
-			TNT1 A 0 A_PlaysoundEx("weapons/leveraction/inspect", "Auto");
+			TNT1 A 0 A_StartSound("weapons/leveraction/inspect",CHAN_WEAPON,CHANF_OVERLAP);
 			LVRA ZYXWV 1 {
 				PB_SetRoll(roll+0.3);
                 return A_DoPBWeaponAction();
@@ -156,6 +156,59 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 			}
 			TNT1 A 0 A_Takeinventory("PB_LockScreenTilt",1);
 			Goto Ready3;
+
+		WeaponInspect:
+			TNT1 A 0 A_StartSound("weapons/leveraction/inspect",CHAN_WEAPON,CHANF_OVERLAP);
+			TNT1 A 0 A_Jump(128,"Inspect2");
+			TNT1 A 0 A_StartSound("weapons/leveraction/flip");
+			LVR4 F 1 {
+				PB_SetRoll(roll+0.3);
+                return A_DoPBWeaponAction();
+			}
+			LVRA FGIKM 1 {
+				PB_SetRoll(roll+0.3);
+                return A_DoPBWeaponAction();
+			}
+			TNT1 A 0 A_StartSound("weapons/leveraction/rechamber");
+			LVRA NNNNNOPQR 1 {
+				PB_SetRoll(roll-0.3);
+                return A_DoPBWeaponAction();
+			}
+			LVRA SUT 1 {
+				PB_SetRoll(roll-0.3);
+                return A_DoPBWeaponAction();
+			}
+			LVR4 G 1 {
+				PB_SetRoll(roll-0.3);
+                return A_DoPBWeaponAction();
+			}
+			LVRA AA 1 {
+				PB_SetRoll(roll-0.3);
+                return A_DoPBWeaponAction();
+			}
+			Goto Ready3;
+
+		Inspect2:
+			LVR2 MNOP 1 {
+				PB_SetRoll(roll+1.0);
+				return A_DoPBWeaponAction();
+			}
+			LVR2 QQ 1 {
+				PB_SetRoll(roll-2.0);
+				return A_DoPBWeaponAction();
+			}
+			LVR2 QQQQQQ 1 {
+				PB_SetRoll(roll-0.6);
+				return A_DoPBWeaponAction();
+			}
+			LVR2 QQQQ 1 A_DoPBWeaponAction();
+			LVR2 QQQQQQ 1 {
+				PB_SetRoll(roll+0.6);
+				return A_DoPBWeaponAction();
+			}
+			LVR2 PONM 1 A_DoPBWeaponAction();
+			Goto Ready3;
+
 		Select:
 			TNT1 A 0 PBX_WeaponRaise("weapons/leveraction/inspect");
 			TNT1 A 0 PB_RespectIfNeeded();
@@ -174,7 +227,8 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 			}
 			TNT1 A 0 A_jumpif(PB_GetZoom(),"Ready2");
         ReadytoFire:
-			LVRA A 1{
+			TNT1 A 0 PBX_CheckInspect();
+			LVRA A 1 {
 				PB_CoolDownBarrel();
 				PB_HandleCrosshair(76);
                 return PB_ReadyFire();
@@ -213,16 +267,16 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 			LVRA A 1; 
 		Pump:
 			TNT1 A 0 {
-				A_PlaysoundEx("weapons/leveraction/flip", "Auto");
+				A_StartSound("weapons/leveraction/flip",CHAN_WEAPON,CHANF_OVERLAP);
 				A_ZoomFactor(1.0);
 				PB_SetZoom(false);
-				A_PlaySoundEx("Ironsights", "Auto");
+				A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
 			}
 			LVR4 F 1 PB_SetRoll(roll+0.3);
 		PumpBegin:
 			LVRA FGHIJKLM 1 PB_SetRoll(roll+0.3);
 			TNT1 A 0 {
-				A_PlaysoundEx("weapons/leveraction/rechamber", "Auto");
+				A_StartSound("weapons/leveraction/rechamber",CHAN_WEAPON,CHANF_OVERLAP);
 				if(!PB_GetMagEmpty()) PB_SetChamberEmpty(false);
 			}
 			LVRA NNNNNOPQR 1 ;

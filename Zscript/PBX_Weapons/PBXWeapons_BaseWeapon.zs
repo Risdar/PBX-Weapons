@@ -396,6 +396,17 @@ class PBX_WeaponBase : PB_WeaponBase abstract
 	}
 
 //////////////////////////// OTHERS ////////////////////////////////////////////////////////////////////////////////////
+    action state PBX_CheckInspect()
+    {
+		int ammoToCheck = invoker.ammotype2 ? invoker.ammo2.amount : invoker.ammo1.amount;
+        int maxAmmoToCheck = invoker.ammotype2 ? invoker.ammo2.maxamount : invoker.ammo1.maxamount;
+        bool pressingReload = (player.cmd.buttons & BT_RELOAD) || (player.oldbuttons & BT_RELOAD);
+
+        if (pressingReload && ammoToCheck == maxAmmoToCheck) 
+            return resolvestate("WeaponInspect");
+        return resolvestate(null);
+    }
+
     action bool PlayerPressedOnce(int button)
 	{
 		int bt = player.cmd.buttons;
