@@ -1,6 +1,5 @@
 // Includes
 #include "./PlasmaBlaster_Functions.zs"
-#include "./PlasmaBlaster_Projectiles.zs"
 #include "./PlasmaBlaster_Wheel.zs"
 
 class Plasma_Select_Auto : inventory {default{inventory.maxamount 1;}}

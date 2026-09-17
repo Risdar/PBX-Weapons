@@ -333,7 +333,7 @@ class PBX_TeslaGun : PBX_WeaponBase
             TNT1 A 0 A_ZoomFactor(1.0);
             ETRR AABBCCDDEFGHHHIJ 1;
             TNT1 A 0 {
-                A_StartSound("weapons/plasma/cellout",18,CHANF_OVERLAP);
+                A_StartSound("weapons/plasma/cellout",CHAN_WEAPON,CHANF_OVERLAP);
                 if(PB_GetMagEmpty())
 					PB_SpawnCasing("EmptyCell",29,random(10,12),20,0,random(-4,-2),2);
                 PB_SetMagUnloaded(true);
@@ -343,7 +343,7 @@ class PBX_TeslaGun : PBX_WeaponBase
 			ETRR K 10;
 			ETRR LMNOP 2;
             TNT1 A 0 {
-                A_StartSound("weapons/plasma/cellin",17,CHANF_OVERLAP);
+                A_StartSound("weapons/plasma/cellin",CHAN_WEAPON,CHANF_OVERLAP);
                 PB_AmmoIntoMag(
                     invoker.ammo2.getClassName(),
                     invoker.ammo1.getClassName(),
@@ -364,15 +364,17 @@ class PBX_TeslaGun : PBX_WeaponBase
 //////////////////////////// UNLOAD ////////////////////////////////////////////////////////////////////////////////////
         Unload:
 			TNT1 A 0 A_Jumpif(pb_getmagunloaded(),"Ready3");
-            TNT1 A 0 A_PlaySound("IronSights", CHAN_WEAPON);
+            TNT1 A 0 A_StartSound("IronSights", CHAN_WEAPON,CHANF_OVERLAP);
             TNT1 A 0 A_ZoomFactor(1.0);
             ETRR AABBCCDDEFGHHHIJ 1;
             TNT1 A 0 {
+                A_StartSound("weapons/plasma/cellout",CHAN_WEAPON,CHANF_OVERLAP);
 				PB_UnloadMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname());
                 PB_SetMagEmpty(true);
 				PB_SetMagUnloaded(true);
 				PB_SetChamberEmpty(true);
 			}
+			ETRR K 12;
             ET1R CBA 2;
             goto Ready3;
 

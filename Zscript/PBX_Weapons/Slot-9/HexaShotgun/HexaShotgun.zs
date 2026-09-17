@@ -53,6 +53,7 @@ class PBX_HexaShotgun : PBX_WeaponBase
             Stop;
 
         WeaponRespect:
+            // Raise
             HSGF T 1 {
                 A_WeaponOffset(-2,33);
                 return A_DoPBWeaponAction();
@@ -69,6 +70,8 @@ class PBX_HexaShotgun : PBX_WeaponBase
                 A_WeaponOffset(0,32);
                 return A_DoPBWeaponAction();
             }
+        WeaponInspect:
+            // Open Chamber
             HSGR ABCDEFG 1 A_DoPBWeaponAction();
             HSGR H 4 A_DoPBWeaponAction();
             HSGR IJKMOR 1 A_DoPBWeaponAction();
@@ -91,10 +94,16 @@ class PBX_HexaShotgun : PBX_WeaponBase
             }
             HSR3 G 14 A_DoPBWeaponAction();
             HSR3 HIJ 1 A_DoPBWeaponAction();
-            HSR2 QRSTUVWX 1 A_DoPBWeaponAction();
+            HSR2 OPQRSTUVWX 1 A_DoPBWeaponAction();
             HSR2 YYYZ 1 A_DoPBWeaponAction();
             HSR3 A 1 A_DoPBWeaponAction();
             TNT1 A 0 A_StartSound("QSGCLSE",CHAN_WEAPON,CHANF_OVERLAP);
+            // Blink
+            TNT1 A 0 A_StartSound("QSGCHRG",CHAN_WEAPON,CHANF_OVERLAP);
+            HSGF U 10 A_DoPBWeaponAction();
+            HSGF VW 1 A_DoPBWeaponAction();
+            HSF2 A 15 A_DoPBWeaponAction(); 
+            HSGF WVU 1 A_DoPBWeaponAction();
             Goto Ready3;
 
         Deselect:
@@ -118,6 +127,7 @@ class PBX_HexaShotgun : PBX_WeaponBase
             HSGS FEDCBA 1;
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
         Ready3:
+            TNT1 A 0 PBX_CheckInspect();
 		    TNT1 A 0 A_JumpIfTargetInLOS("BlinkBegin", 0, 0, JLOSF_COMBATANTONLY, 12000); //checks if an enemy/player is in sight
 			HSGF T 1 {
                 PB_CoolDownBarrel();
@@ -127,9 +137,7 @@ class PBX_HexaShotgun : PBX_WeaponBase
 
         BlinkBegin:
             // TNT1 A 0 A_StartSound("QSGCHRG",CHAN_WEAPON,CHANF_OVERLAP);
-            HSGF U 1 A_DoPBWeaponAction();
-            HSGF V 1 A_DoPBWeaponAction();
-            HSGF W 1 A_DoPBWeaponAction();
+            HSGF UVW 1 A_DoPBWeaponAction();
         Blink:
             HSF2 A 1 A_DoPBWeaponAction(); //Blinking frame
             TNT1 A 0 A_JumpIfTargetInLOS("Blink", 0, 0, JLOSF_COMBATANTONLY, 12000); //Still in sight? Then repeat!
