@@ -1,4 +1,5 @@
-// The SPAS 12 from BD Plus made by yaelvolador
+// The SPAS 12 
+// From BD Plus made by yaelvolador
 // sprite is made by Wocht11k
 // Originally from BD Plus then ported to PB2022 by RENEGADE_ANDROiD
 // the PB2022 version is the base for the PBX version

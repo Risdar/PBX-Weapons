@@ -1,4 +1,5 @@
-// Eternal Chaingun from a BD Addon by D_Boi
+// Eternal Chaingun 
+// From a BD Addon by D_Boi
 // TypicalSF (Base Sprite)
 // Sergeant_Mark_IV (BD code used as a Base)
 

@@ -1,4 +1,5 @@
-// Crossbow Ballista from Project Survival made by ThePopeOfDope
+// Crossbow Ballista 
+// From Project Survival made by ThePopeOfDope
 // Shock Bolt sprites is made by Waik (_wkn)
 
 // Includes

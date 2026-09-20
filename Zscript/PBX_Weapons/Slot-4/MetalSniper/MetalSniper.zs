@@ -1,4 +1,8 @@
-// Metalsniper made by Metalman (Sprites), Jaih1r0 (Code/Animations), Ravik (Sounds)
+// Metalsniper 
+// Original by Metalman (Sprites)
+// Jaih1r0 (Code/Animations)
+// PC1073 and Ravik (Sounds)
+// Updated by AresFallen/ItAres
 
 // Includes
 #include "./MetalSniper_Functions.zs"

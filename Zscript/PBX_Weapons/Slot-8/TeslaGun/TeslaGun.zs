@@ -1,4 +1,5 @@
-// Tesla Gun from Schism by Lord_Lothar and the Schism Team
+// Tesla Gun 
+// From Schism by Lord_Lothar and the Schism Team
 // Base Sprites is by IAmCarrotMaster
 // Hands is from Brutal Doom by Sergeant_Mark_IV (need to know who actually made the hand sprites)
 // Animations by ikdfa
@@ -27,7 +28,7 @@ class PBX_TeslaGun : PBX_WeaponBase
 //////////////////////////// MESSAGES & SOUNDS ////////////////////////////////////////////////////////////////////////////////////
         Inventory.Pickupmessage  "$PBX_TeslaGun_Pickup";
         Inventory.PickupSound "PLSDRAW";
-        Obituary "%o was decapitated by %k's Assasin.";
+        Obituary "$OB_WEAP_TESLAGUN";
         AttackSound "None";
         Tag "$PBX_TeslaGun_Tag";
         Scale 1.0;
@@ -86,12 +87,14 @@ class PBX_TeslaGun : PBX_WeaponBase
         A_StartSound("PLSULT", CHAN_WEAPON);
         A_FireCustomMissile("Tesla_LightningBall",0,0,0,0);
         A_FlashOverlay();
-        Tesla_GiveLightningCharge(LIGHTNING_SPECIAL_MINIMUM);
-    }
-
-    action void Tesla_GiveLightningCharge(int mAmount = 1)
-    {
-        A_GiveInventory(LIGHTNING_SPECIAL_NAME,mAmount);
+        A_GiveInventory(LIGHTNING_SPECIAL_NAME,LIGHTNING_SPECIAL_MINIMUM);
+        // Effects
+        A_SetBlend("Blue", 0.6, 12);
+        EventHandler.SendInterfaceEvent(PlayerNumber(), "PB_HUDInterference", 20);
+        A_FireProjectile("GunFireSmokeBig", 0, 0, 0, 0, 0, 0);
+        A_FireProjectile("GunFireSmokeBig", 0, 0, 0, 0, 0, 0);
+        A_FireProjectile("GunFireSmokeBig", 0, 0, 0, 0, 0, 0);
+        A_FireProjectile("GunFireSmokeBig", 0, 0, 0, 0, 0, 0);
     }
 
     action state Tesla_LightningSpecial()
@@ -148,6 +151,13 @@ class PBX_TeslaGun : PBX_WeaponBase
             PBXCore_LightningController.L_DrawLightning(beamstart, beamEnd, spawnSpark: (t.linetarget != null), playersource: player);
         }
         A_TakeInventory(LIGHTNING_SPECIAL_NAME,LIGHTNING_SPECIAL_MINIMUM);
+        // Effects
+        A_SetBlend("Blue", 0.6, 12);
+        EventHandler.SendInterfaceEvent(PlayerNumber(), "PB_HUDInterference", 20);
+        A_FireProjectile("GunFireSmokeBig", 0, 0, 0, 0, 0, 0);
+        A_FireProjectile("GunFireSmokeBig", 0, 0, 0, 0, 0, 0);
+        A_FireProjectile("GunFireSmokeBig", 0, 0, 0, 0, 0, 0);
+        A_FireProjectile("GunFireSmokeBig", 0, 0, 0, 0, 0, 0);
     }
 
     action void Tesla_ArcFire()
@@ -162,7 +172,7 @@ class PBX_TeslaGun : PBX_WeaponBase
         A_WeaponOffset(frandom[sfx](-0.5, 0.5), WEAPONTOP + frandom(0, 0.75), WOF_INTERPOLATE);
         A_FlashOverlay();
         Tesla_ChargeLightningBall();
-        Tesla_GiveLightningCharge();
+        A_GiveInventory(LIGHTNING_SPECIAL_NAME,1);
     }
  
     action state Tesla_CheckDecharge()

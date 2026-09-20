@@ -1,5 +1,5 @@
 // Hexa Shotgun 
-// From Brutal Doom Addon made by Dox 778
+// From a Brutal Doom Addon by Dox778
 // Complex Doom LCA - Firing sound effect, reload/idle frames
 // ȽʘɌƉ ȽʘŦḢɅɌ - New Hexa Shotgun idle frame
 // Iamcarrotmaster - Polishing the idle sprite

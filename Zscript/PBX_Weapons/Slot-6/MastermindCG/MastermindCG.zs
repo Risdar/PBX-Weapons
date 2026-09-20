@@ -1,7 +1,8 @@
+// Mastermind Chaingun
+// From a Brutal Doom Addon by Dox778
 // Sprite Base - Dr_Cosmobyte, Captain J and Mike12.
 // Lighting - Sechtera
 // Pickup - Turbo
-// Dox778 -  Original Brutal Doom Addon Creator
 // Port to PB By Jenny / Jeniffer
 // Updated by 17qwerty
 

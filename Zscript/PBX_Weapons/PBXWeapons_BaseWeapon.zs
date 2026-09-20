@@ -400,7 +400,7 @@ class PBX_WeaponBase : PB_WeaponBase abstract
     {
 		int ammoToCheck = invoker.ammotype2 ? invoker.ammo2.amount : invoker.ammo1.amount;
         int maxAmmoToCheck = invoker.ammotype2 ? invoker.ammo2.maxamount : invoker.ammo1.maxamount;
-        bool pressingReload = (player.cmd.buttons & BT_RELOAD) || (player.oldbuttons & BT_RELOAD);
+        bool pressingReload = PressingReload() || (player.oldbuttons & BT_RELOAD);
 
         if (pressingReload && ammoToCheck == maxAmmoToCheck) 
             return resolvestate("WeaponInspect");

@@ -1,37 +1,39 @@
-// Includes
-#include "./PlasmaBlaster_Functions.zs"
-#include "./PlasmaBlaster_Wheel.zs"
-
-class Plasma_Select_Auto : inventory {default{inventory.maxamount 1;}}
-class Plasma_Select_Semi : inventory {default{inventory.maxamount 1;}}
-class Plasma_Select_Burst : inventory {default{inventory.maxamount 1;}}
-class Plasma_Select_Charge : inventory {default{inventory.maxamount 1;}}
+// Freeze Rifle
+// From Cat's Frozen Addon Pack
+// by SchrödingCat, Eriance/Amuscaria, Realm667
+// Bloax, ZZrionTheInsect, Xaser & Ethrill, Tomtefar, SchrödingCat
+// You can find the full credits in Credits/credits_CatsFrozenAddon.txt
+// Code and Sprites edited by ThePopeOfDope for Project Survival
+// Spawn sprites edited by ThePopeOfDope
 
 // Actual Weapon
-class PBX_PlasmaBlaster : PBX_WeaponBase
+class PBX_FreezeRifle : PBX_WeaponBase
 {
     Default
     {
 //////////////////////////// WEAPON DATA ////////////////////////////////////////////////////////////////////////////////////
         Weapon.SelectionOrder 1;
-        Weapon.SlotNumber 2;
+        Weapon.SlotNumber 8;
         Weapon.SlotPriority 1;
-        PB_WeaponBase.UsesWheel true;
-        PB_WeaponBase.WheelInfo "PlasmaBlasterWheel";
-	    Inventory.AltHUDIcon "ARMZA0";
+        Weapon.BobRangeX 0.3;
+        Weapon.BobRangeY 0.5;
+        Weapon.BobStyle "InverseSmooth";
+        Weapon.BobSpeed 2.4;
+	    Inventory.AltHUDIcon "F12RA0";
 
 //////////////////////////// AMMO ////////////////////////////////////////////////////////////////////////////////////
         Weapon.AmmoType1 "PB_Cell";
-        Weapon.AmmoType2 "HellPistolerAmmo";
-        Weapon.AmmoGive1 30;
+        Weapon.AmmoType2 "FreezeRifleAmmo";
+        Weapon.AmmoGive1 80;
+	    Weapon.AmmoGive2 40;
 
 //////////////////////////// MESSAGES & SOUNDS ////////////////////////////////////////////////////////////////////////////////////
-        Inventory.Pickupmessage  "$PBX_PlasmaBlaster_Pickup";
-        Inventory.PickupSound "CHGNPKUP";
-        Obituary "$OB_WEAP_HEXASG";
+        Inventory.Pickupmessage  "$PBX_FreezeRifle_Pickup";
+        Inventory.PickupSound "weapons/CryoRifle/respect1";
+        Obituary "$OB_WEAP_FREEZERIFLE";
         AttackSound "None";
-        Tag "$PBX_PlasmaBlaster_Tag";
-        Scale 0.8;
+        Tag "$PBX_FreezeRifle_Tag";
+        Scale 0.5;
 
 //////////////////////////// WEAPON FLAGS ////////////////////////////////////////////////////////////////////////////////////
         +WEAPON.NOAUTOAIM;
@@ -40,97 +42,316 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
     }
 
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
-    bool blasterPrimary;
-    bool blasterSecondary;
-    int burstcount;
-    const MAXCHARGE = 16;
-    enum blasterEnum {
-        PRIM_SEMI       = 0,
-        PRIM_AUTO       = 1,
-        SEC_BURST       = 0,
-        SEC_CHARGE      = 1,
-        TAKE_CHARGE     = 2   // Ammo take charge
-    }
+    bool mInAttackMode;
+    
+    const CELL_SIZE = 50;
+    const AMMO_TAKE_LASER = 1;
+    const AMMO_TAKE_MISSILE = 3;
+    const AMMO_TAKE_ICEBOMB = 15;
+    const AMMO_TAKE_ICENUKE = CELL_SIZE;
+
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
-    action void setCrossbowSprite(name unloaded = '', name bolt = '', name explosive = '', name demonic = '', name shock = '')
+    action void setSprite(name attackMode = '')
 	{
-		int mode = getCrossbowMode();
-		name spriteToUse = '';
-		
-		if(PB_GetChamberEmpty())
-			spriteToUse = unloaded;
-
-		switch(mode)
-		{
-			case NORMAL_BOLT: 	  spriteToUse = bolt;		break;
-			case EXPLOSIVE_BOLT:  spriteToUse = explosive;	break;
-			case DEMONIC_BOLT: 	  spriteToUse = demonic;	break;
-			case SHOCK_BOLT: 	  spriteToUse = shock;		break;
-			default: break;
-		}
-
-		if(spriteToUse != '')
-			A_SetWeaponSpriteEx(spriteToUse);
-	}
-    
-    action int getCrossbowMode()
-	{
-		return invoker.currentMode;
+		if(getAttackMode() && attackMode != '')
+            A_SetWeaponSpriteEx(attackMode);
 	}
 
-	action void setCrossbowMode(int mode)
-	{
-		invoker.currentMode = mode;
-	}
-    
-    action int getTokens()
-	{
-		// Prioritize checking the tokens
-		if(FindInventory("CB_Select_ShockMode"))
-			return SHOCK_BOLT;
-		else if(FindInventory("CB_Select_DemonicMode"))
-			return DEMONIC_BOLT;
-		else if (FindInventory("CB_Select_ExplosiveMode"))
-			return EXPLOSIVE_BOLT;
-		else if (FindInventory("CB_Select_NormalMode"))
-			return NORMAL_BOLT;
-		else if (FindInventory("CB_Select_NO"))
-			return NO_UPGRADE;
-		else if (FindInventory("PBX_CloseWheel"))
-			return CLOSE_WHEEL;
-		else
-			return ERROR_WHEEL;
-	}
-
-    action void cleanTokens()
+    action int getAmmoTake(bool isAltfire = false)
     {
-        A_SetInventory("CryoSG_Select_PlasmaBlast",0);
-        A_SetInventory("CryoSG_Select_PlasmaBreath",0);
-        A_SetInventory("CryoSG_Select_Freeze",0);
-        A_SetInventory("PBX_CloseWheel",0);
+        if(getAttackMode())
+            return isAltfire ? AMMO_TAKE_ICENUKE : AMMO_TAKE_LASER;
+        return isAltfire ? AMMO_TAKE_ICEBOMB : AMMO_TAKE_MISSILE;
     }
 
+    action void setFrame(int attackMode)
+    {
+		if(getAttackMode())
+            A_SetWeaponFrame(attackMode);
+	}
+
+    action state jumpIfAttackMode(StateLabel st)
+    {
+        if(getAttackMode())
+            return ResolveState(st);
+        return ResolveState(null);
+    }
+    
+    action bool getAttackMode()
+	{
+		return invoker.mInAttackMode;
+	}
+
+	action void setOverchargeMode(bool mode)
+	{
+		invoker.mInAttackMode = mode;
+	}
+
+    action state checkDecharge()
+    {
+        chargeEffects();
+        if(JustPressed(BT_RELOAD))
+            return resolvestate("DeCharge");
+        return resolvestate(null);
+    }
+
+    action void chargeEffects()
+    {
+        A_FireCustomMissile("PlasmaFlareSpawner",0,0,0,0);
+        A_FireCustomMissile("BluePlasmaParticle",random(10,-10),0,0,random(-3,3),0,random(7,-7) );
+        A_FireProjectile("BlueFlareSpawn",0,0,0,0);
+        A_FireProjectile("RailGunTrailSpark_Fast", random(-2,2), 0, random(-2,2), -15, 0, random(-2,2));
+        A_FlashOverlay();
+    }
+
+    action state freezeRifleReady()
+    {
+        bool isAttackMode = getAttackMode();
+        bool isEmpty = PB_GetMagEmpty() || PB_GetMagUnloaded();
+
+        // Normal Ready
+        if(!isEmpty)
+        {
+            A_StartSound("PLSIDLE", CHAN_7, CHANF_LOOPING|CHANF_OVERLAP);
+            A_FireCustomMissile("TinyGunSmoker", 0, 0, 0, -3, 0, 0);
+        }
+
+        PB_CoolDownBarrel();
+
+        // attackMode Ready
+        if(isAttackMode)
+        {
+            if(!isEmpty)
+            {
+                A_StartSound("weapons/CryoRifle/idle", CHAN_6, CHANF_LOOPING|CHANF_OVERLAP);
+                A_SetWeaponFrame(random[sfx](1,5)); // Randomize the sprite frame
+            }
+            else
+            {
+                stopSound();
+                A_SetWeaponFrame(6);
+            }
+        }
+
+        return A_DoPBWeaponAction();
+    }
+
+    action void fireWeapon(bool isAltfire = false)
+    {
+        A_GunFlash();
+        A_AlertMonsters(450);
+        PB_FireOffset();
+        A_FlashOverlay(state:"BeamMuzzleFlash");
+
+        PB_TakeAmmo(invoker.ammo2.getClassName(),getAmmoTake(isAltfire),0);
+
+        // Primary
+        if(getAttackMode() && !isAltfire)
+        {
+            PB_FireCryoRifleBeam();
+            A_StartSound("weapons/cryobowflyby", CHAN_WEAPON, CHANF_LOOPING);
+        }
+        else if(!isAltfire)
+        {
+            PBX_FireBullets("IceMissile", 1, 3, 0, 0, 3);
+            A_StartSound("weapons/CryoRifle/missile", CHAN_WEAPON, CHANF_OVERLAP);
+        }
+
+        // Secondary
+        if(getAttackMode() && isAltfire)
+        {
+            stopSound();
+            A_SetBlend("Blue", 0.6, 12);
+            EventHandler.SendInterfaceEvent(PlayerNumber(), "PB_HUDInterference", 20);
+            A_StartSound("PLSULT", CHAN_WEAPON);
+            PBX_FireBullets("IceOrbBig", 1, 3, 0, 0, 3);
+        }
+        else if(isAltfire)
+        {
+            // PBX_FireBullets("IceFlak1", 15, 10, 5, 10, 3);
+            // PBX_FireBullets("IceFlak2", 15, 10, 5, 10, 3);
+            // PBX_FireBullets("IceFlak3", 15, 10, 5, 10, 3);
+            // PBX_FireBullets("IceFlak4", 15, 10, 5, 10, 3);
+            // PBX_FireBullets("IceFlak1", 15, 10, 5, 10, 3);
+            PBX_FireBullets("CryoWall", 1, 3, 0, 0, 3);
+            A_StartSound("weapons/CryoRifle/flak", CHAN_WEAPON, CHANF_OVERLAP);
+        }
+
+        A_FireCustomMissile("BlueFlareSpawn",0,0,0,0);
+        PB_GunSmoke();
+        PB_GunSmoke();
+        PB_GunSmoke();
+        
+        A_ZoomFactor(0.98);
+        if(isAltfire)
+            PB_WeaponRecoil(-0.72, -0.25);
+        else
+            PB_WeaponRecoil(-0.32, -0.16);
+    }
+
+    action void stopSound()
+    {
+        A_StopSound(CHAN_WEAPON);
+        A_StopSound(CHAN_5);
+        A_StopSound(CHAN_6);
+        A_StopSound(CHAN_7);
+    }
+
+    // This is from PB's CryoRifle beam code
+    const frozenspacepx = 15;
+	action void PB_FireCryoRifleBeam()
+	{
+		FLineTraceData t;
+		double zoff = (height * 0.5 - floorclip + player.mo.AttackZOffset*player.crouchFactor) - 9;
+		bool hit = LineTrace(angle,8000,pitch,TRF_NOSKY ,zoff,data:t);
+		
+		vector3 fpos = t.hitlocation - t.hitdir; //substract one to the final pos so the puff doesnt spawn in the wall and therefore in a higher sector if any
+		vector3 spos = (pos.xy, pos.z + zoff);
+		
+		vector3 dif = levellocals.Vec3Diff(spos,fpos);
+		vector3 dr = dif.unit();
+		double dist = dif.length();
+		
+		int steps = int(dist / frozenspacepx) + 1;
+		
+		FSpawnParticleParams FrostBeam;
+		FrostBeam.Texture = TexMan.CheckForTexture("X027A0"); //FIR5G0 also looks cool
+		FrostBeam.Color1 = "FFFFFF";
+		FrostBeam.Style = STYLE_Add;
+		FrostBeam.Flags = SPF_ROLL|SPF_FULLBRIGHT|SPF_NOTIMEFREEZE;
+		FrostBeam.Vel = (0,0,0); 
+		FrostBeam.Startroll = random[sfx](0,360); //randompick(0,90,180,270,360);
+		FrostBeam.RollVel = 0;
+		FrostBeam.StartAlpha = 0.90;
+		FrostBeam.FadeStep = 0.1;
+		FrostBeam.Size = 20;
+		FrostBeam.SizeStep = 0;
+		FrostBeam.Lifetime = 1; 
+		
+		//basically, simulate a hitscan attack by damaging the actor the trace hits, spawning a puff and spraying a decal
+		//damage victim (if any)
+		if(t.hitactor)
+		{
+			actor v = t.hitactor;
+			if(v && v.bismonster && v.health > 0 && !isfriend(v))
+				v.damagemobj(self,self,2,"Freeze",DMG_THRUSTLESS);
+		}
+		
+		//spawn puff if hit anything that is not sky
+		if(hit)
+		{
+			actor p = Spawn("CryoRifleBeamPuff",fpos);
+			if(p)
+			{
+				p.target = self; //no self damage
+				p.A_SprayDecal("FreezerBurnSmall",2,(0,0,0),t.hitdir); //spray the decal manually
+			}
+		}
+		
+		for(int i = 0; i < steps; i++)
+		{
+			spos += (dr * frozenspacepx);
+			FrostBeam.Pos = spos;
+			if(i > 0) //skip the first iteration
+				Level.SpawnParticle(FrostBeam);
+		}
+	}
+    
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
     States
     {
 //////////////////////////// SETUP ////////////////////////////////////////////////////////////////////////////////////
         Spawn:
-            ARMZ A -1;
+            F12R A -1;
             Stop;
 
+        CacheSprites:
+            F11R A 0; F04R A 0;
+            F02R A 0;
+
         WeaponRespect:
-            AMGR ABCD 1 A_DoPBWeaponAction();
-            AMGZ ABC 1 A_DoPBWeaponAction();
-            AMGR QRSTUV 1 A_DoPBWeaponAction();
-            TNT1 A 0 A_PlaySound("CELLIN2", 6);
-            AMGR WXY 1 A_DoPBWeaponAction();
+            TNT1 A 0 {
+				A_SetCrosshair(-1);
+				A_Giveinventory("PB_LockScreenTilt",1);
+                PB_SetZoom(false);
+			}
+			TNT1 AAAAAA 1 {
+				PB_SetRoll(roll+0.3);
+				return A_DoPBWeaponAction();
+			}
+            TNT1 A 0 A_StartSound("weapons/CryoRifle/up", CHAN_WEAPON, CHANF_OVERLAP);
+			FR08 ABCDEFGHIJ 1 {
+				PB_SetRoll(roll-0.3);
+				return A_DoPBWeaponAction();
+			}
+			TNT1 A 0 A_StartSound("weapons/CryoRifle/reload1", CHAN_WEAPON, CHANF_OVERLAP);
+			FR08 KLMNO 1 A_DoPBWeaponAction();
+			TNT1 A 0 A_StartSound("PLSIDLE", CHAN_7, CHANF_LOOPING|CHANF_OVERLAP);
+			FR08 PQRSTUOPQRSTU 1 A_DoPBWeaponAction();
+			TNT1 A 0 A_StartSound("weapons/CryoRifle/respect3", CHAN_WEAPON, CHANF_OVERLAP);
+			FR08 VWXYZZZ 1 A_DoPBWeaponAction();
+			TNT1 A 0 A_StartSound("IronSights",CHAN_WEAPON,CHANF_OVERLAP);
+			FR07 EFGH 1 A_DoPBWeaponAction();
+			TNT1 A 0 A_StartSound("weapons/CryoRifle/respect1", CHAN_WEAPON, CHANF_OVERLAP);
+			FR07 ONMLKJIHGF 1 A_DoPBWeaponAction();
+			FR07 EDCA 1 {
+				PB_SetRoll(roll+0.3);
+				return A_DoPBWeaponAction();
+			}
+			TNT1 A 0 A_Takeinventory("PB_LockScreenTilt",1);
+			TNT1 A 0 jumpIfAttackMode("SwapToAttack");
             Goto Ready3;
+
+        WeaponInspect:
+            TNT1 A 0 jumpIfAttackMode("InspectStartCharged");
+        InspectStartNormal:
+            FR08 GHIJ 1 {
+				PB_SetRoll(roll-0.3);
+				return A_DoPBWeaponAction();
+			}
+			TNT1 A 0 A_StartSound("weapons/CryoRifle/reload1", CHAN_WEAPON, CHANF_OVERLAP);
+			FR08 KLMNO 1 A_DoPBWeaponAction();
+			TNT1 A 0 A_StartSound("PLSIDLE", CHAN_7, CHANF_LOOPING|CHANF_OVERLAP);
+			FR08 PQRSTUOPQRSTU 1 A_DoPBWeaponAction();
+			TNT1 A 0 A_StartSound("weapons/CryoRifle/respect3", CHAN_WEAPON, CHANF_OVERLAP);
+			FR08 VWXYZZZ 1 A_DoPBWeaponAction();
+			TNT1 A 0 A_StartSound("IronSights",CHAN_WEAPON,CHANF_OVERLAP);
+			FR07 EDCA 1 {
+				PB_SetRoll(roll+0.3);
+				return A_DoPBWeaponAction();
+			}
+			TNT1 A 0 jumpIfAttackMode("InspectEndCharged");
+            Goto Ready3;
+
+        InspectStartCharged:
+            // Swap to Normal Animation
+            TNT1 A 0 A_StartSound("IronSights", CHAN_WEAPON, CHANF_OVERLAP);
+            FR06 QPONMMMMM 1 A_DoPBWeaponAction();
+			TNT1 A 0 A_StartSound("weapons/CryoRifle/respect2", CHAN_WEAPON, CHANF_OVERLAP);
+			FR06 LKJIHGFEDCBA 1 {
+                A_FireCustomMissile("GunFireSmoke", 0, 0, -5, -5, 0, 0);
+                return A_DoPBWeaponAction();
+            }
+            Goto InspectStartNormal;
+
+        InspectEndCharged:
+            // Swap to attackMode Animation
+            TNT1 A 0 A_StartSound("IronSights", CHAN_WEAPON, CHANF_OVERLAP);
+            FR06 ABCDEEEEE 1 A_DoPBWeaponAction();
+			TNT1 A 0 A_StartSound("weapons/CryoRifle/respect1", CHAN_WEAPON, CHANF_OVERLAP);
+			FR06 FGHIJKLMNOPQ 1 {
+                A_FireCustomMissile("GunFireSmoke", 0, 0, -5, -5, 0, 0);
+                return A_DoPBWeaponAction();
+            }
+            Goto Ready3;
+
 
         Deselect:
             TNT1 A 0 PBX_WeaponLower();
-            AMGR ABCDEF 1;
+            F05R A 1;
+			FR08 FEDCBA 1;
 			TNT1 A 0 A_Lower();
 			Wait;
 
@@ -138,151 +359,342 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
             TNT1 A 0 {
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
-			    PB_HandleCrosshair(39);
+			    PB_HandleCrosshair(94);
 				A_SetInventory("PB_LockScreenTilt",0);
-                PBX_WeaponRaise("weapons/smg_magfly1");
+                PBX_WeaponRaise("weapons/CryoRifle/respect1");
 			    return PB_RespectIfNeeded();
 			}
         SelectAnimation:
-            AMGR FEDCBA 1;
+            FR08 ABCDEF 1;
+			F05R A 1;
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
         Ready3:
-			AMGL A 1 {
-                PB_CoolDownBarrel();
-                PB_HandleCrosshair(39);
-                return A_DoPBWeaponAction();
-            }
+            TNT1 A 0 {
+                // stopSound();
+				PB_SetRoll(0);
+				A_TakeInventory("PB_LockScreenTilt",1);
+                PB_HandleCrosshair(94);
+                A_ClearReFire();
+			}
+		ReadyToFire:
+			TNT1 A 0 PBX_CheckInspect();
+			F05R A 1 freezeRifleReady();
             loop;
+
+        DeCharge:
+            TNT1 A 0 {
+                stopSound();
+				A_StartSound("weapons/CryoRifle/powerdown", CHAN_5, CHANF_OVERLAP);
+            }
+            F10R DDDDDCCCCCCBBBBBBAAAAA 1 setSprite('F11R');
+            TNT1 A 0 {
+                A_StartSound("PLSCOOL",CHAN_WEAPON,CHANF_OVERLAP);
+                A_ClearReFire();
+            }
+            Goto Ready3;
+            
 
 //////////////////////////// FIRE ////////////////////////////////////////////////////////////////////////////////////
         Fire:
-            TNT1 A 0    fireWeapon(0);
-            AMGF A 1;
-            AMGF B 1 A_PlaySound("BEP",3);
-            AMGF CD 1;
-        AutoFire:
-            AMGF E 1    fireWeapon(1);
-            AMGF FG 1   fireWeapon(2);
-            TNT1 A 0    fireWeapon(3);
-            Goto Ready3;
+            TNT1 A 0 {
+				A_WeaponOffset(0,32);
+				PB_SetRoll(0);
+				PB_HandleCrosshair(94);
+				A_TakeInventory("PB_LockScreenTilt",1);
+			}
+            TNT1 A 0 PB_JumpIfNoAmmo(min:getAmmoTake(),emptysound:"RAILDRY");
+            // Charge
+            TNT1 A 0 A_StartSound("weapons/CryoRifle/powerup", CHAN_WEAPON, CHANF_OVERLAP);
+            F10R AAAAABBBBBBCCCCCCDDDDD 1 setSprite('F11R');
+			TNT1 AAAAAAAAAA 0 A_FireCustomMissile("BluePlasmaParticle",random(10,-10),0,0,random(-3,3),0,random(7,-7) );
+            TNT1 A 0 jumpIfAttackMode("HoldLaser");
+        HoldMissile:
+			TNT1 A 0 PB_JumpIfNoAmmo(min:AMMO_TAKE_MISSILE,emptysound:"RAILDRY");
+            FR09 A 1 Bright fireWeapon();
+			FR09 B 1 Bright {
+				A_ZoomFactor(0.99);
+                PB_WeaponRecoil(-0.32, -0.16);
+			}
+			FR09 C 1 Bright A_ZoomFactor(1.0);
+			FR09 D 1 Bright;
+			F05R A 6;
+			TNT1 A 0 PB_Refire("HoldMissile");
+            Goto EndFire;
+
+        HoldLaser:
+			TNT1 A 0 PB_JumpIfNoAmmo("EndFire",AMMO_TAKE_LASER,emptysound:"RAILDRY");
+            FR09 E 1 Bright fireWeapon();
+			FR09 F 1 Bright {
+                PB_FireCryoRifleBeam();
+				A_ZoomFactor(0.99);
+                PB_WeaponRecoil(-0.32, -0.16);
+			}
+			FR09 G 1 Bright {
+                PB_FireCryoRifleBeam();
+				A_ZoomFactor(1.0);
+			} 
+			TNT1 A 0 PB_Refire("HoldLaser");
+        EndFire:
+			TNT1 A 0 {
+				stopSound();
+				A_StartSound("weapons/CryoRifle/powerdown", CHAN_5, CHANF_OVERLAP);
+			}
+			TNT1 A 0 PB_JumpIfNoAmmo(min:getAmmoTake(),emptysound:"RAILDRY");
+            Goto Decharge;
   
 //////////////////////////// ALT FIRE ////////////////////////////////////////////////////////////////////////////////////
         AltFire:
             TNT1 A 0 {
+				stopSound();
                 A_WeaponOffset(0,32);
                 PB_SetRoll(0);
-                PB_HandleCrosshair(39);
+                PB_HandleCrosshair(94);
                 A_TakeInventory("PB_LockScreenTilt",1);
             }
-            TNT1 A 0 A_JumpIf(getSecondary() == SEC_CHARGE, "ChargeFire");
-            TNT1 A 0 PB_JumpIfNoAmmo(chamber:false);
-            AMGF A 1 A_PlaySound("BEP",7);
-            AMGF B 1 A_PlaySound("BEP",8);
-            AMGF CD 1 A_PlaySound("BEP",9);
-            TNT1 A 0 {invoker.burstcount = 0;}
-        AltFireBurst:
-            TNT1 A 0 PB_JumpIfNoAmmo(chamber:false);
-            AMGF E 0 A_PlaySound("HRFire");
-            AMGF E 1 {
-		        PB_FireBullets("HellPistolNormal", 1, 0, 0, 0, 0);
-                PB_TakeAmmo(invoker.ammo2.getClassName());
-                invoker.burstcount++;
+            TNT1 A 0 PB_JumpIfNoAmmo(min:getAmmoTake(true),emptysound:"RAILDRY");
+            // Charge
+            TNT1 A 0 A_StartSound("weapons/CryoRifle/powerup", CHAN_WEAPON, CHANF_OVERLAP);
+            TNT1 A 0 jumpIfAttackMode("ChargeIceNuke");
+        ChargeIceBomb:
+            TNT1 A 0 A_StartSound("PLSC_1", CHAN_WEAPON, CHANF_OVERLAP);
+            F10R AAAAA 1 {
+                chargeEffects();
+                setSprite('F11R');
             }
-            AMGF FG 1;
-            TNT1 A 0 A_JumpIf(invoker.burstcount < 3, "AltFireBurst");
-        EndBurst:
-            TNT1 A 0 {invoker.burstcount = 0;}
-            AMGL A 10{
-                if(JustPressed(BT_ATTACK)) return ResolveState("Fire");
-                return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOPRIMARY);
+            "####" A 0 A_StartSound("PLSC_2", CHAN_WEAPON, CHANF_OVERLAP);
+            "####" BBBBBB 1 chargeEffects();
+            "####" A 0 A_StartSound("PLSC_3", CHAN_WEAPON, CHANF_OVERLAP);
+            "####" CCCCCC 1 chargeEffects();
+            "####" A 0 A_StartSound("PLSC_4", CHAN_WEAPON, CHANF_OVERLAP);
+            "####" DDDDD 1 chargeEffects();
+			TNT1 AAAAAAAAAA 0 A_FireCustomMissile("BluePlasmaParticle",random(10,-10),0,0,random(-3,3),0,random(7,-7) );
+        AltHold:
+            TNT1 A 0 A_StartSound("weapons/CryoRifle/idle", CHAN_WEAPON, CHANF_LOOPING);
+            F10R D 1 {
+                A_WeaponOffset(random[sfx](-1,1),random[sfx](31,33));
+                setSprite('F11R');
+                return checkDecharge();
             }
-            TNT1 A 0 PB_ReFire("AltFireBurst");
-            Goto Ready3;
+			TNT1 A 0 PB_ReFire("AltHold");
+        FireIceBomb:
+			TNT1 A 0 PB_JumpIfNoAmmo(min:getAmmoTake(isAltfire:true),emptysound:"RAILDRY");
+            FR09 A 1 Bright fireWeapon(isAltfire:true);
+			FR09 B 1 Bright {
+				A_ZoomFactor(0.99);
+                PB_WeaponRecoil(-0.32, -0.16);
+			}
+			FR09 C 1 Bright A_ZoomFactor(1.0);
+			FR09 D 1 Bright;
+			F05R A 6;
+            Goto Decharge;
+
+        ChargeIceNuke:
+            TNT1 A 0 A_StartSound("PLSC_1", CHAN_WEAPON, CHANF_OVERLAP);
+            F10R AAAAAAAAAAAAAAAAA 1 {
+                setSprite('F11R');
+                return checkDecharge();
+            }
+            "####" A 0 A_StartSound("PLSC_2", CHAN_WEAPON, CHANF_OVERLAP);
+            "####" BBBBBBBBBBBBBBBBB 1 chargeEffects();
+            "####" A 0 A_StartSound("PLSC_3", CHAN_WEAPON, CHANF_OVERLAP);
+            "####" CCCCCCCCCCCCCCCCC 1 chargeEffects();
+            "####" A 0 A_StartSound("PLSC_4", CHAN_WEAPON, CHANF_OVERLAP);
+            Goto AltHoldIceNuke+1; // So it skips playing the warning sound for the first time
+
+        AltHoldIceNuke:
+            TNT1 A 0 A_StartSound("PLSFULL", CHAN_WEAPON, CHANF_LOOPING);
+            F10R D 1 {
+                A_WeaponOffset(random[sfx](-1,1),random[sfx](31,33));
+                setSprite('F11R');
+                return checkDecharge();
+            }
+			TNT1 A 0 PB_ReFire("AltHoldIceNuke");
+        FireIceNuke:
+            FR09 E 1 Bright fireWeapon(isAltfire:true);
+			FR09 F 1 Bright {
+				A_ZoomFactor(0.99);
+                PB_WeaponRecoil(-0.72, -0.25);
+			}
+			FR09 G 1 Bright A_ZoomFactor(1.0);
+			FR09 H 1 Bright;
+			F05R BCDEFG 1; 
+            TNT1 A 0 A_ClearReFire(); // Because it doesnt go to decharge
+            Goto Ready3; // So it skips the stop sound
 
 //////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
-        ReloadFromADS:
-			TNT1 A 0 PB_HandleCrosshair(42);
-			TNT1 A 0 A_startsound("IronSights",29);
-            TNT1 A 0 A_ZoomFactor(1.5);
-			BR4Z CB 1;
-			TNT1 A 0 PB_SetZoom(false);
-			BR4Z A 1;
 		Reload:
-            TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");
-			TNT1 A 0 A_ZoomFactor(1.0);
-            TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null,null,"Ready3","Ready3",MAXCHARGE);
-            TNT1 A 0 A_PlaySound("weapons/smg_magfly1");
-            AMGR ABCDEF 1;
-            TNT1 A 0 A_PlaySound("weapons/smg_magfly2");
-            AMGR GHIJK 1;
             TNT1 A 0 {
-                A_PlaySound("CELLOUT2", 5);
+				// stopSound();
+                A_WeaponOffset(0,32);
+                PB_SetRoll(0);
+                PB_HandleCrosshair(94);
+                A_TakeInventory("PB_LockScreenTilt",1);
+            }
+            TNT1 A 0 PB_CheckReload("RaiseFromEmpty",null,null,"Ready3","Ready3",CELL_SIZE);
+            TNT1 A 0 A_StartSound("weapons/CryoRifle/reload1", CHAN_WEAPON, CHANF_OVERLAP);
+            // Raise
+			FR07 A 1 {
+                if(!PB_GetMagEmpty())
+                    setFrame(1);
+            }
+			FR07 CDEFGHHHHHH 1;
+            // Remove Cell
+			FR07 IJJJJJ 1;
+			TNT1 A 0 A_StartSound("weapons/CryoRifle/reload3", CHAN_WEAPON, CHANF_OVERLAP);
+			FR07 KL 1;
+            TNT1 A 0 {
+                A_StartSound("weapons/plasma/cellout",CHAN_WEAPON,CHANF_OVERLAP);
                 PB_SetMagEmpty(true);
                 PB_SetMagUnloaded(true);
                 PB_SetChamberEmpty(true);
             }
-            AMGR LMNOP 1;
+            FR07 MNOOOOO 1;
         ContinueReload:
-            AMGR QRS 1;
-            AMGR TUV 1;
+            TNT1 A 0 A_StartSound("IronSights", CHAN_WEAPON, CHANF_OVERLAP);
+			FR07 OOOOONMLK 1;
+			TNT1 A 0 A_StartSound("weapons/CryoRifle/respect1", CHAN_WEAPON, CHANF_OVERLAP);
             TNT1 A 0 {
-                A_PlaySound("CELLIN2", 6);
+                A_StartSound("weapons/plasma/cellin",CHAN_WEAPON,CHANF_OVERLAP);
                 PB_AmmoIntoMag(
                     invoker.ammo2.getClassName(),
                     invoker.ammo1.getClassName(),
-                    MAXCHARGE);
+                    CELL_SIZE);
                 PB_SetMagEmpty(false);
                 PB_SetMagUnloaded(false);
                 PB_SetChamberEmpty(false);
             }
-            AMGR WXY 1;
+        FinishReload:
+			FR07 JJIHHGF 1;
+			FR08 ZYXWVUTSRQPOUTSRQPONMLKJIH 1;
             Goto Ready3;
         
         RaiseFromEmpty:
-            AMGR ABCD 1;
-            AMGZ ABC 1;
+            TNT1 A 0 A_StartSound("weapons/CryoRifle/reload1", CHAN_WEAPON, CHANF_OVERLAP);
+            FR07 A 1;
+			FR07 CDEFGHHHHHH 1;
             Goto ContinueReload;
 
 //////////////////////////// UNLOAD ////////////////////////////////////////////////////////////////////////////////////
         Unload:
 			TNT1 A 0 A_Jumpif(pb_getmagunloaded(),"Ready3");
+            TNT1 A 0 stopSound();
+            TNT1 A 0 A_StartSound("weapons/CryoRifle/reload1", CHAN_WEAPON, CHANF_OVERLAP);
+            // Raise
+			FR07 A 1 setFrame(1);
+			FR07 CDEFGHHHHHH 1;
+            // Remove Cell
+			FR07 IJJJJJ 1;
+			TNT1 A 0 A_StartSound("weapons/CryoRifle/reload3", CHAN_WEAPON, CHANF_OVERLAP);
+			FR07 KL 1;
             TNT1 A 0 {
+                A_StartSound("weapons/plasma/cellout",CHAN_WEAPON,CHANF_OVERLAP);
 				PB_UnloadMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname());
 				PB_SetMagUnloaded(true);
 				PB_SetChamberEmpty(true);
                 PB_SetMagEmpty(true);
 			}
+            FR07 MNOOOOO 1;
+        FinishUnload:
+            TNT1 A 0 A_StartSound("IronSights", CHAN_WEAPON, CHANF_OVERLAP);
+			FR07 HGFEDCA 1;
             goto Ready3;
 
 //////////////////////////// WEAPON SPECIAL ////////////////////////////////////////////////////////////////////////////////////
         WeaponSpecial:
-            TNT1 A 0 A_TakeInventory("GoWeaponSpecialAbility", 1);
-            Goto Ready3;            
+            TNT1 A 0 {
+				A_Takeinventory("GoWeaponSpecialAbility",1);
+				A_GiveInventory("PB_LockScreenTilt",1);
+				PB_HandleCrosshair(94);
+				stopSound();
+			}
+            TNT1 A 0 PB_JumpIfNoAmmo(emptysound:"RAILDRY");
+			TNT1 A 0 jumpIfAttackMode("SwapToDefense");
+        SwapToAttack:
+            TNT1 A 0 {
+                setOverchargeMode(true);
+				A_Print("$PBX_FreezeRifle_Attack");
+				A_StartSound("IronSights", CHAN_WEAPON, CHANF_OVERLAP);
+			}
+			FR06 ABCDEEEEE 1;
+			TNT1 A 0 {
+                // A_SetBlend("Blue", 0.6, 12);
+                A_StartSound("weapons/CryoRifle/respect1", CHAN_WEAPON, CHANF_OVERLAP);
+            }
+			FR06 FGHIJKLMNOPQ 1 A_FireCustomMissile("GunFireSmoke", 0, 0, -5, -5, 0, 0);
+            Goto Ready3;           
+            
+        SwapToDefense:
+            TNT1 A 0 {
+                setOverchargeMode(false);
+				A_Print("$PBX_FreezeRifle_Defense");
+				A_StartSound("IronSights", CHAN_WEAPON, CHANF_OVERLAP);
+			}
+			FR06 QPONMMMMM 1;
+			TNT1 A 0 A_StartSound("weapons/CryoRifle/respect2", CHAN_WEAPON, CHANF_OVERLAP);
+			FR06 LKJIHGFEDCBA 1 A_FireCustomMissile("GunFireSmoke", 0, 0, -5, -5, 0, 0);
+			Goto Ready3;
 
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////
+        BeamMuzzleFlash:
+			TNT1 A 0 A_Jump(256, "Muzzle1", "Muzzle2", "Muzzle3", "Muzzle4", "Muzzle5", "Muzzle6", "Muzzle7");
+		Muzzle1:
+			FR12 A 1 BRIGHT;
+			Stop;
+		Muzzle2:
+			FR12 B 1 BRIGHT;
+			Stop;
+		Muzzle3:
+			FR12 C 1 BRIGHT;
+			Stop;
+		Muzzle4:
+			FR12 D 1 BRIGHT;
+			Stop;
+		Muzzle5:
+			FR12 E 1 BRIGHT;
+			Stop;
+		Muzzle6:
+			FR12 F 1 BRIGHT;
+			Stop;
+		Muzzle7:
+			FR12 G 1 BRIGHT;
+			Stop;
+
         FlashPunching:
             // 14 frames
-            MSNQ ABCDEFGHFEDCBA 1;      
+            F01R ABCDEEE 1 setSprite('F02R');
+			"####" EEEDCBA 1;
             goto Ready3;
 
         FlashKicking:
             // 15 frames
-            MSNK ABCDEFGHGFEDCBA 1;     
+            F03R ABCDE 1 setSprite('F04R');
+			"####" E 4;
+			"####" EDCBA 1;
+			F05R A 1 setFrame(1);
             goto Ready3;
 
         FlashAirKicking:
             // 16 frames
-            MSNQ ABCDEFGHHGFEDCBA 1;    
+            F03R ABCDE 1 setSprite('F04R');
+			"####" E 5;
+			"####" EDCBA 1;
+			F05R A 1 setFrame(1);
             goto Ready3;
 
         FlashSlideKicking:
             // 27 frames
-            MSNK ABCDEFGHHHHHHHHHHHHHGFEDCBA 1; 
+            F01R ABCDEEEEEEEEEEEEEEEEEE 1 setSprite('F02R');
             goto Ready3;
 
         FlashSlideKickingStop:
             // 7 frames
-            MSNK GFEDCBA 1;             
+            F01R EDCBA 1 setSprite('F02R');
+            TNT1 A 0 jumpIfAttackMode("FlashSlideKickingStopCharged");
+			F05R AA 1;            
+            goto Ready3;
+
+        FlashSlideKickingStopCharged:
+			F05R BE 1;
             goto Ready3;
     }
 }

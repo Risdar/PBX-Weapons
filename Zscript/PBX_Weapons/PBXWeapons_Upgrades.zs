@@ -3,9 +3,8 @@ enum PBXWeapons_eUpgradeTipFlags
 	// UPGRADES
     PBX_TIP_METALSNIPER_UPGRADE = 1 << 0,
     PBX_TIP_LEVERACTION_UPGRADE = 1 << 1,
-    PBX_TIP_CROSSBOW_UPGRADE    = 1 << 2,
-    PBX_TIP_CSSG_UPGRADE        = 1 << 3,
-    PBX_TIP_EXCAVATOR_UPGRADE   = 1 << 4,
+    PBX_TIP_CSSG_UPGRADE        = 1 << 2,
+    PBX_TIP_EXCAVATOR_UPGRADE   = 1 << 3,
     // OTHERS
     PBX_TIP_DISABLE_UPGRADE     = 1 << 31
 }
@@ -282,15 +281,7 @@ class PBX_DemonicBallistaUpgrade : PB_UpgradeItem
 			&& toucher.CountInv("PB_DTech") == toucher.GetAmmoCapacity("PB_DTech")) {
 			return false;
 		}
-		bool pickup = Super.TryPickup(toucher);
-		if(pickup && pbxweapons_sendTip)
-		{
-			Array<String> tips;
-			tips.Push("$PBX_DemonicBallista_Tip1");
-			tips.Push("$PBX_DemonicBallista_Tip2");
-			PBXCore_TipsManager.SendTipArrayIfNeeded(tips,"PBXWeapons_UpgradeHelpFlags", PBX_TIP_CROSSBOW_UPGRADE);
-		}
-		return pickup;
+		return super.TryPickup(toucher);
 	}
 
     States

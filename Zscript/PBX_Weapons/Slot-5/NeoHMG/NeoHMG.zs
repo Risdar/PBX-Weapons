@@ -1,4 +1,5 @@
-//	PB neo HMG by jaih1r0
+//	PB Neo HMG 
+// 	Original by jaih1r0
 //	carrot: resprite of the old PB HMG
 //	PC1073: firing sounds
 //	Tesefy: the weapons pickup sheet used to frankensprite the pickup sprite of this thing

@@ -10,7 +10,7 @@ Brightmap Sprite MSNFG0 { map "Brightmaps/Weapons/Slot-4/Metal_Sniper/BMMSNFG0.p
 Brightmap Sprite MSNFH0 { map "Brightmaps/Weapons/Slot-4/Metal_Sniper/BMMSNFH0.png" DisableFullbright }
 
 //(de)select
-Brightmap Sprite MSNUA0 { map "Brightmaps/Weapons/Slot-4/Metal_Sniper/BMMSNUA0.png" DisableFullbright }
+/* Brightmap Sprite MSNUA0 { map "Brightmaps/Weapons/Slot-4/Metal_Sniper/BMMSNUA0.png" DisableFullbright } */
 Brightmap Sprite MSNUB0 { map "Brightmaps/Weapons/Slot-4/Metal_Sniper/BMMSNUB0.png" DisableFullbright }
 Brightmap Sprite MSNUC0 { map "Brightmaps/Weapons/Slot-4/Metal_Sniper/BMMSNUC0.png" DisableFullbright }
 Brightmap Sprite MSNUD0 { map "Brightmaps/Weapons/Slot-4/Metal_Sniper/BMMSNUD0.png" DisableFullbright }
@@ -18,7 +18,7 @@ Brightmap Sprite MSNUD0 { map "Brightmaps/Weapons/Slot-4/Metal_Sniper/BMMSNUD0.p
 Brightmap Sprite MSNDA0 { map "Brightmaps/Weapons/Slot-4/Metal_Sniper/BMMSNDA0.png" DisableFullbright }
 Brightmap Sprite MSNDB0 { map "Brightmaps/Weapons/Slot-4/Metal_Sniper/BMMSNDB0.png" DisableFullbright }
 Brightmap Sprite MSNDC0 { map "Brightmaps/Weapons/Slot-4/Metal_Sniper/BMMSNDC0.png" DisableFullbright }
-Brightmap Sprite MSNDD0 { map "Brightmaps/Weapons/Slot-4/Metal_Sniper/BMMSNDD0.png" DisableFullbright }
+/* Brightmap Sprite MSNDD0 { map "Brightmaps/Weapons/Slot-4/Metal_Sniper/BMMSNDD0.png" DisableFullbright } */
 
 //Kick - knife
 Brightmap Sprite MSNKA0 { map "Brightmaps/Weapons/Slot-4/Metal_Sniper/BMMSNKA0.png" DisableFullbright }
@@ -55,8 +55,8 @@ Brightmap Sprite MSU1I0 { map "Brightmaps/Weapons/Slot-4/Metal_Sniper/BMMSU1I0.p
 Brightmap Sprite MSU1J0 { map "Brightmaps/Weapons/Slot-4/Metal_Sniper/BMMSU1J0.png" DisableFullbright }
 Brightmap Sprite MSU1K0 { map "Brightmaps/Weapons/Slot-4/Metal_Sniper/BMMSU1K0.png" DisableFullbright }
 Brightmap Sprite MSU1L0 { map "Brightmaps/Weapons/Slot-4/Metal_Sniper/BMMSU1L0.png" DisableFullbright }
-Brightmap Sprite MSU1M0 { map "Brightmaps/Weapons/Slot-4/Metal_Sniper/BMMSU1M0.png" DisableFullbright }
-Brightmap Sprite MSU1N0 { map "Brightmaps/Weapons/Slot-4/Metal_Sniper/BMMSU1N0.png" DisableFullbright }
+/* Brightmap Sprite MSU1M0 { map "Brightmaps/Weapons/Slot-4/Metal_Sniper/BMMSU1M0.png" DisableFullbright } */
+/* Brightmap Sprite MSU1N0 { map "Brightmaps/Weapons/Slot-4/Metal_Sniper/BMMSU1N0.png" DisableFullbright } */
 
 //Raise empty
 Brightmap Sprite MSU0A0 { map "Brightmaps/Weapons/Slot-4/Metal_Sniper/BMMSU1A0.png" DisableFullbright }

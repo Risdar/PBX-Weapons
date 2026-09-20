@@ -1,4 +1,5 @@
-// Excavator Upgrade from Project Survival made by ThePopeOfDope
+// Excavator Upgrade 
+// From Project Survival made by ThePopeOfDope
 // New Original Sprites made by ThePopeOfDope
 
 extend class PBX_Excavator

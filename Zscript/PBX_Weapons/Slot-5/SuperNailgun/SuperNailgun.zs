@@ -1,4 +1,5 @@
-// Super Nailgun made by Idkfa
+// Super Nailgun 
+// Original by Idkfa
 
 // Includes
 // #include "./PlasmaBlaster_Functions.zs"

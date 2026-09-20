@@ -5,6 +5,7 @@
 #include "./PBXWeapons_Nails.zs"
 #include "./PBXWeapons_Shells.zs"
 #include "./PBXWeapons_Lightning.zs"
+#include "./PBXWeapons_Freezes.zs"
 
 // Lightning projectile base
 mixin class PBX_LightningProjectile

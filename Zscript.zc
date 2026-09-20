@@ -50,6 +50,7 @@ Version 5.0
 
 // Slot 8
 #include "Zscript/PBX_Weapons/Slot-8/TeslaGun/TeslaGun.zs" // Tesla Gun
+#include "Zscript/PBX_Weapons/Slot-8/FreezeRifle/FreezeRifle.zs" // Freeze Rifle
 
 // Slot 9
 #include "Zscript/PBX_Weapons/Slot-9/DemonicExterminator/DemonicExt.zs" // Demonic Exterminator

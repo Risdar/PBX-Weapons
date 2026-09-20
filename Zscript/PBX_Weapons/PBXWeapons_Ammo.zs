@@ -562,6 +562,20 @@ class Tesla_LightningCharge : PB_Ammo
     }
 }
 
+// Freeze Rifle 
+Class FreezeRifleAmmo : PB_Ammo
+{
+	Default
+	{
+		inventory.amount 0;
+		inventory.maxamount PBX_FreezeRifle.CELL_SIZE;
+		ammo.backpackamount 0;
+		ammo.backpackmaxamount PBX_FreezeRifle.CELL_SIZE;
+	    Inventory.Icon "F12RA0";
+        +INVENTORY.IGNORESKILL;
+	}
+}
+
 //////////////////////////// SLOT 9 ////////////////////////////////////////////////////////////////////////////////////
 // Hexa Shotgun
 Class HexaShotgunAmmo : PB_Ammo

@@ -1,4 +1,5 @@
-// Paingiver by Moa-Dixon and R3W
+// Paingiver 
+// Original by Moa-Dixon and R3W
 // Ported to PB by Jenny/Jeniffer
 
 // // Includes

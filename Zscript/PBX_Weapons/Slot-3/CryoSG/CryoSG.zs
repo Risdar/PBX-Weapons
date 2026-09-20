@@ -1,4 +1,5 @@
-// Cryo Shotgun from Cat's Frozen Addon Pack
+// Cryo Shotgun 
+// From Cat's Frozen Addon Pack
 // by SchrödingCat, Eriance/Amuscaria, Realm667
 // Bloax, ZZrionTheInsect, Xaser & Ethrill, Tomtefar, SchrödingCat
 // Dox778

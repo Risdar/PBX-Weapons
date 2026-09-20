@@ -1,4 +1,5 @@
-// Excavator from Project Survival made by ThePopeOfDope
+// Excavator 
+// From Project Survival made by ThePopeOfDope
 
 // Includes
 #include "./Excavator_Functions.zs"

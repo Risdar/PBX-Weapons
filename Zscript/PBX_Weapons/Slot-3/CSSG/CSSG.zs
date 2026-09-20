@@ -1,4 +1,5 @@
-// Commander's SuperShotgun by Barge, Popguy, WolVexus, and Jaih1r0
+// Commander's SuperShotgun 
+// Original by Barge, Popguy, WolVexus, and Jaih1r0
 // New sprites made by SamuelGuy
 // Ice upgrade pickup sprite is made by SchrödingCat, Eriance/Amuscaria, Realm667
 // Ice projectiles is from PBWP's Marauder Shotgun Freeze Shells made by JhulkerCraft

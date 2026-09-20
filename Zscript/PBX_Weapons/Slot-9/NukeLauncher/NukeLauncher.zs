@@ -1,4 +1,5 @@
-// Nuke Launcher from Brutal Doom by Sergeant_Mark_IV
+// Nuke Launcher 
+// From Brutal Doom by Sergeant_Mark_IV
 // Sprites by Tesefy
 
 // Actual Weapon

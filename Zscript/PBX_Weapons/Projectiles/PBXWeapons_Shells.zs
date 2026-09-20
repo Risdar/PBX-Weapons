@@ -588,29 +588,6 @@ class CSSG_FrozenTracer : FastProjectile
     }
 }
 
-class FreezerTrailSparksSmall : actor
-{ 
-    Default
-    {
-        RenderStyle "Add";
-        Scale 0.008;
-        Alpha 0.95;
-        +NOINTERACTION;
-        +NOGRAVITY;
-        +CLIENTSIDEONLY;
-    }
-
-    States
-    {
-        Spawn:
-        YA36 B 0 NoDelay A_JumpIf(Scale.X <= 0, "NULL");
-        YA36 B 0 A_SetScale(Scale.X-0.00075);
-        YA36 B 3 bright A_ChangeVelocity (frandom(-0.8, 0.8), frandom(-0.8, 0.8), frandom(-0.8, 0.8), 0);
-        YA36 B 1 bright A_FadeOut(0.05);
-        Loop;
-    }
-}
-
 class HellFireProjectile : PB_10GAPellet
 { 
     Default

@@ -1,8 +1,9 @@
-// Assault rifle from old version of BD and Brutal Doom Platinum
-// 1. Dox778 (Animations)
-// 2. Metalman (Sprite Edit and New Frames)
-// 3. Mike12 (Original Sprites)
-// 4. Craneo (ADS Sprites)
+// Assault rifle 
+// From old version of BD and Brutal Doom Platinum
+// Dox778 (Animations)
+// Metalman (Sprite Edit and New Frames)
+// Mike12 (Original Sprites)
+// Craneo (ADS Sprites)
 
 // Includes
 #include "./NormalRifle_Functions.zs"

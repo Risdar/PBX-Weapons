@@ -55,11 +55,14 @@ enum PBXWeapons_eRocketLauncherSpawns
 
 enum PBXWeapons_ePlasmaRifleSpawns
 {
+////// SLOT 3 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	DisablePBX_CryoSG						= 1 << 2,
+	DisablePBX_CryoASG						= 1 << 3,
 ////// SLOT 7 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	DisablePBX_BDPRailgun					= 1 << 0,
+////// SLOT 8 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	DisablePBX_TeslaGun						= 1 << 1,
-	DisablePBX_CryoSG						= 1 << 2,
-	DisablePBX_CryoASG						= 1 << 3
+	DisablePBX_FreezeRifle					= 1 << 4
 }
 
 enum PBXWeapons_eBFGSpawns
@@ -194,6 +197,11 @@ class PBXPlasma_Injector : PBInjector
 		if(!(pbxweapons_plasmarifle_filter & DisablePBX_CryoASG))
 		{
 		   handler.InjectSpawn("PB_PlasSpawnerT4","PBX_CryoASG",255,1);
+		}
+		// Freze Rifle 
+		if(!(pbxweapons_plasmarifle_filter & DisablePBX_FreezeRifle))
+		{
+		   handler.InjectSpawn("PB_PlasSpawnerT2","PBX_FreezeRifle",255,1);
 		}
     }
 }
@@ -368,7 +376,7 @@ class PBX_SpecialWeaponSpawner : PB_WeaponSpawner
 {
 	Default
 	{
-		DropItem 'PBX_NukeSpawner', 255, 1;
+		DropItem 'PBX_NukeLauncher', 255, 1;
 		DropItem 'PBX_HexaShotgun', 255, 1;
 	}
 

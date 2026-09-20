@@ -122,6 +122,9 @@ AddOptionMenu "AddonWeaponSpawns" after "PLST2"
 
     // SLOT 7
     FlagOption    "$PBXWEAPONS_PLATINUM_RAILGUN",               "PBXWeapons_plasmarifle_filter",    "OffOn", 0
+
+    // Slot 8
+    FlagOption    "$PBXWEAPONS_FREEZE_RIFLE",                   "PBXWeapons_plasmarifle_filter",    "OffOn", 4
 }
 
 // TIER 3

@@ -1,4 +1,5 @@
-// Battle Rifle from Brutal Doom Platinum by EmeraldCoasttt and the BDP Team
+// Battle Rifle
+// From Brutal Doom Platinum by EmeraldCoasttt and the BDP Team
 
 // Includes
 // #include "./BattleRifle_Functions.zs"

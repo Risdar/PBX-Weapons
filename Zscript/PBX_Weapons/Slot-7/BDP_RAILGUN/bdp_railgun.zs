@@ -1,4 +1,5 @@
-// Railgun from Brutal Doom Platinum made by Dox778, EmeraldCoastt and the BDP Team
+// Railgun 
+// From Brutal Doom Platinum made by Dox778, EmeraldCoastt and the BDP Team
 
 // Includes
 #include "./bdprailgun_Functions.zs"

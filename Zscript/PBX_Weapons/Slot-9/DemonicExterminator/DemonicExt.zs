@@ -1,4 +1,5 @@
-// Demonic Exterminator by Jaih1r0
+// Demonic Exterminator 
+// Original by Jaih1r0
 
 // Includes
 #include "./DemonicExtFunctions.zs"

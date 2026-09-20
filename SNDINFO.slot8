@@ -25,3 +25,26 @@ electrogun/bomb         PZAPBOMB
 electrogun/explode      PZAPBEXP
 electrogun/hum          PZAPHUM
 electrogun/select       PZAPSEL
+
+// Freeze Rifle
+coldcst "sounds/Weapons/Slot-8/FreezeRifle/coldcast.wav"
+iceimpa "sounds/Weapons/Slot-8/FreezeRifle/iceimpact3.wav"
+
+FRZFIRE2 FRZFIRE2
+$rolloff FRZFIRE2 1000 7500
+
+cryodea1 "Sounds/Weapons/Slot-8/FreezeRifle/FZR_MISSILEDEATH1.ogg"
+$rolloff cryodea1 600 2000
+cryodea3 "Sounds/Weapons/Slot-8/FreezeRifle/FZR_MISSILEDEATH3.ogg"
+$rolloff cryodea3 600 2000
+cryodea4 "Sounds/Weapons/Slot-8/FreezeRifle/FZR_MISSILEDEATH4.ogg"
+$rolloff cryodea4 600 2000
+icespik "sounds/Weapons/Slot-8/FreezeRifle/icespike3.wav"
+
+$random DSBOTTLE {DSBOTTLE1 DSBOTTLE2 DSBOTTLE3}
+DSBOTTLE1 "Sounds/Weapons/Slot-8/FreezeRifle/DSBOTTLE.mp3"
+$pitchset 	DSBOTTLE1 1.0
+DSBOTTLE2 "Sounds/Weapons/Slot-8/FreezeRifle/DSBOTTLE.mp3"
+$pitchset 	DSBOTTLE2 1.2
+DSBOTTLE3 "Sounds/Weapons/Slot-8/FreezeRifle/DSBOTTLE.mp3"
+$pitchset 	DSBOTTLE3 1.3

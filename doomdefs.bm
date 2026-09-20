@@ -22,6 +22,7 @@
 // Slot 7
 
 // Slot 8
+#include Brightmaps/FreezeRifle.txt
 
 // Slot 9
 #include Brightmaps/DemonExt.txt

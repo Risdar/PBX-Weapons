@@ -42,6 +42,7 @@ class PBXWeapons_Handler : EventHandler
 
 		// SLOT 8
 		PBXCore_Handler.TryGiveInventory(pm,'PBX_TeslaGun', 'TeslaAmmo', PBX_TeslaGun.CELL_SIZE);
+		PBXCore_Handler.TryGiveInventory(pm,'PBX_FreezeRifle', 'FreezeRifleAmmo', PBX_FreezeRifle.CELL_SIZE);
 
         // SLOT 9
 		PBXCore_Handler.TryGiveInventory(pm,'PBX_DemonExt', 'SoulCharge', PBX_DemonExt.SOUL_CAPACITY);

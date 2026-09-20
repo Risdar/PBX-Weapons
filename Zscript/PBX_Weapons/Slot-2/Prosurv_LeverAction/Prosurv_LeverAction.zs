@@ -1,5 +1,6 @@
-// Plasma Blaster from Project Survival made by ThePopeOfDope
-// Idel sprite from Siren, new sprites made by ThePopeOfDope
+// Plasma Blaster 
+// From Project Survival made by ThePopeOfDope
+// Idle sprite from Siren, new sprites made by ThePopeOfDope
 
 // Includes
 #include "./LeverAction_Functions.zs"
@@ -158,8 +159,10 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 			Goto Ready3;
 
 		WeaponInspect:
-			TNT1 A 0 A_StartSound("weapons/leveraction/inspect",CHAN_WEAPON,CHANF_OVERLAP);
+			TNT1 A 0 PB_HandleCrosshair(76);
 			TNT1 A 0 A_Jump(128,"Inspect2");
+		Inspect1:
+			TNT1 A 0 A_StartSound("weapons/leveraction/inspect",CHAN_WEAPON,CHANF_OVERLAP);
 			TNT1 A 0 A_StartSound("weapons/leveraction/flip");
 			LVR4 F 1 {
 				PB_SetRoll(roll+0.3);
@@ -174,6 +177,7 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 				PB_SetRoll(roll-0.3);
                 return A_DoPBWeaponAction();
 			}
+			TNT1 A 0 A_PressingReload("Inspect1");
 			LVRA SUT 1 {
 				PB_SetRoll(roll-0.3);
                 return A_DoPBWeaponAction();
@@ -189,6 +193,7 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 			Goto Ready3;
 
 		Inspect2:
+			TNT1 A 0 A_StartSound("weapons/leveraction/inspect",CHAN_WEAPON,CHANF_OVERLAP);
 			LVR2 MNOP 1 {
 				PB_SetRoll(roll+1.0);
 				return A_DoPBWeaponAction();

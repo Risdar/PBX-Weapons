@@ -1,4 +1,5 @@
-// Plasma Blaster from Project Survival made by ThePopeOfDope
+// Plasma Blaster 
+// From Project Survival made by ThePopeOfDope
 
 // Includes
 // #include "./prosurvblaster_Functions.zs"

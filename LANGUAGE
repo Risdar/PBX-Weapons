@@ -1,7 +1,7 @@
 [enu default]
 //////////////////////////// GENERAL ///////////////////////////////////////////////////////////////////////////////
 PBXWeapons_Settings                 = "\cg⟁\c- PBX - Weapons Settings";
-PBXWeapons_Version                  = "\cgPBX - Weapons Version: 2.9";
+PBXWeapons_Version                  = "\cgPBX - Weapons Version: 3.0.0 - Energy Update";
 
 PBXWeapons_SmartScope_MaxHP         = "Max. HP: %u";
 PBXWeapons_SmartScope_CurrHP        = "HP: %u";
@@ -42,7 +42,7 @@ PBX_LeverActionUpgrade_Tip2 = "The .444 Marlin deals increased damage but takes 
 PBX_PSG_PICKUP                      = "Commander Pump Shotgun (Slot 3)";
 PBX_PSG_TAG                         = "Commander Pump Shotgun";
 
-PBX_PSG_NOROCKETS                   = "You Don't Have Enough Rocket Ammo";
+PBX_PSG_NOROCKETS                   = "You Don't Have Enough \cgRocket Ammo";
 PBX_PSG_TRIPMINE                    = "Tripmine";
 PBX_PSG_LASERCHARGE                 = "Laser Charge";
 PBX_PSG_ACIDCHARGE                  = "Acid Charge";
@@ -58,8 +58,8 @@ PBX_PSG_Tip3 = "You can recover any thrown equipment by coming near and pressing
 PBX_CSSG_PICKUP                     = "Commander Super Shotgun (Slot 3)";
 PBX_CSSG_TAG                        = "Commander Super Shotgun";
 
-PBX_CSSG_SINGLE                     = "Single Barrel AltFire";
-PBX_CSSG_HOOK                       = "Meat Hook AltFire";
+PBX_CSSG_SINGLE                     = "\cgSingle Barrel\c- AltFire";
+PBX_CSSG_HOOK                       = "\ccMeat Hook\c- AltFire";
 
 PBX_CSSG_PAGE1_WW                   = "Go To CSSG Customization Wheel";
 PBX_CSSG_PAGE2_WW                   = "Go To Shell Type Wheel";
@@ -67,7 +67,7 @@ PBX_CSSG_PAGE2_WW                   = "Go To Shell Type Wheel";
 PBX_CSSG_PAGE1                      = "CSSG Customization Wheel";
 PBX_CSSG_PAGE2                      = "Shell Type Wheel";
 
-PBX_CSSG_NOHOOK                     = "Meat Hook Not Ready";
+PBX_CSSG_NOHOOK                     = "\ccMeat Hook\c- Not Ready";
 PBX_CSSG_NOPLAYER                   = "Hook Failed, Are you using an old save?";
 
 PBX_CM_BUCKLD                       = "\cgBuckshot \c-Shells";
@@ -102,9 +102,9 @@ PBX_PICKUP_EXPL                     = "Got the Explosive shell Upgrade!";
 PBX_PICKUP_WPSP                     = "Got the White phosphorus shell Upgrade!";
 PBX_PICKUP_DOOM                     = "Got the Triple Doom shell Upgrade!";
 PBX_PICKUP_DNMK                     = "You got the Danmaku Shell Upgrade!!!";
-PBX_PICKUP_SUBZ                     = "You got the Sub-Zero Shell Upgrade";
-PBX_PICKUP_HELF                     = "You got the Hell Fire Shell Upgrade";
-PBX_PICKUP_ACDS                     = "You got the Acid Shell Upgrade";
+PBX_PICKUP_SUBZ                     = "Got the Sub-Zero Shell Upgrade";
+PBX_PICKUP_HELF                     = "Got the Hell Fire Shell Upgrade";
+PBX_PICKUP_ACDS                     = "Got the Acid Shell Upgrade";
 
 PBX_CSSG_Tip1 = "You can switch between the Meat Hook Secondary or Single Fire Secondary using %s.";
 
@@ -188,10 +188,6 @@ PBX_Crossbow_ShockNoAmmo            = "You Don't Have Any Energy Cells";
 PBX_DemonicBallistaUpgrade_Pickup   = "Demonic Ballista Upgrade (Slot 4)";
 PBX_Prosurv_Ballista_UpgradeTag     = "Ballista Upgrade";
 
-PBX_DemonicBallista_Tip1 = "You just picked up the Demonic Ballista.";
-PBX_DemonicBallista_Tip2 = "Every shot will now deal fire damage and the Altfire shoots a flaming razorblade";
-
-
 //////////////////////////// SLOT 5 ///////////////////////////////////////////////////////////////////////////////
 // HMG
 PBX_NeoHMG_Pickup                   = "HMG (Slot 5)";
@@ -200,7 +196,7 @@ PBX_NeoHMG_Tag                      = "UAC PB-3 Heavy Machine Gun";
 PBX_NeoHMG_DetonateShield           = "\caDetonate \c-Shield";
 PBX_NeoHMG_PlaceShield              = "\caPlace \c-Shield";
 
-PBX_NeoHMG_Tip1 = "The HMG has a shield that can be activated using %s and only recharges when there's overheat.";
+PBX_NeoHMG_Tip1 = "Activate the shield using %s, the shield only recharges when there's overheat.";
 PBX_NeoHMG_Tip2 = "Pressing the %s key while the shield is active will detonate the shield stunning nearby enemies.";
 PBX_NeoHMG_Tip3 = "When overheat reaches %d° C the weapon will fire a stronger bullet and recharge the shield faster.";
 
@@ -218,9 +214,9 @@ PBX_SuperNailgun_Tag                = "UAC Prototype Super Nailgun";
 PBX_SuperNailgun_HeatedNails        = "\cgSuper Heated Nails \c-Mode";
 PBX_SuperNailgun_ChargedNails       = "\cnSuper Charged Nails \c-Mode";
 
-PBX_SuperNailgun_Tip1 = "When the Super Nailgun overheat at %d° C it will fire special nails depending on the current mode.";
+PBX_SuperNailgun_Tip1 = "When overheat reaches %d° C it will fire special nails depending on the current mode.";
 PBX_SuperNailgun_Tip2 = "Super Heated Nails will bounce and burn while Super Charged Nails will electrocute nearby enemies.";
-PBX_SuperNailgun_Tip3 = "Pressing %s will spin the weapon passively increasing the overheat.";
+PBX_SuperNailgun_Tip3 = "Press %s to spin the weapon and passively gain overheat.";
 
 
 //////////////////////////// SLOT 6 ///////////////////////////////////////////////////////////////////////////////
@@ -290,9 +286,15 @@ PBX_TeslaGun_NoLightningCharge   = "You Need Atleast \ci%d \cyLightning Charges 
 
 PBX_Teslagun_Tip1 = "The Tesla Gun Primary fires a constant arc of electricity, while the altfire fires a lightning ball.";
 PBX_Teslagun_Tip2 = "The Lightning ball will bounce on walls and can be charged using the primary fire.";
-PBX_Teslagun_Tip3 = "When charged the lightning ball will zap nearby enemies and with full charge it will summon lightning to everything near it.";
+PBX_Teslagun_Tip3 = "Charged lightning ball zaps nearby enemies and when fully charged will summon lightning to everything near it.";
 PBX_Teslagun_Tip4 = "The weapon holds lightning charges that increase when firing and can be activated using %s.";
 
+// Freeze Rifle
+PBX_FreezeRifle_Pickup            = "Freeze Rifle (Slot 8)";
+PBX_FreezeRifle_Tag               = "UAC M-19 Prototype Freeze Rifle";
+
+PBX_FreezeRifle_Attack            = "\cvAttack\c- Mode";
+PBX_FreezeRifle_Defense           = "\cyDefense\c- Mode";
 
 //////////////////////////// SLOT 9 ///////////////////////////////////////////////////////////////////////////////
 // Demonic Exterminator
