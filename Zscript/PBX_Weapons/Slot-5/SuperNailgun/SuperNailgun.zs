@@ -266,7 +266,6 @@ class PBX_SuperNailgun : PBX_WeaponBase
             SNRL IJKLM 2;
             SNRL NOP 2 PB_SetRoll(roll+2);
             TNT1 A 0 {
-				PB_SetOverheat(int(invoker.overheat/2)); // So it halves the current overheat
                 A_PlaysoundEx("weapons/riflemagslap", "Auto");
                 PB_AmmoIntoMag(
                     invoker.ammo2.getClassName(),

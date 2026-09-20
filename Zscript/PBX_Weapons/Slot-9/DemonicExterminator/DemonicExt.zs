@@ -1,5 +1,6 @@
 // Demonic Exterminator 
 // Original by Jaih1r0
+// Inspect and Mode Switch animation from God Complex by ULtraViolence
 
 // Includes
 #include "./DemonicExtFunctions.zs"
@@ -94,8 +95,6 @@ Class PBX_DemonExt : PBX_WeaponBase
 			TNT1 A 0 A_Lower;
 			wait;
 		
-		Ready:
-			TNT1 A 0 PB_RespectIfNeeded();
 		WeaponRespect:
 			UNMD EDCBA 1 UNM_WeaponReady();
 			UNMI AAAAAAAAAAAAAAA 1 UNM_WeaponReady();
@@ -115,16 +114,36 @@ Class PBX_DemonExt : PBX_WeaponBase
 			UNMI AAAA 1 UNM_WeaponReady();
 			TNT1 A 0 A_overlay(68,"LightningFlash");
 			UNMI AAAA 1 UNM_WeaponReady();
+			goto Ready3;
+
+		WeaponInspect:
+            UNM2 A 1 {
+				A_Playsound("QSGCHRG",8);
+				return A_DoPBWeaponAction();
+			}
+			UNM2 BCDEFGH 1 A_DoPBWeaponAction();
+			TNT1 A 15;
+			UNM2 H 1 {
+				A_Playsound("QSGCHRG",8);
+				return A_DoPBWeaponAction();
+			}
+			UNM2 GFEDCBA 1 A_DoPBWeaponAction();
+            Goto Ready3;
+
 		Ready3:
 			TNT1 A 0 A_Startsound("unmaker/hum",chan_unmkidle,CHANF_LOOPING);
 			UNMI AAAAAAAAAAAAAAABBBCCCDDDEEEFFFFFFFFFFFFFFFFFFEEEDDDCCCBBBAAA 1 {
 				if(invoker.ExterminatorMode == LightningMode){return ResolveState("Ready.Soul");}
+				if (PressingReload() || (player.oldbuttons & BT_RELOAD)) 
+					return resolvestate("WeaponInspect");
 				return UNM_WeaponReady();
 			}
 			loop;
 		Ready.Soul:
 			UNMI IIIIIIJJJJKKKKJJJJIIIIIIIIIIIIJJJJKKKKJJJJIIIIII 1 {
 				if(invoker.ExterminatorMode != LightningMode){return ResolveState("Ready3");}
+				if (PressingReload() || (player.oldbuttons & BT_RELOAD)) 
+					return resolvestate("WeaponInspect");
 				return UNM_WeaponReady();
 			}
 			goto Ready3;
@@ -132,16 +151,50 @@ Class PBX_DemonExt : PBX_WeaponBase
 		ReadyNoAmmo:
 			UNMI H 1 UNM_WeaponReady();
 			loop;
+			
 		WeaponSpecialLayer:
-			TNT1 A 1 {A_WeaponOffset(0,32);A_Playsound("UNMSWTC",8);invoker.ExterminatorWeaponSpecial = true;}
+			TNT1 A 1 {
+				A_WeaponOffset(0,32);
+				A_Playsound("UNMSWTC",8);
+				invoker.ExterminatorWeaponSpecial = true;
+			}
 			TNT1 AAAAAAAAA 1 A_WeaponOffset(-2,2,WOF_ADD);
 			TNT1 A 3 ;
 			TNT1 AA 1 A_WeaponOffset(-6,6,WOF_ADD);
 			TNT1 A 2 ;
 			TNT1 AAAAAAAAAAAAAAA 1 A_WeaponOffset(2,-2,WOF_ADD);
 			TNT1 A 1 A_WeaponOffset(0,32);
-			TNT1 AAAAA 0 {invoker.ExterminatorWeaponSpecial = false;}
+			TNT1 AAAAA 0 {
+				invoker.ExterminatorWeaponSpecial = false;
+			}
 			stop;
+			
+		SwitchToSoul:
+			UNMI A 7;
+			Goto Ready.Soul;
+
+		SwitchToSoulLayer:
+			UNM2 H 1 {
+				A_Playsound("QSGCHRG",8);
+				invoker.ExterminatorWeaponSpecial = true;
+			}
+			UNM2 GFEDCBA 1;
+			UNM2 AAAAA 0 {
+				invoker.ExterminatorWeaponSpecial = false;
+			}
+			Stop;
+
+		SwitchFromSoulLayer:
+			UNM2 A 1 {
+				A_Playsound("QSGCHRG",8);
+				invoker.ExterminatorWeaponSpecial = true;
+			}
+			UNM2 BCDEFGH 1;
+			UNM2 AAAAA 0 {
+				invoker.ExterminatorWeaponSpecial = false;
+			}
+			Stop;
+
 		WeaponSpecial:
 			TNT1 A 0 WeaponSpecialCheck();
 			goto ready3;
@@ -171,7 +224,6 @@ Class PBX_DemonExt : PBX_WeaponBase
 			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == IncinerationMode,"Fire.Incineration");
 			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == LightningMode,"Fire.Soul");
 		Fire.Laser:
-			
 			TNT1 A 0 A_jumpif(countinv(invoker.ammotype1) < invoker.primammouse, "FireNoAmmo");
 			TNT1 A 0 A_overlay(muzzleLayer,"MuzzleFlash2");
 			TNT1 A 0 A_startsound("unmaker/laser",21);

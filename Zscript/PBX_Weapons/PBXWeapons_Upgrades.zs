@@ -41,8 +41,7 @@ class LeverAction_Upgrade : PB_UpgradeItem
 		if(pickup && pbxweapons_sendTip)
 		{
 			Array<String> tips;
-			tips.Push("$PBX_LeverActionUpgrade_Tip1");
-			tips.Push(string.format(StringTable.Localize("$PBX_LeverActionUpgrade_Tip2"),PBX_Prosurv_LeverAction.AMMO_TAKE_MARLIN,PBX_Prosurv_LeverAction.MAGAZINE_SIZE/2));
+			tips.Push(string.format(StringTable.Localize("$PBX_LeverActionUpgrade_Tip1"),PBX_Prosurv_LeverAction.AMMO_TAKE_MARLIN));
 			PBXCore_TipsManager.SendTipArrayIfNeeded(tips,"PBXWeapons_UpgradeHelpFlags", PBX_TIP_LEVERACTION_UPGRADE);
 		}
 		return pickup;

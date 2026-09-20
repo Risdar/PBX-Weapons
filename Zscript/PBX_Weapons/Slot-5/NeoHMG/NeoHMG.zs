@@ -120,8 +120,7 @@ class PBX_NeoHMG : PBX_WeaponBase
 			HG0U ABCD 1;
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
 		Ready3:
-			TNT1 A 0 A_JumpIf(PB_GetMagUnloaded(), "ReadyUnload");
-			"####" A 0 {
+			TNT1 A 0 {
 				if(PB_GetOverheat() > 1) {cooldownOverheat();}
 				PB_HandleCrosshair(52);
 			}
@@ -134,25 +133,24 @@ class PBX_NeoHMG : PBX_WeaponBase
 				PB_HandleCrosshair(52);
 				HMG_CoolDownBarrel();
 				setMagSprite("HG0F","XH04","XH03","XH02","XH01");
+
+				// Unload sprite
+				if(PB_GetMagUnloaded())
+				{
+					A_SetWeaponSpriteEx("HG0R");
+					A_SetWeaponFrame(17);
+				}
+
+				// So you can still fire even when the shield is up
 				if (PressingFire() && PressingAltfire() && CountInv(invoker.ammotype2) > 0)
 					return resolvestate("Fire");
-				return A_DoPBWeaponAction(WRF_ALLOWRELOAD); 
+				return A_DoPBWeaponAction(); 
 			}
 			loop;
 		
-		ReadyUnload:
-			HG0R R 1 {
-				HMG_CoolDownBarrel();
-				PB_HandleCrosshair(52);
-				if (PressingFire() && PressingAltfire() && CountInv(invoker.ammotype2) > 0)
-					return resolvestate("Fire");
-				return A_DoPBWeaponAction(WRF_ALLOWRELOAD); 
-			}
-			loop;
-
 		UnloadedSelect:
 			HG0R MNOPQRS 1;
-			goto ReadyUnload;
+			goto Ready3;
 
 		Overheat:
 			TNT1 A 0 A_StartSound("MG42HEAT", CHAN_WEAPON, CHANF_OVERLAP, 1.0);
@@ -284,7 +282,6 @@ class PBX_NeoHMG : PBX_WeaponBase
 			"####" A 0 {
 				if(invoker.ammo2.amount < 1 && !PB_GetMagUnloaded())
 					PB_SpawnCasing("EmptyLMGMag", 12, -2.5, 6.25,frandom(2,5),frandom(1,3),frandom(2,4));
-					//A_Spawnitem("EmptyLMGMag");EmptyLMGMissileMag
 			}
 			"####" I 1;
 			HG0R JK 1;
@@ -300,7 +297,6 @@ class PBX_NeoHMG : PBX_WeaponBase
 			HG0R U 1;
 			HG0R V 1 setMagSprite("HG0R","XHR4","XHR3","XHR2","XHR1");
 			"####" A 0 {
-				PB_SetOverheat(int(invoker.overheat/2)); // So it halves the current overheat
 				PB_AmmoIntoMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname(),MAGAZINE_SIZE);
 				PB_SetMagEmpty(false);
 				PB_SetMagUnloaded(false);
@@ -322,7 +318,7 @@ class PBX_NeoHMG : PBX_WeaponBase
 			XHR1 A 0; XHR2 A 0; HG1R A 0;
 			XHR3 A 0; XHR4 A 0;
 			// Actual Code
-			TNT1 A 0 A_Jumpif(pb_getmagunloaded(),"ReadyUnload");
+			TNT1 A 0 A_Jumpif(pb_getmagunloaded(),"Ready3");
 			HG0R ABCDE 1 setMagSprite("HG0R","XHR4","XHR3","XHR2","XHR1");
 			HG0R FGH 1 setMagSprite("HG0R","HG0R","XHR3","XHR2","XHR1");
 			"####" A 0 A_StartSound("weapons/sgl/detach", CHAN_WEAPON, CHANF_OVERLAP, 1.0);
@@ -336,7 +332,7 @@ class PBX_NeoHMG : PBX_WeaponBase
 			HG0R MNOOPP 1;
 			HG0R QQQ 1;
 			HG0R QRS 1; 
-			goto ReadyUnload;
+			goto Ready3;
 
 //////////////////////////// WEAPON SPECIAL ////////////////////////////////////////////////////////////////////////////////////
 		Weaponspecial:
@@ -382,7 +378,7 @@ class PBX_NeoHMG : PBX_WeaponBase
 			Wait;
 
 		MuzzleFlash:
-			TNT1 A 0 A_jump(256,"Muzzle1","Muzzle3");
+			TNT1 A 0 A_jump(256,"Muzzle1","Muzzle2","Muzzle3");
 		Muzzle1:
 			HG0M AB 1 bright;
 			stop;

@@ -445,6 +445,8 @@ class HMGShield : PB_Ammo
     Default 
 	{
         Inventory.MaxAmount PBX_NeoHMG.SHIELD_MAXCHARGE;
+		ammo.backpackmaxamount PBX_NeoHMG.SHIELD_MAXCHARGE;
+        +INVENTORY.IGNORESKILL;
     }
 }
 

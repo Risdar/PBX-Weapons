@@ -1,7 +1,7 @@
 [enu default]
 //////////////////////////// GENERAL ///////////////////////////////////////////////////////////////////////////////
 PBXWeapons_Settings                 = "\cg⟁\c- PBX - Weapons Settings";
-PBXWeapons_Version                  = "\cgPBX - Weapons Version: 3.0.0 - Energy Update";
+PBXWeapons_Version                  = "\cgPBX - Weapons Version: 3.0.1 - Energy Update";
 
 PBXWeapons_SmartScope_MaxHP         = "Max. HP: %u";
 PBXWeapons_SmartScope_CurrHP        = "HP: %u";
@@ -27,20 +27,19 @@ PBX_ProsurvBlaster_Tag             = "UAC MK-I Plasma Pistol";
 PBX_LeverAction_Pickup              = "Lever Action Rifle (Slot 2)";
 PBX_LeverAction_Tag                 = "UAC M1893 Mod 0 Lever Action";
 
-PBX_LeverAction_Marlin              = "\cd.444 Marlin \c-Mode";
-PBX_LeverAction_Magnum              = "\cd.357 Magnum \c-Mode";
+PBX_LeverAction_Marlin              = "\cd.444 Marlin \c-Loaded";
+PBX_LeverAction_Magnum              = "\cd.357 Magnum \c-Loaded";
 
 PBX_LeverAction_UpgradePickup       = "Lever Action Rifle Upgrade (Slot 2)";
 PBX_LeverAction_UpgradeTag          = "Lever Action Rifle Upgrade";
 
-PBX_LeverActionUpgrade_Tip1 = "You just unlocked the .444 Marlin ammo.";
-PBX_LeverActionUpgrade_Tip2 = "The .444 Marlin deals increased damage but takes %d low caliber ammo and halves your magazine capacity to %d.";
+PBX_LeverActionUpgrade_Tip1 = "The \cd.444 Marlin\c- deals increased damage but takes %d low caliber ammo and halves your magazine.";
 
 
 //////////////////////////// SLOT 3 ///////////////////////////////////////////////////////////////////////////////
 // PSG
 PBX_PSG_PICKUP                      = "Commander Pump Shotgun (Slot 3)";
-PBX_PSG_TAG                         = "Commander Pump Shotgun";
+PBX_PSG_TAG                         = "UAC PS-19 Pump Shotgun";
 
 PBX_PSG_NOROCKETS                   = "You Don't Have Enough \cgRocket Ammo";
 PBX_PSG_TRIPMINE                    = "Tripmine";
@@ -49,17 +48,17 @@ PBX_PSG_ACIDCHARGE                  = "Acid Charge";
 PBX_PSG_SWARMACHARGE                = "Swarm Charge";
 PBX_PSG_DETONATOR                   = "Detonator";
 
-PBX_PSG_Tip1 = "You can switch between various equipments using %s.";
-PBX_PSG_Tip2 = "You can manually detonate the equipments and see how much rocket ammo each one uses from the wheel.";
-PBX_PSG_Tip3 = "You can recover any thrown equipment by coming near and pressing %s.";
+PBX_PSG_Tip1 = "Switch \cfcharges\c- using %s and manually detonate them using the Detonator";
+PBX_PSG_Tip2 = "The number below the \cfcharges\c- shows the amount of \cgRocket ammo\c- needed.";
+PBX_PSG_Tip3 = "Recover any thrown \cfcharges\c- by pressing %s near them.";
 
 
 // CSSG 
 PBX_CSSG_PICKUP                     = "Commander Super Shotgun (Slot 3)";
 PBX_CSSG_TAG                        = "Commander Super Shotgun";
 
-PBX_CSSG_SINGLE                     = "\cgSingle Barrel\c- AltFire";
-PBX_CSSG_HOOK                       = "\ccMeat Hook\c- AltFire";
+PBX_CSSG_SINGLE                     = "Secondary: \cgSingle Barrel";
+PBX_CSSG_HOOK                       = "Secondary: \cuMeat Hook";
 
 PBX_CSSG_PAGE1_WW                   = "Go To CSSG Customization Wheel";
 PBX_CSSG_PAGE2_WW                   = "Go To Shell Type Wheel";
@@ -67,7 +66,7 @@ PBX_CSSG_PAGE2_WW                   = "Go To Shell Type Wheel";
 PBX_CSSG_PAGE1                      = "CSSG Customization Wheel";
 PBX_CSSG_PAGE2                      = "Shell Type Wheel";
 
-PBX_CSSG_NOHOOK                     = "\ccMeat Hook\c- Not Ready";
+PBX_CSSG_NOHOOK                     = "\cuMeat Hook\c- Not Ready";
 PBX_CSSG_NOPLAYER                   = "Hook Failed, Are you using an old save?";
 
 PBX_CM_BUCKLD                       = "\cgBuckshot \c-Shells";
@@ -106,7 +105,7 @@ PBX_PICKUP_SUBZ                     = "Got the Sub-Zero Shell Upgrade";
 PBX_PICKUP_HELF                     = "Got the Hell Fire Shell Upgrade";
 PBX_PICKUP_ACDS                     = "Got the Acid Shell Upgrade";
 
-PBX_CSSG_Tip1 = "You can switch between the Meat Hook Secondary or Single Fire Secondary using %s.";
+PBX_CSSG_Tip1 = "You can switch between the \cuMeat Hook\c- Secondary or \cgSingle Fire\c- Secondary using %s.";
 
 PBX_CSSGUpgrade_Tip1 = "You just picked up one of the many CSSG Upgrades.";
 PBX_CSSGUpgrade_Tip2 = "Gotta catch 'em all.";
@@ -115,8 +114,8 @@ PBX_CSSGUpgrade_Tip2 = "Gotta catch 'em all.";
 PBX_SPAS12_PICKUP                   = "SPAS-12 (Slot 3)";
 PBX_SPAS12_TAG                      = "Franchi SPAS-12 Combat Shotgun";
 
-PBX_SPAS12_ADS                      = "\chZoom \c-AltFire";
-PBX_SPAS12_DUALFIRE                 = "\cgDouble Barrel \c-AltFire";
+PBX_SPAS12_ADS                      = "Secondary: \chZoom";
+PBX_SPAS12_DUALFIRE                 = "Secondary: \cgDouble Barrel";
 
 // CryoSG
 PBX_CryoSG_Pickup                   = "Plasma Shotgun (Slot 3)";
@@ -158,8 +157,8 @@ PBX_NormalRifle_Akimbo              = "Akimbo Assault Rifle";
 // Metal Sniper
 PBX_MetalSniper_Pickup              = "Metal Sniper (Slot 4)";
 PBX_MetalSniper_Tag                 = "UAC-45 Heavy 'Metal' Sniper";
-PBX_MetalSniper_AimMode             = "\cdAim Secondary \c-Mode";
-PBX_MetalSniper_GrenMode            = "\ciGrenade Secondary \c-Mode";
+PBX_MetalSniper_AimMode             = "Secondary: \cdZoom";
+PBX_MetalSniper_GrenMode            = "Secondary: \ciGrenade Launcher";
 
 PBX_MetalSniper_Resonance           = "\cjResonance Ammo \c-Mode";
 PBX_MetalSniper_Standard            = "\cd7.62x51mm Armor Piercing \c-Mode";
@@ -168,10 +167,10 @@ PBX_MetalSniper_UpgradePickup       = "Metal Sniper Resonance Ammo Type Upgrade 
 PBX_MetalSniper_UpgradeTag          = "Metal Sniper Upgrade";
 
 PBX_MetalSniper_Tip1 = "You can switch Secondary modes using %s.";
-PBX_MetalSniper_Tip2 = "The Grenade Secondary needs to be primed before firing by pressing %s and then %s";
-PBX_MetalSniper_Tip3 = "Opening the Weapon Special Wheel when \cdzoomed \c-in will let you select the Advanced Targeting Scope Modes.";
+PBX_MetalSniper_Tip2 = "\ciGrenade Launcher\c- Secondary needs to be primed first by pressing %s and then %s.";
+PBX_MetalSniper_Tip3 = "Opening the \chWeapon Special\c- Wheel when \cdzoomed \c-in will let you select the Advanced Targeting Scope Modes.";
 
-PBX_MetalSniperUpgrade_Tip1 = "Using the Resonance Ammo at an Arachnotron shield will cause it to explode and stun nearby enemies.";
+PBX_MetalSniperUpgrade_Tip1 = "Firing the Resonance Ammo at an Arachnotron shield will detonate it and \cnstun\c- nearby enemies.";
 
 // Crossbow Ballista
 PBX_CrossbowBallista_Pickup         = "Crossbow (Slot 4)";
@@ -181,9 +180,6 @@ PBX_Crossbow_Standard               = "\cdNormal Bolt";
 PBX_Crossbow_Explosive              = "\crExplosive Bolt";
 PBX_Crossbow_Demonic                = "\caDemonic Bolt";
 PBX_Crossbow_Shock                  = "\cnShock Bolt";
-
-PBX_Crossbow_DemonicNoAmmo          = "You Don't Have Any Demonic Ammo";
-PBX_Crossbow_ShockNoAmmo            = "You Don't Have Any Energy Cells";
 
 PBX_DemonicBallistaUpgrade_Pickup   = "Demonic Ballista Upgrade (Slot 4)";
 PBX_Prosurv_Ballista_UpgradeTag     = "Ballista Upgrade";
@@ -196,9 +192,9 @@ PBX_NeoHMG_Tag                      = "UAC PB-3 Heavy Machine Gun";
 PBX_NeoHMG_DetonateShield           = "\caDetonate \c-Shield";
 PBX_NeoHMG_PlaceShield              = "\caPlace \c-Shield";
 
-PBX_NeoHMG_Tip1 = "Activate the shield using %s, the shield only recharges when there's overheat.";
-PBX_NeoHMG_Tip2 = "Pressing the %s key while the shield is active will detonate the shield stunning nearby enemies.";
-PBX_NeoHMG_Tip3 = "When overheat reaches %d° C the weapon will fire a stronger bullet and recharge the shield faster.";
+PBX_NeoHMG_Tip1 = "Activate the \cdshield\c- using %s, the \cdshield\c- only \cvrecharges\c- when there's \cgoverheat\-.";
+PBX_NeoHMG_Tip2 = "Pressing %s while the \cdshield\c- is active will \cgdetonate\c- the \cdshield\c- \cnstunning\c- nearby enemies.";
+PBX_NeoHMG_Tip3 = "When \cgoverheat\c- reaches \ca%d° C\c- the weapon will use a stronger projectile and \cvrecharge\c- the \cdshield\c- faster.";
 
 
 // Eternal Chaingun
@@ -211,12 +207,12 @@ PBX_EternalChaingun_NoBerserk       = "You need \cgBerserk\c- to Use this Weapon
 PBX_SuperNailgun_Pickup             = "Super Nailgun (Slot 5)";
 PBX_SuperNailgun_Tag                = "UAC Prototype Super Nailgun";
 
-PBX_SuperNailgun_HeatedNails        = "\cgSuper Heated Nails \c-Mode";
+PBX_SuperNailgun_HeatedNails        = "\caSuper Heated Nails \c-Mode";
 PBX_SuperNailgun_ChargedNails       = "\cnSuper Charged Nails \c-Mode";
 
-PBX_SuperNailgun_Tip1 = "When overheat reaches %d° C it will fire special nails depending on the current mode.";
-PBX_SuperNailgun_Tip2 = "Super Heated Nails will bounce and burn while Super Charged Nails will electrocute nearby enemies.";
-PBX_SuperNailgun_Tip3 = "Press %s to spin the weapon and passively gain overheat.";
+PBX_SuperNailgun_Tip1 = "When \cgoverheat\c- reaches \ca%d° C\c- it will fire special nails depending on the current mode.";
+PBX_SuperNailgun_Tip2 = "\caSuper Heated Nails\c- will bounce and burn while \cnSuper Charged Nails\c- will zap nearby enemies.";
+PBX_SuperNailgun_Tip3 = "Press %s to spin the weapon and passively gain \cgoverheat\c-.";
 
 
 //////////////////////////// SLOT 6 ///////////////////////////////////////////////////////////////////////////////
@@ -228,20 +224,20 @@ PBX_Excavator_DropMode              = "\ciDrop Charge \c-Mode";
 PBX_Excavator_BolaMode              = "\crExplosive Bolas \c-Mode";
 PBX_Excavator_SawMode               = "\ckRazor Blade \c-Mode";
 
-PBX_Excavator_TryDrillorDrop        = "Drill and Drop Mode Requires The Excavator to be in Bola Mode";
+PBX_Excavator_TryDrillorDrop        = "\cdDrill\c- and \ciDrop\c- Mode Requires The Excavator to be in Bola Mode";
 PBX_ExcavatorUpgrade_Pickup         = "Excavator Upgrade (Slot 6)";
 PBX_Excavator_UpgradeTag            = "Excavator Universal Demolition Tool (UDT)";
 
-PBX_Excavator_Tip1 = "The Excavator has two modes and can be manually detonated with %s";
-PBX_Excavator_Tip2 = "Drill mode rocket will burrow into the ground and come to the surface upon detonation.";
-PBX_Excavator_Tip3 = "Drop mode rocket will fly normally and drop into the ground upon detonation.";
+PBX_Excavator_Tip1 = "The Excavator has two modes and can be \crmanually detonated\c- with %s";
+PBX_Excavator_Tip2 = "\cdDrill\c- mode rocket will burrow into the ground and come to the surface upon detonation.";
+PBX_Excavator_Tip3 = "\ciDrop\c- mode rocket will fly normally and drop into the ground upon detonation.";
 
 PBX_ExcavatorUpgrade_Tip1 = "The Excavator Upgrade adds 2 new modes.";
-PBX_ExcavatorUpgrade_Tip2 = "The Explosive Bolas will launch sticky bolas to enemies that detonates after a while and the AltFire will shoot 6 burst of Sticky Grenades.";
-PBX_ExcavatorUpgrade_Tip3 = "The Razorblade mode will launch a Razorblade that sticks to enemies and the AltFire will charge fire bouncing Razorblade.";
+PBX_ExcavatorUpgrade_Tip2 = "\crThe Explosive Bolas\c- mode launches Sticky Bolas that detonates while the Secondary will shoot 6 burst of Sticky Grenades.";
+PBX_ExcavatorUpgrade_Tip3 = "\ckThe Razorblade\c- mode launches a Razorblade that sticks to enemies while the Secondary will charge fire bouncing Razorblade.";
 
 // CyberdemonRL
-PBX_CyberdemonRL_Pickup             = "You got the Cyberdemon's missile launcher! Holy shit, that thing's heavy... (Slot 6)";
+PBX_CyberdemonRL_Pickup             = "You got the Cyberdemon's missile launcher! This thing's heavy... (Slot 6)";
 PBX_CyberdemonRL_Tag                = "Cyberdemon's Missile Launcher";
 
 PBX_CyberdemonRL_Pierce             = "\cdPiercing Rockets \c-Mode";
@@ -261,17 +257,17 @@ PBX_Paingiver_Tag                   = "Paingiver";
 PBX_Paingiver_Enraged               = "\c[PB_DTech]Enraged Paingiver \c-Mode";
 PBX_Paingiver_Desc                  = "\ciForged From The Metal Smelting Pits Of The Golgothan Enclave: \cdThe Paingiver Is A Weapon Of Pure Malice Devised For A Singular Purpose - To Enact Suffering Upon The Weak!";
 
-PBX_Paingiver_Tip1 = "The Paingiver Primary shoots normal Rockets while its Secondary fires three bursts of seeking rockets.";
-PBX_Paingiver_Tip2 = "The Paingiver Enraged State will make the Paingiver not take any ammo when shooting, gives 75 Percent damage reduction, and increased fire rate.";
+PBX_Paingiver_Tip1 = "The Primary shoots normal Rockets while its Secondary fires three bursts of seeking rockets.";
+PBX_Paingiver_Tip2 = "Enraged State significantly reduces firing delay, removes ammo take when shooting, and gives 75 Percent damage reduction.";
 
 //////////////////////////// SLOT 7 ///////////////////////////////////////////////////////////////////////////////
 PBX_BDPRailgun_Pickup               = "Platinum Railgun (Slot 7)";
 PBX_BDPRailgun_Tag                  = "UAC MK-III 'Platinum' Railgun";
 
 PBX_BDPRailgun_SpawnHologram        = "Spawn Hologram";
-PBX_BDPRailgun_NoHologram           = "Hologram is Charging";
+PBX_BDPRailgun_NoHologram           = "\cnHologram\c- is Charging";
 
-PBX_BDPRailgun_Tip1 = "The Platinum Railgun has a hologram that can be activated using %s.";
+PBX_BDPRailgun_Tip1 = "The Platinum Railgun has a \cnHologram\c- that can be activated using %s.";
 PBX_BDPRailgun_Tip2 = "Pressing %s when \cdZoomed \c-in will let you select the Scoped Modes";
 
 //////////////////////////// SLOT 8 ///////////////////////////////////////////////////////////////////////////////
@@ -282,12 +278,10 @@ PBX_TeslaGun_Tag                 = "Prototype Tesla-Lightning Accelerator";
 PBX_TeslaGun_Arc                 = "\cnArc \c-Mode";
 PBX_TeslaGun_Pulse               = "\cvPulse \c-Mode";
 
-PBX_TeslaGun_NoLightningCharge   = "You Need Atleast \ci%d \cyLightning Charges \c\nTo Summon A Lightning Storm";
+PBX_TeslaGun_NoLightningCharge   = "You Need Atleast \ci%d \cyLightning Charges \c\nTo Summon A \cyLightning Storm";
 
-PBX_Teslagun_Tip1 = "The Tesla Gun Primary fires a constant arc of electricity, while the altfire fires a lightning ball.";
-PBX_Teslagun_Tip2 = "The Lightning ball will bounce on walls and can be charged using the primary fire.";
-PBX_Teslagun_Tip3 = "Charged lightning ball zaps nearby enemies and when fully charged will summon lightning to everything near it.";
-PBX_Teslagun_Tip4 = "The weapon holds lightning charges that increase when firing and can be activated using %s.";
+PBX_Teslagun_Tip1 = "The Secondary fires a \cnlightning ball\c- that bounces on walls and can be \chcharged\c- using the primary fire.";
+PBX_Teslagun_Tip2 = "\chCharged\c- \cnlightning ball\c- zaps nearby enemies and when \chfully charged\c- will summon \cylightning\c- to everything nearby.";
 
 // Freeze Rifle
 PBX_FreezeRifle_Pickup            = "Freeze Rifle (Slot 8)";
@@ -304,13 +298,13 @@ PBX_DemonExt_Laser                  = "\caLaser \c-Mode";
 PBX_DemonExt_Incin                  = "\crDark Incinerator \c-Mode";
 PBX_DemonExt_Lightning              = "\cjSoul Lightning \c-Mode";
 
-PBX_DemonExt_NoIncin                = "You Need the Tome of Intimidation for this Mode";
-PBX_DemonExt_NoLightning            = "You Need the Soul Chalice for this Mode";
+PBX_DemonExt_NoIncin                = "You Need the \crTome of Intimidation\c- for this Mode";
+PBX_DemonExt_NoLightning            = "You Need the \cjSoul Chalice\c- for this Mode";
 
 PBX_DemonExt_IncinArtifact          = "Tome of Intimidation";
 PBX_DemonExt_LightningArtifact      = "Soul Chalice.";
 
-PBX_DemonExt_Tip1 = "By killing enemies with the Demonic Exterminator, you will earn souls.";
+PBX_DemonExt_Tip1 = "Killing enemies with the Demonic Exterminator will give souls.";
 PBX_DemonExt_Tip2 = "You can use the souls when in \cjSoul Lightning \c-Mode.";
 
 // Nuke Launcher
@@ -332,18 +326,12 @@ PBX_AlreadySelected                 = "Mode Already Selected";
 PBX_NoUpgrade                       = "You Don't Have the Upgrade for This Weapon";
 PBX_AmmoNotAvailable                = "Ammo Type Not Available";
 PBX_ModeNotAvailable                = "Mode Not Available";
-PBX_NoSpecial                       = "No Weapon Special Available";
+PBX_NoSpecial                       = "No \chWeapon Special\c- Available";
 PBX_NotEnoughAmmo                   = "Not Enough Ammo";
 PBX_AmmoNotFound                    = "Ammo Not Found";
 // Targeting system
 PBX_LaserOn                         = "\cdLaser Sight \c-Activated";
 PBX_LaserOff                        = "\ciLaser Sight \c-Deactivated";
-
-PBX_Zoom20                          = "2.0x Magnification";
-PBX_Zoom30                          = "3.0x Magnification";
-PBX_Zoom40                          = "4.0x Magnification";
-PBX_Zoom70                          = "7.0x Magnification";
-PBX_Zoom90                          = "9.0x Magnification";
 
 PBX_GoScope                         = "\cdTarget Analysis \c-Switch";
 PBX_Scope1                          = "\cdTarget Analysis \c-Disabled";
@@ -357,18 +345,10 @@ PBX_nvgOff                          = "\cdInfrared \c-Disabled";
 
 PBX_DisableUpgrade      = "You can bypass this requirement by disabling the upgrade in the Addon Spawner Settings.";
 
-PBX_ScrollZoom_Tip1     = "You just picked up a scoped weapon";
-PBX_ScrollZoom_Tip2     = "Every scoped weapon has variable zoom that can be adjusted using the \cnScroll Wheel\c- when \cdZoomed \c-in";
-PBX_ScrollZoom_Tip3     = "You can also manually adjust the zoom using %s to Zoom In or %s to Zoom Out";
+PBX_ScrollZoom_Tip1     = "Every scoped weapon zoom strength can be adjusted using the \cnScroll Wheel\c- when \cdZoomed \c-in";
+PBX_ScrollZoom_Tip2     = "You can also manually adjust the zoom using %s to Zoom In or %s to Zoom Out";
 
-PBX_MonsterWeapon1      = "You have picked up a Monster Weapon, they are very powerful weapons but has durability.";
-PBX_MonsterWeapon2      = "You can restore its durability by picking up the same weapon again.";
-
-PBX_DemonicWeapon1      = "You have picked up a Demonic Weapon, every demonic weapon has an enraged state.";
-PBX_DemonicWeapon2      = "Enraged State requires Soul Charges to activate, this can only be replenished using the Demonic Exterminator.";
-
-PBX_CommanderWeapon1    = "You have picked up a Commander Weapon, they work like normal weapons but has various special abilities.";
-PBX_CommanderWeapon2    = "Every weapon in this category can use different types of equipment or ammo types.";
+PBX_MonsterWeapon1      = "Every Monster Weapon are very powerful but has durability. Restore its durability by picking up the same weapon again.";
 
 // These are already in PB
 /* PB_FIREMODE_SEMI = "Firemode: \cfSemi-Auto";

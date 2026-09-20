@@ -13,8 +13,11 @@ extend class PBX_DemonExt{
 			PS.frame = frm;
 	}
 
-	Action void WeaponSpecialCheck()
+	Action state WeaponSpecialCheck()
 	{
+		if(!FindInventory("GoWeaponSpecialAbility"))
+			return resolvestate(null);
+
 		bool closeWheel = countinv("PBX_CloseWheel") > 0;
 		bool noIncinerator = countinv("UMDE_Select_NoIncinerationMode") > 0;
 		bool noLightning = countinv("UMDE_Select_NoLightningMode") > 0;
@@ -23,54 +26,71 @@ extend class PBX_DemonExt{
 		bool goIncinerator = countinv("UMDE_Select_IncinerationMode") > 0;
 		bool goLightning = countinv("UMDE_Select_LightningMode") > 0;
 
-		if(FindInventory("GoWeaponSpecialAbility"))
+		int prevMode = invoker.ExterminatorMode;
+		A_TakeInventory("GoWeaponSpecialAbility",1);
+		
+		if(closeWheel)
 		{
-			A_TakeInventory("GoWeaponSpecialAbility",1);
-			
-			if(closeWheel)
-			{
-				cleanmodetokens();
-				return;
-			}
-
-			if(noIncinerator || noLightning)
-			{
-				A_Print(noIncinerator ? "$PBX_DemonExt_NoIncin" : "$PBX_DemonExt_NoLightning");
-				cleanmodetokens();
-				return;
-			}
-
-			if((goLaser      && invoker.ExterminatorMode == LaserMode) 
-			|| (goIncinerator && invoker.ExterminatorMode == IncinerationMode) 
-			|| (goLightning  && invoker.ExterminatorMode == LightningMode))
-			{
-				A_print("$PBX_AlreadySelected");
-				cleanmodetokens();
-				return;
-			}
-			
-			if(goLaser)
-			{
-				DEUM_SetMode(LaserMode);
-				A_print("$PBX_DemonExt_Laser");
-			}
-			
-			if(goIncinerator)
-			{
-				DEUM_SetMode(IncinerationMode);
-				A_print("$PBX_DemonExt_Incin");
-			}
-			
-			if(goLightning)
-			{
-				DEUM_SetMode(LightningMode);
-				A_print("$PBX_DemonExt_Lightning");
-			}
-
-			A_StartSound("unmaker/switch",CHAN_WEAPON);
 			cleanmodetokens();
-			A_Overlay(specialOverlay,"WeaponSpecialLayer");
+			return resolvestate(null);
 		}
+
+		if(noIncinerator || noLightning)
+		{
+			A_Print(noIncinerator ? "$PBX_DemonExt_NoIncin" : "$PBX_DemonExt_NoLightning");
+			cleanmodetokens();
+			return resolvestate(null);
+		}
+
+		if((goLaser      && invoker.ExterminatorMode == LaserMode) 
+		|| (goIncinerator && invoker.ExterminatorMode == IncinerationMode) 
+		|| (goLightning  && invoker.ExterminatorMode == LightningMode))
+		{
+			A_print("$PBX_AlreadySelected");
+			cleanmodetokens();
+			return resolvestate(null);
+		}
+		
+		if(goLaser)
+		{
+			DEUM_SetMode(LaserMode);
+			A_print("$PBX_DemonExt_Laser");
+		}
+		
+		if(goIncinerator)
+		{
+			DEUM_SetMode(IncinerationMode);
+			A_print("$PBX_DemonExt_Incin");
+		}
+		
+		if(goLightning)
+		{
+			DEUM_SetMode(LightningMode);
+			A_print("$PBX_DemonExt_Lightning");
+		}
+
+		A_StartSound("unmaker/switch",CHAN_WEAPON);
+		cleanmodetokens();
+
+		// Switch from Lightning
+		if(prevMode == LightningMode && (invoker.ExterminatorMode == IncinerationMode || invoker.ExterminatorMode == LaserMode))
+		{
+			A_Overlay(specialOverlay,"SwitchFromSoulLayer");
+			return resolvestate("Ready3");
+		}
+
+		// Switch to Lightning
+		if(invoker.ExterminatorMode == LightningMode)
+		{
+			A_Overlay(specialOverlay,"SwitchToSoulLayer");
+			return resolvestate("SwitchToSoul");
+		}
+
+		// Everything else
+		if(invoker.ExterminatorMode != LightningMode)
+			A_Overlay(specialOverlay,"WeaponSpecialLayer");
+
+		return resolvestate(null);
 	}
 
 	const LaserMode = 0;
@@ -105,13 +125,14 @@ extend class PBX_DemonExt{
 	
 	action state UNM_WeaponReady()
 	{
-		WeaponSpecialCheck();
+		// WeaponSpecialCheck();
 		DemonExtCrosshair();
 		A_TakeInventory("CantDoAction",0);
 		if(!invoker.ExterminatorWeaponSpecial)
-			A_DoPBWeaponAction(0);
-		
-		return ResolveState(NULL);
+			return A_DoPBWeaponAction(0);
+
+		// return ResolveState(NULL);
+		return WeaponSpecialCheck();
 	}
 
 	action void UNM_Add_level()

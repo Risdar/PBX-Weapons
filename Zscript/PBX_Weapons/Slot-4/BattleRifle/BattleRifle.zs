@@ -187,7 +187,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 			BR45 B 1 {
 				PB_HandleCrosshair(42);
 				PB_CoolDownBarrel();
-				return A_DoPBWeaponAction(WRF_ALLOWRELOAD);
+				return PB_ReadyFire();
 			}
 			Loop;
 		
@@ -217,9 +217,9 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 				A_ZoomFactor(1.0);
 			}
 			TNT1 A 0 A_JumpIf(PB_GetZoom(), "FireADS");
-			TNT1 A 0 PB_JumpIfNoAmmo("Reload", 1, false);
-			BR4F "#" 1 {
-				frame = random(0,2);
+			TNT1 A 0 PB_JumpIfNoAmmo(chamber:false);
+			BR4F A 1 {
+				A_SetWeaponFrame(random[sfx](0,2));
 				FireWeapon();
 			}
 			BR45 D 1 {
@@ -232,7 +232,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 		BurstDone:
 			TNT1 A 0 { invoker.burstcount = 0; }
 			BR45 DEF 1;
-			BR45 GH 1 {
+			BR45 FGH 1 {
 				// Track button release
 				if (!(player.cmd.buttons & BT_ATTACK))
 					invoker.semiclear = true;
@@ -247,7 +247,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 		Fire2:
 		FireADS:
 			TNT1 A 0 A_ZoomFactor(PBX_GetZoomLevel());
-			TNT1 A 0 PB_JumpIfNoAmmo("Reload", 1, false);
+			TNT1 A 0 PB_JumpIfNoAmmo(chamber:false);
 			BR4Z D 1 Bright FireWeapon();
 			BR4Z D 1 Bright {
 				if (invoker.ammo2.amount < 1) PB_SpawnCasing("RifleClipSpawn");
@@ -260,24 +260,14 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 				invoker.burstcount = 0;
 				// A_SetInventory("CantDoAction", 0);
 			}
-			BR4Z DDDDDDDDDDDD 1 Bright {
+			BR4Z D 3 Bright;
+			BR4Z DDDDDDDDD 1 Bright {
 				// Track button release
 				if (!(player.cmd.buttons & BT_ATTACK))
 					invoker.semiclear = true;
 				// Refire only if button was released and repressed
 				if (invoker.semiclear && PlayerPressedOnce(BT_ATTACK))
 					return resolvestate("FireADS");
-
-				if (PB_GetAimMode())
-				{
-					if (JustReleased(BT_ALTATTACK))
-						return resolvestate("ZoomOut");
-				}
-				else
-				{
-					if (PressingAltfire())
-						return resolvestate("ZoomOut");
-				}
 
 				return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOFIRE | WRF_NOPRIMARY);
 			}
@@ -319,12 +309,10 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 			BR4Z A 1;
 		Reload:
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");
-			TNT1 A 0 A_ZoomFactor(1.0);
 			TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, null, "Ready3", "Ready3", MAGAZINE_SIZE);
 			TNT1 A 0 A_startsound("BR45OPEN",3,CHANF_OVERLAP);
             BR4R ABCDE 1;
-            TNT1 A 0
-			{
+            TNT1 A 0 {
                 PB_SetMagUnloaded(true);
                 PB_SetMagEmpty(true);
                 PB_SetChamberEmpty(true);

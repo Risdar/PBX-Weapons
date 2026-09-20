@@ -4,8 +4,17 @@ extend class PBX_NeoHMG
 	override void postbeginplay()
 	{
 		mShieldIsReady = true;
-		giveinventory("HMGShield", SHIELD_MAXCHARGE);
 		super.postbeginplay();
+	}
+
+	override bool TryPickup(in out Actor toucher) 
+	{
+		bool pickup = super.TryPickup(toucher);
+		if(pickup)
+		{
+			toucher.giveinventory("HMGShield", SHIELD_MAXCHARGE);
+		}
+		return pickup;
 	}
 
 	override void ModifyDamage(int damage, Name damageType, out int newDamage, bool passive, Actor inflictor, Actor source, int flags)
@@ -13,7 +22,7 @@ extend class PBX_NeoHMG
 		if (passive && damage > 0)
 		{
 			mShieldDrain = clamp(int(damage * SHIELD_PROTECTION_MULTIPLIER), 1, SHIELD_MAXCHARGE);
-			if (owner.player && owner.player.readyweapon is "PBX_NeoHMG" && mShieldWasActive)
+			if (owner.player && owner.player.readyweapon is self.getClass() && mShieldWasActive)
 			{
 				owner.TakeInventory("HMGShield", mShieldDrain);
 				owner.A_StartSound("StickyGrenade/Hit", 125);
@@ -22,6 +31,14 @@ extend class PBX_NeoHMG
 		}
 
     }
+
+	override Vector2 ModifyBobLayer(Vector2 Bob, int layer, double ticfrac)
+	{
+		if(layer == HMG_SHIELDLAYER)
+			return Bob * 0.4;
+		else
+			return Bob;
+	}
     
 	override void DoEffect() 
 	{
@@ -30,10 +47,10 @@ extend class PBX_NeoHMG
 			return;
 
 		// Things to check
-		bool isWeapon = owner.player.readyweapon is "PBX_NeoHMG";
+		bool isWeapon = owner.player.readyweapon is self.getClass();
 		bool isPressingAlt = owner.player.cmd.buttons & BT_ALTATTACK;
 		bool hasShieldCharge = countinv("HMGShield") > 0;
-		bool isNotOverheating = overheat < MAX_OVERHEAT-5;
+		bool isNotOverheating = overheat <= MAX_OVERHEAT-5;
 		bool shouldEnable = isWeapon && isPressingAlt && mShieldIsReady && hasShieldCharge && isNotOverheating;
 
 		// If the shield should be enabled
@@ -91,7 +108,6 @@ extend class PBX_NeoHMG
 			// Decrease the cooldown
 			If(mShieldCooldown > 0)
 				mShieldCooldown--;
-			
 
 			// If the cooldown is finished, the shield is not broken, but the shield is not ready
 			Else if(!mShieldIsBroken && !mShieldIsReady)
@@ -110,7 +126,7 @@ extend class PBX_NeoHMG
 			{
 				// Counts up to SHIELD_RECHARGE_CYCLE to finish one cycle
 				// If the weapon is overheating then it will recharge faster
-				If(mShieldRechargeTimer < ((overheat > OVERHEAT_THRESHOLD) ? Int(SHIELD_RECHARGE_CYCLE/2) : SHIELD_RECHARGE_CYCLE))
+				If(mShieldRechargeTimer < ((overheat >= OVERHEAT_THRESHOLD) ? Int(SHIELD_RECHARGE_CYCLE/2) : SHIELD_RECHARGE_CYCLE))
 					mShieldRechargeTimer++;
 				
 				// If the shield charge is less than the maximum amount and the weapon is overheating
@@ -220,6 +236,7 @@ extend class PBX_NeoHMG
 		name l1
 	)
 	{
+		if(PB_GetMagUnloaded()) return; // Dont change if its unloaded
 		int ammo = invoker.ammo2.amount;
 		if		(ammo >  4) A_SetWeaponSpriteEx(l5);
 		else if (ammo == 4) A_SetWeaponSpriteEx(l3);
