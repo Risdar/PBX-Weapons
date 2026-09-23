@@ -222,7 +222,6 @@ class PBX_CryoSG : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 			    PB_HandleCrosshair(39);
-				A_SetInventory("PB_LockScreenTilt",0);
                 PBX_WeaponRaise("M1014RE");
 			    return PB_RespectIfNeeded();
 			}
@@ -233,10 +232,8 @@ class PBX_CryoSG : PBX_WeaponBase
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"Ready2");
             TNT1 A 0 {
                 PB_SetRoll(0);
-                A_TakeInventory("PB_LockScreenTilt", 1);
                 A_ZoomFactor(1.0);
                 PB_HandleCrosshair(46);
-                A_SetInventory("PB_LockScreenTilt",0);
 				A_SetInventory("CantWeaponSpecial",0);
 				A_SetInventory("CantDoAction",0);
             }
@@ -252,7 +249,6 @@ class PBX_CryoSG : PBX_WeaponBase
             TNT1 A 0 {
                 PB_SetRoll(0);
                 A_SetCrosshair(-1);
-                A_TakeInventory("PB_LockScreenTilt",1);
 				A_SetInventory("CantDoAction",0);
             }
         ReadyToFire2:
@@ -268,7 +264,6 @@ class PBX_CryoSG : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 				PB_HandleCrosshair(39);
-				A_TakeInventory("PB_LockScreenTilt",1);
 			}
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"Fire2");
 		Fire1Actual:
@@ -305,7 +300,6 @@ class PBX_CryoSG : PBX_WeaponBase
 			TNT1 A 0 {
 				PB_SetRoll(0);
 				A_SetCrosshair(-1);
-				A_TakeInventory("PB_LockScreenTilt",1);
 			}
 		Fire2Actual:
             TNT1 A 0 PB_JumpIfNoAmmo();
@@ -340,7 +334,6 @@ class PBX_CryoSG : PBX_WeaponBase
 			TNT1 A 0 {
 				PB_SetRoll(0);
 				PB_HandleCrosshair(46);
-				A_TakeInventory("PB_LockScreenTilt",1);
 			}
 			TNT1 A 0 A_StartSound("IronSights", CHAN_WEAPON);
 			TNT1 A 0 A_JumpIf(PB_GetZoom(),"Zoomout");
@@ -374,7 +367,6 @@ class PBX_CryoSG : PBX_WeaponBase
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");
 			TNT1 A 0 {
                 A_ZoomFactor(1.0);
-                A_Giveinventory("PB_LockScreenTilt",1);
 			}
             TNT1 A 0 PB_CheckReload(null,null,"Pump","Ready3","Ready3",MAGAZINE_SIZE);
 			TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
@@ -397,7 +389,6 @@ class PBX_CryoSG : PBX_WeaponBase
 
         FinishReload:
             TNT1 A 0 {
-				A_Takeinventory("PB_LockScreenTilt",1);
 				A_PlaysoundEx("Ironsights", "Auto");
 			}
 			FZGP FEDCB 1;
@@ -426,7 +417,6 @@ class PBX_CryoSG : PBX_WeaponBase
         Unload:
 			TNT1 A 0 A_Jumpif(pb_getmagunloaded(),"Ready3");
             TNT1 A 0 {
-				A_Giveinventory("PB_LockScreenTilt",1);
 				A_WeaponOffset(0,32);
 				A_PlaysoundEx("Ironsights", "Auto");
 			}

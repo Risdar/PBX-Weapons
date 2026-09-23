@@ -233,7 +233,6 @@ class PBX_TeslaGun : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 			    PB_HandleCrosshair(18);
-				A_SetInventory("PB_LockScreenTilt",0);
                 PBX_WeaponRaise("PLSDRAW");
 			    return PB_RespectIfNeeded();
 			}

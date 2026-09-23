@@ -84,8 +84,6 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 		WeaponRespect:
 			TNT1 A 0 {
                 A_SetCrosshair(-1);
-				// PB_HandleCrosshair(-1);
-				A_Giveinventory("PB_LockScreenTilt",1);
 			}
 			TNT1 AAAAAA 1 {
 				PB_SetRoll(roll-0.3);
@@ -155,7 +153,6 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 				PB_SetRoll(roll+1.0);
                 return A_DoPBWeaponAction();
 			}
-			TNT1 A 0 A_Takeinventory("PB_LockScreenTilt",1);
 			Goto Ready3;
 
 		WeaponInspect:
@@ -227,7 +224,6 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
 		Ready3:
 			TNT1 A 0 {
-				A_SetInventory("PB_LockScreenTilt",0);
 				A_SetInventory("CantDoAction", 0);
 			}
 			TNT1 A 0 A_jumpif(PB_GetZoom(),"Ready2");
@@ -243,7 +239,6 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 		Ready2:
 			TNT1 A 0 {
 				PB_SetRoll(0);
-				A_SetInventory("PB_LockScreenTilt",0);
 				A_SetInventory("CantDoAction", 0);
 			}
 		ReadytoFire2:
@@ -259,7 +254,6 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 				PB_HandleCrosshair(76);
-				A_SetInventory("PB_LockScreenTilt",0);
 			}
 			TNT1 A 0 A_jumpif(PB_GetZoom(),"Fire2");
 		Fire1Actual:
@@ -301,7 +295,6 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 			TNT1 A 0 {
 				PB_SetRoll(0);
 				A_SetCrosshair(-1);
-				A_TakeInventory("PB_LockScreenTilt",1);
 			}
 		Fire2Actual:
             TNT1 A 0 PB_JumpIfNoAmmo();
@@ -313,7 +306,6 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 		Pump2:
 			TNT1 A 0 {
 				A_ZoomFactor(1.5);
-				A_Giveinventory("PB_LockScreenTilt",1);
 			}
 			TNT1 A 0 {
 				A_StartSound("weapons/leveraction/rechamber");
@@ -358,7 +350,6 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 			TNT1 A 0 {
 				A_ZoomFactor(1.0);
 				A_WeaponOffset(0,32);
-				A_SetInventory("PB_LockScreenTilt",1);
 			}
 			TNT1 A 0 A_StartSound("weapons/leveraction/inspect");
 			LVR2 MNOP 1 PB_SetRoll(roll+1.0);
@@ -391,7 +382,6 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 
 		ReloadFinished:
 			TNT1 A 0 {
-				A_Takeinventory("PB_LockScreenTilt",1);
 				A_StartSound("weapons/leveraction/openchamber");
 			}
 			LVR2 VVVV 1 ;
@@ -404,7 +394,6 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 		Unload:
 			TNT1 A 0 A_JumpIf(PB_GetMagEmpty(),"Ready3");
 			TNT1 A 0 {
-				A_Giveinventory("PB_LockScreenTilt",1);
 				A_StartSound("weapons/leveraction/inspect");
 				A_ZoomFactor(1.0);
 			}

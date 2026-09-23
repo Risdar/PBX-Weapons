@@ -110,7 +110,6 @@ class PBX_NeoHMG : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 				PB_HandleCrosshair(52);
-				A_SetInventory("PB_LockScreenTilt",0);
                 PBX_WeaponRaise("HMGUP");
 				cooldownOverheat();
 			    return PB_RespectIfNeeded();

@@ -573,7 +573,6 @@ class ThrownSwarmCharge : SwitchableDecoration
 			BEXP B 0 BRIGHT A_Scream();
 			TNT1 A 0 A_ALertMonsters();
 			TNT1 A 0 A_SpawnItem("BarrelExplosionSmokeColumn");
-			TNT1 A 0 A_SpawnItem("FragGrenadeExplosionSmoke");
 			TNT1 AAAAA 1 {
                 for(int i = 0; i < 10; i++)
                 {

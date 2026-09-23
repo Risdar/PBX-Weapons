@@ -71,8 +71,6 @@ Class PBX_DemonExt : PBX_WeaponBase
 				PB_SetRoll(0);
 				A_zoomfactor(1.0);
 			    DemonExtCrosshair();
-				A_SetInventory("PB_LockScreenTilt",0);
-				PB_WeapTokenSwitch("UnmakerSelected");
                 PBX_WeaponRaise("UNMAKSEL");
 			    return PB_RespectIfNeeded();
 			}
@@ -199,7 +197,6 @@ Class PBX_DemonExt : PBX_WeaponBase
 			TNT1 A 0 WeaponSpecialCheck();
 			goto ready3;
 		Fire.BigOrb:
-			TNT1 A 0 {A_TakeInventory("Unloading",1);A_TakeInventory("GoSpecial",1);}
 			TNT1 A 0 A_overlay(muzzleLayer,"MuzzleFlash1");
 			TNT1 A 0 A_Stopsounds(1,3);
 			TNT1 A 0 A_startsound("unmaker/fire",21);
@@ -219,7 +216,6 @@ Class PBX_DemonExt : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 				DemonExtCrosshair();
-				A_SetInventory("PB_LockScreenTilt",0);
 			}
 			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == IncinerationMode,"Fire.Incineration");
 			TNT1 A 0 A_JumpIf(invoker.ExterminatorMode == LightningMode,"Fire.Soul");
@@ -408,7 +404,6 @@ Class PBX_DemonExt : PBX_WeaponBase
 			TNT1 A 0 A_refire("AltFire");
 			goto ready3;
 		Altfire.Soul:
-			TNT1 A 0 {A_TakeInventory("Unloading",1);A_TakeInventory("GoSpecial",1);}
 			UNMI F 0 Bright Offset(0,32) A_jumpif(countinv(invoker.ammotype2) < invoker.secammo2use3, "FireNoAmmo");
 			UNMI K 1 Bright Offset(0,33) A_overlay(65,"OverchargeFlash");
 			UNMI K 1 Bright Offset(1,34);

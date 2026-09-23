@@ -1,12 +1,15 @@
 [enu default]
 //////////////////////////// GENERAL ///////////////////////////////////////////////////////////////////////////////
 PBXWeapons_Settings                 = "\cg⟁\c- PBX - Weapons Settings";
-PBXWeapons_Version                  = "\cgPBX - Weapons Version: 3.0.1 - Energy Update";
+PBXWeapons_Version                  = "\cgPBX - Weapons Version: 3.0.2 - Energy Update";
 
 PBXWeapons_SmartScope_MaxHP         = "Max. HP: %u";
 PBXWeapons_SmartScope_CurrHP        = "HP: %u";
 PBXWeapons_SmartScope_PainChance    = "Pain chance: %u%%";
 PBXWeapons_SmartScope_Distance      = "Distance: %.1f m.";
+
+PBXWeapons_ZoomScroll_Up            = "[\cvScroll Up\c-] or [%s]";
+PBXWeapons_ZoomScroll_Down          = "[\cvScroll Down\c-] or [%s]";
 
 //////////////////////////// SLOT 1 ///////////////////////////////////////////////////////////////////////////////
 

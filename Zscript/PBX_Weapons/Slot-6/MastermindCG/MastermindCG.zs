@@ -118,7 +118,6 @@ class PBX_MastermindChaingun : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 				PB_HandleCrosshair(-1);
-				A_TakeInventory("PB_LockScreenTilt",1);
 			}
 			TNT1 A 0 A_StopSound(6);
 			TNT1 A 0 A_ZoomFactor(1);

@@ -204,7 +204,6 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
         Ready3:    
             TNT1 A 0 {
                 PB_SetRoll(0);
-                A_TakeInventory("PB_LockScreenTilt",1);
                 PB_HandleCrosshair(29);
                 invoker.firedFromADS = false;
             }
@@ -243,7 +242,6 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
         Ready2:
             TNT1 A 0 {
                 PB_SetRoll(0);
-                A_TakeInventory("PB_LockScreenTilt",1);
                 A_SetCrosshair(-1);
             }
             TNT1 A 0 readyCheck("Ready2Demonic","Ready2Explosive","Ready2Shock");
@@ -329,7 +327,6 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             TNT1 A 0 {
                 PB_SetRoll(0);
                 PB_HandleCrosshair(29);
-                A_TakeInventory("PB_LockScreenTilt",1);
             }
             TNT1 A 0 A_StartSound("IronSights", 0);
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"ZoomOut");
@@ -431,7 +428,6 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
         Unload:
             TNT1 A 0 {
                 A_SetCrosshair(-1);
-                A_Giveinventory("PB_LockScreenTilt",1);
                 PB_SetZoom(false);
             }
             TNT1 A 0 A_JumpIf(checkTokens() && PB_GetChamberEmpty(), "ContinueUnload"); // Skip the taking out arrow animation

@@ -45,7 +45,6 @@ class PBX_NukeLauncher : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 				PB_HandleCrosshair(39);
-				A_TakeInventory("PB_LockScreenTilt",1);
                 A_StopSound(1);
 			}
 			NKLS EFGH 1;
@@ -57,7 +56,6 @@ class PBX_NukeLauncher : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 			    PB_HandleCrosshair(39);
-				A_SetInventory("PB_LockScreenTilt",0);
                 PBX_WeaponRaise("8FGPICK");
 			    return PB_RespectIfNeeded();
 			}

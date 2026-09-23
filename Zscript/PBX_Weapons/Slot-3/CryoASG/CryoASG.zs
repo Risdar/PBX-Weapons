@@ -322,7 +322,6 @@ class PBX_CryoASG : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 			    PB_HandleCrosshair(39);
-				A_SetInventory("PB_LockScreenTilt",0);
                 PBX_WeaponRaise("weapons/smg_magfly1");
 			    return PB_RespectIfNeeded();
 			}
@@ -344,7 +343,6 @@ class PBX_CryoASG : PBX_WeaponBase
                 A_WeaponOffset(0,32);
                 PB_SetRoll(0);
                 PB_HandleCrosshair(39);
-                A_TakeInventory("PB_LockScreenTilt",1);
             }
             TNT1 A 0 PB_JumpIfNoAmmo();
             TNT1 A 0 A_JumpIf(PB_GetChamberEmpty() && !PB_GetMagUnloaded(), "Pump");
@@ -366,7 +364,6 @@ class PBX_CryoASG : PBX_WeaponBase
                 A_WeaponOffset(0,32);
                 PB_SetRoll(0);
                 PB_HandleCrosshair(39);
-                A_TakeInventory("PB_LockScreenTilt",1);
             }
             TNT1 A 0 PB_JumpIfNoAmmo(min:SECONDARY_AMMOTAKE);
             A12F AB 1 BRIGHT;

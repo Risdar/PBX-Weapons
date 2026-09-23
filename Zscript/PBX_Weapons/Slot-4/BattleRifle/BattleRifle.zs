@@ -65,7 +65,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 	// Laser sight stuff
 	mixin PBX_LaserSight;
 	static const StateLabel blockedLaserStates[] = {
-		"Reload", "ReloadFromADS", "ContinueReload", "RaiseFromEmpty",
+		"Reload", "ReloadFromADS", "ContinueReload", "RaiseFromEmpty", "WeaponInspect",
 		"Unload", "SwitchAnimation","WeaponRespect", "Deselect", "SelectAnimation",
 		"FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
 	};
@@ -195,7 +195,6 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 			TNT1 A 0 {
 				PB_SetRoll(0);
 				A_SetCrosshair(-1);
-				A_SetInventory("PB_LockScreenTilt",0);
             }
 		ReadyToFire2:
 			BR4Z D 1 Bright  {
@@ -213,7 +212,6 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 				A_WeaponOffset(0, 32);
 				PB_SetRoll(0);
 				PB_HandleCrosshair(42);
-				A_SetInventory("PB_LockScreenTilt", 0);
 				A_ZoomFactor(1.0);
 			}
 			TNT1 A 0 A_JumpIf(PB_GetZoom(), "FireADS");

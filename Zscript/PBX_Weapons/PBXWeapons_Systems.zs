@@ -88,6 +88,12 @@ class PBXWeapons_ScopeHandler : EventHandler
 				mActorName = command[1];
 				
 			mCanDraw = true;
+			if(PBXCore_DebugCvar)
+			{
+				console.printf("Actor Name %s",mActorName);
+				console.printf("Max HP %d",mMaxHealth);
+				console.printf("Current HP %d",mCurrentHealth);
+			}
         }
 
 		if(e.name.IndexOf("PrintScopeData2:") >= 0 && !e.IsManual)
@@ -100,7 +106,11 @@ class PBXWeapons_ScopeHandler : EventHandler
 
 	override void UItick()
 	{
-		mCanDraw = false;
+		if(mCanDraw)
+		{
+			mCanDraw = false;
+		}
+		// PBXCore_Debug.PrintInt("Smart Scope Data Can Draw %d",mCanDraw);
 	}
 	
 	override void RenderUnderlay(RenderEvent e)
@@ -132,10 +142,12 @@ class PBXWeapons_ScopeHandler : EventHandler
 			phud.PBHud_DrawString(phud.mDefaultFont, lines[i], (hudX, hudY + i * steps), flags, color);
 		}
 
+		PBXCore_Debug.Print("Smart Scope Drawn");
+
 		// Old version
 		// Screen.DrawText(BigFont, color, 190, 86, mActorName, DTA_Clean, true);
-		// Screen.DrawText(SmallFont, color, 190, 104, Wow, DTA_Clean, true);
-		// Screen.DrawText(SmallFont, color, 190, 74, DistanceInMeters, DTA_Clean, true);
+		// Screen.DrawText(SmallFont, color, 190, 104, mPainChance, DTA_Clean, true);
+		// Screen.DrawText(SmallFont, color, 190, 74, mDistance, DTA_Clean, true);
 	}
 	
 	// Scroll Zoom Input

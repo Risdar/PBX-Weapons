@@ -5,7 +5,7 @@ extend class PBX_BDPRailgun
     static const StateLabel blockedLaserStates[] = {
         "Pumping", "FinishPump", "FinishPump2", "Reload",
         "ShellChecker", "ReloadFinished", "ReloadFromPump", "ReloadFromPumpInsertShells",
-        "FinishReloadFromPump", "ReloadFromADS",
+        "FinishReloadFromPump", "ReloadFromADS", "WeaponInspect",
 
         "WeaponRespect", "Deselect", "SelectAnimation",
         "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"

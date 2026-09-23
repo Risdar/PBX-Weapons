@@ -256,7 +256,6 @@ extend class PBX_NeoHMG
 				A_AlertMonsters();
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
-				A_TakeInventory("PB_LockScreenTilt",1);
 				// ACTUAL FIRING
 				HMG_fireBullet(overThreshold);
 				PB_DynamicTail("lmg", "lmg");

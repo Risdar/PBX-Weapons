@@ -93,7 +93,6 @@ class PBX_Excavator : PBX_WeaponBase
 		WeaponRespect:
             TNT1 A 0 {
 				A_SetCrosshair(-1);
-				A_GiveInventory("PB_LockScreenTilt",1);
 				A_PlaySoundEx("Ironsights", "Auto");
 			}
             TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"WeaponRespect_Upgraded");
@@ -161,7 +160,6 @@ class PBX_Excavator : PBX_WeaponBase
             TNT1 A 0 {
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
-				A_SetInventory("PB_LockScreenTilt",0);
 			}
 			TNT1 A 0 PB_JumpIfNoAmmo("Reload",1,false);
             6DKF A 1 BRIGHT FireWeapon();

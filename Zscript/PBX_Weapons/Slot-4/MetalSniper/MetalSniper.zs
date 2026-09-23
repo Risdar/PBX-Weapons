@@ -44,7 +44,7 @@ Class PBX_MetalSniper : PBX_WeaponBase
     const AMMO_TAKE_NORMAL = 2;
     const AMMO_TAKE_RESONANCE = 6;
     const muzzlelayer = -52;
-    const MINZOOM = 1.5;
+    const MINZOOM = 1.25;
     const MAXZOOM = 12.0;
 
     // ── State ─────────────────────────────────────────────────────────────────
@@ -161,7 +161,6 @@ Class PBX_MetalSniper : PBX_WeaponBase
                 A_WeaponOffset(0, 32);
                 PB_SetRoll(0);
                 PB_HandleCrosshair(42);
-                A_SetInventory("PB_LockScreenTilt", 0);
             }
             TNT1 A 0 A_JumpIf(PB_GetZoom(), "Fire_ADS");
             TNT1 A 0 PB_JumpIfNoAmmo("Reload");

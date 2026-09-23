@@ -118,7 +118,6 @@ class PBX_HexaShotgun : PBX_WeaponBase
 				PB_SetRoll(0);
 			    // PB_HandleCrosshair(41);
                 A_SetCrosshair(-1);
-				A_SetInventory("PB_LockScreenTilt",0);
                 PBX_WeaponRaise("CLIPINSS");
 			    return PB_RespectIfNeeded();
 			}

@@ -57,7 +57,6 @@ extend class PBX_Excavator
 			EX_F MNO 1 A_DoPBWeaponAction();
 			TNT1 A 0 A_PlaySound("excavator/detonate");
 			EX_A EEEEE 1 A_DoPBWeaponAction();
-			TNT1 A 0 A_Takeinventory("PB_LockScreenTilt",1);
 			goto Ready2;
 			
 		RespectSaw:
@@ -101,7 +100,6 @@ extend class PBX_Excavator
 			EX_H MNO 1 A_DoPBWeaponAction();
 			TNT1 A 0 A_PlaySound("excavator/detonate");
 			EX_C EEEEE 1 A_DoPBWeaponAction();
-			TNT1 A 0 A_Takeinventory("PB_LockScreenTilt",1);
 			goto Ready2;
 			
         Deselect_Upgraded:
@@ -202,7 +200,6 @@ extend class PBX_Excavator
 			TNT1 A 0 {
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
-				A_SetInventory("PB_LockScreenTilt",0);
 			}
             TNT1 A 0 A_JumpIf(invoker.ammo1.amount < invoker.ReserveToMagAmmoFactor, "Ready2");
             TNT1 A 0 PB_CheckReload(

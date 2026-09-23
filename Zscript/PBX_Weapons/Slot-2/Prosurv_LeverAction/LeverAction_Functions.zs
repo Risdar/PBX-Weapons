@@ -11,7 +11,7 @@ extend class PBX_Prosurv_LeverAction
 
 	static const StateLabel blockedLaserStates[] = {
 		"Pump", "PumpBegin", "PumpEnd", "Reload","FinishUnload", "Deselect", "SelectAnimation", "ReloadFromADS",
-		"ReloadLoop", "ReloadFinished","Unload","RemoveBullets", "WeaponRespect", "WeaponSwitch",
+		"ReloadLoop", "ReloadFinished","Unload","RemoveBullets", "WeaponRespect", "WeaponSwitch", "WeaponInspect",
 		"FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
 	};
 

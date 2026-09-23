@@ -228,7 +228,6 @@ extend class PBX_Excavator
 		A_AlertMonsters();
 		A_WeaponOffset(0,32);
 		PB_SetRoll(0);
-		A_TakeInventory("PB_LockScreenTilt",1);
 
 		A_FireCustomMissile("ShotgunParticles", random(-16,16), 0, -1, random(-9,9));
 		A_FireBullets(0, 0, 1, 50, "shotpuff", 0, 130);

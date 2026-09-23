@@ -170,7 +170,6 @@ class PBX_SuperNailgun : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 				PB_HandleCrosshair(39);
-				A_TakeInventory("PB_LockScreenTilt",1);
                 A_StopSound(1);
 			}
 			SNSE GECA 1 superNailgun_setSprite("SNSU");
@@ -182,7 +181,6 @@ class PBX_SuperNailgun : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 			    PB_HandleCrosshair(67);
-				A_SetInventory("PB_LockScreenTilt",0);
 				A_ClearOverlays(OVERHEATCOOLING_LAYER,OVERHEATCOOLING_LAYER);
 				cooldownOverheat();
                 PBX_WeaponRaise("GENREADY");
@@ -238,7 +236,6 @@ class PBX_SuperNailgun : PBX_WeaponBase
                 A_WeaponOffset(0,32);
                 PB_SetRoll(0);
                 PB_HandleCrosshair(39);
-                A_TakeInventory("PB_LockScreenTilt",1);
                 A_AlertMonsters();
                 invoker.mWeaponIsSpinning = true;
             }

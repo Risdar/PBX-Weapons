@@ -4,7 +4,7 @@ extend class PBX_ProSurvPSG
 
 	static const StateLabel blockedLaserStates[] = {
 		"Reload", "ShellChecker", "ChamberInsertShell", "ReloadFinished", "ReloadFromADS",
-		"Unload", "RemoveBullets", "FinishUnload", "SelectAnimation",
+		"Unload", "RemoveBullets", "FinishUnload", "SelectAnimation", "WeaponInspect",
 		"Pump", "PumpBegin", "PumpEnd", "WeaponRespect", "Deselect",
 		"FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
 	};
@@ -168,7 +168,6 @@ extend class PBX_ProSurvPSG
 		{
 			case 1:
 				PB_SetRoll(0);
-				A_TakeInventory("PB_LockScreenTilt", 1);
 				if (ads) A_SetCrosshair(-1);
 
 				PB_FireBullets("PB_12GAPellet", 12, 1.5, 0, 0, 1.5);
@@ -205,7 +204,6 @@ extend class PBX_ProSurvPSG
 			case 4:
 				A_ZoomFactor(zoomC);
 				if(ads) A_SetCrosshair(-1);
-                A_Giveinventory("PB_LockScreenTilt",1);
                 A_PlaySoundEx("Ironsights", "Auto");
 				PB_SetReloading(true);
 				break;

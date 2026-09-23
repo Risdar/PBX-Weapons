@@ -109,8 +109,6 @@ class PBX_CyberdemonRL : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 				PB_HandleCrosshair(-1);
-				A_TakeInventory("PB_LockScreenTilt",1);
-				A_TakeInventory("RocketLauncherSelected",1);
 			}
 			TNT1 A 0 A_StopSound(6);
 			TNT1 A 0 A_ZoomFactor(1);
@@ -123,9 +121,7 @@ class PBX_CyberdemonRL : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 			    PB_HandleCrosshair(78);
-				A_SetInventory("PB_LockScreenTilt",0);
                 PBX_WeaponRaise("BFGREADY");
-                PB_WeapTokenSwitch("RocketLauncherSelected");
 			    return PB_RespectIfNeeded();
 			}
 		SelectAnimation:

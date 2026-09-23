@@ -190,7 +190,6 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 				PB_HandleCrosshair(39);
-				A_TakeInventory("PB_LockScreenTilt",1);
 			}
 			TNT1 A 0 A_StopSound(1);
 			AMGR ABCDEF 1;
@@ -202,7 +201,6 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 			    PB_HandleCrosshair(39);
-				A_SetInventory("PB_LockScreenTilt",0);
                 PBX_WeaponRaise("weapons/smg_magfly1");
 			    return PB_RespectIfNeeded();
 			}
@@ -232,7 +230,6 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
                 A_WeaponOffset(0,32);
                 PB_SetRoll(0);
                 PB_HandleCrosshair(39);
-                A_TakeInventory("PB_LockScreenTilt",1);
             }
             TNT1 A 0 A_JumpIf(getSecondary() == SEC_CHARGE, "ChargeFire");
             TNT1 A 0 PB_JumpIfNoAmmo(chamber:false);

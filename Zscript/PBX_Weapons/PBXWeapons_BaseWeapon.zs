@@ -66,7 +66,6 @@ class PBX_WeaponBase : PB_WeaponBase abstract
         A_WeaponOffset(0,32);
         PB_SetRoll(0);
         A_SetCrosshair(-1);
-        A_TakeInventory("PB_LockScreenTilt",1);
         A_StopSound(CHAN_WEAPON);
         PB_ClearDualWield();
     }
@@ -398,11 +397,11 @@ class PBX_WeaponBase : PB_WeaponBase abstract
 //////////////////////////// OTHERS ////////////////////////////////////////////////////////////////////////////////////
     action state PBX_CheckInspect()
     {
-		int ammoToCheck = invoker.ammotype2 ? invoker.ammo2.amount : invoker.ammo1.amount;
-        int maxAmmoToCheck = invoker.ammotype2 ? invoker.ammo2.maxamount : invoker.ammo1.maxamount;
+		int ammoToCheck = invoker.ammotype2 ? invoker.ammo2.amount : 0;
+        int maxAmmoToCheck = invoker.ammotype2 ? invoker.ammo2.maxamount : 0;
         bool pressingReload = PressingReload() || (player.oldbuttons & BT_RELOAD);
 
-        if (pressingReload && ammoToCheck == maxAmmoToCheck) 
+        if (pressingReload && ammoToCheck >= maxAmmoToCheck) 
             return resolvestate("WeaponInspect");
         return resolvestate(null);
     }

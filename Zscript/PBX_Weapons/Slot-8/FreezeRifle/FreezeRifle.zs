@@ -274,7 +274,6 @@ class PBX_FreezeRifle : PBX_WeaponBase
         WeaponRespect:
             TNT1 A 0 {
 				A_SetCrosshair(-1);
-				A_Giveinventory("PB_LockScreenTilt",1);
                 PB_SetZoom(false);
 			}
 			TNT1 AAAAAA 1 {
@@ -300,7 +299,6 @@ class PBX_FreezeRifle : PBX_WeaponBase
 				PB_SetRoll(roll+0.3);
 				return A_DoPBWeaponAction();
 			}
-			TNT1 A 0 A_Takeinventory("PB_LockScreenTilt",1);
 			TNT1 A 0 jumpIfAttackMode("SwapToAttack");
             Goto Ready3;
 
@@ -360,7 +358,6 @@ class PBX_FreezeRifle : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 			    PB_HandleCrosshair(94);
-				A_SetInventory("PB_LockScreenTilt",0);
                 PBX_WeaponRaise("weapons/CryoRifle/respect1");
 			    return PB_RespectIfNeeded();
 			}
@@ -372,7 +369,6 @@ class PBX_FreezeRifle : PBX_WeaponBase
             TNT1 A 0 {
                 // stopSound();
 				PB_SetRoll(0);
-				A_TakeInventory("PB_LockScreenTilt",1);
                 PB_HandleCrosshair(94);
                 A_ClearReFire();
 			}
@@ -400,7 +396,6 @@ class PBX_FreezeRifle : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 				PB_HandleCrosshair(94);
-				A_TakeInventory("PB_LockScreenTilt",1);
 			}
             TNT1 A 0 PB_JumpIfNoAmmo(min:getAmmoTake(),emptysound:"RAILDRY");
             // Charge
@@ -449,7 +444,6 @@ class PBX_FreezeRifle : PBX_WeaponBase
                 A_WeaponOffset(0,32);
                 PB_SetRoll(0);
                 PB_HandleCrosshair(94);
-                A_TakeInventory("PB_LockScreenTilt",1);
             }
             TNT1 A 0 PB_JumpIfNoAmmo(min:getAmmoTake(true),emptysound:"RAILDRY");
             // Charge
@@ -528,7 +522,6 @@ class PBX_FreezeRifle : PBX_WeaponBase
                 A_WeaponOffset(0,32);
                 PB_SetRoll(0);
                 PB_HandleCrosshair(94);
-                A_TakeInventory("PB_LockScreenTilt",1);
             }
             TNT1 A 0 PB_CheckReload("RaiseFromEmpty",null,null,"Ready3","Ready3",CELL_SIZE);
             TNT1 A 0 A_StartSound("weapons/CryoRifle/reload1", CHAN_WEAPON, CHANF_OVERLAP);
@@ -603,7 +596,6 @@ class PBX_FreezeRifle : PBX_WeaponBase
         WeaponSpecial:
             TNT1 A 0 {
 				A_Takeinventory("GoWeaponSpecialAbility",1);
-				A_GiveInventory("PB_LockScreenTilt",1);
 				PB_HandleCrosshair(94);
 				stopSound();
 			}

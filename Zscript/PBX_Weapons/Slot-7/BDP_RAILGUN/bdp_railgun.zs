@@ -138,7 +138,6 @@ Class PBX_BDPRailgun : PBX_WeaponBase
             TNT1 A 0 {
 				PB_SetRoll(0);
 				PB_HandleCrosshair(97);
-				A_TakeInventory("PB_LockScreenTilt",1);
                 A_ClearOverlays(HANDLE_LAYER);
 			}
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"Fire2");
@@ -215,7 +214,6 @@ Class PBX_BDPRailgun : PBX_WeaponBase
             TNT1 A 0 {
 				PB_SetRoll(0);
 				A_SetCrosshair(-1);
-				A_TakeInventory("PB_LockScreenTilt",1);
 			}
         Fire2Actual:
             TNT1 A 0 PB_JumpIfNoAmmo(emptysound:"RAILDRY");
@@ -281,7 +279,6 @@ Class PBX_BDPRailgun : PBX_WeaponBase
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");
 			TNT1 A 0 {
                 A_ZoomFactor(1.0);
-                A_Giveinventory("PB_LockScreenTilt",1);
 			}
             TNT1 A 0 PB_CheckReload(null,null,"Pumping","Ready3","Ready3",MAGAZINE_SIZE);
 			TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
@@ -308,7 +305,6 @@ Class PBX_BDPRailgun : PBX_WeaponBase
 		ReloadFinished:
 			RAIL OOOOONMLKJ 1;
 			TNT1 A 0 {
-				A_Takeinventory("PB_LockScreenTilt",1);
 				A_PlaysoundEx("Ironsights", "Auto");
                 A_overlay(HANDLE_LAYER,"pumpinghandlolreverse");
             }
@@ -319,7 +315,6 @@ Class PBX_BDPRailgun : PBX_WeaponBase
         ReloadFromPump:
 			TNT1 A 0  {
                 PB_SetZoom(false);
-                A_Giveinventory("PB_LockScreenTilt",1);
                 A_SetCrosshair(-1);
                 A_overlay(HANDLE_LAYER,"ReloadingHand1");
 			}

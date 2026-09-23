@@ -3,7 +3,7 @@ extend class PBX_MetalSniper
     mixin PBX_LaserSight;
 
     static const StateLabel blockedLaserStates[] = {
-        "Reload", "Reload_Grenade", "StandardReload", "WeaponRespect", "ReloadFromADS",
+        "Reload", "Reload_Grenade", "StandardReload", "WeaponRespect", "ReloadFromADS", "WeaponInspect",
         "TakeMagStandard", "TakeMagResonance", "InsertMag", "ReloadFromSpecial", "Deselect",
         "FinishReload", "RaiseFromEmpty", "Start_Rechamber", "Rechamber", "ChangeAnim",
         "UnloadFromSpecial","Unload","UnloadRaise","UnloadMagStandard", "UnloadMagEmpty",
@@ -42,7 +42,6 @@ extend class PBX_MetalSniper
         A_SetCrosshair(-1);
         PB_CoolDownBarrel(-5, 0, 7, 0,  1);
         PB_CoolDownBarrel( 5, 0, 7, 0, -1);
-        A_SetInventory("PB_LockScreenTilt", 0);
         A_ZoomFactor(PBX_GetZoomLevel());
         MS_SetTransparency();
         invoker.mShouldResetVariables = true;

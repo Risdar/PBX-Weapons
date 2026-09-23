@@ -15,6 +15,11 @@ class PBXWeapons_HUDHandler : EventHandler
     ui float pbx_visorOffsets;
     ui vector2 topOffsets1, topOffsets2;
 
+    ui PlayerInfo plr;
+    ui PlayerPawn mo;
+    ui PB_Hud_ZS phud;
+    ui PB_WeaponBase pbWeap;
+
     // The constants used for MetalSniper's overlay (the graphics you see at the side when target scope is active)
     const MS_SCOPEOVERLAY = 24; 
 
@@ -26,7 +31,7 @@ class PBXWeapons_HUDHandler : EventHandler
             return;
 
         // Get a pointer to the PB Hud so we can access it
-        let phud = PB_Hud_ZS(StatusBar);
+        phud = PB_Hud_ZS(StatusBar);
         if (!phud) return;
 
         // Dont draw if the player is dead
@@ -34,10 +39,10 @@ class PBXWeapons_HUDHandler : EventHandler
             return;
 
         // Get a pointer to the player and weapon
-        let plr = players[consoleplayer];
-        let weap = plr.ReadyWeapon;
-        let pbWeap = PB_WeaponBase(weap);
-        if (!pbWeap) return;
+        plr = players[consoleplayer];
+        mo = plr.mo;
+        pbWeap = PB_WeaponBase(plr.ReadyWeapon);
+        if (!plr || !mo || !pbWeap) return;
 
         // These are used for the Metal Sniper Smart Scope Overlay
         pbx_visorOffsets = phud.visorOffsets;
@@ -49,7 +54,41 @@ class PBXWeapons_HUDHandler : EventHandler
         
         // Begin drawing the HUD
         phud.BeginHUD();                    // Initialize
+        PBXWeapons_DrawAmmoBar();
+        PBXWeapons_DrawScope();
 
+    }
+
+    private
+    ui void PBXWeapons_DrawScope()
+    {
+        let weap = PBX_WeaponBase(pbWeap);
+        if(!weap || !weap.mScopedWeapon || !mo || !mo.FindInventory("Zoomed")) return;
+
+        int hudX = 150;
+        phud.PBHud_DrawString(phud.mDefaultFont,"Zoom In:",(hudX, -100), BaseStatusBar.DI_SCREEN_LEFT_CENTER | BaseStatusBar.DI_TEXT_ALIGN_LEFT, Font.CR_WHITE);
+        phud.PBHud_DrawString(
+            phud.mDefaultFont, 
+            (string.format(StringTable.Localize("$PBXWeapons_ZoomScroll_Up"), PB_HelpNotificationsHandler.PB_FormatKeybinds("pbx_zoomin"))), 
+            (hudX, -85), 
+            BaseStatusBar.DI_SCREEN_LEFT_CENTER | BaseStatusBar.DI_TEXT_ALIGN_LEFT, 
+            Font.CR_WHITE
+        );
+
+        phud.PBHud_DrawString(phud.mDefaultFont,"Zoom Out:",(hudX, 85), BaseStatusBar.DI_SCREEN_LEFT_CENTER | BaseStatusBar.DI_TEXT_ALIGN_LEFT, Font.CR_WHITE);
+        phud.PBHud_DrawString(
+            phud.mDefaultFont, 
+            (string.format(StringTable.Localize("$PBXWeapons_ZoomScroll_Down"), PB_HelpNotificationsHandler.PB_FormatKeybinds("pbx_zoomout"))), 
+            (hudX, 100), 
+            BaseStatusBar.DI_SCREEN_LEFT_CENTER | BaseStatusBar.DI_TEXT_ALIGN_LEFT, 
+            Font.CR_WHITE
+        );
+    }
+
+    private
+    ui void PBXWeapons_DrawAmmoBar()
+    {
+        if(!pbWeap || !phud) return;
         switch(pbWeap.GetClassName())
         {
             // Draw bars and effects for specific modes

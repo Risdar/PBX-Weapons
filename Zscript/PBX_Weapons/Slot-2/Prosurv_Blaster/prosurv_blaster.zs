@@ -57,7 +57,7 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
     mixin PBX_LaserSight;
 
     static const StateLabel blockedLaserStates[] = {
-        "Reload", "Recharge","WeaponRespect", "Deselect", "SelectAnimation", "ReloadFromADS",
+        "Reload", "Recharge","WeaponRespect", "Deselect", "SelectAnimation", "ReloadFromADS", "WeaponInspect",
         "FlashPunching", "FlashKicking", "FlashAirKicking", "FlashSlideKicking", "FlashSlideKickingStop"
     };
 
@@ -163,7 +163,6 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
 
         WeaponRespect:
             TNT1 A 0 {
-                A_Giveinventory("PB_LockScreenTilt",1);
                 A_SetCrosshair(-1);
             }
             TNT1 A 10 A_DoPBWeaponAction();
@@ -205,7 +204,6 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 				PB_HandleCrosshair(65);
-				A_TakeInventory("PB_LockScreenTilt",1);
                 A_ZoomFactor(1.0);
                 PB_SetZoom(false);
 			}
@@ -218,7 +216,6 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 			    PB_HandleCrosshair(65);
-				A_SetInventory("PB_LockScreenTilt",0);
                 modifyBlasterCharge(SET,CELL_SIZE);
                 PBX_WeaponRaise("weapons/blasterpistol/ready");
 			    return PB_RespectIfNeeded();
@@ -251,7 +248,6 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
 			    PB_HandleCrosshair(65);
                 A_WeaponOffset(0,32);
                 PB_SetRoll(0);
-                A_TakeInventory("PB_LockScreenTilt",1);			
             }
 			TNT1 A 0 A_JumpIf(PB_GetZoom(), "Fire2");
 			TNT1 A 0 PB_JumpIfNoAmmo(secondary:false);
@@ -292,7 +288,6 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
                 A_WeaponOffset(0,32);
                 PB_SetRoll(0);
                 PB_HandleCrosshair(65);
-                A_TakeInventory("PB_LockScreenTilt",1);
             }
             TNT1 A 0 A_StartSound("IronSights");
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"Zoomout");
@@ -329,7 +324,6 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");
             TNT1 A 0 {
                 A_ZoomFactor(1.0);
-                A_Giveinventory("PB_LockScreenTilt",1);
                 A_SetCrosshair(-1);
 			}
             TNT1 A 0 PB_CheckReload(null, null, null, "Ready3", "Ready3", CELL_SIZE);
@@ -368,7 +362,6 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
         WeaponSpecial:
             TNT1 A 0 {
 				A_Takeinventory("GoWeaponSpecialAbility",1);
-				A_GiveInventory("PB_LockScreenTilt",1);
 				PB_HandleCrosshair(65);
 			}
             TNT1 A 0 PBX_ToggleLaserSight();

@@ -114,8 +114,6 @@ class PBX_Paingiver : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 				PB_HandleCrosshair(-1);
-				A_TakeInventory("PB_LockScreenTilt",1);
-				A_TakeInventory("RocketLauncherSelected",1);
 			}
 			TNT1 A 0 A_StopSound(CHAN_WEAPON);
 			TNT1 A 0 A_StopSound(6);
@@ -133,9 +131,7 @@ class PBX_Paingiver : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 			    PB_HandleCrosshair(65);
-				A_SetInventory("PB_LockScreenTilt",0);
                 PBX_WeaponRaise("weapons/sgl/inspect2");
-                PB_WeapTokenSwitch("RocketLauncherSelected");
 			    return PB_RespectIfNeeded();
 			}
 		SelectAnimation:
@@ -170,7 +166,6 @@ class PBX_Paingiver : PBX_WeaponBase
 			    PB_HandleCrosshair(65);
                 A_WeaponOffset(0,32);
                 PB_SetRoll(0);
-                A_TakeInventory("PB_LockScreenTilt",1);
             }
 			TNT1 A 0 PB_JumpIfNoAmmo(min:ammoTake,secondary:false);
             TNT1 A 0 A_PlaySound("RLFIRE", CHAN_WEAPON);
@@ -216,7 +211,6 @@ class PBX_Paingiver : PBX_WeaponBase
             TNT1 A 0 {
                 A_WeaponOffset(0,32);
                 PB_SetRoll(0);
-                A_TakeInventory("PB_LockScreenTilt",1);
             }
 			TNT1 A 0 { invoker.shotCount = 0; }
         AltFireLoop:

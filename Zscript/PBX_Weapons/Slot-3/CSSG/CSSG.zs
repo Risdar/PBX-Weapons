@@ -75,7 +75,6 @@ Class PBX_CSSG : PBX_WeaponBase
 		Select:
 			TNT1 A 0 PBX_WeaponRaise("COMSSGUP");
 			TNT1 A 0 PB_RespectIfNeeded();
-			TNT1 A 0 PB_WeapTokenSwitch("SSGSelected");
 		SelectAnimation:
 			TNT1 A 0 A_startsound("CLIPINSS",8);
 			C0SU ABCD 1;
@@ -144,7 +143,6 @@ Class PBX_CSSG : PBX_WeaponBase
 			TNT1 A 0 {
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
-				A_SetInventory("PB_LockScreenTilt",0);
 				CM_HandleCrosshair();
 				CSSG_CutMeathook();
 			}

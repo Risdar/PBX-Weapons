@@ -82,7 +82,6 @@ class PBX_ProSurvPSG : PBX_WeaponBase
         WeaponRespect:
 			TNT1 A 0 {
 				A_SetCrosshair(-1);
-				A_Giveinventory("PB_LockScreenTilt",1);
 			}
 			TNT1 AAAAAA 1 {
 				PB_SetRoll(roll-0.3);
@@ -98,7 +97,6 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 				return A_DoPBWeaponAction();
 			}
 			TNT1 A 0 {
-				A_Giveinventory("PB_LockScreenTilt",1);
 				A_PlaysoundEx("Ironsights", "Auto");
 			}
 			XG31 ABCD 1 {
@@ -141,7 +139,6 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 				PB_SetRoll(roll+1.0);
 				return A_DoPBWeaponAction();
 			}
-			TNT1 A 0 A_Takeinventory("PB_LockScreenTilt",1);
 			Goto Ready3;
 
         Deselect:
@@ -149,7 +146,6 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 				PB_HandleCrosshair(46);
-				A_TakeInventory("PB_LockScreenTilt",1);
                 A_ZoomFactor(1.0);
                 PB_SetZoom(false);
 			}
@@ -162,7 +158,6 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 			    PB_HandleCrosshair(46);
-				A_SetInventory("PB_LockScreenTilt",0);
                 PBX_WeaponRaise("weapons/autoshotgun/respect1");
 			    return PB_RespectIfNeeded();
 			}
@@ -175,7 +170,6 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 			TNT1 A 0 {
 				A_ZoomFactor(1.0);
                 PB_HandleCrosshair(46);
-				A_SetInventory("PB_LockScreenTilt",0);
 				A_SetInventory("CantWeaponSpecial",0);
 				A_SetInventory("CantDoAction",0);
 			}
@@ -190,7 +184,6 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 			TNT1 A 0 {
 				A_ZoomFactor(1.5);
 				A_SetCrosshair(-1);
-				A_SetInventory("PB_LockScreenTilt",0);
 				A_SetInventory("CantDoAction",0);
 			}
 		ReadytoFire2:
@@ -203,7 +196,6 @@ class PBX_ProSurvPSG : PBX_WeaponBase
         WeaponSpecial:
             TNT1 A 0 {
 				A_Takeinventory("GoWeaponSpecialAbility",1);
-				A_GiveInventory("PB_LockScreenTilt",1);
 				PB_HandleCrosshair(46);
 			}
 			TNT1 A 0 handleSpecial();
@@ -255,7 +247,6 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 			TNT1 A 0 {
 				PB_SetRoll(0);
 				PB_HandleCrosshair(46);
-				A_TakeInventory("PB_LockScreenTilt",1);
 			}
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"Fire2");
 		Fire1Actual:
@@ -287,7 +278,6 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 			TNT1 A 0 {
 				PB_SetRoll(0);
 				A_SetCrosshair(-1);
-				A_TakeInventory("PB_LockScreenTilt",1);
 			}
 		Fire2Actual:
 			TNT1 A 0 		PB_jumpIfNoAmmo();
@@ -317,7 +307,6 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 			TNT1 A 0 {
 				PB_SetRoll(0);
 				PB_HandleCrosshair(46);
-				A_TakeInventory("PB_LockScreenTilt",1);
 			}
 			TNT1 A 0 A_StartSound("IronSights", 0);
 			TNT1 A 0 A_JumpIf(PB_GetZoom(),"Zoomout");
@@ -347,7 +336,6 @@ class PBX_ProSurvPSG : PBX_WeaponBase
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");
 			TNT1 A 0 {
                 A_ZoomFactor(1.0);
-                A_Giveinventory("PB_LockScreenTilt",1);
 			}
             TNT1 A 0 PB_CheckReload(null,null,"Pump","Ready3","Ready3",MAGAZINE_SIZE);
 			TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
@@ -378,7 +366,6 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 
 		ReloadFinished:
 			TNT1 A 0 {
-				A_Takeinventory("PB_LockScreenTilt",1);
 				A_PlaysoundEx("Ironsights", "Auto");
 			}
 			XG30 LKJIHG 1 PB_SetRoll(roll+1.0);
@@ -388,7 +375,6 @@ class PBX_ProSurvPSG : PBX_WeaponBase
             
 		ChamberInsertShell:
 			TNT1 A 0 {
-				A_Giveinventory("PB_LockScreenTilt",1);
 				A_PlaysoundEx("Ironsights", "Auto");
 			}
 			XG31 ABCD 1 {
@@ -423,7 +409,6 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 
         Unload:
 			TNT1 A 0 {
-				A_Giveinventory("PB_LockScreenTilt",1);
 				A_WeaponOffset(0,32);
 				A_PlaysoundEx("Ironsights", "Auto");
 			}

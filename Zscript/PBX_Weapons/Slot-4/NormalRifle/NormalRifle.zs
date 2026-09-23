@@ -70,7 +70,6 @@ Class PBX_NormalRifle : PBX_WeaponBase
 				PB_SetRoll(0);
 				PB_HandleCrosshair(55);
                 PB_SetZoom(false);
-				A_TakeInventory("PB_LockScreenTilt",1);
                 A_ZoomFactor(1.0);
                 PB_ClearDualWield();
 			}
@@ -97,7 +96,6 @@ Class PBX_NormalRifle : PBX_WeaponBase
 				PB_SetRoll(0);
                 PB_ClearDualWield();
 			    PB_HandleCrosshair(55);
-				A_SetInventory("PB_LockScreenTilt",0);
                 PBX_WeaponRaise("CLIPIN");
                 invoker.burstcount = 0;
 			    return PB_RespectIfNeeded();
@@ -151,7 +149,6 @@ Class PBX_NormalRifle : PBX_WeaponBase
                 PB_HandleCrosshair(55);
 				A_WeaponOffset(0, 32);
 				PB_SetRoll(0);
-				A_SetInventory("PB_LockScreenTilt", 0);
 				A_ZoomFactor(1.0);
             }
             RIFL J 0 A_Jump(128,3);
@@ -221,7 +218,6 @@ Class PBX_NormalRifle : PBX_WeaponBase
                 A_WeaponOffset(0,32);
                 PB_SetRoll(0);
                 A_SetCrosshair(-1);
-                A_SetInventory("PB_LockScreenTilt",0);
             }
 			TNT1 A 0 A_Jumpif(PB_GetZoom(),"ZoomOut");
             TNT1 A 0 A_JumpIf(A_CheckAkimbo(), "ReadyToFireDualWield");

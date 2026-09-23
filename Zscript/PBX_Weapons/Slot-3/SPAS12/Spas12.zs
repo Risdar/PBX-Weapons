@@ -96,7 +96,6 @@ class PBX_SPAS12 : PBX_WeaponBase
     {
         PB_SetRoll(0);
         PB_HandleCrosshair(46);
-        A_TakeInventory("PB_LockScreenTilt",1);
 
         if(invoker.dualfiremode)
             return ResolveState("HL2Fire");
@@ -117,11 +116,9 @@ class PBX_SPAS12 : PBX_WeaponBase
         WeaponRespect:
             TNT1 A 0 {
 				A_SetCrosshair(-1);
-                A_GiveInventory("PB_LockScreenTilt", 1);
                 A_PlaySound("weapons/spas12/raise", CHAN_AUTO);
             }
             S12S EDCBA 1;
-            TNT1 A 0 A_TakeInventory("PB_LockScreenTilt", 1);
             Goto Ready3;
 
         Deselect:
@@ -139,7 +136,6 @@ class PBX_SPAS12 : PBX_WeaponBase
             TNT1 A 0 {
                 A_WeaponOffset(0, 32);
                 PB_SetRoll(0);
-                A_TakeInventory("PB_LockScreenTilt", 1);
                 PB_SetZoom(false);
                 PBX_WeaponRaise("weapons/spas12/raise");
 			    return PB_RespectIfNeeded();
@@ -150,10 +146,8 @@ class PBX_SPAS12 : PBX_WeaponBase
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"Ready2");
             TNT1 A 0 {
                 PB_SetRoll(0);
-                A_TakeInventory("PB_LockScreenTilt", 1);
                 A_ZoomFactor(1.0);
                 PB_HandleCrosshair(46);
-                A_SetInventory("PB_LockScreenTilt",0);
 				A_SetInventory("CantWeaponSpecial",0);
 				A_SetInventory("CantDoAction",0);
             }
@@ -168,7 +162,6 @@ class PBX_SPAS12 : PBX_WeaponBase
             TNT1 A 0 {
 				A_ZoomFactor(1.5);
                 A_SetCrosshair(-1);
-				A_SetInventory("PB_LockScreenTilt",0);
 				A_SetInventory("CantDoAction",0);
             }
         ReadytoFire2:
@@ -182,7 +175,6 @@ class PBX_SPAS12 : PBX_WeaponBase
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"Zoomout");
             TNT1 A 0 {
 				A_Takeinventory("GoWeaponSpecialAbility",1);
-				A_GiveInventory("PB_LockScreenTilt",1);
 			}
             TNT1 A 0 {
                 invoker.dualfiremode = !invoker.dualfiremode;
@@ -244,7 +236,6 @@ class PBX_SPAS12 : PBX_WeaponBase
             TNT1 A 0 {
                 A_WeaponOffset(0, 32);
                 A_SetRoll(0);
-                A_TakeInventory("PB_LockScreenTilt", 1);
             }
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"Fire2");
 		Fire1Actual:
@@ -274,7 +265,6 @@ class PBX_SPAS12 : PBX_WeaponBase
             TNT1 A 0 {
 				PB_SetRoll(0);
 				A_SetCrosshair(-1);
-				A_TakeInventory("PB_LockScreenTilt",1);
 			}
 		Fire2Actual:
 			TNT1 A 0 		PB_jumpIfNoAmmo();
@@ -306,7 +296,6 @@ class PBX_SPAS12 : PBX_WeaponBase
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");
             TNT1 A 0 {
                 A_ZoomFactor(1.0);
-                A_Giveinventory("PB_LockScreenTilt",1);
 			}
             TNT1 A 0 PB_CheckReload(null,null,"Pump","Ready3","Ready3",MAGAZINE_SIZE);
 			TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
@@ -345,7 +334,6 @@ class PBX_SPAS12 : PBX_WeaponBase
 
         FinishReload:
             TNT1 A 0 {
-				A_Takeinventory("PB_LockScreenTilt",1);
 				A_PlaysoundEx("Ironsights", "Auto");
 			}
             S12P HGFEDCBA 1;
@@ -354,7 +342,6 @@ class PBX_SPAS12 : PBX_WeaponBase
 
         Unload:
 			TNT1 A 0 {
-				A_Giveinventory("PB_LockScreenTilt",1);
 				A_WeaponOffset(0,32);
 				A_PlaysoundEx("Ironsights", "Auto");
 			}

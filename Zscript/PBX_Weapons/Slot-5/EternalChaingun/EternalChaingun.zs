@@ -181,7 +181,6 @@ class PBX_EternalMinigun : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 				PB_HandleCrosshair(39);
-				A_TakeInventory("PB_LockScreenTilt",1);
                 A_StopSound(CHAN_6);
                 A_StopSound(CHAN_5);
                 A_StopSound(CHAN_WEAPON);
@@ -203,7 +202,6 @@ class PBX_EternalMinigun : PBX_WeaponBase
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 			    PB_HandleCrosshair(39);
-				A_SetInventory("PB_LockScreenTilt",0);
                 PBX_WeaponRaise("weapons/minigun/respect1");
 			    return PB_RespectIfNeeded();
 			}
@@ -225,7 +223,6 @@ class PBX_EternalMinigun : PBX_WeaponBase
                 A_WeaponOffset(0,32);
                 PB_SetRoll(0);
                 PB_HandleCrosshair(39);
-                A_TakeInventory("PB_LockScreenTilt",1);
             }
             TNT1 A 0 {
                 if(EChaingun_CanNotFire())
@@ -302,7 +299,6 @@ class PBX_EternalMinigun : PBX_WeaponBase
                 A_WeaponOffset(0,32);
                 PB_SetRoll(0);
                 PB_HandleCrosshair(39);
-                A_TakeInventory("PB_LockScreenTilt",1);
             }
             TNT1 A 0 {
                 if(EChaingun_CanNotFire())
@@ -359,7 +355,6 @@ class PBX_EternalMinigun : PBX_WeaponBase
             }
             TNT1 A 0 {
 				A_Takeinventory("GoWeaponSpecialAbility",1);
-				A_GiveInventory("PB_LockScreenTilt",1);
                 A_Print("$PBX_NoSpecial");
 			}
             Goto Ready3;

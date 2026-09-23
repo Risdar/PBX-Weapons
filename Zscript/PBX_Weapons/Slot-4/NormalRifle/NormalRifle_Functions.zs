@@ -8,7 +8,7 @@ extend class PBX_NormalRifle
 
         "SelectAnimationDualWield", "SelectAnimation", "ReloadFromADS",
 
-        "SwitchToDualWield", "StopDualWield",
+        "SwitchToDualWield", "StopDualWield", "WeaponInspect",
 
         "RaiseFromEmpty","Reload","ContinueReload","FinishReload","Rechamber",
 
