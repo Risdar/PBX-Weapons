@@ -1,7 +1,7 @@
 [enu default]
 //////////////////////////// GENERAL ///////////////////////////////////////////////////////////////////////////////
 PBXWeapons_Settings                 = "\cg⟁\c- PBX - Weapons Settings";
-PBXWeapons_Version                  = "\cgPBX - Weapons Version: 3.0.2 - Energy Update";
+PBXWeapons_Version                  = "\cgPBX - Weapons Version: 3.1.0 - Energy Update";
 
 PBXWeapons_SmartScope_MaxHP         = "Max. HP: %u";
 PBXWeapons_SmartScope_CurrHP        = "HP: %u";
@@ -243,8 +243,8 @@ PBX_ExcavatorUpgrade_Tip3 = "\ckThe Razorblade\c- mode launches a Razorblade tha
 PBX_CyberdemonRL_Pickup             = "You got the Cyberdemon's missile launcher! This thing's heavy... (Slot 6)";
 PBX_CyberdemonRL_Tag                = "Cyberdemon's Missile Launcher";
 
-PBX_CyberdemonRL_Pierce             = "\cdPiercing Rockets \c-Mode";
-PBX_CyberdemonRL_Normal             = "\cdExtreme Explosion \c-Mode";
+PBX_CyberdemonRL_Triple             = "\cgSecondary: \cdTriple Burst";
+PBX_CyberdemonRL_Laser              = "\cgSecondary: \caLaser";
 
 // Mastermind CG
 PBX_MastermindCG_Pickup             = "You got the Mastermind's Chaingun! (Slot 6)";
@@ -318,6 +318,10 @@ PBX_NukeLauncher_Tag                = "UAC Nuclear Warhead Launcher";
 PBX_HexaShotgun_Pickup              = "You Have Found The Hexa Shotgun! (Slot 9)";
 PBX_HexaShotgun_Tag                 = "Hexa Shotgun";
 
+// Mini Shotgun
+PBX_MiniShotgun_Pickup              = "You Have Found The Mini Shotgun! (Slot 9)";
+PBX_MiniShotgun_Tag                 = "Rotating Double Barrel Shotgun";
+
 //////////////////////////// OTHERS ///////////////////////////////////////////////////////////////////////////////
 // PBX Command Pack
 PBX_CommandPack_Pickup              = "You found the UAC Command Pack! You got the standard issue UAC Rifle and Pump Shotgun!";
@@ -352,6 +356,8 @@ PBX_ScrollZoom_Tip1     = "Every scoped weapon zoom strength can be adjusted usi
 PBX_ScrollZoom_Tip2     = "You can also manually adjust the zoom using %s to Zoom In or %s to Zoom Out";
 
 PBX_MonsterWeapon1      = "Every Monster Weapon are very powerful but has durability. Restore its durability by picking up the same weapon again.";
+
+PBX_SecretWeaponSpawned = "Secret Weapon Spawned!";
 
 // These are already in PB
 /* PB_FIREMODE_SEMI = "Firemode: \cfSemi-Auto";

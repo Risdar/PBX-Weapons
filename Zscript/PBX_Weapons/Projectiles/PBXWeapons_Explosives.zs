@@ -617,12 +617,16 @@ Class ExcavatorDropShot : PB_ProjectileAlt
 }
 
 //////////////////////////// CYBERDEMON ROCKET LAUNCHER ////////////////////////////////////////////////////////////////////////////////////
-class CRL_NormalRockets : PB_ProjectileAlt
+class CRL_Rocket : PB_ProjectileAlt
 {
     Default
     {
-		PB_Projectile.BaseDamage 350;
+		+RIPPER
+		PB_Projectile.BaseDamage 250;
+		PB_Projectile.RipperCount 12;
+        PB_Projectile.PenetrationCount 5;
 		+PB_PROJECTILE.NOCRITICALS
+        Scale 1.0;
         DamageType "Explosive";
         Decal "Scorch";
         RenderStyle "Add";
@@ -632,7 +636,6 @@ class CRL_NormalRockets : PB_ProjectileAlt
         gravity 0;
         // +MISSILE;
         Projectile;
-        -RIPPER
         +EXTREMEDEATH
         +BLOODSPLATTER 
         +THRUSPECIES
@@ -702,18 +705,6 @@ class CRL_NormalRockets : PB_ProjectileAlt
 			X125 FGHIJKLMNOPQR 1 bright;
 			Stop;
 	}
-}
-
-class CRL_PiercingRockets : CRL_NormalRockets
-{
-    Default
-    {
-        +RIPPER
-		PB_Projectile.BaseDamage 250;
-		PB_Projectile.RipperCount 12;
-        PB_Projectile.PenetrationCount 5;
-        Scale 1.0;
-    }
 }
 
 //////////////////////////// SPIDER MASTERMIND CHAINGUN ////////////////////////////////////////////////////////////////////////////////////

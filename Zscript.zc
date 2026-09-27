@@ -56,5 +56,6 @@ Version 5.0
 #include "Zscript/PBX_Weapons/Slot-9/DemonicExterminator/DemonicExt.zs" // Demonic Exterminator
 #include "Zscript/PBX_Weapons/Slot-9/NukeLauncher/NukeLauncher.zs" // Nuke Launcher
 #include "Zscript/PBX_Weapons/Slot-9/HexaShotgun/HexaShotgun.zs" // Hexa Shotgun
+#include "Zscript/PBX_Weapons/Slot-9/MiniShotgun/MiniShotgun.zs" // Mini Shotgun
 
 

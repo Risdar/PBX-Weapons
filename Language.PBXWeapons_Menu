@@ -66,6 +66,7 @@ PBXWEAPONS_DEMONIC_EXTERMINATOR = "Enable Demonic Exterminator";
 PBXWEAPONS_DEMONEXT_ARTIFACT = "Enable Demonic Exterminator Artifacts";
 PBXWEAPONS_NUKE_LAUNCHER = "Enable Nuke Launcher";
 PBXWEAPONS_HEXA_SHOTGUN = "Enable Hexa Shotgun";
+PBXWEAPONS_MINI_SHOTGUN = "Enable Mini Shotgun";
 
 PBXWEAPONS_UAC_COMMANDER_BACKPACK = "Enable UAC Commander's Backpack";
 

@@ -382,6 +382,9 @@ class PBXHUDService_PBX_AllWeapons : service
         case 'PBX_HexaShotgun':
             return MakeData(imgOffset1:(-25, 10), imgScale1:1.7);
 
+        case 'PBX_MiniShotgun':
+            return MakeData(imgOffset1:(-25, 30), imgScale1:1.7);
+
         default:
             return null;
         }

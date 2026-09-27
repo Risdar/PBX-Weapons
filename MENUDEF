@@ -150,6 +150,7 @@ AddOptionMenu "AddonWeaponSpawns" after "BFGT1"
     FlagOption    "$PBXWEAPONS_DEMONEXT_ARTIFACT",           "PBXWeapons_backpack_filter",    "OffOn", 6
     FlagOption    "$PBXWEAPONS_NUKE_LAUNCHER",      "PBXWeapons_specialdrop_filter",    "OffOn", 1 // I dont know where else to put this
     FlagOption    "$PBXWEAPONS_HEXA_SHOTGUN",      "PBXWeapons_specialdrop_filter",    "OffOn", 2 // I dont know where else to put this
+    FlagOption    "$PBXWEAPONS_MINI_SHOTGUN",      "PBXWeapons_specialdrop_filter",    "OffOn", 4 // I dont know where else to put this
 }
 
 // Backpacks/Upgrades/Others /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

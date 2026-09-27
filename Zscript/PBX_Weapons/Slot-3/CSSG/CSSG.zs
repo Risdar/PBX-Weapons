@@ -42,22 +42,24 @@ Class PBX_CSSG : PBX_WeaponBase
 
 	const BARREL_CAPACITY = 2;
 	
-	enum CM_ShellTypes {
+	enum CM_ShellTypes 
+	{
 		Shell_Buck = 1,
-		Shell_Slug = 2,
-		Shell_Flech = 3,
-		Shell_Flak = 4,
-		Shell_Drgn = 5,
-		Shell_EXPL = 6,
-		Shell_WPSP = 7,
-		Shell_Doom = 8,
-		Shell_Damn = 9,
-		Shell_SubZ = 10,
-		Shell_HellF = 11,
+		Shell_Slug,
+		Shell_Flech,
+		Shell_Flak,
+		Shell_Drgn,
+		Shell_EXPL,
+		Shell_WPSP,
+		Shell_Doom,
+		Shell_Damn,
+		Shell_SubZ,
+		Shell_HellF,
 		Shell_Acid = 12
-	};
+	}
 
-	enum CM_Wheel {
+	enum CM_Wheel 
+	{
 		SKIP_FUNCTION = -3, // This is used so HandleWheel can skip its function and go to HandleShells
 		CLOSE_WHEEL,
 		NO_UPGRADE,
@@ -147,7 +149,7 @@ Class PBX_CSSG : PBX_WeaponBase
 				CSSG_CutMeathook();
 			}
 			TNT1 A 0 PB_JumpIfNoAmmo("LeftFire",2);
-			TNT1 A 0 A_overlay(-31,"MuzzleFlashFull");
+			TNT1 A 0 A_FlashOverlay(state:"MuzzleFlashFull");
 			TNT1 A 0 CM_PlayFireSound();
 			C0FF A 1 bright FireCSSG();
 			C0FF B 1 bright {
@@ -183,7 +185,7 @@ Class PBX_CSSG : PBX_WeaponBase
 			TNT1 A 0 CM_HandleCrosshair();
 		RightFire:
 			TNT1 A 0 CM_PlayAltFireSound();
-			TNT1 A 0 A_overlay(-31,"MuzzleFlashRight");
+			TNT1 A 0 A_FlashOverlay(state:"MuzzleFlashRight");
 			C0FH AB 1 bright; 
 			TNT1 A 0 bright {
 				FireHalfCSSGRight();
@@ -208,7 +210,7 @@ Class PBX_CSSG : PBX_WeaponBase
 		LeftFire:
 			TNT1 A 0 PB_JumpIfNoAmmo();
 			TNT1 A 0 CM_PlayAltFireSound();
-			TNT1 A 0 A_overlay(-31,"MuzzleFlashLeft");
+			TNT1 A 0 A_FlashOverlay(state:"MuzzleFlashLeft");
 			C0FH HI 1 bright; 
 			TNT1 A 0 bright {
 				FireHalfCSSGLeft();
@@ -387,28 +389,15 @@ Class PBX_CSSG : PBX_WeaponBase
 		
 		// OVERLAYS
 		MuzzleFlashFull:
-			TNT1 A 0 {
-				A_overlayFlags(overlayID(),PSPF_MIRROR|PSPF_FLIP,random(0,1));
-				A_overlayFlags(overlayID(),PSPF_RENDERSTYLE,1);
-				A_OverlayRenderstyle (overlayID(),STYLE_Add);
-			}
 			C1MZ A 1 bright;
 			C1MZ B 1 bright;
 			stop;
 			
 		MuzzleFlashRight:
-			TNT1 A 0 {
-				A_overlayFlags(overlayID(),PSPF_RENDERSTYLE,1);
-				A_OverlayRenderstyle (overlayID(),STYLE_Add);
-			}
 			C1MZ C 1 bright;
 			stop;
 			
 		MuzzleFlashLeft:
-			TNT1 A 0 {
-				A_overlayFlags(overlayID(),PSPF_RENDERSTYLE,1);
-				A_OverlayRenderstyle (overlayID(),STYLE_Add);
-			}
 			C1MZ D 1 bright;
 			stop;
 			

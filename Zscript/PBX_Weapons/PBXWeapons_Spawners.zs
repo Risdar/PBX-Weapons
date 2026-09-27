@@ -16,7 +16,8 @@ enum PBXWeapons_eWeaponSpecialSpawns
 	DisablePBX_EternalChaingun			    = 1 << 0,  // Spawns on Megaspheres
 	// Spawns on Secrets
 	DisablePBX_NukeLauncher					= 1 << 1, 
-	DisablePBX_HexaShotgun					= 1 << 2  
+	DisablePBX_HexaShotgun					= 1 << 2,  
+	DisablePBX_MiniShotgun					= 1 << 3  
 }
 
 enum PBXWeapons_eShotgunSpawns
@@ -221,6 +222,7 @@ class PBXBFG_Injector : PBInjector
 		{
 			handler.InjectSpawn("PB_BFGSpawnerT1","PBX_NukeLauncher",255,1);
 			handler.InjectSpawn("PB_BFGSpawnerT1","PBX_HexaShotgun",255,1);
+			handler.InjectSpawn("PB_BFGSpawnerT1","PBX_MiniShotgun",255,1);
 		}
     }
 }
@@ -378,6 +380,7 @@ class PBX_SpecialWeaponSpawner : PB_WeaponSpawner
 	{
 		DropItem 'PBX_NukeLauncher', 255, 1;
 		DropItem 'PBX_HexaShotgun', 255, 1;
+		DropItem 'PBX_MiniShotgun', 255, 1;
 	}
 
 	override bool HandleSpawnExceptions(name toSpawn)
@@ -386,7 +389,15 @@ class PBX_SpecialWeaponSpawner : PB_WeaponSpawner
 			return false;
 		if(toSpawn == "PBX_HexaShotgun" && (PBXWeapons_specialdrop_filter & DisablePBX_HexaShotgun))
 			return false;
+		if(toSpawn == "PBX_MiniShotgun" && (PBXWeapons_specialdrop_filter & DisablePBX_MiniShotgun))
+			return false;
 		return true;
+	}
+
+	override void PostBeginPlay()
+	{
+		super.PostBeginPlay();
+		console.printf("$PBX_SecretWeaponSpawned");
 	}
 }
 

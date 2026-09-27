@@ -57,6 +57,7 @@ OB_WEAP_FREEZERIFLE = "%o was iced by %k";
 
 // Slot 9
 OB_WEAP_DEMONEXT = "%o was Undone by UnMaker Extermination Type.";
-OB_WEAP_HEXASG  = "%o was eviscerated by %k's Hexa Shotgun";
+OB_WEAP_HEXASG  = "%o was eviscerated by %k's Hexa Shotgun.";
+OB_WEAP_MINISHOTGUN  = "%o was Mowed down by %k's Rotating Double Barrel Mini-Shotgun.";
 
 

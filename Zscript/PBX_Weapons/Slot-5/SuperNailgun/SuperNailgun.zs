@@ -216,12 +216,12 @@ class PBX_SuperNailgun : PBX_WeaponBase
 
 //////////////////////////// FIRE ////////////////////////////////////////////////////////////////////////////////////
         Fire:
-            TNT1 A 0 PB_JumpIfNoAmmo();
+            TNT1 A 0 PB_jumpIfNoAmmo("StopSpin",1,false);
             SNLR F 1 BRIGHT SuperNailgun_Fire();
             SNLR GHI 1 A_ZoomFactor(1);
             TNT1 A 0 PB_ReFire("Fire");
             TNT1 A 0 SuperNailgun_CheckSpin();
-        SpinAfterFire:
+        StopSpin:
             TNT1 A 0 {invoker.mWeaponIsSpinning = false;}
             SNLR CDECD 1 A_DoPBWeaponAction(WRF_ALLOWRELOAD);
             SNLR ECDE 2 A_DoPBWeaponAction(WRF_ALLOWRELOAD);
@@ -230,7 +230,8 @@ class PBX_SuperNailgun : PBX_WeaponBase
 //////////////////////////// ALT FIRE ////////////////////////////////////////////////////////////////////////////////////
         AltFire:
             TNT1 A 0 A_JumpIf(PB_GetMagUnloaded(),"Reload");
-            TNT1 A 0 SuperNailgun_CheckSpin("SpinAfterFire");
+            TNT1 A 0 PB_jumpIfNoAmmo("StopSpin",1,false);
+            TNT1 A 0 SuperNailgun_CheckSpin("StopSpin");
         SpinLoop:
             TNT1 A 0 {
                 A_WeaponOffset(0,32);
