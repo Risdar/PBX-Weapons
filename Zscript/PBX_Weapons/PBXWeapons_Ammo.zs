@@ -97,6 +97,26 @@ Class CSSGShellsIn : Ammo
         +INVENTORY.IGNORESKILL;
 	}
 }
+
+class PBX_CSSG_ShellBase : PB_Shell
+{
+	Default
+    {
+        Inventory.Amount PBX_CSSG.BARREL_CAPACITY;
+		Ammo.BackpackAmount PBX_CSSG.BARREL_CAPACITY;
+        Inventory.PickupSound "weapons/casing";
+        Scale 0.25;
+    }
+
+	States
+	{
+		CacheSprites:
+			ZCG1 A 0; ZCG2 A 0; ZCG3 A 0; ZCG4 A 0; ZCG5 A 0;
+			ZCG6 A 0; ZCG7 A 0; ZCG8 A 0; ZCG9 A 0; ZC10 A 0;
+			ZC11 A 0; ZC12 A 0;
+	}
+}
+
 class PBX_CSSG_BuckShell          : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZCG8A0");}}
 class PBX_CSSG_DragonsBreathShell : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZC10A0");}}
 class PBX_CSSG_SlugShell          : PBX_CSSG_ShellBase {override void PB_SetAmmoSprite() {sprite = GetSpriteIndex("ZCG9A0");}}
@@ -343,7 +363,7 @@ class CrossbowBallistaAmmo : Ammo
     }
 }
 
-class PBX_BallistaBoltPickup : PB_HighCalMag
+mixin class PBX_BallistaPickupBase
 {
     Default
     {
@@ -353,76 +373,61 @@ class PBX_BallistaBoltPickup : PB_HighCalMag
 
     override void PB_SetAmmoSprite()
     {
-        sprite = GetSpriteIndex("CRBA");
+        switch(self.getClassName())
+        {
+            case 'PBX_BallistaBoltPickup':
+                sprite = GetSpriteIndex("CRBA");
+                break;
+
+            case 'PBX_ExplosiveBoltPickup':
+                sprite = GetSpriteIndex("CRBZ");
+                frame = 3;
+                break;
+
+            case 'PBX_DemonicBoltPickup':
+                sprite = GetSpriteIndex("CRBA");
+                frame = 1;
+                break;
+
+            case 'PBX_ShockBoltPickup':
+                sprite = GetSpriteIndex("CRBS");
+                frame = 3;
+                break;
+        }
     }
 
-	States
+    States
     {
         CacheSprites:
-            CRBA A 0;
+            CRBA A 0; CRBZ D 0; CRBA B 0; CRBS D 0;
     }
 }
 
-class PBX_ExplosiveBoltPickup : PB_RocketAmmo
+class PBX_BallistaBoltPickup : PB_HighCalMag    {mixin PBX_BallistaPickupBase;}
+class PBX_ExplosiveBoltPickup : PB_RocketAmmo   {mixin PBX_BallistaPickupBase;}
+class PBX_DemonicBoltPickup : PB_RocketAmmo     {mixin PBX_BallistaPickupBase;}
+class PBX_ShockBoltPickup : PB_Cell             {mixin PBX_BallistaPickupBase;}
+
+// XM21
+class XM21Ammo : Ammo
 {
     Default
     {
-        Inventory.Amount PBX_Prosurv_Ballista.ARROW_AMOUNT;
-        Inventory.PickupSound "Ammocase/Open";
-    }
-
-    override void PB_SetAmmoSprite()
-    {
-        sprite = GetSpriteIndex("CRBZ");
-        frame = 3;
-    }
-
-	States
-    {
-        CacheSprites:
-            CRBZ D 0;
+        Inventory.Amount 0;
+        Inventory.MaxAmount PBX_XM21.MAGAZINE_SIZE;
+        Ammo.BackpackAmount 0;
+        Ammo.BackpackMaxAmount PBX_XM21.MAGAZINE_SIZE;
+        Inventory.Icon "WM14B0";
     }
 }
 
-class PBX_DemonicBoltPickup : PB_RocketAmmo
+class CloakEnergy : PB_Ammo 
 {
-    Default
-    {
-        Inventory.Amount PBX_Prosurv_Ballista.ARROW_AMOUNT;
-        Inventory.PickupSound "Ammocase/Open";
-    }
-
-    override void PB_SetAmmoSprite()
-    {
-        sprite = GetSpriteIndex("CRBA");
-        frame = 1;
-    }
-
-	States
-    {
-        CacheSprites:
-            CRBA B 0;
-    }
-}
-
-class PBX_ShockBoltPickup : PB_Cell
-{
-    Default
-    {
-        Inventory.Amount PBX_Prosurv_Ballista.ARROW_AMOUNT;
-        Inventory.PickupSound "Ammocase/Open";
-    }
-
-    override void PB_SetAmmoSprite()
-    {
-        sprite = GetSpriteIndex("CRBS");
-        frame = 3;
-    }
-
-	States
-    {
-        CacheSprites:
-            CRBS D 0;
+    Default 
+	{
+        Inventory.MaxAmount PBX_XM21.CLOAK_DURATION;
+		ammo.backpackmaxamount PBX_XM21.CLOAK_DURATION;
+        +INVENTORY.IGNORESKILL;
     }
 }
 

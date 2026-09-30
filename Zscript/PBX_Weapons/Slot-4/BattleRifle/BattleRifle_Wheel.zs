@@ -16,11 +16,15 @@ Class BattleRifleWheel : wheelinfocontainer
 		let br = PBX_BDPBattleRifle(mWeap); if(!br) return;
 		
 		// Toggle Fire
-		if(br.isSemiAuto)
+		if(br.mSemiAuto)
+		{
 			PBX_AddWheel(spw, img:"BattleRifle/BR_Burst",	alias:"$PB_WHEEL_BURST",	token:"BR_Select_FireMode");
+		}
 		else
-			PBX_AddWheel(spw, img:"BattleRifle/BR_Semi",	alias:"$PB_WHEEL_SEMI",		token:"BR_Select_FireMode");
-
+		{
+			PBX_AddWheel(spw, img:"BattleRifle/BR_Semi",	alias:"$PB_WHEEL_SEMI",		token:"BR_Select_FireMode");	
+		}
+		
 		// Laser
 		PBX_LaserWheel(spw,"BattleRifle",mIconScale);
 	}

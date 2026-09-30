@@ -67,23 +67,3 @@ Class DanmakuCasing :			ShellCasingBase {default{PB_CasingBase.CasingSprite 'DC0
 Class SubZeroCasing :			ShellCasingBase {default{PB_CasingBase.CasingSprite 'XFC1';}}
 Class HellFireCasing :			ShellCasingBase {default{PB_CasingBase.CasingSprite 'CAHF';}}
 Class AcidShellsCasing :		ShellCasingBase {default{PB_CasingBase.CasingSprite 'CAAS';}}
-
-// Shells Base
-class PBX_CSSG_ShellBase : PB_Shell
-{
-	Default
-    {
-        Inventory.Amount PBX_CSSG.BARREL_CAPACITY;
-		Ammo.BackpackAmount PBX_CSSG.BARREL_CAPACITY;
-        Inventory.PickupSound "weapons/casing";
-        Scale 0.25;
-    }
-
-	States
-	{
-		CacheSprites:
-			ZCG1 A 0; ZCG2 A 0; ZCG3 A 0; ZCG4 A 0; ZCG5 A 0;
-			ZCG6 A 0; ZCG7 A 0; ZCG8 A 0; ZCG9 A 0; ZC10 A 0;
-			ZC11 A 0; ZC12 A 0;
-	}
-}

@@ -31,7 +31,6 @@ server int PBXWeapons_specialdrop_filter = 0;
 server int PBXWeapons_monsterdrop_filter = 0;
 
 // Powerup Times / Cooldowns
-server int pbxweapons_echaingun_duration = 15;
 server int pbxweapons_meathook_cooldown = 3;
 server int pbxweapons_hologram_cooldown = 3;
 server int pbxweapons_hologram_lifetime = 30;

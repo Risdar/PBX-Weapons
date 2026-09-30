@@ -1,7 +1,7 @@
 [enu default]
 //////////////////////////// GENERAL ///////////////////////////////////////////////////////////////////////////////
 PBXWeapons_Settings                 = "\cg⟁\c- PBX - Weapons Settings";
-PBXWeapons_Version                  = "\cgPBX - Weapons Version: 3.1.0 - Energy Update";
+PBXWeapons_Version                  = "\cgPBX - Weapons Version: 3.2.0 - Energy Update";
 
 PBXWeapons_SmartScope_MaxHP         = "Max. HP: %u";
 PBXWeapons_SmartScope_CurrHP        = "HP: %u";
@@ -187,6 +187,14 @@ PBX_Crossbow_Shock                  = "\cnShock Bolt";
 PBX_DemonicBallistaUpgrade_Pickup   = "Demonic Ballista Upgrade (Slot 4)";
 PBX_Prosurv_Ballista_UpgradeTag     = "Ballista Upgrade";
 
+// XM 21
+PBX_XM21_Pickup                     = "XM-21 (Slot 4)";
+PBX_XM21_Tag                        = "UAC XM-21 'Ghost' Sniper Rifle";
+
+PBX_XM21_CloakOn                    = "\czCloak\c- Enabled";
+PBX_XM21_CloakOff                   = "\czCloak\c- Disabled ";
+
+
 //////////////////////////// SLOT 5 ///////////////////////////////////////////////////////////////////////////////
 // HMG
 PBX_NeoHMG_Pickup                   = "HMG (Slot 5)";
@@ -195,16 +203,14 @@ PBX_NeoHMG_Tag                      = "UAC PB-3 Heavy Machine Gun";
 PBX_NeoHMG_DetonateShield           = "\caDetonate \c-Shield";
 PBX_NeoHMG_PlaceShield              = "\caPlace \c-Shield";
 
-PBX_NeoHMG_Tip1 = "Activate the \cdshield\c- using %s, the \cdshield\c- only \cvrecharges\c- when there's \cgoverheat\-.";
+PBX_NeoHMG_Tip1 = "Activate the \cdshield\c- using %s, the \cdshield\c- \cvrecharges\c- only when there's \cgoverheat\-.";
 PBX_NeoHMG_Tip2 = "Pressing %s while the \cdshield\c- is active will \cgdetonate\c- the \cdshield\c- \cnstunning\c- nearby enemies.";
 PBX_NeoHMG_Tip3 = "When \cgoverheat\c- reaches \ca%d° C\c- the weapon will use a stronger projectile and \cvrecharge\c- the \cdshield\c- faster.";
 
 
 // Eternal Chaingun
 PBX_EternalChaingun_Pickup          = "Eternal Chaingun (Slot 5)";
-PBX_EternalChaingun_Tag             = "UAC BD Eternal Chaingun";
-
-PBX_EternalChaingun_NoBerserk       = "You need \cgBerserk\c- to Use this Weapon";
+PBX_EternalChaingun_Tag             = "UAC BD 'Eternal' Chaingun";
 
 // Super Nailgun
 PBX_SuperNailgun_Pickup             = "Super Nailgun (Slot 5)";
@@ -213,9 +219,8 @@ PBX_SuperNailgun_Tag                = "UAC Prototype Super Nailgun";
 PBX_SuperNailgun_HeatedNails        = "\caSuper Heated Nails \c-Mode";
 PBX_SuperNailgun_ChargedNails       = "\cnSuper Charged Nails \c-Mode";
 
-PBX_SuperNailgun_Tip1 = "When \cgoverheat\c- reaches \ca%d° C\c- it will fire special nails depending on the current mode.";
+PBX_SuperNailgun_Tip1 = "Press %s to passively gain \cgoverheat\c-, when it reaches \ca%d° C\c- the weapon will fire special nails depending on the mode.";
 PBX_SuperNailgun_Tip2 = "\caSuper Heated Nails\c- will bounce and burn while \cnSuper Charged Nails\c- will zap nearby enemies.";
-PBX_SuperNailgun_Tip3 = "Press %s to spin the weapon and passively gain \cgoverheat\c-.";
 
 
 //////////////////////////// SLOT 6 ///////////////////////////////////////////////////////////////////////////////
@@ -236,8 +241,8 @@ PBX_Excavator_Tip2 = "\cdDrill\c- mode rocket will burrow into the ground and co
 PBX_Excavator_Tip3 = "\ciDrop\c- mode rocket will fly normally and drop into the ground upon detonation.";
 
 PBX_ExcavatorUpgrade_Tip1 = "The Excavator Upgrade adds 2 new modes.";
-PBX_ExcavatorUpgrade_Tip2 = "\crThe Explosive Bolas\c- mode launches Sticky Bolas that detonates while the Secondary will shoot 6 burst of Sticky Grenades.";
-PBX_ExcavatorUpgrade_Tip3 = "\ckThe Razorblade\c- mode launches a Razorblade that sticks to enemies while the Secondary will charge fire bouncing Razorblade.";
+PBX_ExcavatorUpgrade_Tip2 = "\crThe Explosive Bolas\c- mode launches Sticky Bolas that detonates while the Secondary shoots 6 burst of Sticky Grenades.";
+PBX_ExcavatorUpgrade_Tip3 = "\ckThe Razorblade\c- mode launches a Razorblade that sticks to enemies while the Secondary charges a bouncing Razorblade.";
 
 // CyberdemonRL
 PBX_CyberdemonRL_Pickup             = "You got the Cyberdemon's missile launcher! This thing's heavy... (Slot 6)";
@@ -270,8 +275,8 @@ PBX_BDPRailgun_Tag                  = "UAC MK-III 'Platinum' Railgun";
 PBX_BDPRailgun_SpawnHologram        = "Spawn Hologram";
 PBX_BDPRailgun_NoHologram           = "\cnHologram\c- is Charging";
 
-PBX_BDPRailgun_Tip1 = "The Platinum Railgun has a \cnHologram\c- that can be activated using %s.";
-PBX_BDPRailgun_Tip2 = "Pressing %s when \cdZoomed \c-in will let you select the Scoped Modes";
+PBX_BDPRailgun_Tip1 = "Press %s to spawn a \cnHologram\c-.";
+PBX_BDPRailgun_Tip2 = "Pressing %s when \cdZoomed \c- will let you select the Scoped Modes.";
 
 //////////////////////////// SLOT 8 ///////////////////////////////////////////////////////////////////////////////
 // Tesla Gun

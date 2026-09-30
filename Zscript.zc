@@ -33,6 +33,7 @@ Version 5.0
 #include "Zscript/PBX_Weapons/Slot-4/BattleRifle/BattleRifle.zs" // Battle Rifle
 #include "Zscript/PBX_Weapons/Slot-4/MetalSniper/MetalSniper.zs" // Metal Sniper
 #include "Zscript/PBX_Weapons/Slot-4/Prosurv_Ballista/Prosurv_CrossbowBallista.zs" // Crossbow Ballista
+#include "Zscript/PBX_Weapons/Slot-4/XM21/XM21.zs" // XM21 Sniper RIfle
 
 // Slot 5
 #include "Zscript/PBX_Weapons/Slot-5/NeoHMG/NeoHMG.zs" // NeoHMG

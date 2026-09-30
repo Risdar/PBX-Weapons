@@ -103,3 +103,69 @@ class ShieldParticle : VisualThinker
 		Super.Tick();
 	}
 }
+
+//////////////////////////// ETERNAL CHAINGUN ////////////////////////////////////////////////////////////////////////////////////
+class EternalChaingunTracer : PB_556x45mmAP
+{
+
+    Default
+    {
+        Scale .9;
+		+PB_PROJECTILE.NOCRITICALS
+    }
+
+    States
+    {
+        Spawn:
+            PRTL A 1 BRIGHT;
+            Loop;
+
+        Death:
+            TNT1 A 0;
+            TNT1 A 1;
+            TNT1 a 2;
+        XDeath:
+            TNT1 A 0 A_Explode(8, 50);
+            Stop;
+    }
+}
+
+class EChaingunFreeze : EternalChaingunTracer
+{
+	Default
+	{
+        DamageType "Ice";
+	}
+}
+
+
+
+class EChaingunLightning : EternalChaingunTracer
+{
+	mixin PBX_LightningProjectile;
+
+	Default
+	{
+        PB_Projectile.BaseDamage 25;
+        EChaingunLightning.DetectRange 256;
+        EChaingunLightning.MaxVictims 3;
+		EChaingunLightning.SplitRange 256;
+		EChaingunLightning.Damage 1;
+		EChaingunLightning.Duration 1;
+		EChaingunLightning.Delay 2;
+		EChaingunLightning.maxChains 1;
+		EChaingunLightning.MaxLinks 1;
+		EChaingunLightning.DamageType 'plasma';
+        Translation "112:127=192:207", "224:231=80:87";
+		+PB_PROJECTILE.NOCRITICALS
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+		if (isFrozen()) return;
+
+		L_ProjTick();
+	}
+}
+

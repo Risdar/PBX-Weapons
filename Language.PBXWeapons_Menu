@@ -27,15 +27,14 @@ PBXWEAPONS_CSSG_LOCK_SWITCH = "CSSG Meathook Lock Switch";
 TIP_pbxweapons_keepweapons          = "Keep unupgraded weapons (PBX Weapons Only)";
 TIP_pbxweapons_normalriflereplace   = "Start the game with the Platinum Rifle";
 TIP_pbxweapons_startwithcrossbow    = "Start the game with the Crossbow Ballista";
-TIP_pbxweapons_enablesecretweapon   = "Toggle secret weapon spawns, Currently there's only the Nuke Launcher";
+TIP_pbxweapons_enablesecretweapon   = "Toggle secret weapon spawns";
 TIP_pbxweapons_cssghooklockswitch   = "Disable weapon switching when the CSSG Meathook is attached to a monster";
 
 TIP_pbxweapons_secretweapon_spawnchance = "How frequent should the secret weapons spawn (In Percent)";
 
-TIP_pbxweapons_echaingun_duration   = "This affects the Eternal Chaingun's Power Time after pickup (In Seconds)";
-TIP_pbxweapons_meathook_cooldown    = "This affects the CSSG's Meathook cooldown (In Seconds)";
-TIP_pbxweapons_hologram_cooldown    = "This affects the Platinum Railgun's Hologram cooldown (In Seconds)";
-TIP_pbxweapons_hologram_lifetime    = "This affects the Platinum Railgun's Hologram lifetime (In Seconds)";
+TIP_pbxweapons_meathook_cooldown    = "CSSG's Meathook cooldown (In Seconds)";
+TIP_pbxweapons_hologram_cooldown    = "Platinum Railgun's Hologram cooldown (In Seconds)";
+TIP_pbxweapons_hologram_lifetime    = "Platinum Railgun's Hologram lifetime (In Seconds)";
 
 
 //////////////////////////// SPAWN MENU ///////////////////////////////////////////////////////////////////////////////
@@ -47,6 +46,7 @@ PBXWEAPONS_SPAS12 = "Enable SPAS-12";
 PBXWEAPONS_CSSG = "Enable Commander SuperShotgun";
 PBXWEAPONS_BATTLE_RIFLE = "Enable Battle Rifle";
 PBXWEAPONS_METAL_SNIPER = "Enable Metal Sniper";
+PBXWEAPONS_XM21 = "Enable Sniper Spec-Ops Pack";
 PBXWEAPONS_NEOHMG = "Enable Neo HMG";
 PBXWEAPONS_SUPERNAILGUN = "Enable Super Nailgun";
 

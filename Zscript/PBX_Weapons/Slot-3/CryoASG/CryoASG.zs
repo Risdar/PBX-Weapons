@@ -311,6 +311,28 @@ class PBX_CryoASG : PBX_WeaponBase
             A12R DCBA 1 A_DoPBWeaponAction();
             Goto Ready3;
 
+        WeaponInspect:
+            A12R ABCD 1 A_DoPBWeaponAction();
+            A12G T 1 A_DoPBWeaponAction();
+            A12G GGG 1 A_DoPBWeaponAction();
+        HoldInspect:
+            A12G GHIJK 1 A_DoPBWeaponAction();
+            "####" L 6 A_DoPBWeaponAction();
+            "####" X 0 A_StartSound("MS/Button",CHAN_WEAPON, CHANF_OVERLAP);
+            "####" MNOON 1 A_DoPBWeaponAction();
+            "####" X 0 A_StartSound("MS/Button",CHAN_WEAPON, CHANF_OVERLAP);
+            "####" NOONN 1 A_DoPBWeaponAction();
+            "####" X 0 A_StartSound("MS/Button",CHAN_WEAPON, CHANF_OVERLAP);
+            "####" NOOO 1 A_DoPBWeaponAction();
+            "####" A 0 A_StopSound(1);
+            "####" PQRSGG 1 A_DoPBWeaponAction();
+            "####" A 0 A_JumpIf(PressingReload(),"HoldInspect");
+            "####" G 1 A_DoPBWeaponAction();
+            "####" X 0 A_PlaySound("Shotgun/Pump2", 5);
+            "####" T 1 A_DoPBWeaponAction();
+            A12R DCBA 1 A_DoPBWeaponAction();
+            Goto Ready3;
+
         Deselect:
             TNT1 A 0 PBX_WeaponLower();
             A12S ABCDE 1;
@@ -329,6 +351,7 @@ class PBX_CryoASG : PBX_WeaponBase
             A12S EDCBA 1;
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
         Ready3:
+            TNT1 A 0 PBX_CheckInspect();
 			A12G A 1 {
                 PB_CoolDownBarrel();
                 PB_HandleCrosshair(39);

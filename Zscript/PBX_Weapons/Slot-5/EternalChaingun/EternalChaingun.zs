@@ -15,8 +15,6 @@ class PBX_EternalMinigun : PBX_WeaponBase
         Weapon.SelectionOrder 2545;
         Weapon.SlotNumber 5;
         Weapon.SlotPriority 0.5;
-        // PB_WeaponBase.UsesWheel true;
-        // PB_WeaponBase.WheelInfo "PlasmaBlasterWheel";
 	    Inventory.AltHUDIcon "MGUNA0";
 
 //////////////////////////// AMMO ////////////////////////////////////////////////////////////////////////////////////
@@ -32,101 +30,37 @@ class PBX_EternalMinigun : PBX_WeaponBase
         Scale 0.9;
 
 //////////////////////////// WEAPON FLAGS ////////////////////////////////////////////////////////////////////////////////////
-        +WEAPON.CHEATNOTWEAPON;
         +WEAPON.NOAUTOAIM;
         +WEAPON.NOAUTOFIRE;
         +WEAPON.NO_AUTO_SWITCH;
     }
 
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
-    int mPowerTime;
+    const MUZZLE_FLASH_LAYER2 = -4;
+    const MUZZLE_FLASH_LAYER3 = -5;
 
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
-    // First time pickup
-    override void AttachToOwner(Actor other)
-    {
-        super.AttachToOwner(other);
-        if(!other) return;
-        if(owner.player.readyweapon != self)
-            owner.player.PendingWeapon = self;
-    }
-    
-    // Consequent Pickup
-	override bool HandlePickup(Inventory item)
-    {
-        // If the item being picked up is this gun
-        if(item.getClassName() == self.getClassName())
-        {
-            let plr = owner.player;
-            PBXCore_Debug.Print("Weapon Found");
-
-            // Check if the player already has this weapons
-            let weap = PBX_EternalMinigun(owner.FindInventory("PBX_EternalMinigun"));
-            if(weap)
-            {
-                // If yes then reset the power time
-                weap.mPowerTime = PBXCore_Duration.GetByCVarInSeconds("pbxweapons_echaingun_duration");
-                // Force switch to this weapon
-                if(plr.readyweapon != weap)
-                    plr.PendingWeapon = weap;
-                // Check if the player is already using this weapon
-                if(InStateSequence(plr.FindPSprite(PSP_WEAPON).curstate, weap.ResolveState("Ready3")))
-                {
-                    // If yes then give powperup
-                    owner.A_GiveInventory("PBXWeapons_InfiniteAmmo",1);
-                    owner.A_GiveInventory("PBXWeapons_Drain",1);
-                    owner.A_GiveInventory("PBXWeapons_Protection",1);
-                }
-                PBXCore_Debug.PrintInt("Getting Cooldown, %",weap.mPowerTime);
-                if(pb_newmugshot) owner.A_SetMugshotState("MegasphereGrin");
-            }
-            item.bPickupgood = true;
-            return true;
-        }
-        return super.HandlePickup(item);
-    }
-
-    // Set Default power time
-    override void PostBeginPlay()
-    {
-        mPowerTime = PBXCore_Duration.GetByCVarInSeconds("pbxweapons_echaingun_duration");
-        PBXCore_Debug.PrintInt("Power Time is %d",mPowerTime);
-        Super.PostBeginPlay();
-    }
-
-    override void DoEffect() 
-	{
-		super.DoEffect();
-        if (level.isFrozen()) return;
-        If(!owner || !owner.player || !owner.player.readyweapon) return;
-
-        let weap = PBX_EternalMinigun(owner.FindInventory("PBX_EternalMinigun"));
-        if(!weap || !(owner.player.readyweapon is "PBX_EternalMinigun") || weap.mPowerTime <= 0) return;
-
-        if(level.time % TICRATE != 0) return;
-     
-        PBXCore_Debug.PrintInt("Counting seconds %d",weap.mPowerTime-1);
-        weap.mPowerTime--;
-    }
 
 //////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////
     action void EChaingun_Fire(bool isAlt = false)
     {
         if(isAlt)
         {
-            PB_FireBullets("EternalChaingunTracer", 1, 3, 0, 0, 3);
-            PB_FireBullets("EternalChaingunTracer", 1, 3, 0, 0, 3);
+            PB_FireBullets("EChaingunFreeze", 1, 5, 0, 0, 5);
+            PB_FireBullets("EChaingunLightning", 1, 5, 0, 0, 5);
             PB_IncrementHeat();
             A_TakeInventory(invoker.ammo1.getClassName(), 1, TIF_NOTAKEINFINITE);
             PB_SpawnCasing("PB_EmptyBrass", 19,-13,24,0,-frandom(3,6),frandom(-1,1), false);
             PB_SpawnCasing("PB_EmptyBrass", 19,-13,24,0,-frandom(3,6),frandom(-1,1), false);
             A_StartSound("weapon/EternalChaingun/Shoot", CHAN_AUTO, CHANF_OVERLAP);
+            A_FlashOverlay(MUZZLE_FLASH_LAYER2);A_OverlayOffset(MUZZLE_FLASH_LAYER2,-40,-5);
+            A_FlashOverlay(MUZZLE_FLASH_LAYER3);A_OverlayOffset(MUZZLE_FLASH_LAYER3,40,-5);
         }
         
         PB_FireBullets("EternalChaingunTracer", 1, 3, 0, 0, 3);
         A_TakeInventory(invoker.ammo1.getClassName(), 1, TIF_NOTAKEINFINITE);
         PB_IncrementHeat();
-        PB_GunSmoke_Basic(0,0,2);//A_FireCustomMissile("GunFireSmoke", 0, 0, 0, 0, 0, 0);
+        PB_GunSmoke_Basic(0,0,2);
         A_StartSound("weapon/EternalChaingun/Shoot", CHAN_AUTO);
         PB_FireOffset();
         PB_DynamicTail("lmg", "lmg");
@@ -135,24 +69,6 @@ class PBX_EternalMinigun : PBX_WeaponBase
         PB_WeaponRecoil(-0.6,frandom(1.6, -1.6));
         // A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
         A_FlashOverlay();
-    }
-
-    action state EChaingun_Ready()
-    {
-        if(EChaingun_IsInPowerMode())
-            return A_DoPBWeaponAction(WRF_NOSWITCH|WRF_DISABLESWITCH);
-        else
-            return A_DoPBWeaponAction();
-    }
-
-    action bool EChaingun_CanNotFire()
-    {
-        return !EChaingun_IsInPowerMode() && !invoker.OwnerHasBerserk();
-    }
-
-    action bool EChaingun_IsInPowerMode()
-    {
-        return invoker.mPowerTime > 0;
     }
 
 //////////////////////////// STATES ////////////////////////////////////////////////////////////////////////////////////
@@ -164,15 +80,29 @@ class PBX_EternalMinigun : PBX_WeaponBase
             Stop;
 
         WeaponRespect:
-            CHGS ABCD 1 EChaingun_Ready();
+            CHGS ABCD 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_StartSound("DTHDLRST",CHAN_6);
             CHAN AABBCCDDEEFFGG 1;
             TNT1 A 0 A_StartSound("8HAINSW2", CHAN_AUTO);
-            CHAN H 10 EChaingun_Ready();
+            CHAN H 10 A_DoPBWeaponAction();
             TNT1 A 0 A_StartSound("8HAINSW3", CHAN_AUTO);
-            CHAN GFEDCBA 1 EChaingun_Ready();
-            CHAX ABCD 1 EChaingun_Ready();
+            CHAN GFEDCBA 1 A_DoPBWeaponAction();
+            CHAX ABCD 1 A_DoPBWeaponAction();
             TNT1 A 0 A_StartSound("CHAINSTA", CHAN_5);
-            CHAX DCBA 1 EChaingun_Ready();
+            TNT1 A 0 A_StartSound("weapon/EternalChaingun/Stop", CHAN_5);
+            Goto Ready3;
+
+        WeaponInspect:
+            TNT1 A 0 A_StartSound("DTHDLRST",CHAN_6);
+            CHAN AABBCCDDEEFFGG 1;
+            TNT1 A 0 A_StartSound("8HAINSW2", CHAN_AUTO);
+        HoldInspect:
+            CHAN H 1;
+            TNT1 A 0 A_JumpIf(PressingReload(),"HoldInspect");
+            TNT1 A 0 A_StartSound("8HAINSW3", CHAN_AUTO);
+            CHAN GFEDCBA 1 A_DoPBWeaponAction();
+            CHAX ABCD 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_StartSound("CHAINSTA", CHAN_5);
             TNT1 A 0 A_StartSound("weapon/EternalChaingun/Stop", CHAN_5);
             Goto Ready3;
 
@@ -191,14 +121,6 @@ class PBX_EternalMinigun : PBX_WeaponBase
 
         Select:
             TNT1 A 0 {
-                if(invoker.mPowerTime > 0)
-                {
-                    A_GiveInventory("PBXWeapons_InfiniteAmmo",1);
-                    A_GiveInventory("PBXWeapons_Drain",1);
-                    A_GiveInventory("PBXWeapons_Protection",1);
-                }
-            }
-            TNT1 A 0 {
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
 			    PB_HandleCrosshair(39);
@@ -210,10 +132,11 @@ class PBX_EternalMinigun : PBX_WeaponBase
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
         Ready3:
         ReadyToFire:
+            TNT1 A 0 PBX_CheckInspect();
 			CHAX A 1 {
 				PB_CoolDownBarrel();
                 PB_HandleCrosshair(39);
-                return EChaingun_Ready();
+                return A_DoPBWeaponAction();
             }
             loop;
 
@@ -223,14 +146,6 @@ class PBX_EternalMinigun : PBX_WeaponBase
                 A_WeaponOffset(0,32);
                 PB_SetRoll(0);
                 PB_HandleCrosshair(39);
-            }
-            TNT1 A 0 {
-                if(EChaingun_CanNotFire())
-                {
-                    A_Print("$PBX_EternalChaingun_NoBerserk");
-                    return resolvestate("Ready3");
-                }
-                return resolvestate(null);
             }
 			TNT1 A 0 {
                 A_StartSound("CHAINSTA", CHAN_5);
@@ -248,8 +163,7 @@ class PBX_EternalMinigun : PBX_WeaponBase
             }
 			CHGG ABCDABCD 1;
 		Hold:
-            TNT1 A 0 A_JumpIf(EChaingun_CanNotFire(),"SpinDown");
-			TNT1 A 0 A_PlaySound("weapon/EternalChaingun/Shoot", 1);
+			TNT1 A 0 A_StartSound("weapon/EternalChaingun/Shoot",CHAN_WEAPON);
             TNT1 A 0 PB_jumpIfNoAmmo("EmptySpin",1,false,false);
 			CHF_ A 1 BRIGHT EChaingun_Fire();
             TNT1 A 0 PB_jumpIfNoAmmo("EmptySpin",1,false,false);
@@ -264,21 +178,21 @@ class PBX_EternalMinigun : PBX_WeaponBase
                 A_StopSound(CHAN_6);
                 A_StopSound(CHAN_5);
                 A_StopSound(CHAN_WEAPON);
-                A_PlaySound("weapon/EternalChaingun/Stop");
+                A_StartSound("weapon/EternalChaingun/Stop");
             }
-            CHAX A 1 EChaingun_Ready();
-            CHAX B 1 EChaingun_Ready();
+            CHAX A 1 A_DoPBWeaponAction();
+            CHAX B 1 A_DoPBWeaponAction();
             CHAX A 0 A_FireCustomMissile("SmokeSpawner11",0,0,0,0);
-            CHAX C 2 EChaingun_Ready();
-            CHAX D 1 EChaingun_Ready();
+            CHAX C 2 A_DoPBWeaponAction();
+            CHAX D 1 A_DoPBWeaponAction();
             CHAX A 0 A_FireCustomMissile("SmokeSpawner11",0,0,0,0);
-            CHAX A 1 EChaingun_Ready();
-            CHAX B 1 EChaingun_Ready();
+            CHAX A 1 A_DoPBWeaponAction();
+            CHAX B 1 A_DoPBWeaponAction();
             CHAX A 0 A_FireCustomMissile("SmokeSpawner11",0,0,0,0);
-            CHAX C 1 EChaingun_Ready();
-            CHAX D 1 EChaingun_Ready();
+            CHAX C 1 A_DoPBWeaponAction();
+            CHAX D 1 A_DoPBWeaponAction();
             CHAX A 0 A_FireCustomMissile("SmokeSpawner11",0,0,0,0);
-            CHAX A 1 EChaingun_Ready();
+            CHAX A 1 A_DoPBWeaponAction();
             goto Ready;
 
         EmptySpin:
@@ -286,7 +200,7 @@ class PBX_EternalMinigun : PBX_WeaponBase
                 A_StopSound(CHAN_6);
                 A_StopSound(CHAN_5);
                 A_StopSound(CHAN_WEAPON);
-                A_PlaySound("weapon/EternalChaingun/Stop");
+                A_StartSound("weapon/EternalChaingun/Stop");
             }
             CHAX ABCD 1;
             TNT1 A 0 A_StartSound("weapons/empty",0);
@@ -300,14 +214,6 @@ class PBX_EternalMinigun : PBX_WeaponBase
                 PB_SetRoll(0);
                 PB_HandleCrosshair(39);
             }
-            TNT1 A 0 {
-                if(EChaingun_CanNotFire())
-                {
-                    A_Print("$PBX_EternalChaingun_NoBerserk");
-                    return resolvestate("Ready3");
-                }
-                return resolvestate(null);
-            }
             TNT1 A 0 A_StartSound("DTHDLRST",CHAN_6);
             CHAN AABBCCDDEEFFGG 1;
             TNT1 A 0 A_StartSound("8HAINSW2", CHAN_AUTO);
@@ -318,7 +224,6 @@ class PBX_EternalMinigun : PBX_WeaponBase
                 A_StartSound("8HAINFIR", CHAN_WEAPON, CHANF_LOOPING);
             }
         AltHold:
-            TNT1 A 0 A_JumpIf(EChaingun_CanNotFire(),"SpinDownAlt");
             TNT1 A 0 PB_jumpIfNoAmmo("SpinDownAlt",2,false,false);
             CHNG A 1 BRIGHT EChaingun_Fire(true);
             TNT1 A 0 PB_jumpIfNoAmmo("SpinDownAlt",2,false,false);
@@ -327,14 +232,14 @@ class PBX_EternalMinigun : PBX_WeaponBase
             CHNG C 1 BRIGHT EChaingun_Fire(true);
             TNT1 A 0 PB_jumpIfNoAmmo("SpinDownAlt",2,false,false);
             CHNG D 1 BRIGHT EChaingun_Fire(true);
-            MNGG B 0 PB_ReFire("AltHold");
+            TNT1 A 0 PB_ReFire("AltHold");
         SpinDownAlt:
             TNT1 A 0 {
                 A_StopSound(CHAN_5);
                 A_StopSound(CHAN_6);
                 A_StopSound(CHAN_WEAPON);
                 A_StartSound("DTHDLRSP", CHAN_5,CHANF_OVERLAP);
-                A_PlaySound("weapon/EternalChaingun/Stop");
+                A_StartSound("weapon/EternalChaingun/Stop");
             }
             CHNG ABCDABCD 1;
             CHNG D 2;
@@ -351,7 +256,7 @@ class PBX_EternalMinigun : PBX_WeaponBase
                 A_StopSound(CHAN_6);
                 A_StopSound(CHAN_5);
                 A_StopSound(CHAN_WEAPON);
-                A_PlaySound("weapon/EternalChaingun/Stop");
+                A_StartSound("weapon/EternalChaingun/Stop");
             }
             TNT1 A 0 {
 				A_Takeinventory("GoWeaponSpecialAbility",1);
@@ -361,16 +266,8 @@ class PBX_EternalMinigun : PBX_WeaponBase
             
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////
         MuzzleFlash:
-            PLSE B 1 bright {
-                let psp = player.FindPSprite(OverlayID());
-                psp.frame += random[sfx](0, 2);
-                psp.x = 162;
-                psp.y = 110;
-                psp.pivot = (0.5, 0.5);
-                psp.scale *= frandom[sfx](0.9, 1.2);
-                psp.rotation = frandom[sfx](0, 360);
-                psp.alpha = frandom[sfx](0.8, 1.2);
-            }
+            P1SF D 1 BRIGHT {A_SetWeaponFrame(3 + random[sfx](0, 2)); A_GunFlash();}
+			P1SF G 1 BRIGHT {A_SetWeaponFrame(6 + random[sfx](0, 2)); A_GunFlash();}
             stop;
 
         FlashPunching:
@@ -399,40 +296,3 @@ class PBX_EternalMinigun : PBX_WeaponBase
             goto Ready3;
     }
 }
-
-class EternalChaingunTracer : PB_556x45mmAP
-{
-
-    Default
-    {
-        Scale .9;
-    }
-
-    States
-    {
-        Spawn:
-            PRTL A 1 BRIGHT;
-            Loop;
-
-        Death:
-            TNT1 A 0;
-            TNT1 A 1;
-            tnt1 a 2;
-        XDeath:
-            TNT1 A 0 A_Explode(8, 50);
-            Stop;
-    }
-}
-
-mixin class PBXWeapons_EternalChaingun_Duration
-{
-    override void BeginPlay()
-    {
-        super.BeginPlay();
-        EffectTics  = pbxweapons_echaingun_duration * TICRATE;
-    }
-}
-
-class PBXWeapons_InfiniteAmmo   : PBX_InfiniteAmmoGiver   {mixin PBXWeapons_EternalChaingun_Duration;}
-class PBXWeapons_Drain          : PBX_DrainGiver          {mixin PBXWeapons_EternalChaingun_Duration;} 
-class PBXWeapons_Protection     : PBX_ProtectionGiver     {mixin PBXWeapons_EternalChaingun_Duration; Default {DamageFactor "Normal", 0.75;}} 

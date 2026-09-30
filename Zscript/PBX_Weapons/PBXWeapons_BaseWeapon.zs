@@ -61,7 +61,7 @@ class PBX_WeaponBase : PB_WeaponBase abstract
     // Same as above
     action void PBX_WeaponLower()
     {
-        PBX_ResetZoom();
+        PB_SetZoom(false);
         A_SetInventory("PBX_Infrared", 0);
         A_WeaponOffset(0,32);
         PB_SetRoll(0);
@@ -111,12 +111,6 @@ class PBX_WeaponBase : PB_WeaponBase abstract
         A_StartSound("IronSights", CHAN_WEAPON, CHANF_OVERLAP);
         A_StartSound("MS/Button", CHAN_AUTO, CHANF_OVERLAP);
         A_SetBlend("Black", 1, 35);
-    }
-
-    action void PBX_ResetZoom()
-    {
-        // invoker.mZoomLevel = 1.0;
-        PB_SetZoom(false);
     }
 
     action double PBX_GetZoomLevel()
@@ -208,7 +202,13 @@ class PBX_WeaponBase : PB_WeaponBase abstract
         // Check whats in front of the player
         FLineTraceData HitData;
         bool hit = LineTrace(Angle, 6000, Pitch, 0, player.ViewHeight, 0, 0, HitData);
-        if(!hit) return;
+
+        // If it doesnt hit anything, dont draw
+        if(!hit) 
+        {
+            EventHandler.SendInterfaceEvent(PlayerNumber(), "NoHitSmartScope");
+            return;
+        }
 
         // If it hits something, is a monster, and is not friendly
         if(HitData.HitActor && HitData.HitActor.bISMONSTER && HitData.HitActor.bFRIENDLY == false)
@@ -252,12 +252,21 @@ class PBX_WeaponBase : PB_WeaponBase abstract
                 );
             }
         }
-        // If it doesnt hit anything, play another sound
+        // If it hits something but is not a monser and the scopedlockon is on, turn it off
         else if(invoker.mScopeLockedOn)
         {
             // A_SetBlend(0xa19900, 0.2, 3);
             invoker.mScopeLockedOn = false;
             A_StartSound("IronSights", CHAN_WEAPON, CHANF_OVERLAP, 1.0, pitch:1.3);
+            EventHandler.SendInterfaceEvent(PlayerNumber(), "NoHitSmartScope");
+            return;
+        }
+
+        // If it hits something but is not a monser, also dont draw
+        else
+        {
+            EventHandler.SendInterfaceEvent(PlayerNumber(), "NoHitSmartScope");
+            return;
         }
     }
 
@@ -369,7 +378,10 @@ class PBX_WeaponBase : PB_WeaponBase abstract
         // Actually fire
         PBXCore_Debug.Print("Projectile Fired");
 		PB_FireBullets(projectileName, projectileAmount, angle, offsets, height, pitch);
-        PB_SpawnCasing(casingName,22,2,28,frandom[sfx](-2, -1),frandom[sfx](5,8),frandom[sfx](3,4));
+        if(casingName != "")
+        {
+            PB_SpawnCasing(casingName,22,2,28,frandom[sfx](-2, -1),frandom[sfx](5,8),frandom[sfx](3,4));
+        }
 
 		If(pitchdiff > 45 || anglediff > 45 || pitchdiff < -45 || anglediff < -45)
 			return;

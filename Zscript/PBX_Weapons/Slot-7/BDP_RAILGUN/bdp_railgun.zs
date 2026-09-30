@@ -83,6 +83,28 @@ Class PBX_BDPRailgun : PBX_WeaponBase
 			RAIL IHGF 1 A_DoPBWeaponAction();
             Goto Ready3;
 
+        WeaponInspect:
+            // Raise
+			TNT1 A 0 A_overlay(HANDLE_LAYER,"pumpinghandlol");
+			RAIL FGHI 1 A_DoPBWeaponAction();
+			RAIL JKLMNNOOO 1 A_DoPBWeaponAction();
+			TNT1 A 0 A_overlay(HANDLE_LAYER,"pumpinghandlol2");
+			RAIL OOOO 1 A_DoPBWeaponAction();
+			TNT1 A 0 A_StartSound("RAILMAG2", 5);
+            // Rechamber
+			RAIL PR 1 A_DoPBWeaponAction();
+			RAIL TWWVUUUUUU 1 A_DoPBWeaponAction();
+        HoldInspect:
+            RAIL U 1 A_DoPBWeaponAction();
+            "####" A 0 A_JumpIf(PressingReload(),"HoldInspect");
+            TNT1 A 0 A_StartSound("RAILINSR", 5);
+			RAIL UUUTTSRQP 1 A_DoPBWeaponAction();
+			TNT1 A 0 A_overlay(HANDLE_LAYER,"pumpinghandlol2reverse");
+			RAIL OOOOONMLKJ 1 A_DoPBWeaponAction();
+			TNT1 A 0 A_overlay(HANDLE_LAYER,"pumpinghandlolreverse");
+			RAIL IHGF 1 A_DoPBWeaponAction();
+            Goto Ready3;
+
         Deselect:
 			TNT1 A 0 {
 				PBX_WeaponLower();
@@ -108,6 +130,7 @@ Class PBX_BDPRailgun : PBX_WeaponBase
                 PB_HandleCrosshair(97);
             }
         ReadyToFire:
+            TNT1 A 0 PBX_CheckInspect();
             RAIL A 1 {
                 A_ZoomFactor(1.0);
                 PB_Cooldownbarrel();

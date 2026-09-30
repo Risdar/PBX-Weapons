@@ -120,7 +120,10 @@ Class PBX_DemonExt : PBX_WeaponBase
 				return A_DoPBWeaponAction();
 			}
 			UNM2 BCDEFGH 1 A_DoPBWeaponAction();
-			TNT1 A 15;
+			TNT1 AAAAAAAAAAAAAAA 1 A_DoPBWeaponAction();
+		HoldInspect:
+			TNT1 A 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_JumpIf(PressingReload(),"HoldInspect");
 			UNM2 H 1 {
 				A_Playsound("QSGCHRG",8);
 				return A_DoPBWeaponAction();

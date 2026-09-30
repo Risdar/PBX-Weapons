@@ -20,8 +20,8 @@ class PBXWeapons_HUDHandler : EventHandler
     ui PB_Hud_ZS phud;
     ui PB_WeaponBase pbWeap;
 
-    // The constants used for MetalSniper's overlay (the graphics you see at the side when target scope is active)
-    const MS_SCOPEOVERLAY = 24; 
+    // The constants used for the overlays (the graphics you see at the side)
+    const HUD_SIDE_OVERLAY = 24; 
 
 //////////////////////////// MAIN FUNCTION ////////////////////////////////////////////////////////////////////////////////////
     override void RenderOverlay(RenderEvent e)
@@ -44,20 +44,64 @@ class PBXWeapons_HUDHandler : EventHandler
         pbWeap = PB_WeaponBase(plr.ReadyWeapon);
         if (!plr || !mo || !pbWeap) return;
 
-        // These are used for the Metal Sniper Smart Scope Overlay
-        pbx_visorOffsets = phud.visorOffsets;
-        pbx_m32to0 = phud.m32to0;
-        topOffsets1 = ((-MS_SCOPEOVERLAY - pbx_visorOffsets) + (-pbx_m32to0), -MS_SCOPEOVERLAY - pbx_visorOffsets - pbx_m32to0);
-        topOffsets2 = ((MS_SCOPEOVERLAY + pbx_visorOffsets) + (pbx_m32to0), -MS_SCOPEOVERLAY - pbx_visorOffsets - pbx_m32to0);
-        flagsManualVisor1 = BaseStatusBar.DI_ITEM_LEFT | BaseStatusBar.DI_SCREEN_LEFT | BaseStatusBar.DI_ITEM_VCENTER | BaseStatusBar.DI_SCREEN_VCENTER;
-        flagsManualVisor2 = BaseStatusBar.DI_ITEM_RIGHT | BaseStatusBar.DI_SCREEN_RIGHT | BaseStatusBar.DI_MIRROR | BaseStatusBar.DI_ITEM_VCENTER | BaseStatusBar.DI_SCREEN_VCENTER;
-        
         // Begin drawing the HUD
         phud.BeginHUD();                    // Initialize
         PBXWeapons_DrawAmmoBar();
         PBXWeapons_DrawScope();
 
     }
+
+    override void RenderUnderlay(RenderEvent e)
+    {
+        if (gamestate != GS_LEVEL || automapactive || !phud || !plr || !mo || !pbWeap || phud.hudState == BaseStatusBar.HUD_None || phud.PlayerWasDead)
+            return;
+
+        // These are used for the Overlays
+        pbx_visorOffsets = phud.visorOffsets;
+        pbx_m32to0 = phud.m32to0;
+        topOffsets1 = ((-HUD_SIDE_OVERLAY - pbx_visorOffsets) + (-pbx_m32to0), -HUD_SIDE_OVERLAY - pbx_visorOffsets - pbx_m32to0);
+        topOffsets2 = ((HUD_SIDE_OVERLAY + pbx_visorOffsets) + (pbx_m32to0), -HUD_SIDE_OVERLAY - pbx_visorOffsets - pbx_m32to0);
+        flagsManualVisor1 = BaseStatusBar.DI_ITEM_LEFT | BaseStatusBar.DI_SCREEN_LEFT | BaseStatusBar.DI_ITEM_VCENTER | BaseStatusBar.DI_SCREEN_VCENTER;
+        flagsManualVisor2 = BaseStatusBar.DI_ITEM_RIGHT | BaseStatusBar.DI_SCREEN_RIGHT | BaseStatusBar.DI_MIRROR | BaseStatusBar.DI_ITEM_VCENTER | BaseStatusBar.DI_SCREEN_VCENTER;
+
+        phud.BeginHUD();                    // Initialize
+        switch(pbWeap.GetClassName())
+        {
+            // Draw bars and effects for specific modes
+            case 'PBX_MetalSniper':
+                let sniper = PBX_MetalSniper(pbWeap); if(!sniper) return;
+                // This draws the overlay when the smart scope is enabled
+                if (sniper.enableScopeHUD)
+                {
+                    // Draw
+					phud.PBHud_DrawImageManualAlpha("NIGHTVIS", (topOffsets1.x, 0), flagsManualVisor1, 0.5 + 0.5 * abs(sin(level.MapTime)), scale: (0.3, 0.3), parallax: 1.5, parallax2: 1.5);
+					phud.PBHud_DrawImageManualAlpha("NIGHTVIS", (topOffsets2.x, 0), flagsManualVisor2, 0.5 + 0.5 * abs(sin(level.MapTime)), scale: (0.3, 0.3), parallax: 1.5, parallax2: 1.5);
+                }
+                break;
+
+            // Draw bars and effects
+            // case 'PBX_XM21':
+            //     let snp = PBX_XM21(pbWeap); if(!snp) return;
+            //     // This draws the overlay when the cloak is active
+            //     if (snp.mCloakEngaged)
+            //     {
+            //         // Draw
+			// 		phud.PBHud_DrawImageManualAlpha("RADSUIT", (topOffsets1.x, 0), flagsManualVisor1, 0.5 + 0.5 * abs(sin(level.MapTime)), scale: (0.3, 0.3), parallax: 1.5, parallax2: 1.5);
+			// 		phud.PBHud_DrawImageManualAlpha("RADSUIT", (topOffsets2.x, 0), flagsManualVisor2, 0.5 + 0.5 * abs(sin(level.MapTime)), scale: (0.3, 0.3), parallax: 1.5, parallax2: 1.5);
+            //     }
+            //     break;
+        }
+
+        // So the overlay is always there even if you switch weapon
+        let snip = PBX_XM21(mo.FindInventory("PBX_XM21")); if(!snip) return;
+        if (snip.mCloakEngaged)
+        {
+            // Draw
+            phud.PBHud_DrawImageManualAlpha("RADSUIT", (topOffsets1.x, 0), flagsManualVisor1, 0.5 + 0.5 * abs(sin(level.MapTime)), scale: (0.3, 0.3), parallax: 1.5, parallax2: 1.5);
+            phud.PBHud_DrawImageManualAlpha("RADSUIT", (topOffsets2.x, 0), flagsManualVisor2, 0.5 + 0.5 * abs(sin(level.MapTime)), scale: (0.3, 0.3), parallax: 1.5, parallax2: 1.5);
+        }
+    }
+
 
     private
     ui void PBXWeapons_DrawScope()
@@ -107,14 +151,24 @@ class PBXWeapons_HUDHandler : EventHandler
                         "PB_RocketAmmo",
                         Font.CR_RED
                     );
+                break;
 
-                // This draws the overlay when the smart scope is enabled
-                if (sniper.enableScopeHUD)
-                {
-                    // Draw
-					phud.PBHud_DrawImageManualAlpha("NIGHTVIS", (topOffsets1.x, 0), flagsManualVisor1, 0.5 + 0.5 * abs(sin(level.MapTime)), scale: (0.3, 0.3), parallax: 1.5, parallax2: 1.5);
-					phud.PBHud_DrawImageManualAlpha("NIGHTVIS", (topOffsets2.x, 0), flagsManualVisor2, 0.5 + 0.5 * abs(sin(level.MapTime)), scale: (0.3, 0.3), parallax: 1.5, parallax2: 1.5);
-                }
+            // Draw bars and effects
+            case 'PBX_XM21':
+                let snp = PBX_XM21(pbWeap);
+                if(!snp) return;
+                
+                // Show Cloak Energy
+                PBXCore_HUDHandler.PBX_DrawAmmoBar(
+                    phud,
+                    PBXCore_HUDHandler.
+                    DRAW_THIRD_BAR,
+                    "BARBACC3",
+                    "ABAR8",
+                    "CloakEnergy",
+                    Font.CR_CYAN
+                );
+
                 break;
                 
             // Draw bar for the shield durability
@@ -273,7 +327,7 @@ class PBXHUDService_PBX_AllWeapons : service
             return MakeData(imgOffset1:(-15, 15), imgScale1:1.35);
 
         case 'PBX_CryoASG':
-            return MakeData(imgOffset1:(-15, 15), imgScale1:1.5);
+            return MakeData(imgOffset1:(-15, 12), imgScale1:1.5);
 
 //////////////////////////// SLOT 4 ////////////////////////////////////////////////////////////////////////////////////
         case 'PBX_BDPBattleRifle':
@@ -282,8 +336,8 @@ class PBXHUDService_PBX_AllWeapons : service
 
             return MakeLaserData(
                 laserOn: br.mLaserSightActivated,
-                onImage: IMAGE_DIRECTORY.."BattleRifle/br_LaserOn.png",
-                offImage: IMAGE_DIRECTORY.."BattleRifle/br_LaserOff.png",
+                onImage: IMAGE_DIRECTORY.."BattleRifle/LaserOn.png",
+                offImage: IMAGE_DIRECTORY.."BattleRifle/LaserOff.png",
                 onOffset: (0, 12), 
                 offOffset: (-7, 12), 
                 onScale: 0.7, 
@@ -322,9 +376,23 @@ class PBXHUDService_PBX_AllWeapons : service
                 offImage: IMAGE_DIRECTORY.."NormalRifle/laseroff.png",
                 onOffset: (0, 12), 
                 offOffset: (-5, 12), 
-                onScale: 0.8, 
-                offScale: 0.9
+                onScale: 1.0, 
+                offScale: 1.1
             );
+        }
+
+        case 'PBX_XM21':
+        {
+            let snp = PBX_XM21(weapon); if (!snp) return null;
+
+            return MakeLaserData(
+                laserOn: snp.mLaserSightActivated,
+                onImage: IMAGE_DIRECTORY.."XM21/LaserOn.png",
+                offImage: IMAGE_DIRECTORY.."XM21/LaserOff.png",
+                onOffset: (0,-12), 
+                offOffset: (-7,-12), 
+                onScale: 0.7, 
+                offScale: 1.3);
         }
 
 //////////////////////////// SLOT 5 ////////////////////////////////////////////////////////////////////////////////////

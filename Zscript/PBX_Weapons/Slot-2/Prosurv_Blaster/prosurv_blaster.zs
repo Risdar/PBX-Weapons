@@ -189,7 +189,10 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
                 return A_DoPBWeaponAction();
             }
             BRGC GLL 1 A_DoPBWeaponAction();
-            BRGC L 30 A_DoPBWeaponAction(); 
+            BRGC LLLLLLLLLLLLLL 1 A_DoPBWeaponAction(); 
+        InspectHold:
+            BRGC L 1 A_DoPBWeaponAction(); 
+			TNT1 A 0 A_PressingReload("InspectHold");
             TNT1 A 0 A_StartSound("BEPBEP",CHAN_WEAPON,CHANF_OVERLAP);
             BRGC LM 1 A_DoPBWeaponAction();
             TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);

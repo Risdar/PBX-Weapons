@@ -198,12 +198,13 @@ class PBX_TeslaGun : PBX_WeaponBase
             ETRG A 1 offset(-20, 46) A_DoPBWeaponAction();
 			ETRG A 1 offset(-12, 42) A_DoPBWeaponAction();
             TNT1 A 0 A_StartSound("weapons/plasma/startup", 16,CHANF_OVERLAP);
-			ETRG A 15 offset(-4, 38) A_DoPBWeaponAction();
+			ETRG A 1 offset(-4, 38) A_DoPBWeaponAction();
+			ETRG AAAAAAAAAAAAAA 1 A_DoPBWeaponAction();
             ET1R ABC 2 A_DoPBWeaponAction();
             TNT1 A 0 A_StartSound("PLSCOOL",CHAN_WEAPON);
 			ETRR K 15 A_DoPBWeaponAction();
             TNT1 A 0 {
-                A_FireProjectile("PlasmaFlareSpawner",0,0,-15,5);
+                A_FireProjectile("PlasmaFlareSpawner",0,0,-15,3);
 				A_FireProjectile("BlueFlareSpawn",0,0,-15,5);
                 A_StartSound("BEPBEP",CHAN_WEAPON);
                 return A_DoPBWeaponAction();
@@ -212,12 +213,29 @@ class PBX_TeslaGun : PBX_WeaponBase
 			ETRR LMNOP 2 A_DoPBWeaponAction();
             TNT1 A 0 {
                 A_StartSound("PLSCOOL",CHAN_WEAPON,CHANF_OVERLAP);
-                A_FireProjectile("BluePlasmaParticle",random(340,350),0,6,0,0,-random(7,18));
+                // A_FireProjectile("BluePlasmaParticle",random(340,350),0,6,0,0,-random(7,18));
                 A_FireProjectile("SmokeSpawner",0,0,0,5);
                 return A_DoPBWeaponAction();
             }
 			ETRR EDCBA 2 A_DoPBWeaponAction();
             TNT1 A 0 A_StartSound("ULTCHAR",CHAN_WEAPON,CHANF_OVERLAP);
+            Goto Ready3;
+
+        WeaponInspect:
+            TNT1 A 0 A_StartSound("BEP", 16,CHANF_OVERLAP);
+            ETRR AABBCCDD 1 A_DoPBWeaponAction();
+            ETRR EEEEEEEEE 1 A_DoPBWeaponAction();
+        HoldInspect:
+            ETRR E 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_JumpIf(PressingReload(),"HoldInspect");
+            TNT1 A 0 {
+                A_StartSound("PLSCOOL",CHAN_WEAPON,CHANF_OVERLAP);
+                // A_FireProjectile("PlasmaFlareSpawner",0,0,-15,3);
+                A_FireProjectile("SmokeSpawner",0,0,0,5);
+                return A_DoPBWeaponAction();
+            }
+			ETRR EDCBA 2 A_DoPBWeaponAction();
+            TNT1 A 0 A_StartSound("BEPBEP", 16,CHANF_OVERLAP);
             Goto Ready3;
 
         Deselect:
@@ -242,6 +260,7 @@ class PBX_TeslaGun : PBX_WeaponBase
 			ETRG A 1 offset(-4, 38);
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
         Ready3:
+            TNT1 A 0 PBX_CheckInspect();
 			ETRG A 1 {
                 PB_HandleCrosshair(18);
                 return A_DoPBWeaponAction();
@@ -412,8 +431,8 @@ class PBX_TeslaGun : PBX_WeaponBase
 
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////
         MuzzleFlash:
-			P1SF D 1 BRIGHT {A_SetWeaponFrame(3 + random(0, 2)); A_GunFlash();}
-			P1SF G 1 BRIGHT {A_SetWeaponFrame(6 + random(0, 2)); A_GunFlash();}
+			P1SF D 1 BRIGHT {A_SetWeaponFrame(3 + random[sfx](0, 2)); A_GunFlash();}
+			P1SF G 1 BRIGHT {A_SetWeaponFrame(6 + random[sfx](0, 2)); A_GunFlash();}
             stop;
 
         FlashPunching:

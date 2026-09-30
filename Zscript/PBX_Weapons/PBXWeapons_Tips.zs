@@ -94,9 +94,8 @@ extend class PBX_WeaponBase
             case 'PBX_SuperNailgun':
             {
                 Array<String> tips;
-                tips.Push(string.format(StringTable.Localize("$PBX_SuperNailgun_Tip1"),PBX_SuperNailgun.OVERHEAT_THRESHOLD));
+                tips.Push(string.format(StringTable.Localize("$PBX_SuperNailgun_Tip1"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+ALTATTACK"),PBX_SuperNailgun.OVERHEAT_THRESHOLD));
                 tips.Push("$PBX_SuperNailgun_Tip2");
-                tips.Push(string.format(StringTable.Localize("$PBX_SuperNailgun_Tip3"),PB_HelpNotificationsHandler.PB_FormatKeybinds("+ALTATTACK")));
                 PBXCore_TipsManager.SendTipArrayIfNeeded(tips, WEAPON_HELPTEXT, PBX_TIP_SUPERNAILGUN);
             }
             break;

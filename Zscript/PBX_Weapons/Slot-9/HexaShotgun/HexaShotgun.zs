@@ -92,7 +92,9 @@ class PBX_HexaShotgun : PBX_WeaponBase
                 A_WeaponOffset(0,32);
                 return A_DoPBWeaponAction();
             }
+            TNT1 A 0 A_JumpIf(PressingReload(),"HoldInspect");
             HSR3 G 14 A_DoPBWeaponAction();
+        ContinueRespect:
             HSR3 HIJ 1 A_DoPBWeaponAction();
             HSR2 OPQRSTUVWX 1 A_DoPBWeaponAction();
             HSR2 YYYZ 1 A_DoPBWeaponAction();
@@ -105,6 +107,11 @@ class PBX_HexaShotgun : PBX_WeaponBase
             HSF2 A 15 A_DoPBWeaponAction(); 
             HSGF WVU 1 A_DoPBWeaponAction();
             Goto Ready3;
+
+        HoldInspect:
+            HSR3 G 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_JumpIf(PressingReload(),"HoldInspect");
+            Goto ContinueRespect;
 
         Deselect:
             TNT1 A 0 PBX_WeaponLower();

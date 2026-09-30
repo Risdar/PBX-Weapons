@@ -179,7 +179,10 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
 		WeaponInspect:
             TNT1 A 0 A_StartSound("weapons/blasterpistol/ready",CHAN_WEAPON,CHANF_OVERLAP);
             AMGR ABCDE 1 A_DoPBWeaponAction();
-            AMGR F 30 A_DoPBWeaponAction();
+            AMGR FFFFFFFFFFFFFF 1 A_DoPBWeaponAction();
+        InspectHold:
+            AMGR F 1 A_DoPBWeaponAction();
+			TNT1 A 0 A_PressingReload("InspectHold");
             TNT1 A 0 A_StartSound("BEPBEP",CHAN_WEAPON,CHANF_OVERLAP);
             AMGR EDCBA 1 A_DoPBWeaponAction();
             TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);

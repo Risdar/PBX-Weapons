@@ -44,7 +44,9 @@ extend class PBX_NeoHMG
 	{
 		super.DoEffect();
 		if(level.isFrozen() || !owner || !owner.player || !owner.player.readyweapon) 
+		{
 			return;
+		}
 
 		// Things to check
 		bool isWeapon = owner.player.readyweapon is self.getClass();
@@ -107,7 +109,9 @@ extend class PBX_NeoHMG
 
 			// Decrease the cooldown
 			If(mShieldCooldown > 0)
+			{
 				mShieldCooldown--;
+			}
 
 			// If the cooldown is finished, the shield is not broken, but the shield is not ready
 			Else if(!mShieldIsBroken && !mShieldIsReady)

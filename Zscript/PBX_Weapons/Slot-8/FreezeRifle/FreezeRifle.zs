@@ -311,8 +311,10 @@ class PBX_FreezeRifle : PBX_WeaponBase
 			}
 			TNT1 A 0 A_StartSound("weapons/CryoRifle/reload1", CHAN_WEAPON, CHANF_OVERLAP);
 			FR08 KLMNO 1 A_DoPBWeaponAction();
+        HoldInspect:
 			TNT1 A 0 A_StartSound("PLSIDLE", CHAN_7, CHANF_LOOPING|CHANF_OVERLAP);
 			FR08 PQRSTUOPQRSTU 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_JumpIf(PressingReload(),"HoldInspect");
 			TNT1 A 0 A_StartSound("weapons/CryoRifle/respect3", CHAN_WEAPON, CHANF_OVERLAP);
 			FR08 VWXYZZZ 1 A_DoPBWeaponAction();
 			TNT1 A 0 A_StartSound("IronSights",CHAN_WEAPON,CHANF_OVERLAP);

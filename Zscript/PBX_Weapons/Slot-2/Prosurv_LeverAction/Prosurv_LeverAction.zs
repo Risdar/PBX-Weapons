@@ -157,9 +157,9 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 
 		WeaponInspect:
 			TNT1 A 0 PB_HandleCrosshair(76);
+			TNT1 A 0 A_StartSound("weapons/leveraction/inspect",CHAN_WEAPON,CHANF_OVERLAP);
 			TNT1 A 0 A_Jump(128,"Inspect2");
 		Inspect1:
-			TNT1 A 0 A_StartSound("weapons/leveraction/inspect",CHAN_WEAPON,CHANF_OVERLAP);
 			TNT1 A 0 A_StartSound("weapons/leveraction/flip");
 			LVR4 F 1 {
 				PB_SetRoll(roll+0.3);
@@ -190,24 +190,11 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 			Goto Ready3;
 
 		Inspect2:
-			TNT1 A 0 A_StartSound("weapons/leveraction/inspect",CHAN_WEAPON,CHANF_OVERLAP);
-			LVR2 MNOP 1 {
-				PB_SetRoll(roll+1.0);
-				return A_DoPBWeaponAction();
-			}
-			LVR2 QQ 1 {
-				PB_SetRoll(roll-2.0);
-				return A_DoPBWeaponAction();
-			}
-			LVR2 QQQQQQ 1 {
-				PB_SetRoll(roll-0.6);
-				return A_DoPBWeaponAction();
-			}
-			LVR2 QQQQ 1 A_DoPBWeaponAction();
-			LVR2 QQQQQQ 1 {
-				PB_SetRoll(roll+0.6);
-				return A_DoPBWeaponAction();
-			}
+			LVR2 MNOP 1 A_DoPBWeaponAction();
+			LVR2 QQQQQQQQQQQQQQ 1 A_DoPBWeaponAction();
+		Inspect2Hold:
+			LVR2 Q 1 A_DoPBWeaponAction();
+			TNT1 A 0 A_PressingReload("Inspect2Hold");
 			LVR2 PONM 1 A_DoPBWeaponAction();
 			Goto Ready3;
 

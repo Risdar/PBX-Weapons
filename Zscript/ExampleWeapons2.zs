@@ -56,7 +56,10 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
 	{
 		if(other && other.player)
 		{
-			if(other.countinv(ammotype2) < 1 &&(countinv(respectInventoryItem) < 1))other.A_giveinventory(ammotype2,GetAmmoCapacity(ammotype2));
+			if(other.countinv(ammotype2) < 1 && !respected)
+            {
+                other.A_giveinventory(ammotype2,GetAmmoCapacity(ammotype2));
+            }
 		}
 		super.attachtoowner(other);
 	}
@@ -169,7 +172,7 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
 
 //////////////////////////// FIRE ////////////////////////////////////////////////////////////////////////////////////
         Fire:
-            TNT1 A 0    fireWeapon(0);
+            TNT1 A 0 PB_JumpIfNoAmmo();
             AMGF A 1;
             AMGF B 1 A_PlaySound("BEP",3);
             AMGF CD 1;

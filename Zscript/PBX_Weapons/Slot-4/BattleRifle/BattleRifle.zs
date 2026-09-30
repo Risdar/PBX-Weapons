@@ -23,7 +23,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 		PB_WeaponBase.WheelInfo "BattleRifleWheel";
 		PB_WeaponBase.ReserveToMagAmmoFactor 2;
         PBX_WeaponBase.ScopeConfiguration true, MINZOOM, MAXZOOM; 
-        PBX_WeaponBase.SelectWeaponUpgrade "PBX_MetalSniper";
+        PBX_WeaponBase.SelectWeaponUpgrade "PBX_XM21";
 		Scale 1.0;
 		
         // Messages
@@ -45,9 +45,9 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 	}
 	
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
-    bool isSemiAuto;
-	bool semiclear;
-	int burstcount;
+    bool mSemiAuto;
+	bool mSemiClear;
+	int mBurstCount;
 
 	// Change these if you want to edit how strong the zoom modes are
 	const MAGAZINE_SIZE = 15;
@@ -57,8 +57,8 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
 	override void postbeginplay()
 	{
-		semiClear = false;
-		isSemiAuto = true;
+		mSemiClear = false;
+		mSemiAuto = true;
 		super.postbeginplay();
 	}
 
@@ -84,7 +84,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 
 	action bool getSemiAuto()
 	{
-		return invoker.isSemiAuto;
+		return invoker.mSemiAuto;
 	}
 
     // FIRE FUNCTION
@@ -105,7 +105,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 		PB_LowAmmoSoundWarning("default");
 		pb_takeammo(invoker.ammotype2,1,0);
 		A_StartSound("BR45FIRE", CHAN_WEAPON, 0, 1.0, pitch: 1.2);
-		invoker.burstcount++;
+		invoker.mBurstCount++;
 		PB_IncrementHeat(4);
 
 		PB_GunSmoke(0,0,smoke);
@@ -126,8 +126,8 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 
 		if(toggleFireMode)
 		{
-			invoker.isSemiAuto = !invoker.isSemiAuto;
-			A_Print(invoker.isSemiAuto ? "$PB_FIREMODE_SEMI" : "$PB_FIREMODE_BURST");
+			invoker.mSemiAuto = !invoker.mSemiAuto;
+			A_Print(invoker.mSemiAuto ? "$PB_FIREMODE_SEMI" : "$PB_FIREMODE_BURST");
 		}
 
 		if(toggleLaser)	PBX_ToggleLaserSight(skipPlaySound:true);
@@ -165,7 +165,6 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 			TNT1 A 0 PBX_WeaponRaise("BR45PICK");
 			TNT1 A 0 PB_RespectIfNeeded();
 		SelectAnimation:
-			TNT1 A 0 {invoker.burstcount = 0;}
 			BR4S EDCBA 1;
 			goto Ready3;
 		
@@ -182,6 +181,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
         // READY STATES
         Ready:
         Ready3:
+			TNT1 A 0 {invoker.mBurstCount = 0;}
 			TNT1 A 0 A_jumpif(PB_GetZoom(),"Ready2");
 		ReadyToFire:
 			BR45 B 1 {
@@ -214,7 +214,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 				PB_HandleCrosshair(42);
 				A_ZoomFactor(1.0);
 			}
-			TNT1 A 0 A_JumpIf(PB_GetZoom(), "FireADS");
+			TNT1 A 0 A_JumpIf(PB_GetZoom(), "Fire2");
 			TNT1 A 0 PB_JumpIfNoAmmo(chamber:false);
 			BR4F A 1 {
 				A_SetWeaponFrame(random[sfx](0,2));
@@ -224,26 +224,25 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 				if (invoker.ammo2.amount < 1) PB_SpawnCasing("RifleClipSpawn");
 			}
 			// Semi-auto: always go to BurstDone after 1 shot
-			// Burst: loop until burstcount hits 3
+			// Burst: loop until mBurstCount hits 3
 			TNT1 A 0 A_JumpIf(getSemiAuto(), "BurstDone");
-			TNT1 A 0 A_JumpIf(invoker.burstcount < 3, "BurstFireRecoil");
+			TNT1 A 0 A_JumpIf(invoker.mBurstCount < 3, "BurstFireRecoil");
 		BurstDone:
-			TNT1 A 0 { invoker.burstcount = 0; }
+			TNT1 A 0 { invoker.mBurstCount = 0; }
 			BR45 DEF 1;
 			BR45 FGH 1 {
 				// Track button release
 				if (!(player.cmd.buttons & BT_ATTACK))
-					invoker.semiclear = true;
+					invoker.mSemiClear = true;
 				// Refire only if button was released and pressed again
-				if (invoker.semiclear && PlayerPressedOnce(BT_ATTACK))
+				if (invoker.mSemiClear && PlayerPressedOnce(BT_ATTACK))
 					return resolvestate("Fire");
 				return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOFIRE | WRF_NOPRIMARY);
 			}
-			TNT1 A 0 { invoker.semiclear = false; }
+			TNT1 A 0 { invoker.mSemiClear = false; }
 			goto Ready3;
 
 		Fire2:
-		FireADS:
 			TNT1 A 0 A_ZoomFactor(PBX_GetZoomLevel());
 			TNT1 A 0 PB_JumpIfNoAmmo(chamber:false);
 			BR4Z D 1 Bright FireWeapon();
@@ -252,29 +251,29 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 			}
 			// Same logic as hipfire
 			TNT1 A 0 A_JumpIf(getSemiAuto(), "BurstDoneADS");
-			TNT1 A 0 A_JumpIf(invoker.burstcount < 3, "BurstFireRecoilADS");
+			TNT1 A 0 A_JumpIf(invoker.mBurstCount < 3, "BurstFireRecoilADS");
 		BurstDoneADS:
 			TNT1 A 0 {
-				invoker.burstcount = 0;
+				invoker.mBurstCount = 0;
 				// A_SetInventory("CantDoAction", 0);
 			}
 			BR4Z D 3 Bright;
 			BR4Z DDDDDDDDD 1 Bright {
 				// Track button release
 				if (!(player.cmd.buttons & BT_ATTACK))
-					invoker.semiclear = true;
+					invoker.mSemiClear = true;
 				// Refire only if button was released and repressed
-				if (invoker.semiclear && PlayerPressedOnce(BT_ATTACK))
-					return resolvestate("FireADS");
+				if (invoker.mSemiClear && PlayerPressedOnce(BT_ATTACK))
+					return resolvestate("Fire2");
 
 				return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOFIRE | WRF_NOPRIMARY);
 			}
-			TNT1 A 0 { invoker.semiclear = false; }
+			TNT1 A 0 { invoker.mSemiClear = false; }
 			goto Ready2;
 
 		BurstFireRecoilADS:
 			BR4Z DD 1 Bright;
-			goto FireADS;
+			goto Fire2;
 	
         // ALTFIRE
         AltFire:
@@ -361,10 +360,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 			TNT1 A 0 A_Takeinventory("GoWeaponSpecialAbility",1);
 			TNT1 A 0 A_SetCrosshair(-1);
 			TNT1 A 0 A_JumpIf(PB_GetZoom(),"ActualModeChange");
-			TNT1 A 0 {
-				A_Takeinventory("GoWeaponSpecialAbility",1);
-				PB_SetZoom(false);
-			}
+			TNT1 A 0 PB_SetZoom(false);
 		ActualModeChange:
 			TNT1 A 0 checkSpecial();
         SwitchAnimation:

@@ -73,8 +73,15 @@ class PBXWeapons_ScopeHandler : EventHandler
     {
 		bool blue = e.name.IndexOf("PrintScopeData_Blue:") >= 0;
     	bool green = e.name.IndexOf("PrintScopeData_Green:") >= 0;
+    	bool noHit = e.name.IndexOf("NoHitSmartScope") >= 0;
 
-		if((blue || green) && !e.IsManual)
+		if(e.IsManual || noHit)
+		{
+			mCanDraw = false;
+			return;
+		}
+
+		if((blue || green))
         {
 			mUseBlueFont 	= blue;
             mCurrentHealth  = e.args[0];
@@ -88,15 +95,9 @@ class PBXWeapons_ScopeHandler : EventHandler
 				mActorName = command[1];
 				
 			mCanDraw = true;
-			if(PBXCore_DebugCvar)
-			{
-				console.printf("Actor Name %s",mActorName);
-				console.printf("Max HP %d",mMaxHealth);
-				console.printf("Current HP %d",mCurrentHealth);
-			}
         }
 
-		if(e.name.IndexOf("PrintScopeData2:") >= 0 && !e.IsManual)
+		if(e.name.IndexOf("PrintScopeData2:") >= 0)
         {
             double ok = e.args[0];
 			mDistance = ok / 32; //32 units should rougly be a meter i hope
@@ -104,15 +105,6 @@ class PBXWeapons_ScopeHandler : EventHandler
         }
     }
 
-	override void UItick()
-	{
-		if(mCanDraw)
-		{
-			mCanDraw = false;
-		}
-		// PBXCore_Debug.PrintInt("Smart Scope Data Can Draw %d",mCanDraw);
-	}
-	
 	override void RenderUnderlay(RenderEvent e)
 	{	
 		let phud = PB_Hud_ZS(StatusBar);
@@ -141,8 +133,6 @@ class PBXWeapons_ScopeHandler : EventHandler
 		{
 			phud.PBHud_DrawString(phud.mDefaultFont, lines[i], (hudX, hudY + i * steps), flags, color);
 		}
-
-		PBXCore_Debug.Print("Smart Scope Drawn");
 
 		// Old version
 		// Screen.DrawText(BigFont, color, 190, 86, mActorName, DTA_Clean, true);

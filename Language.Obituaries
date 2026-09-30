@@ -36,6 +36,7 @@ OB_WEAP_BATTLERIFLE = "%o was pierced by %k's Battle Rifle.";
 OB_WEAP_ASSAULTRIFLE = "%o was killed by %k's Assault Rifle.";
 OB_WEAP_METALSNIPER = "%o was killed by %k's Metal Sniper.";
 OB_WEAP_CROSSBOWBALLISTA = "%k Speared %o with a Crossbow.";
+OB_WEAP_XM21 = "\cr%o\c- got headshotted by \cr%k's \c-XM21 Sniper Rifle.";
 
 // Slot 5
 OB_WEAP_NEOHMG = "%o is riddled with bullets by %k's HMG.";

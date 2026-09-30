@@ -374,6 +374,7 @@ class SuperNail_Lightning : PB_MGNail
 		SuperNail_Lightning.DamageType 'plasma';
         DamageType "Nails";
         Translation "112:127=192:207", "224:231=80:87";
+		+PB_PROJECTILE.NOCRITICALS
 	}
 
 	override void Tick()

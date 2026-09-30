@@ -12,9 +12,8 @@ enum PBXWeapons_eWeaponSpecialSpawns
 	// SLOT 6
 	DisablePBX_CyberdemonRL			        = 1 << 0,
 	DisablePBX_MastermindCG			        = 1 << 1,
-////// Power / Secret Weapons /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	DisablePBX_EternalChaingun			    = 1 << 0,  // Spawns on Megaspheres
-	// Spawns on Secrets
+////// Secret Weapons /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	DisablePBX_EternalChaingun			    = 1 << 0,
 	DisablePBX_NukeLauncher					= 1 << 1, 
 	DisablePBX_HexaShotgun					= 1 << 2,  
 	DisablePBX_MiniShotgun					= 1 << 3  
@@ -39,12 +38,11 @@ enum PBXWeapons_eSSGSpawns
 
 enum PBXWeapons_eChaingunSpawns
 {
-////// SLOT 4 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	DisablePBX_BattleRifle					= 1 << 0,
-	DisablePBX_MetalSniper			        = 1 << 1,
-////// SLOT 5 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	DisablePBX_NeoHMG			        	= 1 << 2,
-	DisablePBX_SuperNailgun			        = 1 << 3
+	DisablePBX_BattleRifle					= 1 << 0, // Slot 4
+	DisablePBX_MetalSniper			        = 1 << 1, // Slot 4
+	DisablePBX_NeoHMG			        	= 1 << 2, // Slot 5
+	DisablePBX_SuperNailgun			        = 1 << 3, // Slot 5
+	DisablePBX_XM21			        		= 1 << 4  // Slot 4
 }
 
 enum PBXWeapons_eRocketLauncherSpawns
@@ -141,6 +139,11 @@ class PBXChaingun_Injector : PBInjector
 		{
 			handler.InjectSpawn('PB_MGSpawnerT3', 'PBX_MetalSniper', 255, 1);
 		}
+		// XM21 
+		if(!(pbxweapons_chaingun_filter & DisablePBX_XM21))
+		{
+			handler.InjectSpawn('PB_MGSpawnerT4', 'PBX_XM21', 255, 1);
+		}
 		// Neo HMG
 		if(!(pbxweapons_chaingun_filter & DisablePBX_NeoHMG))
 		{
@@ -223,6 +226,7 @@ class PBXBFG_Injector : PBInjector
 			handler.InjectSpawn("PB_BFGSpawnerT1","PBX_NukeLauncher",255,1);
 			handler.InjectSpawn("PB_BFGSpawnerT1","PBX_HexaShotgun",255,1);
 			handler.InjectSpawn("PB_BFGSpawnerT1","PBX_MiniShotgun",255,1);
+			handler.InjectSpawn("PB_BFGSpawnerT1","PBX_EternalMinigun",255,1);
 		}
     }
 }
@@ -280,19 +284,6 @@ class PBXUpgrades_Injector : PBInjector
 }
 
 //////////////////////////// OTHER TYPES ////////////////////////////////////////////////////////////////////////////////////
-class PBXWeapons_SpecialInjector : PBInjector
-{
-    override void Init(PB_EventHandler handler)
-    {
-		// Eternal Chaingun
-		if(!(PBXWeapons_specialdrop_filter & DisablePBX_EternalChaingun))
-		{
-		   handler.InjectSpawn("PB_MegaSpawnerT3","PBX_EternalMinigun",255,1);
-		   handler.InjectSpawn("PB_MegaSpawnerT4","PBX_EternalMinigun",255,1);
-		}
-    }
-}
-
 class PBXWeapons_WeaponSpawner : EventHandler
 {
 	bool mSecretWeaponSpawned;
@@ -381,6 +372,7 @@ class PBX_SpecialWeaponSpawner : PB_WeaponSpawner
 		DropItem 'PBX_NukeLauncher', 255, 1;
 		DropItem 'PBX_HexaShotgun', 255, 1;
 		DropItem 'PBX_MiniShotgun', 255, 1;
+		DropItem 'PBX_EternalMinigun', 255, 1;
 	}
 
 	override bool HandleSpawnExceptions(name toSpawn)
@@ -390,6 +382,8 @@ class PBX_SpecialWeaponSpawner : PB_WeaponSpawner
 		if(toSpawn == "PBX_HexaShotgun" && (PBXWeapons_specialdrop_filter & DisablePBX_HexaShotgun))
 			return false;
 		if(toSpawn == "PBX_MiniShotgun" && (PBXWeapons_specialdrop_filter & DisablePBX_MiniShotgun))
+			return false;
+		if(toSpawn == "PBX_EternalMinigun" && (PBXWeapons_specialdrop_filter & DisablePBX_EternalChaingun))
 			return false;
 		return true;
 	}

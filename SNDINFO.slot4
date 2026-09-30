@@ -44,3 +44,13 @@ weapons/ballista/razor "sounds/Weapons/Slot-4/ProSurv - Ballista/ballista_razor.
 weapons/ballista/boltin "sounds/Weapons/Slot-4/ProSurv - Ballista/ballista_bolt_in.ogg"
 weapons/ballista/boltout "sounds/Weapons/Slot-4/ProSurv - Ballista/ballista_bolt_out.ogg"
 weapons/ballista/boltinoutdemonic "sounds/Weapons/Slot-4/ProSurv - Ballista/ballista_bolt_in_out_demonic.ogg"
+
+// XM21
+FARM14 FARM14
+$limit FARM14 80
+$rolloff  FARM14 3000 6000
+
+Sniper/Draw X21DRAW
+Sniper/BoltBack X21BACK
+Sniper/BoltForward X21FORW
+Sniper/CloakActive "Sounds/Weapons/Slot-4/XM21/cloak_engaged.mp3"

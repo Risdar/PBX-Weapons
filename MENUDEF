@@ -38,11 +38,10 @@ OptionMenu "PBXWeapons_Menu"
     Option "$PBXWEAPONS_MENU_ENABLE_SECRET_WEAPONS", "pbxweapons_enablesecretweapon", "OnOff"
     Slider "$PBXWEAPONS_SECRETWEAPONS_SPAWNCHANCE",  "pbxweapons_secretweapon_spawnchance",     1, 100, 1,0,"pbxweapons_enablesecretweapon"
     StaticText " "
-    Slider "$PBXWEAPONS_ECHAINGUN_POWERTIME",   "pbxweapons_echaingun_duration",     1, 500, 1
     Slider "$PBXWEAPONS_MEATHOOK_COOLDOWN",     "pbxweapons_meathook_cooldown",     1, 500, 1
     Slider "$PBXWEAPONS_HOLOGRAM_COOLDOWN",     "pbxweapons_hologram_cooldown",     1, 500, 1
     Slider "$PBXWEAPONS_HOLOGRAM_LIFETIME",     "pbxweapons_hologram_lifetime",     1, 500, 1
-    SafeCommand "$PBXWEAPONS_MENU_RESET_WEAPON_DURATIONS", "resetcvar pbxweapons_secretweapon_spawnchance; resetcvar pbxweapons_echaingun_duration; resetcvar pbxweapons_meathook_cooldown; resetcvar pbxweapons_hologram_cooldown; resetcvar pbxweapons_hologram_lifetime"
+    SafeCommand "$PBXWEAPONS_MENU_RESET_WEAPON_DURATIONS", "resetcvar pbxweapons_secretweapon_spawnchance; resetcvar pbxweapons_meathook_cooldown; resetcvar pbxweapons_hologram_cooldown; resetcvar pbxweapons_hologram_lifetime"
     StaticText " "
 
     StaticText "$PBXWeapons_Version",red
@@ -91,13 +90,15 @@ AddOptionMenu "AddonWeaponSpawns" after "CHNT1"
 AddOptionMenu "AddonWeaponSpawns" after "CHNT3"
 {
     // SLOT 5
-    FlagOption    "$PBXWEAPONS_METAL_SNIPER",           "PBXWeapons_chaingun_filter",    "OffOn", 1
     FlagOption    "$PBXWEAPONS_NEOHMG",                "PBXWeapons_chaingun_filter",    "OffOn", 2
 }
 
 // TIER 4
 AddOptionMenu "AddonWeaponSpawns" after "CHNT4"
 {
+    // SLOT 4
+    FlagOption    "$PBXWEAPONS_METAL_SNIPER",           "PBXWeapons_chaingun_filter",    "OffOn", 1
+    FlagOption    "$PBXWEAPONS_XM21",                   "PBXWeapons_chaingun_filter",    "OffOn", 4
     // SLOT 5
     FlagOption    "$PBXWEAPONS_SUPERNAILGUN",          "PBXWeapons_chaingun_filter",    "OffOn", 3
 }
@@ -148,6 +149,7 @@ AddOptionMenu "AddonWeaponSpawns" after "BFGT1"
     // SLOT 9
     FlagOption    "$PBXWEAPONS_DEMONIC_EXTERMINATOR",    "PBXWeapons_bfg_filter",    "OffOn", 0
     FlagOption    "$PBXWEAPONS_DEMONEXT_ARTIFACT",           "PBXWeapons_backpack_filter",    "OffOn", 6
+    FlagOption    "$PBXWEAPONS_ETERNAL_CHAINGUN",       "PBXWeapons_specialdrop_filter",    "OffOn", 0
     FlagOption    "$PBXWEAPONS_NUKE_LAUNCHER",      "PBXWeapons_specialdrop_filter",    "OffOn", 1 // I dont know where else to put this
     FlagOption    "$PBXWEAPONS_HEXA_SHOTGUN",      "PBXWeapons_specialdrop_filter",    "OffOn", 2 // I dont know where else to put this
     FlagOption    "$PBXWEAPONS_MINI_SHOTGUN",      "PBXWeapons_specialdrop_filter",    "OffOn", 4 // I dont know where else to put this
@@ -182,5 +184,4 @@ AddOptionMenu "AddonAmmoSpawns" after "SBOXT3"
 
 AddOptionMenu "AddonHealthArmorSpawns" after "MEGAT3"
 {
-    FlagOption    "$PBXWEAPONS_ETERNAL_CHAINGUN",       "PBXWeapons_specialdrop_filter",    "OffOn", 0
 }
