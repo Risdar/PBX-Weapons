@@ -112,19 +112,19 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
         WeaponRespect:
             TNT1 A 1;
         ContinueRespectBolt:
-            TNT1 A 0 A_PlaySoundEx("Ironsights","Auto");
-            TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_AUTO);
+            TNT1 A 0 A_StartSound("weapons/ballista/raise",CHAN_AUTO);
             CB0P EDCBA 1 A_DoPBWeaponAction();
             CB0S E 5 A_DoPBWeaponAction();
-            TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
+            TNT1 A 0 A_StartSound("weapons/ballista/raise",CHAN_AUTO);
             CB_E ABCDEF 1 {
                 PB_SetRoll(roll-.4);
                 return A_DoPBWeaponAction();
             }
             CB_E GGGGGGGGG 1 A_DoPBWeaponAction();
-            TNT1 A 0 A_PlaySoundEx("Ironsights","Auto");
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_AUTO);
             CB_E HIJKKKKKKK 1 A_DoPBWeaponAction();
-            TNT1 A 0 A_PlaySoundEx("weapons/ballista/drawstring","Auto");
+            TNT1 A 0 A_StartSound("weapons/ballista/drawstring",CHAN_AUTO);
             CB_E LMNOP 1 A_DoPBWeaponAction();
             // Switch to another animation depending on weapon state
             TNT1 A 0 {
@@ -139,7 +139,7 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
                 setCrossbowSprite(bolt:"CB_F",explosive:"CB_G",shock:"CB_I");
                 return A_DoPBWeaponAction();
             }
-            "####" A 0 A_PlaySoundEx("weapons/ballista/boltin","Auto");
+            "####" A 0 A_StartSound("weapons/ballista/boltin",CHAN_AUTO);
             "####" CDE 1 A_DoPBWeaponAction();
             "####" FFFFF 1 A_DoPBWeaponAction();
             "####" FG 1 {
@@ -155,7 +155,7 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
                 PB_SetRoll(roll+.4);
                 return A_DoPBWeaponAction();
             }
-            "####" A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
+            "####" A 0 A_StartSound("weapons/ballista/raise",CHAN_AUTO);
             "####" KLMN 1 {
                 PB_SetRoll(roll+.4);
                 return A_DoPBWeaponAction();
@@ -163,13 +163,103 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             goto Ready3;
 
         ContinueRespectDemonic:
-            TNT1 A 0 A_PlaySoundEx("weapons/ballista/boltinoutdemonic","Auto");
+            TNT1 A 0 A_StartSound("weapons/ballista/boltinoutdemonic",CHAN_AUTO);
             CB_H ABC 1 PB_SetRoll(roll+.3);
             CB_H DEF 1 PB_SetRoll(roll-.3);
             CB_H GG 1;
             CB_H GG 1 PB_SetRoll(roll+.4);
-            TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
+            TNT1 A 0 A_StartSound("weapons/ballista/raise",CHAN_AUTO);
             CB_H HIJK 1 PB_SetRoll(roll+.4);
+            goto Ready3;
+
+        WeaponInspect:
+            TNT1 A 0 A_JumpIf(getCrossbowMode() == DEMONIC_BOLT, "InspectDemonic");
+            CB_F NMLK 1 {
+                setCrossbowSprite(bolt:"CB_F",explosive:"CB_G",shock:"CB_I");
+                PB_SetRoll(roll+.4);
+                return A_DoPBWeaponAction();
+            }
+            "####" JI 1 {
+                PB_SetRoll(roll+.4);
+                return A_DoPBWeaponAction();
+            }
+            "####" H 1 {
+                PB_SetRoll(roll-.3);
+                return A_DoPBWeaponAction();
+            }
+            "####" GF 1 {
+                PB_SetRoll(roll+.3);
+                return A_DoPBWeaponAction();
+            }
+            "####" F 1 A_DoPBWeaponAction();
+        HoldInspect:
+            CB_F F 1 {
+                setCrossbowSprite(bolt:"CB_F",explosive:"CB_G",shock:"CB_I");
+                return A_DoPBWeaponAction();
+            }
+            "####" A 0 A_JumpIf(PressingReload(),"HoldInspect");
+            "####" F 1 A_DoPBWeaponAction();
+            "####" FG 1 {
+                PB_SetRoll(roll-.3);
+                return A_DoPBWeaponAction();
+            }
+            "####" H 1 {
+                PB_SetRoll(roll+.3);
+                return A_DoPBWeaponAction();
+            }
+            "####" IJ 1 {
+                PB_SetRoll(roll+.4);
+                return A_DoPBWeaponAction();
+            }
+            "####" A 0 A_StartSound("weapons/ballista/raise",CHAN_AUTO);
+            "####" KLMN 1 {
+                PB_SetRoll(roll+.4);
+                return A_DoPBWeaponAction();
+            }
+            goto Ready3;
+
+        InspectDemonic:
+            CB_H KJIH 1 {
+                PB_SetRoll(roll-.4);
+                return A_DoPBWeaponAction();
+            }
+            TNT1 A 0 A_StartSound("weapons/ballista/raise",CHAN_AUTO);
+            CB_H GG 1 A_DoPBWeaponAction();
+            CB_H GG 1 {
+                PB_SetRoll(roll-.4);
+                return A_DoPBWeaponAction();
+            }
+            TNT1 A 0 A_StartSound("weapons/ballista/boltinoutdemonic",CHAN_AUTO);
+            CB_H FED 1 {
+                PB_SetRoll(roll+.3);
+                return A_DoPBWeaponAction();
+            }
+            CB_H CBA 1 {
+                PB_SetRoll(roll-.3);
+                return A_DoPBWeaponAction();
+            }
+        HoldInspectDemonic:
+            CB_E P 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_JumpIf(PressingReload(),"HoldInspectDemonic");
+            CB_H ABC 1 {
+                PB_SetRoll(roll+.3);
+                return A_DoPBWeaponAction();
+            }
+            CB_H DEF 1 {
+                PB_SetRoll(roll-.3);
+                return A_DoPBWeaponAction();
+            }
+            CB_H GG 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_AUTO);
+            CB_H GG 1 {
+                PB_SetRoll(roll+.4);
+                return A_DoPBWeaponAction();
+            }
+            TNT1 A 0 A_StartSound("weapons/ballista/raise",CHAN_AUTO);
+            CB_H HIJK 1 {
+                PB_SetRoll(roll+.4);
+                return A_DoPBWeaponAction();
+            }
             goto Ready3;
 
         Select:
@@ -185,7 +275,7 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             goto Ready3;
             
         RespectEmpty:
-            TNT1 A 0 A_PlaySoundEx("Ironsights","Auto");
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_AUTO);
             CB_E FED 1 {
                 PB_SetRoll(roll+.4);
                 return A_DoPBWeaponAction();
@@ -194,7 +284,7 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
                 PB_SetRoll(roll+.4);
                 return A_DoPBWeaponAction();
             }
-            TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
+            TNT1 A 0 A_StartSound("weapons/ballista/raise",CHAN_AUTO);
             CB_E A 1 {
                 PB_SetRoll(roll+.4);
                 return A_DoPBWeaponAction();
@@ -209,33 +299,22 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             }
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"Ready2");
             TNT1 A 0 readyCheck("ReadyToFireDemonic","ReadyToFireExplosive","ReadyToFireShock");
+		    TNT1 A 0 PB_HandleCrosshair(29);
         ReadyToFire:
-            CB1S E 1 {				
-                PB_HandleCrosshair(29);
-                setCrossbowSprite("CB0S","CB1S");
-                return PB_ReadyFire(ads:false);
-            }
+            TNT1 A 0 PBX_CheckInspect();
+            CB1S E 1 readyCrossbow();
             Loop;
 
         ReadyToFireExplosive:
-            CB2S EEEEEEEEEEEEEEEEEEEEFGHGF 1 {
-                PB_HandleCrosshair(29);
-                return PB_ReadyFire(ads:false);
-            }
+            CB2S EEEEEEEEEEEEEEEEEEEEFGHGF 1 readyCrossbow();
             Loop;
 
         ReadyToFireDemonic:
-            CB3S EEEFFFGGGFFF 1 {
-                PB_HandleCrosshair(29);
-                return PB_ReadyFire(ads:false);
-            }
+            CB3S EEEFFFGGGFFF 1 readyCrossbow();
             Loop;
 
         ReadyToFireShock:
-            CB4S EEEEEEEEEEEEEEEEEEEEFGHGF 1 {
-                PB_HandleCrosshair(29);
-                return PB_ReadyFire(ads:false);
-            }
+            CB4S EEEEEEEEEEEEEEEEEEEEFGHGF 1 readyCrossbow();
             Loop;
         
 
@@ -247,31 +326,21 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             TNT1 A 0 readyCheck("Ready2Demonic","Ready2Explosive","Ready2Shock");
         ReadyToFire2:
             CB1T E 1 {
-                A_SetCrosshair(-1);
                 setCrossbowSprite("CB0T","CB1T");
                 return PB_ReadyFire(ads:true);
             }
             Loop;
 
         Ready2Explosive:
-            CB2T EEEEEEEEEEEEEEEEEEEEFGHGF 1 {
-                A_SetCrosshair(-1);
-                return PB_ReadyFire(ads:true);
-            }
+            CB2T EEEEEEEEEEEEEEEEEEEEFGHGF 1 PB_ReadyFire(ads:true);
             Loop;
 
         Ready2Demonic:
-            CB3T EFGF 3 {
-                A_SetCrosshair(-1);
-                return PB_ReadyFire(ads:true);
-            }
+            CB3T EFGF 3 PB_ReadyFire(ads:true);
             Loop;
 
         Ready2Shock:
-            CB4T EEEEEEEEEEEEEEEEEEEEFGHGF 1 {
-                A_SetCrosshair(-1);
-                return PB_ReadyFire(ads:true);
-            }
+            CB4T EEEEEEEEEEEEEEEEEEEEFGHGF 1 PB_ReadyFire(ads:true);
             Loop;
 
         Fire:
@@ -279,7 +348,7 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             TNT1 A 0 PB_JumpIfNoAmmo();
 			TNT1 A 0 PB_HandleCrosshair(29);
             TNT1 A 0 A_JumpIf(getCrossbowMode() == DEMONIC_BOLT,"FireDemonic");
-            TNT1 A 0 A_PlaySoundEx("weapons/ballista/firebolt","Auto");
+            TNT1 A 0 A_StartSound("weapons/ballista/firebolt",CHAN_AUTO);
             CB_B A 1 ;
             TNT1 A 0 FireWeapon();
             CB_B B 1 ;
@@ -293,7 +362,7 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             goto Reload;
 
         FireDemonic:
-            TNT1 A 0 A_PlaySoundEx("weapons/ballista/firedemonic","Auto");
+            TNT1 A 0 A_StartSound("weapons/ballista/firedemonic",CHAN_AUTO);
             CB_B D 1 BRIGHT;
             TNT1 A 0 FireWeapon();
             CB_B B 1 BRIGHT;
@@ -303,7 +372,7 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             TNT1 A 0 PB_JumpIfNoAmmo();
 			TNT1 A 0 A_SetCrosshair(-1);
             TNT1 A 0 A_JumpIf(getCrossbowMode() == DEMONIC_BOLT,"Fire2Demonic");
-            TNT1 A 0 A_PlaySoundEx("weapons/ballista/firebolt","Auto");
+            TNT1 A 0 A_StartSound("weapons/ballista/firebolt",CHAN_AUTO);
             CB_M A 1;
             TNT1 A 0 FireWeapon();
             CB_M B 1;
@@ -317,7 +386,7 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             goto Reload;
 
         Fire2Demonic:
-            TNT1 A 0 A_PlaySoundEx("weapons/ballista/firedemonic","Auto");
+            TNT1 A 0 A_StartSound("weapons/ballista/firedemonic",CHAN_AUTO);
             CB_M D 1 BRIGHT;
             TNT1 A 0 FireWeapon();
             CB_M B 1 BRIGHT;
@@ -366,18 +435,20 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             TNT1 A 0 A_JumpIf(invoker.unwindString, "ContinueReload");
             TNT1 A 0 PB_CheckReload(null, null, null, "Ready3", "Ready3", ARROW_AMOUNT, invoker.ReserveToMagAmmoFactor);
         StandardReload:
-            TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
+            // Raise
+            TNT1 A 0 A_StartSound("weapons/ballista/raise",CHAN_AUTO);
             CB_E ABCDEF 1 PB_SetRoll(roll-.4);
             CB_E GGGGGGGGG 1 ;
-            TNT1 A 0 A_PlaySoundEx("Ironsights","Auto");
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_AUTO);
+            // Draw string
             CB_E HIJKKKKKKK 1;
-            TNT1 A 0 A_PlaySoundEx("weapons/ballista/drawstring","Auto");
+            TNT1 A 0 A_StartSound("weapons/ballista/drawstring",CHAN_AUTO);
             CB_E LMN 1;
             CB_E OPPPPP 1;
         ContinueReload: // Used by the mode change
             TNT1 A 0 A_JumpIf(getCrossbowMode() == DEMONIC_BOLT,"ReloadDemonic");
             CB_F AB 1 setCrossbowSprite(bolt:"CB_F",explosive:"CB_G",shock:"CB_I",skipUnloadedCheck:true);
-            "####" A 0 A_PlaySoundEx("weapons/ballista/boltin","Auto");
+            "####" A 0 A_StartSound("weapons/ballista/boltin",CHAN_AUTO);
             "####" CDE 1;
             "####" FG 1 {
                 PB_SetRoll(roll-.3);
@@ -386,14 +457,14 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             "####" A 0 {
 				A_SetInventory(invoker.ammo2.getclassname(),ARROW_AMOUNT); // Gives the arrow
 				A_TakeInventory(invoker.ammo1.getclassname(),invoker.ReserveToMagAmmoFactor,TIF_NOTAKEINFINITE); // Take 1 reserve
-                A_PlaySoundEx("Ironsights","Auto");
+                A_StartSound("Ironsights",CHAN_AUTO);
 				PB_SetMagUnloaded(false);
 				PB_SetMagEmpty(false);
 				PB_SetChamberEmpty(false);
 			}
             "####" H 1 PB_SetRoll(roll+.3);
             "####" IJ 1 PB_SetRoll(roll+.4);
-            "####" A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
+            "####" A 0 A_StartSound("weapons/ballista/raise",CHAN_AUTO);
             "####" KLMN 1 PB_SetRoll(roll+.4);
         EndReload:
             TNT1 A 0 {
@@ -415,13 +486,13 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             TNT1 A 0 {
 				A_SetInventory(invoker.ammo2.getclassname(),ARROW_AMOUNT); // Gives the arrow
 				A_TakeInventory(invoker.ammo1.getclassname(),invoker.ReserveToMagAmmoFactor,TIF_NOTAKEINFINITE); // Take 1 reserve
-                A_PlaySoundEx("Ironsights","Auto");
+                A_StartSound("Ironsights",CHAN_AUTO);
 				PB_SetMagUnloaded(false);
 				PB_SetMagEmpty(false);
 				PB_SetChamberEmpty(false);
 			}
             CB_H GG 1 PB_SetRoll(roll+.4);
-            TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
+            TNT1 A 0 A_StartSound("weapons/ballista/raise",CHAN_AUTO);
             CB_H HIJK 1 PB_SetRoll(roll+.4);
             Goto EndReload;
 
@@ -439,7 +510,7 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             "####" JI 1 PB_SetRoll(roll+.4);
             "####" H 1 PB_SetRoll(roll-.3);
             "####" A 0 {
-                A_PlaySoundEx("weapons/ballista/boltout","Auto");
+                A_StartSound("weapons/ballista/boltout",CHAN_AUTO);
                 unloadCrossbow();
                 PB_SetChamberEmpty(true);
                 PB_SetMagEmpty(true);
@@ -449,25 +520,25 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             "####" EDC 1;
             "####" BA 1;
         ContinueUnload:
-            TNT1 A 0 A_PlaySoundEx("Ironsights","Auto");
-            TNT1 A 0 A_PlaySoundEx("weapons/ballista/drawstring","Auto");
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_AUTO);
+            TNT1 A 0 A_StartSound("weapons/ballista/drawstring",CHAN_AUTO);
             CB_E PPPPP 1;
             TNT1 A 0 handleModeChange(); // actual mode change here, jumps to ContinueReload
             CB_E ONM 1;
-            TNT1 A 0 A_PlaySoundEx("Ironsights","Auto");
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_AUTO);
             CB_E KKKKKKKIH 1;
             CB_E GGGGGGGGG 1;
             CB_E FEDCBA 1 PB_SetRoll(roll+.4);
-            TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
+            TNT1 A 0 A_StartSound("weapons/ballista/raise",CHAN_AUTO);
             TNT1 A 0 PB_SetReloading(false);
             Goto Ready3;
 
         UnloadDemonic:
             CB_H KJIH 1 PB_SetRoll(roll-.4);
-            TNT1 A 0 A_PlaySoundEx("weapons/ballista/raise","Auto");
+            TNT1 A 0 A_StartSound("weapons/ballista/raise",CHAN_AUTO);
             CB_H GG 1;
             CB_H GG 1 PB_SetRoll(roll-.4);
-            TNT1 A 0 A_PlaySoundEx("weapons/ballista/boltinoutdemonic","Auto");
+            TNT1 A 0 A_StartSound("weapons/ballista/boltinoutdemonic",CHAN_AUTO);
             TNT1 A 0 {
                 unloadCrossbow();
                 PB_SetChamberEmpty(true);

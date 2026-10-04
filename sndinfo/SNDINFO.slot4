@@ -1,0 +1,62 @@
+// Battle Rifle
+BR45FIRE BR45FIRE
+BR45FIR2 BR45FIR2
+BR45PING BR45PING
+BR45OPEN BR45OPEN
+BR45LOAD BR45LOAD
+BR45PICK BR45PICK
+BR45SWCH BR45SWCH
+
+$random BR45BOUNCE { BR45BON1 BR45BON2 BR45BON3 }
+BR45BON1 BR45BON1
+BR45BON2 BR45BON2
+BR45BON3 BR45BON3
+BR45BON4 BR45BON4
+
+$random weapons/largemagdrop  { weapons/largemagdrop1 weapons/largemagdrop2 weapons/largemagdrop3 weapons/largemagdrop4 }
+weapons/largemagdrop1		dsaounc1
+weapons/largemagdrop2		dsaounc2
+weapons/largemagdrop3		dsaounc3
+weapons/largemagdrop4		dsaounc4
+
+$volume weapons/largemagdrop 0.5
+
+// Metal Sniper
+MS/Fire 			"Sounds/Weapons/Slot-4/MetalSniper/msFire.ogg"
+MS/Button 			"Sounds/Weapons/Slot-4/MetalSniper/msButton.ogg"
+MS/InsertMag 		"Sounds/Weapons/Slot-4/MetalSniper/msMagIn.ogg"
+MS/TakeMag			"Sounds/Weapons/Slot-4/MetalSniper/msMagOut.ogg"
+MS/BoltDown 		"Sounds/Weapons/Slot-4/MetalSniper/msBoltDown.ogg"
+MS/BoltUp 			"Sounds/Weapons/Slot-4/MetalSniper/msBoltUp.ogg"
+MS/Grenade 			"Sounds/Weapons/Slot-4/MetalSniper/msGrenFire.ogg"
+MS/GrenOpen 		"Sounds/Weapons/Slot-4/MetalSniper/msGrenOpen.ogg"
+MS/GrenClose 		"Sounds/Weapons/Slot-4/MetalSniper/msGrenClose.ogg"
+MS/Up 				"Sounds/Weapons/Slot-4/MetalSniper/msRaise.ogg"
+MS/ResonanceFire 	"Sounds/Weapons/Slot-4/MetalSniper/msResonance.ogg"
+
+// ProSurv Ballista
+// Ballista
+weapons/ballista/raise "sounds/Weapons/Slot-4/ProSurv - Ballista/ballista_raise.ogg"
+weapons/ballista/firebolt "sounds/Weapons/Slot-4/ProSurv - Ballista/ballista_fire_bolt.ogg"
+weapons/ballista/firedemonic "sounds/Weapons/Slot-4/ProSurv - Ballista/ballista_fire_demonic.ogg"
+weapons/ballista/firerazor "sounds/Weapons/Slot-4/ProSurv - Ballista/ballista_fire_razor.ogg"
+weapons/ballista/drawstring "sounds/Weapons/Slot-4/ProSurv - Ballista/ballista_draw_string.ogg"
+weapons/ballista/razor "sounds/Weapons/Slot-4/ProSurv - Ballista/ballista_razor.ogg"
+weapons/ballista/boltin "sounds/Weapons/Slot-4/ProSurv - Ballista/ballista_bolt_in.ogg"
+weapons/ballista/boltout "sounds/Weapons/Slot-4/ProSurv - Ballista/ballista_bolt_out.ogg"
+weapons/ballista/boltinoutdemonic "sounds/Weapons/Slot-4/ProSurv - Ballista/ballista_bolt_in_out_demonic.ogg"
+
+// XM21
+FARM14 FARM14
+$limit FARM14 80
+$rolloff  FARM14 3000 6000
+
+Sniper/Draw X21DRAW
+Sniper/BoltBack X21BACK
+Sniper/BoltForward X21FORW
+Sniper/CloakFull "Sounds/Weapons/Slot-4/XM21/cloak_full.ogg"
+Sniper/CloakEmpty "Sounds/Weapons/Slot-4/XM21/cloak_empty.ogg"
+Sniper/CloakLow "Sounds/Weapons/Slot-4/XM21/cloak_low.ogg"
+Sniper/CloakActive "Sounds/Weapons/Slot-4/XM21/cloak_engaged.ogg"
+Sniper/CloakDisabled "Sounds/Weapons/Slot-4/XM21/cloak_disabled.ogg"
+Sniper/CloakLoop "Sounds/Weapons/Slot-4/XM21/cloak_loop.ogg"

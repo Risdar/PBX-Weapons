@@ -55,6 +55,9 @@ class PBX_XM21 : PBX_WeaponBase
     const CLOAK_ENERGY_GIVE = 1; // Given every seconds
     const CLOAK_ENERGY_TAKE = 2; // Taken every seconds
     const CLOAK_ENERGY = "CloakEnergy"; // Just so its easier if I want to change the name later
+    const CLOAK_CHAN = 11; // The sound channel of the cloak activation/deactivation/etc.
+    const CLOAK_CHAN_LOOP = 12; // The sound channel of the cloak loop sound
+    const CLOAK_MIN = 10; // Minimum energy to activate cloak
 
     // Change these if you want to edit how strong the zoom modes are
 	const MAXZOOM = 12.0;
@@ -92,7 +95,7 @@ class PBX_XM21 : PBX_WeaponBase
             if(CountInv(CLOAK_ENERGY) == CLOAK_DURATION)
             {
                 PBXCore_Debug.Print("Cloak Full");
-                owner.a_startsound("ULTCHAR",CHAN_AUTO,CHANF_DEFAULT,1,ATTN_NONE);
+                owner.a_startsound("Sniper/CloakFull",CLOAK_CHAN,CHANF_OVERLAP,1,ATTN_NONE);
             }
         }
 
@@ -102,7 +105,7 @@ class PBX_XM21 : PBX_WeaponBase
             if(CountInv(CLOAK_ENERGY) < CLOAK_ENERGY_TAKE)
             {
                 PBXCore_Debug.Print("Cloak Empty");
-                owner.a_startsound("MHKSTRT",CHAN_AUTO,CHANF_DEFAULT,1,ATTN_NONE);
+                owner.a_startsound("Sniper/CloakEmpty",CLOAK_CHAN,CHANF_OVERLAP,1,ATTN_NONE);
                 mCloakEngaged = false;
                 owner.A_SetRenderstyle(1.0, STYLE_Normal);
                 owner.bShadow = false;
@@ -176,12 +179,21 @@ class PBX_XM21 : PBX_WeaponBase
                 break;
 
             case TOGGLE_CLOAK:
+                if(CountInv(CLOAK_ENERGY) < CLOAK_MIN)
+                {
+                    cleanTokens();
+                    A_StartSound("Sniper/CloakLow",CLOAK_CHAN,CHANF_OVERLAP);
+                    A_Print("$PBX_XM21_CloakNoEnergy");
+                    return ResolveState("Ready3");
+                }
+
                 invoker.mCloakEngaged = !invoker.mCloakEngaged;
                 bool isEngaged = invoker.mCloakEngaged; // Save the var
                 if(isEngaged) 
                 {
                     A_SetRenderStyle(.5, STYLE_Subtract);
-                    A_StartSound("Sniper/CloakActive",CHAN_AUTO);
+                    A_StartSound("Sniper/CloakActive",CLOAK_CHAN,CHANF_OVERLAP);
+                    A_StartSound("Sniper/CloakLoop",CLOAK_CHAN_LOOP,CHANF_LOOP|CHANF_OVERLAP);
                     bShadow = isEngaged;
                     bCantSeek = isEngaged;
                     self.player.cheats |= CF_NOTARGET;
@@ -196,7 +208,9 @@ class PBX_XM21 : PBX_WeaponBase
                 }
                 else if(!isEngaged)
                 {
+                    A_StopSound(CLOAK_CHAN_LOOP);
                     A_SetRenderstyle(1.0, STYLE_Normal);
+                    A_StartSound("Sniper/CloakDisabled",CLOAK_CHAN,CHANF_OVERLAP);
                     bShadow = isEngaged;
                     bCantSeek = isEngaged;
                     self.player.cheats &= ~CF_NOTARGET;
@@ -286,12 +300,12 @@ class PBX_XM21 : PBX_WeaponBase
             X22R SRE 1 A_DoPBWeaponAction();
             X22R FGHIJ 1 A_DoPBWeaponAction();
             X22R K 5 A_DoPBWeaponAction();
-            X22R A 0 A_StartSound("Sniper/BoltBack",CHAN_AUTO);
+            TNT1 A 0 A_StartSound("Sniper/BoltBack",CHAN_AUTO);
             X22R LLMM 1 A_DoPBWeaponAction();
         HoldInspect:
             X22R M 2 A_DoPBWeaponAction();
             TNT1 A 0 A_JumpIf(PressingReload(),"HoldInspect");
-            X22R A 0 A_StartSound("Sniper/BoltForward",CHAN_AUTO);
+            TNT1 A 0 A_StartSound("Sniper/BoltForward",CHAN_AUTO);
             X22R NNOP 1 A_DoPBWeaponAction();
             X22R Q 4 A_DoPBWeaponAction();
             X22R QRS 1 A_DoPBWeaponAction();
@@ -361,7 +375,7 @@ class PBX_XM21 : PBX_WeaponBase
 			TNT1 A 0 A_JumpIf(invoker.mBurstCount < 3, "BurstFireRecoil");
 		BurstDone:
 			TNT1 A 0 { invoker.mBurstCount = 0; }
-            X21F C 5;
+            X21F C 3;
             X21F CCCCCCC 1 {
 				// Track button release
 				if (!(player.cmd.buttons & BT_ATTACK))

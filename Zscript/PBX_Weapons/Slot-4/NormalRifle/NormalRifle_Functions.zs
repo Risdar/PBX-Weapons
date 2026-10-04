@@ -63,11 +63,6 @@ extend class PBX_NormalRifle
         switch(tic)
         {
             case 1:
-                // Check Ammo
-                if(isLeft && invoker.ammo2.amount <= 0)
-                    A_GiveInventory("DualFireReload", 1);
-                else if(!isLeft && invoker.ammoleft.amount <= 0)
-                    A_GiveInventory("DualFireReload", 1);
                 // Shoot + Effects
                 PB_IncrementHeat(heat, isLeft);
                 PB_FireBullets("PB_556x45mm", 1, 0.1, 0, 0, 0.1);
@@ -79,16 +74,20 @@ extend class PBX_NormalRifle
 
                 // Everything Else
                 if(isLeft) {
-                    invoker.burstcountLeft++;
                     PB_LowAmmoSoundWarning(ammoClass);
                     PB_TakeAmmo(ammoClass,dual:true);
                     A_SetFiringLeftWeapon(true);
+                    A_FlashOverlay(LEFT_MUZZLE_LAYER,"LeftMuzzleFlash");
+                    A_OverlayOffset(LEFT_MUZZLE_LAYER,-10,20);
+                    invoker.burstcountLeft++;
                 }
                 else {
-                    invoker.burstcount++;
                     PB_LowAmmoSoundWarning();
                     PB_TakeAmmo(ammoClass);
                     A_SetFiringRightWeapon(true);
+                    A_FlashOverlay(RIGHT_MUZZLE_LAYER,"RightMuzzleFlash");
+                    A_OverlayOffset(RIGHT_MUZZLE_LAYER,10,20);
+                    invoker.burstcount++;
                 }
                 A_AlertMonsters();
                 PB_GunSmoke(smokeOfs, 0, 1.6);
@@ -98,15 +97,11 @@ extend class PBX_NormalRifle
             case 2:
                 if(isLeft)
                 {
-                    if(invoker.ammoleft.amount <= 0 || invoker.ammo2.amount > 0)
-                        A_GiveInventory("DualFiring", 1);
-                    // A_SetFiringLeftWeapon(false);
+                    A_SetFiringLeftWeapon(false);
                 }
                 else
                 {
-                    if(invoker.ammoleft.amount > 0 || invoker.ammo2.amount <= 0)
-                        A_TakeInventory("DualFiring", 1);
-                    // A_SetFiringRightWeapon(false);
+                    A_SetFiringRightWeapon(false);
                 }
                 break;
 
@@ -118,63 +113,8 @@ extend class PBX_NormalRifle
             case 4:
                 // Reset burst
                 setBurstCount(0, isLeft ? true : false);
-
-                // Set the fire block to true
-                // this is so the player cant fire
-                // if they havent let go of the firing button
-                if(burst)
-                {
-                    if(isLeft) invoker.waitReleaseLeft = true;
-                    else       invoker.waitReleaseRight = true;
-                }
-
-                // Ammo Check
-                if(isLeft && invoker.ammo2.amount <= 0)
-                    A_GiveInventory("DualFireReload", 1);
-                else if(!isLeft && invoker.ammoleft.amount <= 0)
-                    A_GiveInventory("DualFireReload", 1);
-
-                // Reset burst firing for 
-                // the single button dual wield burst fire
-                if(isLeft)
-                    A_SetFiringLeftWeapon(false);
-                else
-                    A_SetFiringRightWeapon(false);
                 break;
         }
-    }
-
-    // A custom ready dual wield function that blocks the player from firing
-    // if its in burst fire and they havent let go of the firing button
-    // this is because PB has 3 modes that dictates which are the fire buttons
-    action state ReadyOverlay(bool isLeft)
-    {
-        // Set up variables
-        int firemodecvar = Cvar.GetCvar("SingleDualFire",player).GetInt();
-        bool waiting = isLeft ? invoker.waitReleaseLeft : invoker.waitReleaseRight;
-        bool checkDualWieldButton;
-
-        // Check if the fire button is pressed
-        switch(firemodecvar)
-        {
-            case 0: checkDualWieldButton = !PressingFire(); break;
-            case 1: checkDualWieldButton = isLeft ? !PressingFire() : !PressingAltFire(); break;
-            case 2: checkDualWieldButton = isLeft ? !PressingAltFire() : !PressingFire(); break;
-        }
-
-        // Basically dont let the player fire
-        // unless they let go of the fire button
-        if(waiting)
-        {
-            if(firemodecvar == 0 || checkDualWieldButton)
-            {
-                if(isLeft) invoker.waitReleaseLeft = false;
-                else invoker.waitReleaseRight = false;
-            }
-            else return resolvestate(null);
-        }
-        if(isLeft) return A_DoPBLeftAction();
-        else return A_DoPBRightAction();
     }
 
     action void fireweapon(int tic)
@@ -191,9 +131,9 @@ extend class PBX_NormalRifle
                 PB_IncrementHeat();
 			    PB_DynamicTail("lmg", "br");
 				PB_LowAmmoSoundWarning();
+                PB_TakeAmmo(invoker.ammo2.getclassname());
 				PB_GunSmoke(0,0,0); PB_MuzzleFlashEffects(0,0,0);
                 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0);
-                PB_TakeAmmo(invoker.ammo2.getclassname());
                 A_GunFlash();
                 PB_WeaponRecoil(-0.5,0);
                 PB_FireOffset();

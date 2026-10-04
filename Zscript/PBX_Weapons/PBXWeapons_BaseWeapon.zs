@@ -463,6 +463,10 @@ class PBX_WeaponBase : PB_WeaponBase abstract
                 self.RemoveInventory(invoker);
             }
 			Stop;
+
+        // Fail safe
+        WeaponInspect:
+            goto Ready;
     }
 
     // Proof of concept weapon inspect system

@@ -104,10 +104,11 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 		// Everything Else
 		PB_LowAmmoSoundWarning("default");
 		pb_takeammo(invoker.ammotype2,1,0);
-		A_StartSound("BR45FIRE", CHAN_WEAPON, 0, 1.0, pitch: 1.2);
+		A_StartSound("BR45FIRE", CHAN_WEAPON, pitch: 1.2);
 		invoker.mBurstCount++;
 		PB_IncrementHeat(4);
 
+		A_FlashOverlay();
 		PB_GunSmoke(0,0,smoke);
 		PB_WeaponRecoil(recoil,frandom(-0.3,0.3));
 		A_ZoomFactor(zoom, SPF_INTERPOLATE);
@@ -138,7 +139,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 		// Play sound when opening the wheel in ADS
 		if(PB_GetZoom())
 		{
-			A_StartSound("MS/Button", 26); 
+			A_StartSound("MS/Button",CHAN_AUTO); 
 			return resolvestate("Ready2");
 		}
 
@@ -172,18 +173,31 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 			TNT1 A 0 A_SetCrosshair(-1);
 			BR4S EDCBA 1 A_DoPBWeaponAction();
 			BR45 BBB 1 A_DoPBWeaponAction();
-			TNT1 A 0 A_startsound("BR45OPEN",3,CHANF_OVERLAP);
+			TNT1 A 0 A_startsound("BR45OPEN",CHAN_WEAPON,CHANF_OVERLAP);
             BR4R ABCDE 1 A_DoPBWeaponAction();
 			BR4R FGGGGG 1 A_DoPBWeaponAction();
 			BR4R GHIJKLMNOP 1 A_DoPBWeaponAction();
-			TNT1 A 0 A_startsound("BR45LOAD",3);
+			TNT1 A 0 A_startsound("BR45LOAD",CHAN_WEAPON,CHANF_OVERLAP);
 			BR4R QRSTUVWX 1 A_DoPBWeaponAction();
+			goto Ready3;
+
+		WeaponInspect:
+			TNT1 A 0 A_startsound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
+            BR4K ABCD 1 A_DoPBWeaponAction();
+            BR4K EEEE 1 A_DoPBWeaponAction();
+		HoldInspect:
+			BR4K E 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_JumpIf(PressingReload(),"HoldInspect");
+			BR4K DCBA 1 A_DoPBWeaponAction();
+			goto Ready3;
+
         // READY STATES
         Ready:
         Ready3:
 			TNT1 A 0 {invoker.mBurstCount = 0;}
 			TNT1 A 0 A_jumpif(PB_GetZoom(),"Ready2");
 		ReadyToFire:
+            TNT1 A 0 PBX_CheckInspect();
 			BR45 B 1 {
 				PB_HandleCrosshair(42);
 				PB_CoolDownBarrel();
@@ -281,7 +295,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 		ZoomIn:
             TNT1 A 0 {
 				PB_SetZoom(true);
-				A_startsound("IronSights",29);
+				A_startsound("IronSights",CHAN_AUTO);
 			}
             TNT1 A 0 A_ZoomFactor(1.5);
             BR4Z AB 1;
@@ -289,7 +303,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 			BR4Z C 1;
             goto Ready2;
         ZoomOut:
-			TNT1 A 0 A_startsound("IronSights",29);
+			TNT1 A 0 A_startsound("IronSights",CHAN_AUTO);
             TNT1 A 0 A_ZoomFactor(1.5);
 			BR4Z CB 1;
 			TNT1 A 0 PB_SetZoom(false);
@@ -299,7 +313,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
         // RELOAD
 		ReloadFromADS:
 			TNT1 A 0 PB_HandleCrosshair(42);
-			TNT1 A 0 A_startsound("IronSights",29);
+			TNT1 A 0 A_startsound("IronSights",CHAN_AUTO);
             TNT1 A 0 A_ZoomFactor(1.5);
 			BR4Z CB 1;
 			TNT1 A 0 PB_SetZoom(false);
@@ -307,7 +321,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 		Reload:
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");
 			TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, null, "Ready3", "Ready3", MAGAZINE_SIZE);
-			TNT1 A 0 A_startsound("BR45OPEN",3,CHANF_OVERLAP);
+			TNT1 A 0 A_startsound("BR45OPEN",CHAN_WEAPON,CHANF_OVERLAP);
             BR4R ABCDE 1;
             TNT1 A 0 {
                 PB_SetMagUnloaded(true);
@@ -323,7 +337,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
         ContinueReload:
 			BR4R GHIJKLMNOP 1;
 			TNT1 A 0 {
-				A_startsound("BR45LOAD",3);
+				A_startsound("BR45LOAD",CHAN_WEAPON,CHANF_OVERLAP);
 				PB_AmmoIntoMag(invoker.ammo2.getclassname(), invoker.ammo1.getclassname(), MAGAZINE_SIZE,1);
                 PB_SetMagUnloaded(false);
                 PB_SetMagEmpty(false);
@@ -334,13 +348,13 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 			goto Ready3;
 
         RaiseFromEmpty:
-			TNT1 A 0 A_startsound("BR45OPEN",3,CHANF_OVERLAP);
+			TNT1 A 0 A_startsound("BR45OPEN",CHAN_WEAPON,CHANF_OVERLAP);
             BR4R ABCDEF 1;
             goto ContinueReload;
 		
 		Unload:
 			TNT1 A 0 A_Jumpif(pb_getmagunloaded(),"Ready3");
-			TNT1 A 0 A_startsound("BR45OPEN",3,CHANF_OVERLAP);
+			TNT1 A 0 A_startsound("BR45OPEN",CHAN_WEAPON,CHANF_OVERLAP);
             BR4R ABCDE 1;
             TNT1 A 0 {
 				If(invoker.ammo2.amount > 0)
@@ -364,12 +378,21 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 		ActualModeChange:
 			TNT1 A 0 checkSpecial();
         SwitchAnimation:
-            BR4R ABCDEFG 1;
-            TNT1 A 0 A_StartSound("MS/Button", 26);
-			BR4R GFEDCBA 1;
+            BR4K ABCD 1;
+		    BR4K E 1;
+            TNT1 A 0 A_StartSound("MS/Button",CHAN_AUTO);
+		    BR4K DCBA 1;
 			goto Ready3;
 		
         // FLASH STATES
+		MuzzleFlash:
+			TNT1 A 0 A_Jump(128, "MuzzleFlash2");
+			MZ01 ABC 1 BRIGHT A_GunFlash();
+			Stop;
+		MuzzleFlash2:
+			MZ01 DEF 1 BRIGHT A_GunFlash();
+			Stop;
+
         FlashPunching:
             BR4K ABCD 1;
 		    BR4K E 13;

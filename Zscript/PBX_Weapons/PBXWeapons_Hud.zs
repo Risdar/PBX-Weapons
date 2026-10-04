@@ -374,8 +374,8 @@ class PBXHUDService_PBX_AllWeapons : service
                 laserOn: nr.mLaserSightActivated,
                 onImage: IMAGE_DIRECTORY.."NormalRifle/laseron.png",
                 offImage: IMAGE_DIRECTORY.."NormalRifle/laseroff.png",
-                onOffset: (0, 12), 
-                offOffset: (-5, 12), 
+                onOffset: (0, 8), 
+                offOffset: (-5, 8), 
                 onScale: 1.0, 
                 offScale: 1.1
             );

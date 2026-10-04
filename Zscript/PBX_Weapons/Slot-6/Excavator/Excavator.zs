@@ -66,9 +66,9 @@ class PBX_Excavator : PBX_WeaponBase
     const MAGAZINE_SIZE = 6;
     const AMMO_TAKE_NORMAL = 2;
     const AMMO_TAKE_SAW = 5;
-    enum excMode
+    enum ExcMode
     {
-        eNoUpgrade = -2,
+        eNoUpgrade = -1,
         eCloseWheel,
         eDrillChargeMode, // Default Mode
         eDropShotMode,
@@ -85,7 +85,7 @@ class PBX_Excavator : PBX_WeaponBase
             Stop;
         Deselect:
             // TNT1 A 0 setExcavatorMode();
-            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"Deselect_Upgraded");
+            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"Deselect.Upgraded");
 		    5DKF EFGHI 1;
         ActualDeselect:
 			TNT1 AAA 0 A_lower();
@@ -95,11 +95,11 @@ class PBX_Excavator : PBX_WeaponBase
 				A_SetCrosshair(-1);
 				A_PlaySoundEx("Ironsights", "Auto");
 			}
-            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"WeaponRespect_Upgraded");
+            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"WeaponRespect.Upgraded");
         WeaponRespect_Normal:
 			5DKF IHGF 1 A_DoPBWeaponAction();
 			5DKF E 15 A_DoPBWeaponAction();
-            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"WeaponRespect_UpgradedStart");
+            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"WeaponRespect.UpgradedStart");
 			6DKF A 1 A_PlaySound("Ironsights", 15);
             TNT1 A 0 PB_SetRoll(roll-0.6);
             6DKF BCDEF 1 A_DoPBWeaponAction();
@@ -130,11 +130,11 @@ class PBX_Excavator : PBX_WeaponBase
             5DKF CCDDCCDDCCDCDCD 1 A_DoPBWeaponAction();
 			goto Ready3;
 		Select:
-            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"Select_Upgraded");
+            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"Select.Upgraded");
 			TNT1 A 0 PBX_WeaponRaise("RLANDRAW");
 			TNT1 A 0 PB_RespectIfNeeded();
 		SelectAnimation:
-            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"SelectAnimation_Upgraded");
+            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"SelectAnimation.Upgraded");
 		SelectAnimation_Normal:
 			TNT1 A 0 A_JumpIf(pb_getmagunloaded(), "NoAmmo");
             5DKF IHGFE 1;
@@ -143,7 +143,7 @@ class PBX_Excavator : PBX_WeaponBase
             TNT1 A 0 A_Jumpif(isExcavatorUpgraded(), "Ready2");
             TNT1 A 0 A_Jumpif(PB_GetMagUnloaded(), "NoAmmo");
         ReadyToFire:
-            TNT1 A 0 A_Jumpif(isExcavatorUpgraded(), "WeaponRespect_Upgraded");
+            TNT1 A 0 A_Jumpif(isExcavatorUpgraded(), "WeaponRespect.Upgraded");
 			5DKF A 1 {
                 if(getExcavatorMode() == eDropShotMode)
                     A_SetWeaponFrame(1);
@@ -156,7 +156,7 @@ class PBX_Excavator : PBX_WeaponBase
 		
 //////////////////////////// FIRE ////////////////////////////////////////////////////////////////////////////////////
 		Fire:
-            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"Fire_Upgraded");
+            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"Fire.Upgraded");
             TNT1 A 0 {
 				A_WeaponOffset(0,32);
 				PB_SetRoll(0);
@@ -176,7 +176,7 @@ class PBX_Excavator : PBX_WeaponBase
 		
 //////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
 		Reload:
-            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"Reload_Upgraded");
+            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"Reload.Upgraded");
         Reload_Normal:
             TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, null, "Ready3", "Ready3", MAGAZINE_SIZE, invoker.ReserveToMagAmmoFactor);
 			6DKF A 1 A_PlaySound("Ironsights", 15);
@@ -229,7 +229,7 @@ class PBX_Excavator : PBX_WeaponBase
 
 //////////////////////////// UNLOAD ////////////////////////////////////////////////////////////////////////////////////
 		Unload:
-            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"Unload_Upgraded");
+            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"Unload.Upgraded");
 			TNT1 A 0 A_Jumpif(pb_getmagunloaded(),"NoAmmo");
 			6DKF A 1 A_PlaySound("Ironsights", 15);
             TNT1 A 0 PB_SetRoll(roll-0.6);
@@ -265,7 +265,7 @@ class PBX_Excavator : PBX_WeaponBase
 		
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////
 		FlashPunching:
-            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"FlashPunching_Upgraded");
+            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"FlashPunching.Upgraded");
             7DKF L 1;
             7DKF MNOP 1;
             7DKF P 4;
@@ -273,7 +273,7 @@ class PBX_Excavator : PBX_WeaponBase
 			goto Ready3;
 
         FlashKicking:
-            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"FlashKicking_Upgraded");
+            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"FlashKicking.Upgraded");
 			5DKF E 1;
             5DKF FGHI 1 ;
             TNT1 A 4;
@@ -281,7 +281,7 @@ class PBX_Excavator : PBX_WeaponBase
 			goto Ready3;
 			
 		FlashAirKicking:
-            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"FlashAirKicking_Upgraded");
+            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"FlashAirKicking.Upgraded");
             5DKF E 1;
             5DKF FGHI 1;
             TNT1 A 8;
@@ -289,14 +289,14 @@ class PBX_Excavator : PBX_WeaponBase
 			goto Ready3;
 			
 		FlashSlideKicking:
-            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"FlashSlideKicking_Upgraded");
+            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"FlashSlideKicking.Upgraded");
             5DKF E 1;
             5DKF EFGHI 1;
             TNT1 A 16; //27 frames
 			goto Ready3;
 			
 		FlashSlideKickingStop:
-            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"FlashSlideKickingStop_Upgraded");
+            TNT1 A 0 A_JumpIf(isExcavatorUpgraded(),"FlashSlideKickingStop.Upgraded");
 			5DKF I 1;
 		    5DKF IIHGFE 1; //7 frames 
 			goto Ready3;

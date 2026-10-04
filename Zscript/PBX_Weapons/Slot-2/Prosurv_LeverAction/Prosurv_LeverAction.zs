@@ -357,6 +357,7 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 				PB_WeaponRecoil(-0.2,+0.2);
 				PB_SetRoll(roll-0.4);
 				if(pb_getchamberempty()) {PB_Setchamberempty(false);}
+				return A_DoPBWeaponAction(WRF_NOBOB);
 			}
 			LVR3 D 1 {
 				PB_WeaponRecoil(+0.2,-0.2);
@@ -400,7 +401,7 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 				);
 				A_StartSound("weapons/leveraction/rechamber");
 			}
-			LVR2 POPQQQQ 1;
+			LVR2 POPQQQQ 1 A_DoPBWeaponAction();
 			Goto RemoveBullets;
 		FinishUnload:
 			TNT1 A 0 {

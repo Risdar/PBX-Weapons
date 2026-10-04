@@ -82,24 +82,38 @@ Class PBX_MetalSniper : PBX_WeaponBase
             MSNI ABCDEFGHIJKLMNOPQRSSSS 1 A_DoPBWeaponAction();
             MSU0 ABCDEFGHIJKL 1 A_DoPBWeaponAction();
             M3NC ABCDEFGHI 1 A_DoPBWeaponAction();
-            TNT1 A 0 A_StartSound("MS/BoltDown", 24);
+            TNT1 A 0 A_StartSound("MS/BoltDown",CHAN_AUTO);
             M3NC J 15 A_DoPBWeaponAction();
             M3NC K 10 A_DoPBWeaponAction();
             M3NC LL 1 A_DoPBWeaponAction();
-            TNT1 A 0 A_StartSound("MS/BoltUp", 25);
+            TNT1 A 0 A_StartSound("MS/BoltUp",CHAN_AUTO);
             M3NC M 1 A_DoPBWeaponAction();
             MSNR ABCDEFG 1 A_DoPBWeaponAction();
-            TNT1 A 0 A_StartSound("MS/InsertMag", 20);
+            TNT1 A 0 A_StartSound("MS/InsertMag",CHAN_AUTO);
             MSNR HIJKLMNOPQR 1 A_DoPBWeaponAction();
             MSU1 LKJIHGFEDCBA 1 A_DoPBWeaponAction();
             MSNI T 1 A_DoPBWeaponAction();
             MSNI UVWXYZ 1 A_DoPBWeaponAction();
             MSNJ AAB 1 A_DoPBWeaponAction();
-            TNT1 A 0 A_StartSound("MS/BoltDown", 24);
+            TNT1 A 0 A_StartSound("MS/BoltDown",CHAN_AUTO);
             MSNJ BCDEEF 1 A_DoPBWeaponAction();
-            TNT1 A 0 A_StartSound("MS/BoltUp", 25);
+            TNT1 A 0 A_StartSound("MS/BoltUp",CHAN_AUTO);
             MSNJ GHIJKL 1 A_DoPBWeaponAction();
             goto Ready3;
+
+        WeaponInspect:
+            MSNI T 1 A_DoPBWeaponAction();
+            MSNI UVWXYZ 1 A_DoPBWeaponAction();
+            MSNJ AAB 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_StartSound("MS/BoltDown",CHAN_AUTO);
+            MSNJ BCDE 1 A_DoPBWeaponAction();
+        HoldInspect:
+            MSNJ E 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_JumpIf(PressingReload(),"HoldInspect");
+            MSNJ EF 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_StartSound("MS/BoltUp",CHAN_AUTO);
+            MSNJ GHIJKL 1 A_DoPBWeaponAction();
+            Goto Ready3;
 
         // ── 1t / Deselect ─────────────────────────────────────────────
         Select:
@@ -137,6 +151,7 @@ Class PBX_MetalSniper : PBX_WeaponBase
             }
             TNT1 A 0 A_JumpIf(PB_GetZoom(), "Ready2");
         ReadyToFire:
+            TNT1 A 0 PBX_CheckInspect();
             MSNF A 1 {
                 PB_HandleCrosshair(42);
                 PB_CoolDownBarrel(-4, 0, 6, 0,  1);
@@ -147,11 +162,11 @@ Class PBX_MetalSniper : PBX_WeaponBase
 
         // ── No Ammo States ─────────────────────────────────────────────
         NoAmmo:
-            MSNF A 1 A_StartSound("weapons/empty");
+            MSNF A 1 A_StartSound("weapons/empty",CHAN_AUTO);
             goto Ready3;
 
         NoAmmo_Grenade:
-            MSNG A 1 A_StartSound("weapons/empty");
+            MSNG A 1 A_StartSound("weapons/empty",CHAN_AUTO);
             goto AltFire_Grenade;
 
         // ── Fire ────────────────────────────────────────────────────
@@ -184,7 +199,7 @@ Class PBX_MetalSniper : PBX_WeaponBase
             TNT1 A 0 {
                 invoker.wheelinfo = "MS_Zoomed_Wheel";
                 PB_SetZoom(true);
-                A_StartSound("IronSights", 29);
+                A_StartSound("IronSights",CHAN_AUTO);
             }
             TNT1 A 0 A_ZoomFactor(1.5);
             MSNA ABC 1;
@@ -193,7 +208,7 @@ Class PBX_MetalSniper : PBX_WeaponBase
             goto Ready2;
 
         ZoomOut:
-            TNT1 A 0 A_StartSound("IronSights", 29);
+            TNT1 A 0 A_StartSound("IronSights",CHAN_AUTO);
             TNT1 A 0 A_ZoomFactor(1.5);
             MSNA FED 1;
             TNT1 A 0 PB_SetZoom(false);
@@ -249,7 +264,7 @@ Class PBX_MetalSniper : PBX_WeaponBase
         FireGrenade:
             TNT1 A 0 A_Overlay(muzzlelayer, "MuzzleFlash_Gren");
             TNT1 A 0 A_AlertMonsters();
-            TNT1 A 0 A_StartSound("MS/Grenade", 20);
+            TNT1 A 0 A_StartSound("MS/Grenade",CHAN_AUTO);
             MSNG B 1 bright A_FireProjectile("PB_FragGrenade", 0, 0);
             TNT1 A 0 MS_SetGrenadeQ(0);
             TNT1 A 0 PB_FireOffset();
@@ -263,7 +278,7 @@ Class PBX_MetalSniper : PBX_WeaponBase
         Reload_Grenade:
             TNT1 A 0 A_JumpIf(CountInv("PB_RocketAmmo") < 1, "NoAmmo_Grenade");
             MSNL ABCDEFGGG 1;
-            TNT1 A 0 A_StartSound("MS/GrenOpen", 21);
+            TNT1 A 0 A_StartSound("MS/GrenOpen",CHAN_AUTO);
             MSNL G 1;
             TNT1 A 0 PB_SpawnCasing("EmptyGrenadeBrass", 30, -2, 34, frandom(1.0, 2.0), frandom(-4.0, -2.0), 1.0);
             MSNL HIJKLMN 1;
@@ -273,7 +288,7 @@ Class PBX_MetalSniper : PBX_WeaponBase
                     MS_SetGrenadeQ(1);
                     A_TakeInventory("PB_RocketAmmo", 1);
                 }
-                A_StartSound("MS/GrenClose", 22);
+                A_StartSound("MS/GrenClose",CHAN_AUTO);
             }
             MSNL OPQRSTUGGGTTT 1;
             MSNL FEDCBA 1;
@@ -282,7 +297,7 @@ Class PBX_MetalSniper : PBX_WeaponBase
 
         // ── Reload ────────────────────────────────────────────────────────
         ReloadFromADS:
-            TNT1 A 0 A_StartSound("IronSights", 29);
+            TNT1 A 0 A_StartSound("IronSights",CHAN_AUTO);
             TNT1 A 0 A_ZoomFactor(1.5);
             MSNA FED 1;
             TNT1 A 0 PB_SetZoom(false);
@@ -293,16 +308,16 @@ Class PBX_MetalSniper : PBX_WeaponBase
             TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null, "Start_Rechamber", "Ready3", "NoAmmo", invoker.currentMaxAmmo, invoker.ReserveToMagAmmoFactor);
         // ── Raise weapon  ──────────────────
         StandardReload:
-            TNT1 A 0 A_StartSound("IronSights", 30);
+            TNT1 A 0 A_StartSound("IronSights",CHAN_AUTO);
             MSU1 ABCDEFGHIJKL 1;    // raise
             TNT1 A 0 A_JumpIf(invoker.resonanceAmmoLoaded, "TakeMagResonance");
         // Take standard mag out
         TakeMagStandard:
             MST1 ABCD 1 { if (PB_GetMagEmpty()) A_SetWeaponSprite("MST0"); }
-            "####" A 0 A_StartSound("MS/Button", 22);
+            "####" A 0 A_StartSound("MS/Button",CHAN_AUTO);
             "####" E 1;
             "####" A 0 {
-                A_StartSound("MS/TakeMag", 23);
+                A_StartSound("MS/TakeMag",CHAN_AUTO);
                 PB_SetMagUnloaded(true);
             }
             "####" FGHIJKL 1;
@@ -311,17 +326,17 @@ Class PBX_MetalSniper : PBX_WeaponBase
         // Take resonance mag out
         TakeMagResonance:
             MST3 ABCD 1 { if (PB_GetMagEmpty()) A_SetWeaponSprite("MST0"); }
-            "####" A 0 A_StartSound("MS/Button", 22);
+            "####" A 0 A_StartSound("MS/Button",CHAN_AUTO);
             "####" E 1;
             "####" A 0 {
-                A_StartSound("MS/TakeMag", 23);
+                A_StartSound("MS/TakeMag",CHAN_AUTO);
                 PB_SetMagUnloaded(true);
             }
             "####" FGHIJKL 1;
         // Insert new mag
         InsertMag:
             MSNR ABCDEFG 1 { if (invoker.resonanceAmmoLoaded) A_SetWeaponSprite("MSR6"); }
-            TNT1 A 0 A_StartSound("MS/InsertMag", 20);
+            TNT1 A 0 A_StartSound("MS/InsertMag",CHAN_AUTO);
             MSNR HIJKL 1 ;
             TNT1 A 0 {
                 MS_ReloadMag();
@@ -337,22 +352,22 @@ Class PBX_MetalSniper : PBX_WeaponBase
 
         // ── Raise from fully empty mag ────────────────────────────────────
         RaiseFromEmpty:
-            TNT1 A 0 A_StartSound("IronSights", 30);
+            TNT1 A 0 A_StartSound("IronSights",CHAN_AUTO);
             MSU0 ABCDEFGHIJKL 1;    // empty-mag raise
             goto InsertMag;
 
         // ── Rechamber ──────────────────────────
         Start_Rechamber:
-            TNT1 A 0 A_StartSound("IronSights", 30);
+            TNT1 A 0 A_StartSound("IronSights",CHAN_AUTO);
             MSU1 ABCDEFGHIJKL 1;    // raise
         Rechamber:
             MSNC ABCDEFG 1 ;
-            TNT1 A 0 A_StartSound("MS/BoltDown", 24);
+            TNT1 A 0 A_StartSound("MS/BoltDown",CHAN_AUTO);
             TNT1 A 0 PB_SetChamberEmpty(false);
             MSNC HIJ 1 ;
 			MSNC K 1 { if (invoker.resonanceAmmoLoaded) A_SetWeaponSprite("MSN4"); }
 			MSNC L 1 ;
-            TNT1 A 0 A_StartSound("MS/BoltUp", 25);
+            TNT1 A 0 A_StartSound("MS/BoltUp",CHAN_AUTO);
             MSNC M 1 ;
 			goto FinishReload;
 
@@ -360,7 +375,7 @@ Class PBX_MetalSniper : PBX_WeaponBase
         ReloadFromSpecial:
             TNT1 A 0 MS_HandleAmmoChange();
             MSR6 ABCDEFG 1 { if (!invoker.resonanceAmmoLoaded) A_SetWeaponSprite("MSNR"); }
-            TNT1 A 0 A_StartSound("MS/InsertMag", 20);
+            TNT1 A 0 A_StartSound("MS/InsertMag",CHAN_AUTO);
             MSNR HIJKL 1;
             TNT1 A 0 {
                 MS_ReloadMag();
@@ -372,14 +387,14 @@ Class PBX_MetalSniper : PBX_WeaponBase
 
         // ── Unload ────────────────────────────────────────────────────────
         UnloadFromSpecial:
-            TNT1 A 0 A_StartSound("IronSights", 30);
+            TNT1 A 0 A_StartSound("IronSights",CHAN_AUTO);
             TNT1 A 0 A_JumpIf(PB_GetMagUnloaded() && !PB_GetChamberEmpty(), "StartUnloadChamber");
             MSU1 ABCDEFGHIJKL 1;
             TNT1 A 0 A_JumpIf(invoker.resonanceAmmoLoaded, "UnloadMagResonance");
 			goto UnloadMagStandard;
 
 		Unload:
-            TNT1 A 0 A_StartSound("IronSights", 30);
+            TNT1 A 0 A_StartSound("IronSights",CHAN_AUTO);
             // If mag already unloaded, skip straight to chamber
             TNT1 A 0 A_JumpIf(PB_GetMagUnloaded() && !PB_GetChamberEmpty(), "StartUnloadChamber");
         UnloadRaise:
@@ -389,9 +404,9 @@ Class PBX_MetalSniper : PBX_WeaponBase
         // Standard mag unload
         UnloadMagStandard:
             MST1 ABCD 1;
-            TNT1 A 0 A_StartSound("MS/Button", 22);
+            TNT1 A 0 A_StartSound("MS/Button",CHAN_AUTO);
             MST1 E 1;
-            TNT1 A 0 A_StartSound("MS/TakeMag", 23);
+            TNT1 A 0 A_StartSound("MS/TakeMag",CHAN_AUTO);
             MST1 FGH 1;
             TNT1 A 0 {
                 MS_UnloadMag();
@@ -405,14 +420,14 @@ Class PBX_MetalSniper : PBX_WeaponBase
         // Empty mag unload
         UnloadMagEmpty:
             MST0 ABCD 1;
-            TNT1 A 0 A_StartSound("MS/Button", 22);
+            TNT1 A 0 A_StartSound("MS/Button",CHAN_AUTO);
             MST0 E 1;
             TNT1 A 0 {
                 MS_UnloadMag();
                 PB_SetMagUnloaded(true);
                 PB_SetMagEmpty(true);
             }
-            TNT1 A 0 A_StartSound("MS/TakeMag", 23);
+            TNT1 A 0 A_StartSound("MS/TakeMag",CHAN_AUTO);
             MST0 FGHIJKL 1;
             TNT1 A 0 A_JumpIf(PB_GetChamberEmpty(), "FinishUnload");
             goto UnloadChamber;
@@ -420,14 +435,14 @@ Class PBX_MetalSniper : PBX_WeaponBase
         // Resonance mag unload
         UnloadMagResonance:
             MST3 ABCD 1;
-            TNT1 A 0 A_StartSound("MS/Button", 22);
+            TNT1 A 0 A_StartSound("MS/Button",CHAN_AUTO);
             MST3 E 1;
             TNT1 A 0 {
                 MS_UnloadMag();
                 PB_SetMagUnloaded(true);
                 PB_SetMagEmpty(true);
             }
-            TNT1 A 0 A_StartSound("MS/TakeMag", 23);
+            TNT1 A 0 A_StartSound("MS/TakeMag",CHAN_AUTO);
             MST3 FGHIJKL 1;
             TNT1 A 0 A_JumpIf(PB_GetChamberEmpty(), "FinishUnload");
             goto UnloadChamber;
@@ -435,13 +450,13 @@ Class PBX_MetalSniper : PBX_WeaponBase
         // Unchamber
         UnloadChamber:
             M3NC ABCDEFGHI 1;
-            TNT1 A 0 A_StartSound("MS/BoltDown", 24);
+            TNT1 A 0 A_StartSound("MS/BoltDown",CHAN_AUTO);
             M3NC JKL 1;
             TNT1 A 0 {
                 MS_UnloadMag(true);     // UnloadChamber = true
                 PB_SetChamberEmpty(true);
             }
-            TNT1 A 0 A_StartSound("MS/BoltUp", 25);
+            TNT1 A 0 A_StartSound("MS/BoltUp",CHAN_AUTO);
             M3NC M 1;
         FinishUnload:
             TNT1 A 0 A_JumpIfInventory("MS_Select_Resonance", 1, "ReloadFromSpecial");
@@ -460,9 +475,9 @@ Class PBX_MetalSniper : PBX_WeaponBase
             TNT1 A 0 MS_HandleSpecial();
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"Ready2");
         ChangeAnim:
-            TNT1 A 0 A_StartSound("IronSights", 30);
+            TNT1 A 0 A_StartSound("IronSights",CHAN_AUTO);
             MSSW ABCDEFF 1;
-            TNT1 A 0 A_StartSound("MS/Button", 26);
+            TNT1 A 0 A_StartSound("MS/Button",CHAN_AUTO);
             MSSW GHIJKLM 1;
             goto Ready3;
 

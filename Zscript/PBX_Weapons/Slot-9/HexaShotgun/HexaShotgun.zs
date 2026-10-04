@@ -160,7 +160,7 @@ class PBX_HexaShotgun : PBX_WeaponBase
             HSGF B 1 BRIGHT;
             TNT1 A 0 {
                 A_StartSound("QSGFIRE1", CHAN_WEAPON, CHANF_DEFAULT, 1.0);
-                PB_TakeAmmo(invoker.ammo2.getclassname(),BARREL_CAPACITY,0);
+                A_TakeInventory(invoker.ammo2.getclassname(),BARREL_CAPACITY);
                 A_FireCustomMissile("YellowFlareSpawn", 15, 0, 0, 0);
                 A_FireCustomMissile("YellowFlareSpawn", -15, 0, 0, 0);
                 PB_FireBullets("PB_8GAPellet_LP", 6, 0, 0, 0, 0);				
@@ -239,8 +239,6 @@ class PBX_HexaShotgun : PBX_WeaponBase
                 A_StartSound("QSGIN",CHAN_WEAPON,CHANF_OVERLAP);
                 A_TakeInventory(invoker.ammo1.getclassname(),2);
                 A_GiveInventory(invoker.ammo2.getclassname(),2);
-                PB_SetChamberEmpty(false);
-			    PB_SetMagEmpty(false);
             }
             HSGR YZ 1;
         Insert4:
@@ -255,8 +253,6 @@ class PBX_HexaShotgun : PBX_WeaponBase
                 A_StartSound("QSGIN",CHAN_WEAPON,CHANF_OVERLAP);
                 A_TakeInventory(invoker.ammo1.getclassname(),2);
                 A_GiveInventory(invoker.ammo2.getclassname(),2);
-                PB_SetChamberEmpty(false);
-			    PB_SetMagEmpty(false);
             }
             HSR2 GH 1;
             HSR2 I 1 A_WeaponOffset(-1,30);
@@ -270,8 +266,6 @@ class PBX_HexaShotgun : PBX_WeaponBase
                 A_StartSound("QSGIN",CHAN_WEAPON,CHANF_OVERLAP);
                 A_TakeInventory(invoker.ammo1.getclassname(),2);
                 A_GiveInventory(invoker.ammo2.getclassname(),2);
-                PB_SetChamberEmpty(false);
-			    PB_SetMagEmpty(false);
             }
         FinishReload:
             HSR2 OPQRSTUVWX 1;
@@ -287,12 +281,7 @@ class PBX_HexaShotgun : PBX_WeaponBase
             QSGF P 0 A_ZoomFactor(1.0);
             HSGS ABCDEF 1;
             TNT1 A 0 A_StartSound("QSGOPN",CHAN_WEAPON,CHANF_OVERLAP);
-            TNT1 A 0 {
-				PB_UnloadMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname());
-				PB_SetMagUnloaded(true);
-				PB_SetChamberEmpty(true);
-                PB_SetMagEmpty(true);
-			}
+            TNT1 A 0 PB_UnloadMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname(),1,1,1,0,"PB_SingleShell");
         FinishUnload:
             TNT1 A 19;
             HSR2 QRSTUVWX 1;

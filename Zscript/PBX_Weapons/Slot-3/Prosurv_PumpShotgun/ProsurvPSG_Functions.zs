@@ -104,7 +104,7 @@ extend class PBX_ProSurvPSG
 
 	action void throwCharges()
 	{
-		A_PlaySound("charge/place/remote", 3);
+		A_StartSound("charge/place/remote",CHAN_AUTO);
 		
 		string projectile;
 		int amount;
@@ -204,7 +204,7 @@ extend class PBX_ProSurvPSG
 			case 4:
 				A_ZoomFactor(zoomC);
 				if(ads) A_SetCrosshair(-1);
-                A_PlaySoundEx("Ironsights", "Auto");
+                A_StartSound("Ironsights",CHAN_AUTO);
 				PB_SetReloading(true);
 				break;
 

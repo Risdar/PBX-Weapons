@@ -203,14 +203,30 @@ class PBX_CryoSG : PBX_WeaponBase
 			FZGP FEDBC 1 A_DoPBWeaponAction();
 			FZGR BCD 1 A_DoPBWeaponAction();
 			FZGR EFG 1 A_DoPBWeaponAction();
-            TNT1 A 0 A_StartSound("weapons/spas12/pumpback", CHAN_WEAPON);
+            TNT1 A 0 A_StartSound("weapons/spas12/pumpback",CHAN_WEAPON,CHANF_OVERLAP);
             FZGR HIJ 1 A_DoPBWeaponAction();
 			FZGR KLM 1 A_DoPBWeaponAction();
-            TNT1 A 0 A_StartSound("weapons/spas12/pumpforward", CHAN_WEAPON);
+            TNT1 A 0 A_StartSound("weapons/spas12/pumpforward",CHAN_WEAPON,CHANF_OVERLAP);
             FZGR NCBA 1 A_DoPBWeaponAction();
 			FZGP BA 1 A_DoPBWeaponAction();
             Goto Ready3;
 
+        WeaponInspect:
+			FZGP AB 1 A_DoPBWeaponAction();
+			FZGR ABCDE 1 A_DoPBWeaponAction();
+			FZGR FFG 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_StartSound("weapons/spas12/pumpback",CHAN_WEAPON,CHANF_OVERLAP);
+            FZGR HIJ 1 A_DoPBWeaponAction();
+			FZGR K 1 A_DoPBWeaponAction();
+        HoldInspect:
+            FZGR L 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_JumpIf(PressingReload(),"HoldInspect");
+            TNT1 A 0 A_StartSound("weapons/spas12/pumpforward",CHAN_WEAPON,CHANF_OVERLAP);
+			FZGR M 1 A_DoPBWeaponAction();
+            FZGR NEFFEDCBA 1 A_DoPBWeaponAction();
+			FZGP BA 1 A_DoPBWeaponAction();
+            Goto Ready3;
+        
         Deselect:
             TNT1 A 0 PBX_WeaponLower();
             FZGS EDCBA 1;
@@ -238,6 +254,7 @@ class PBX_CryoSG : PBX_WeaponBase
 				A_SetInventory("CantDoAction",0);
             }
         ReadyToFire:
+            TNT1 A 0 PBX_CheckInspect();
 			FZGA A 1 {
                 PB_CoolDownBarrel();
                 PB_HandleCrosshair(39);
@@ -280,13 +297,13 @@ class PBX_CryoSG : PBX_WeaponBase
 		PumpBegin:
 			FZGR F 1;
 			FZGR FG 1;
-            TNT1 A 0 A_StartSound("weapons/spas12/pumpback", CHAN_WEAPON);
+            TNT1 A 0 A_StartSound("weapons/spas12/pumpback",CHAN_WEAPON,CHANF_OVERLAP);
             FZGR HIJ 1;
             TNT1 A 0 FireWeapon(2);
 			FZGR KL 1;
 		PumpEnd:
 			FZGR M 1;
-            TNT1 A 0 A_StartSound("weapons/spas12/pumpforward", CHAN_WEAPON);
+            TNT1 A 0 A_StartSound("weapons/spas12/pumpforward",CHAN_WEAPON,CHANF_OVERLAP);
             FZGR NEFFEDCBA 1;
 			FZGP BA 1;
             TNT1 A 0 {
@@ -429,8 +446,13 @@ class PBX_CryoSG : PBX_WeaponBase
             TNT1 A 0 A_StartSound("weapons/spas12/pumpback", CHAN_WEAPON);
             FZGR HIJ 1 A_DoPBWeaponAction();
             TNT1 A 0 {
-				A_Takeinventory(invoker.ammo2.getclassname(),1);
-				A_Giveinventory(invoker.ammo1.getclassname(),1);
+				PB_UnloadMag(
+                    invoker.ammo2.getClassName(),
+                    invoker.ammo1.getClassName(),
+                    1,1,1,
+                    invoker.ammo2.amount - 1
+                    // "PBX_CSSG_SubZeroShell" // Forgot that this uses PB_Cells lol
+                );
 			}
             FZGR KLM 1 A_DoPBWeaponAction();
             TNT1 A 0 A_StartSound("weapons/spas12/pumpforward", CHAN_WEAPON);

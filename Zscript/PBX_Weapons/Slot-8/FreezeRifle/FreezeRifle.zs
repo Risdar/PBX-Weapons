@@ -322,31 +322,23 @@ class PBX_FreezeRifle : PBX_WeaponBase
 				PB_SetRoll(roll+0.3);
 				return A_DoPBWeaponAction();
 			}
-			TNT1 A 0 jumpIfAttackMode("InspectEndCharged");
             Goto Ready3;
 
         InspectStartCharged:
             // Swap to Normal Animation
             TNT1 A 0 A_StartSound("IronSights", CHAN_WEAPON, CHANF_OVERLAP);
-            FR06 QPONMMMMM 1 A_DoPBWeaponAction();
+			FR06 QPONMMMMM 1 A_DoPBWeaponAction();
+			FR06 LKJIHGF 1 A_DoPBWeaponAction();
 			TNT1 A 0 A_StartSound("weapons/CryoRifle/respect2", CHAN_WEAPON, CHANF_OVERLAP);
-			FR06 LKJIHGFEDCBA 1 {
-                A_FireCustomMissile("GunFireSmoke", 0, 0, -5, -5, 0, 0);
-                return A_DoPBWeaponAction();
-            }
-            Goto InspectStartNormal;
-
-        InspectEndCharged:
-            // Swap to attackMode Animation
-            TNT1 A 0 A_StartSound("IronSights", CHAN_WEAPON, CHANF_OVERLAP);
-            FR06 ABCDEEEEE 1 A_DoPBWeaponAction();
-			TNT1 A 0 A_StartSound("weapons/CryoRifle/respect1", CHAN_WEAPON, CHANF_OVERLAP);
+			FR06 F 1 A_DoPBWeaponAction();
+        HoldInspectCharged:
+            FR06 F 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_JumpIf(PressingReload(),"HoldInspectCharged");
 			FR06 FGHIJKLMNOPQ 1 {
                 A_FireCustomMissile("GunFireSmoke", 0, 0, -5, -5, 0, 0);
-                return A_DoPBWeaponAction();
+				return A_DoPBWeaponAction();
             }
             Goto Ready3;
-
 
         Deselect:
             TNT1 A 0 PBX_WeaponLower();

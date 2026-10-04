@@ -1,0 +1,10 @@
+// Dual Wield Fire
+// Left
+Brightmap Sprite DURIL0 { map "Brightmaps/Weapons/Slot-4/NormalRifle/BMDURIL0.png" DisableFullbright }
+Brightmap Sprite DURIM0 { map "Brightmaps/Weapons/Slot-4/NormalRifle/BMDURIM0.png" DisableFullbright }
+Brightmap Sprite DURIN0 { map "Brightmaps/Weapons/Slot-4/NormalRifle/BMDURIN0.png" DisableFullbright }
+// Right
+Brightmap Sprite DURIL0 { map "Brightmaps/Weapons/Slot-4/NormalRifle/BMDURIL0.png" DisableFullbright }
+Brightmap Sprite DURIM0 { map "Brightmaps/Weapons/Slot-4/NormalRifle/BMDURIM0.png" DisableFullbright }
+Brightmap Sprite DURIN0 { map "Brightmaps/Weapons/Slot-4/NormalRifle/BMDURIN0.png" DisableFullbright }
+

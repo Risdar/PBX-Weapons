@@ -1,0 +1,6 @@
+brightmap sprite SPAAA0 { map "brightmaps/Weapons/Slot-3/SPAS-12/SPAAA0.png" disablefullbright} 
+brightmap sprite SPAAB0 { map "brightmaps/Weapons/Slot-3/SPAS-12/SPAAB0.png" disablefullbright} 
+brightmap sprite SPA8D0 { map "brightmaps/Weapons/Slot-3/SPAS-12/SPA8D0.png" disablefullbright} 
+brightmap sprite SPBAA0 { map "brightmaps/Weapons/Slot-3/SPAS-12/SPBAA0.png" disablefullbright} 
+brightmap sprite SPBAB0 { map "brightmaps/Weapons/Slot-3/SPAS-12/SPBAB0.png" disablefullbright} 
+brightmap sprite SPB8D0 { map "brightmaps/Weapons/Slot-3/SPAS-12/SPB8D0.png" disablefullbright} 

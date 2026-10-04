@@ -271,28 +271,31 @@ class PBX_EternalMinigun : PBX_WeaponBase
             stop;
 
         FlashPunching:
-            CHGS ABCCDDD 1;
-            CHGS DDDCCBA 1;      // 14 frames
+            CHGS DCBA 1;      // 14 frames
+            CHGS A 6;
+            CHGS ABCD 1;
             goto Ready3;
 
         FlashKicking:
-            CHGS ABCCCDDD 1;
-            CHGS DDCCCBA 1;     // 15 frames
+            CHGS DCBA 1;      
+            CHGS A 7;
+            CHGS ABCD 1;    // 15 frames
             goto Ready3;
 
         FlashAirKicking:
-            CHGS ABBCCDDD 1;
-            CHGS DDDCCBBA 1;    // 16 frames
+            CHGS DCBA 1;      
+            CHGS A 8;
+            CHGS ABCD 1;    // 16 frames
             goto Ready3;
 
         FlashSlideKicking:
-            CHGS ABCD 2;
-            CHGS D 11;
-            CHGS DCBA 2; // 27 frames
+            CHGS DCBA 1;      
+            CHGS A 19;
+            CHGS ABCD 1; // 27 frames
             goto Ready3;
 
         FlashSlideKickingStop:
-            CHGS DDCCBA 1;             // 7 frames
+            CHGS AAAABCD 1;  // 7 frames
             goto Ready3;
     }
 }

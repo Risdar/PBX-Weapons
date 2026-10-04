@@ -48,6 +48,24 @@ extend class PBX_Prosurv_Ballista
 			A_SetWeaponSpriteEx(spriteToUse);
 	}
 
+	action state readyCrossbow()
+	{
+		if(getCrossbowMode() == NORMAL_BOLT)
+		{
+			setCrossbowSprite("CB0S","CB1S");
+		}
+
+		if(PressingReload() && invoker.ammo2.amount == ARROW_AMOUNT)
+		{
+			return resolveState("WeaponInspect");
+		}
+		else
+		{
+			return PB_ReadyFire(ads:false);
+		}
+
+	}
+
 	action CrossbowMode getCrossbowMode()
 	{
 		return invoker.currentMode;
@@ -175,8 +193,7 @@ extend class PBX_Prosurv_Ballista
 		// Setup Variables
 		CrossbowMode mode = getTokens();
 		int ammoTake;
-		name ammo;
-		name icon;
+		name ammo, icon;
 
 		if(!checkTokens())
 			return resolvestate(null);

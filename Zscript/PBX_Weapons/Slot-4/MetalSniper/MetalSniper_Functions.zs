@@ -228,12 +228,12 @@ extend class PBX_MetalSniper
         if (invoker.resonanceAmmoLoaded)
         {
             PB_FireBullets("MS_ResonanceRounds", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
-            A_StartSound("weapons/railgf", 20, CHANF_OVERLAP);
+            A_StartSound("MS/ResonanceFire",CHAN_WEAPON,CHANF_OVERLAP);
         }
         else
         {
             PB_FireBullets("PB_762x51mmAP", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
-            A_StartSound("MS/Fire", 20, CHANF_OVERLAP);
+            A_StartSound("MS/Fire",CHAN_WEAPON, CHANF_OVERLAP);
         }
     }
 

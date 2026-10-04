@@ -7,9 +7,11 @@
 
 // Slot 3
 #include Brightmaps/CSSG.txt
+#include Brightmaps/SPAS-12.txt
 
 // Slot 4
 #include Brightmaps/MetalSniper.txt
+#include Brightmaps/NormalRifle.txt
 
 // Slot 5
 #include Brightmaps/NeoHMG.txt

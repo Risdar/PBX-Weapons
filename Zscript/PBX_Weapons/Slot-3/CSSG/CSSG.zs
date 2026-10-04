@@ -132,8 +132,22 @@ Class PBX_CSSG : PBX_WeaponBase
 			C0ID A 2 A_DoPBWeaponAction();
 			goto ready;
 
+		WeaponInspect:
+			TNT1 A 0 A_startsound("weapons/sgmvpump",64);
+			TNT1 A 0 A_quakeEx(0,1,1,6,0,10,"",QF_RELATIVE|QF_SCALEDOWN|QF_SCALEUP);
+			C0XR NOPQRSSSS 1 A_DoPBWeaponAction();
+        HoldInspect:
+			C0XR S 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_JumpIf(PressingReload(),"HoldInspect");
+			TNT1 A 0 A_startsound("weapons/sgpump",65);
+			C0XR TUVWX 1 A_DoPBWeaponAction();
+			C0XR YYZZ 1 A_DoPBWeaponAction();
+			C0ID A 2 A_DoPBWeaponAction();
+			goto ready;
+
 		Ready3:
-			C0ID A 2 {
+            TNT1 A 0 PBX_CheckInspect();
+			C0ID A 1 {
 				CM_HandleCrosshair();
 				PB_CoolDownBarrel();
 				return CSSG_Ready();

@@ -5,10 +5,16 @@
 // the PB2022 version is the base for the PBX version
 // some sounds are from Half-Life 2
 
+// SPAS 12 Rework:
+// The SPAS-12 Decorate code is mostly a copy-paste of Brutal Doom's Shotgun
+// Sprites edits (hands, pump animation...) by Edewaa
+
 // // Includes
-// #include "./ProsurvPSG_Functions.zs"
-// #include "./ProsurvPSG_Wheel.zs"
-// #include "./ProsurvPSG_helpers.zs"
+#include "./Spas12_Wheel.zs"
+
+class SP12_Toggle_Secondary : inventory {default{inventory.maxamount 1;}}
+class SP12_Toggle_Stock : inventory {default{inventory.maxamount 1;}}
+class SP12_Toggle_Type : inventory {default{inventory.maxamount 1;}}
 
 // Actual Weapon
 class PBX_SPAS12 : PBX_WeaponBase
@@ -23,10 +29,12 @@ class PBX_SPAS12 : PBX_WeaponBase
 		Weapon.AmmoType1 "PB_Shell";
 		weapon.ammogive1 10;
 		Weapon.AmmoType2 "PBX_SPAS12Mag";
+        PB_WeaponBase.UsesWheel true;
+        PB_WeaponBase.WheelInfo "Spas12Wheel";
 		Inventory.PickupMessage "$PBX_SPAS12_PICKUP";
 		Inventory.PickupSound "weapons/spas12/raise";
-		Inventory.Icon "M4SHA0";
-		Inventory.AltHUDIcon "M4SHA0";
+		Inventory.Icon "SPACA0";
+		Inventory.AltHUDIcon "SPACA0";
 		Inventory.Amount 1;
 		Inventory.MaxAmount 1;
 		Weapon.SlotNumber 3;
@@ -41,50 +49,209 @@ class PBX_SPAS12 : PBX_WeaponBase
 		+WEAPON.NOALERT;
 	}
 
-    bool dualfiremode;
-    const MAGAZINE_SIZE = 9;
+    bool mStockIsFolded;
+    bool mSemiAuto;
+    bool mDualBlast;
+    const MAGAZINE_SIZE = 12;
+    const TIME_DELAY_UNFOLDED = 2; // How many tics should the duration be longer if the stock is unfolded
+
+    enum SPAS12_WheelMode
+    {
+        ERROR_WHEEL = -1,
+        CLOSE_WHEEL,
+        TOGGLE_SECONDARY,
+        TOGGLE_STOCK,
+        TOGGLE_TYPE
+    }
+
+    override void PostBeginPlay()
+    {
+        super.PostBeginPlay();
+        mStockIsFolded = true;
+        mSemiAuto = false;
+    }
+
+    action void  SP12_SetSprite(
+        name foldedManual = '', 
+        name unfoldedManual = '', 
+        name foldedSemi = '', 
+        name unfoldedSemi = ''
+    )
+    {
+        name s;
+        bool isSemi = SP12_IsSemiAuto();
+
+        if(SP12_IsStockFolded())
+        {
+            s = isSemi ? foldedSemi : foldedManual;
+        }
+        else
+        {
+            s = isSemi ? unfoldedSemi : unfoldedManual;
+        }
+
+        if(s != '')
+        {
+            A_SetWeaponSpriteEX(s);
+        }
+    }
+
+    action state SP12_HandleWheel()
+    {
+        A_Takeinventory("GoWeaponSpecialAbility",1);
+        SPAS12_WheelMode tokens = getTokens();
+
+        switch(tokens)
+        {
+            Default:
+            case CLOSE_WHEEL:
+                break;
+
+            case TOGGLE_TYPE:
+                // Mode Change is on unload
+                // The Print is reversed because technically you havent changed the mode yet
+                A_Print(!SP12_IsSemiAuto() ? "$PBX_SPAS12_SEMI" : "$PBX_SPAS12_MANUAL");
+                return ResolveState("Unload");
+
+            case TOGGLE_STOCK:
+                cleanTokens();
+                invoker.mStockIsFolded = !invoker.mStockIsFolded;
+                name icon = invoker.mStockIsFolded ? "SPACA0" : "SPBCA0";
+                invoker.AltHudIcon = TexMan.CheckForTexture(icon);
+                A_Print(SP12_IsStockFolded() ? "$PBX_SPAS12_STOCK_FOLDED" : "$PBX_SPAS12_STOCK_UNFOLDED");
+                return ResolveState("FoldSwitchAnimation");
+
+            case TOGGLE_SECONDARY:
+                cleanTokens();
+                invoker.mDualBlast = !invoker.mDualBlast;
+                A_Print(invoker.mDualBlast ? "$PBX_SPAS12_DUALFIRE" : "$PBX_SPAS12_ADS");
+                return ResolveState("SecondarySwitchAnimation");
+                
+        }
+        cleanTokens();
+        return PBX_ReturnReady();
+    }
+
+    action state SP12_ModeChange()
+    {
+        if(getTokens() == TOGGLE_TYPE)
+        {
+            cleanTokens();
+            return ResolveState("SwitchFireMode"); // Actual mode change here
+        }
+
+        return ResolveState(null);
+    }
+
+    action void SP12_UnloadShells()
+    {
+        PB_UnloadMag(
+            invoker.ammo2.getClassName(),
+            invoker.ammo1.getClassName(),
+            1,1,1,
+            invoker.ammo2.amount - 1,
+            SP12_IsSemiAuto() ? "PB_SingleShell" : "PB_SingleShellSlug"
+        );
+    }
+
+    action SPAS12_WheelMode getTokens()
+	{
+		// Prioritize checking the tokens
+		if(FindInventory("SP12_Toggle_Secondary"))
+			return TOGGLE_SECONDARY;
+		else if(FindInventory("SP12_Toggle_Stock"))
+			return TOGGLE_STOCK;
+		else if (FindInventory("SP12_Toggle_Type"))
+			return TOGGLE_TYPE;
+		else if (FindInventory("PBX_CloseWheel"))
+			return CLOSE_WHEEL;
+		else
+			return ERROR_WHEEL;
+	}
+
+    action void cleanTokens()
+    {
+        A_SetInventory("SP12_Toggle_Secondary",0);
+        A_SetInventory("SP12_Toggle_Stock",0);
+        A_SetInventory("SP12_Toggle_Type",0);
+        A_SetInventory("PBX_CloseWheel",0);
+
+    }
+
+    action void SP12_HandleCrosshair()
+    {
+        int crs = SP12_IsSemiAuto() ? 69 : 68;
+        PB_HandleCrosshair(crs);
+    }
 
     action void SPAS_Fire(int tic)
     {
+        double ofs          = 3.0; //Standard offset for firing
+        bool isZoom         = PB_GetZoom();
+        bool isSemi         = SP12_IsSemiAuto();
+        bool isStockFolded  =     SP12_IsStockFolded();
+        name casing         = isSemi ? "ShotgunCasingRedLive" : "ShotgunCasingGreenLive";
+
         switch(tic)
         {
             case 1:
-            
                 A_AlertMonsters();
-                PB_FireBullets("PB_12GAPellet", 12, 1.5, 0, 0, 1.5);
 				A_FireProjectile("ShotgunWad", random(-2,2), 0, random(-2,2), -3, FPF_NOAUTOAIM, random(-2,2));
+                SP12_HandleCrosshair();
 
-                A_Recoil(3);
-                A_SetPitch(pitch - 4.0);
-				PB_FireOffset();
+                // If stock is folded, increase accuracy by 1.0, if zoomed increase even further
+                if(isStockFolded)
+                {
+                    ofs -= 1.0;
+                }
+                if(isZoom)
+                {
+                    ofs -= 1.0;
+                    SP12_SetSprite('SPA8','SPB8','SPA8','SPB8');
+                }
+                else
+                {
+				    PB_FireOffset();
+                    SP12_SetSprite('SPAA','SPBA','SPAA','SPBA');
+                }
+
+                if(isSemi)
+                {
+                    PB_FireBullets("PB_12GAPellet",12,ofs,0,0,ofs);
+                    A_StartSound("weapons/sg", CHAN_WEAPON, pitch:frandom(0.95, 1.05));
+                }
+                else
+                {
+				    PB_SetChamberEmpty(true);
+                    A_StartSound("SlugShot", CHAN_WEAPON, pitch:frandom(0.95, 1.05));
+                    PBX_FireBullets("PB_12GASlug", 1, ofs, 0, 0, ofs);
+                }
+
 
 				PB_LowAmmoSoundWarning("shotgun");
 				PB_TakeAmmo(invoker.ammo2.getClassName(),1,0);
 
-                A_StartSound("DRBTFIRE", CHAN_WEAPON, pitch:frandom(0.95, 1.05));
+                PB_WeaponRecoil(-ofs,1.0);
 				PB_IncrementHeat();
 				A_FireCustomMissile("YellowFlareSpawn", 0, 0, 0, 0);
 				_SpawnMuzzleSparksSG(0, 0, -4);
 				PB_MuzzleFlashEffects(0, 0, -4);
 				PB_DynamicTail("shotgun", "shotgun");
 				A_SetInventory("CantDoAction", 1);
-				PB_SetChamberEmpty(true);
 				A_GunFlash();
                 break;
 
             case 2:
-                Radius_Quake(3, 3, 0, 1, 0); 
-                A_SetPitch(pitch + 1.0); 
+                PB_QuakeCamera(3,3);
                 A_ZoomFactor(0.94); 
                 break;
 
             case 3: case 4:
-                A_SetPitch(pitch + (tic == 4 ? 1.0 : 2.0)); 
                 A_ZoomFactor(tic == 4 ? 1.0 : 0.96);
                 break;
 
             case 5:
-				PB_SpawnCasing("ShotgunCasing",15,-5,26,0,3,3);
+                PB_SpawnCasing(casing,15,-5,26,0,3,3);
 				if(!PB_GetMagEmpty()) PB_SetChamberEmpty(false);
                 A_ZoomFactor(PB_GetZoom() ? 1.48 : 1.0);
                 break;
@@ -92,102 +259,260 @@ class PBX_SPAS12 : PBX_WeaponBase
         }
     }
 
+    action void SP12_HLFire()
+    {
+        double ofs          = 4.0; //Standard offset for firing
+        bool isSemi         = SP12_IsSemiAuto();
+        bool isStockFolded  = SP12_IsStockFolded();
+        name casing         = isSemi ? "ShotgunCasingRedLive" : "ShotgunCasingGreenLive";
+
+        SPAS_Fire(1);
+
+        // If stock is folded, increase accuracy by 1.0
+        if(isStockFolded)
+        {
+            ofs -= 1.0;
+        }
+        
+        if(isSemi)
+        {
+            PB_FireBullets("PB_12GAPellet",12,ofs,0,0,ofs);
+            A_StartSound("weapons/sg",CHAN_WEAPON,CHANF_OVERLAP,pitch:frandom(0.95, 1.05));
+        }
+        else
+        {
+            A_StartSound("SlugShot",CHAN_WEAPON,CHANF_OVERLAP,pitch:frandom(0.95, 1.05));
+            PBX_FireBullets("PB_12GASlug", 1, ofs, 0, 0, ofs);
+        }
+
+        A_Recoil3D(3);
+        PB_WeaponRecoil(-ofs,1.0);
+        PB_QuakeCamera(3,3);
+        PB_SpawnCasing(casing,15,-5,26,0,3,3);
+        PB_SetChamberEmpty(true);
+        A_FireProjectile("ShotgunWad", random(-2,2), 0, random(-2,2), -3, FPF_NOAUTOAIM, random(-2,2));
+        PB_TakeAmmo(invoker.ammo2.getClassName(),1,0);
+        PB_FireOffset();
+    }
+
+    action void SP12_SetDuration()
+    {
+        // Slower animation if stock is unfolded
+        if(!SP12_IsStockFolded())
+        {
+            A_SetTics(TIME_DELAY_UNFOLDED);
+        }
+    }
+
     action state SPAS_HandleAlt()
     {
         PB_SetRoll(0);
-        PB_HandleCrosshair(46);
+        SP12_HandleCrosshair();
 
-        if(invoker.dualfiremode)
+        if(invoker.mDualBlast)
+        {
             return ResolveState("HL2Fire");
+        }
 
-        A_StartSound("IronSights", 0);
+        A_StartSound("IronSights",CHAN_AUTO);
+
         if(PB_GetZoom())
+        {
             return ResolveState("Zoomout");
+        }
             
         return ResolveState(null);
     }
 
+    action bool SP12_IsStockFolded()
+    {
+        return invoker.mStockIsFolded;
+    }
+
+    action void SP12_SetStockState(bool set)
+    {
+        invoker.mStockIsFolded = set;
+    }
+
+    action bool SP12_IsSemiAuto()
+    {
+        return invoker.mSemiAuto;
+    }
+
+    action void SP12_SetSemiAuto(bool set)
+    {
+        invoker.mSemiAuto = set;
+    }
+
 	States
 	{
+        LoadSprites:
+            SPAC A 0; SPBC A 0;
+            SPAA A 0; SPBA A 0;
+            SPAN A 0; SPBN A 0;
+            SPA5 A 0; SPB5 A 0;
+            SPA6 A 0; SPB6 A 0;
+            SPA7 A 0; SPB7 A 0;
+            SPA8 A 0; SPB8 A 0;
+            SPA9 A 0; SPB9 A 0;
+            Stop;
+            
         Spawn:
-            M4SH A -1;
+            SPAC A -1 SP12_SetSprite('SPAC','SPBC','SPAC','SPBC');
             Stop;
 
+        // Unfolded
         WeaponRespect:
             TNT1 A 0 {
 				A_SetCrosshair(-1);
-                A_PlaySound("weapons/spas12/raise", CHAN_AUTO);
+                A_StartSound("weapons/spas12/pumpback",CHAN_AUTO);
             }
-            S12S EDCBA 1;
+            // Select
+            SPAA MLKJ 1 {
+                SP12_SetSprite('SPAA','SPBA','SPAA','SPBA');
+                return A_DoPBWeaponAction();
+            }
+		    // Raise
+		    SPAN AAAAA 1 {
+                SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
+                return A_DoPBWeaponAction();
+            }
+            // Rechamber
+		    SPA5 ABCDEFG 1 {
+                SP12_SetSprite('SPAN','SPBN','SPA5','SPB5');
+                return A_DoPBWeaponAction();
+            }
+            "####" H 1 A_DoPBWeaponAction();
+            "####" A 0 A_StartSound("weapons/spas12/pumpback",CHAN_AUTO,CHANF_OVERLAP);
+            "####" IJJKKLLLLLMMN 1 A_DoPBWeaponAction();
+            "####" A 0 A_StartSound("weapons/spas12/pumpforward",CHAN_AUTO,CHANF_OVERLAP);
+            // Lower
+            "####" PQRGGGFFEDCBA 1 A_DoPBWeaponAction();
             Goto Ready3;
 
-        Deselect:
-            TNT1 A 0 {
-                A_WeaponOffset(0, 32);
-                PB_SetRoll(0);
-                PB_SetZoom(false);
+        WeaponInspect:
+            // Raise
+		    SPAN ABCDE 1 {
+                SP12_SetSprite('SPAN','SPBN','SPA5','SPB5');
+                return A_DoPBWeaponAction();
             }
-            S12S ABCDE 1;
-            TNT1 AAAAAAAAAAAAAAAAAA 0 A_Lower();
-            TNT1 A 1 A_Lower();
-            Wait;
+		    "####" FG 1 A_DoPBWeaponAction();
+            "####" A 0 A_StartSound("weapons/spas12/pumpback",CHAN_AUTO,CHANF_OVERLAP);
+            // Pump
+		    SPA6 ABCDEFFF 1 {
+                SP12_SetSprite('SPA6','SPB6','SPA7','SPB7');
+                return A_DoPBWeaponAction();
+            }
+            "####" FF 1 A_DoPBWeaponAction();
+        HoldInspect:
+            SPA6 G 1 {
+                SP12_SetSprite('SPA6','SPB6','SPA7','SPB7');
+                return A_DoPBWeaponAction();
+            }
+            "####" A 0 A_JumpIf(PressingReload(),"HoldInspect");
+            "####" A 0 A_StartSound("weapons/spas12/pumpforward",CHAN_AUTO,CHANF_OVERLAP);
+            "####" HI 1 A_DoPBWeaponAction();
+            // Lower
+            SPAN FED 1 {
+                SP12_SetSprite('SPAN','SPBN','SPA5','SPB5');
+                return A_DoPBWeaponAction(); // Goto Inspect2+12
+            }
+            "####" CBA 1 A_DoPBWeaponAction();
+            Goto Ready3;
+            
+
+        Deselect:
+            TNT1 A 0 PBX_WeaponLower();
+            SPAA NOPQ 1 SP12_SetSprite('SPAA','SPBA','SPAA','SPBA');
+			TNT1 A 0 A_Lower();
+			Wait;
 
         Select:
             TNT1 A 0 {
-                A_WeaponOffset(0, 32);
-                PB_SetRoll(0);
-                PB_SetZoom(false);
+				A_WeaponOffset(0,32);
+				PB_SetRoll(0);
+			    SP12_HandleCrosshair();
                 PBX_WeaponRaise("weapons/spas12/raise");
+                SP12_SetSprite('SPAN','SPBN','SPA5','SPB5');
 			    return PB_RespectIfNeeded();
-            }
+			}
         SelectAnimation:
-            S12S EDCBA 1;
+            SPAA MLKJ 1 SP12_SetSprite('SPAA','SPBA','SPAA','SPBA');
         Ready3:
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"Ready2");
             TNT1 A 0 {
                 PB_SetRoll(0);
                 A_ZoomFactor(1.0);
-                PB_HandleCrosshair(46);
+                SP12_HandleCrosshair();
 				A_SetInventory("CantWeaponSpecial",0);
 				A_SetInventory("CantDoAction",0);
             }
         ReadyToFire:
-            S12G A 1 {
-				PB_CoolDownBarrel(0,0,-4);
+			TNT1 A 0 PBX_CheckInspect();
+            SPAN A 1 {
+				PB_CoolDownBarrel();
+                SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
                 return PB_ReadyFire();
             }
             Loop;
 
         Ready2:
             TNT1 A 0 {
-				A_ZoomFactor(1.5);
+				PB_SetRoll(0);
+                A_ZoomFactor(1.5);
                 A_SetCrosshair(-1);
 				A_SetInventory("CantDoAction",0);
             }
         ReadytoFire2:
-            S12Z A 1 {
-				PB_CoolDownBarrel(0,-2,6);
+            SPA8 C 1 {
+				PB_CoolDownBarrel();
+                SP12_SetSprite('SPA8','SPB8','SPA8','SPB8');
                 return PB_ReadyFire(ads:true);
             }
             Loop;
 
         WeaponSpecial:
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"Zoomout");
-            TNT1 A 0 {
-				A_Takeinventory("GoWeaponSpecialAbility",1);
-			}
-            TNT1 A 0 {
-                invoker.dualfiremode = !invoker.dualfiremode;
-                A_StartSound("MS/Button", CHAN_AUTO, CHANF_OVERLAP);
-                A_Print(invoker.dualfiremode ? "$PBX_SPAS12_DUALFIRE" : "$PBX_SPAS12_ADS");
-            }
+            TNT1 A 0 SP12_HandleWheel();
             Goto Ready3;
 
+        SwitchFireModeStart:
+            TNT1 A 0 {
+				A_WeaponOffset(0,32);
+				A_StartSound("Ironsights",CHAN_AUTO);
+			}
+			// Raise Weapon
+            SPAN BCDEFG 1 SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
+        SwitchFireMode:
+		    SPAN STUUU 1 SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
+		    SPA9 ABCD 1 SP12_SetSprite('SPA9','SPB9','SPA9','SPB9');
+		    "####" A 0 {
+                invoker.mSemiAuto = !invoker.mSemiAuto; // Actual mode change
+                A_StartSound("MS/Button",CHAN_AUTO,CHANF_OVERLAP);
+            }
+		    "####" DCBA 1;
+		    "####" UUU 1 SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
+            Goto ShellChecker;
+
+        FoldSwitchAnimation:
+		    TNT1 A 0 A_StartSound("Ironsights",CHAN_AUTO);
+		    SPAA NOPQ 1 SP12_SetSprite('SPBA','SPAA','SPBA','SPAA'); // Its reversed so the correct animation plays
+		    TNT1 A 10;
+		    SPAA MLKJ 1 SP12_SetSprite('SPBA','SPAA','SPBA','SPAA');
+            Goto Ready3;
+
+        SecondarySwitchAnimation:
+		    TNT1 A 0 A_StartSound("Ironsights",CHAN_AUTO);
+            SPAA RSTU 1 SP12_SetSprite('SPAA','SPBA','SPAA','SPBA');
+            "####" V 5;
+		    "####" A 0 A_StartSound("MS/Button",CHAN_AUTO);
+            "####" UTSR 1;
+            Goto Ready3;
 
         AltFire:
 			TNT1 A 0 SPAS_HandleAlt();
         ZoomIn:
-            S12X ABCDEF 1;
+            SPA8 ABC 1 SP12_SetSprite('SPA8','SPB8','SPA8','SPB8');
             TNT1 A 0 {
                 A_ZoomFactor(1.5);
                 PB_SetZoom(true);
@@ -197,39 +522,36 @@ class PBX_SPAS12 : PBX_WeaponBase
 
         Zoomout:
             TNT1 A 0 {	
-				PB_HandleCrosshair(46);
-				A_ZoomFactor(1.0);
+				SP12_HandleCrosshair();
                 PB_SetZoom(false);
             }
-            S12X FEDCBA 1;
-            TNT1 A 0 A_JumpIfInventory("GoWeaponSpecialAbility",1,"WeaponSpecial");
+            SPA8 CBA 1 SP12_SetSprite('SPA8','SPB8','SPA8','SPB8');
+            TNT1 A 0 A_JumpIfInventory("GoWeaponSpecialAbility",1,"WeaponSpecial"); // If you weapon special then zoom out first
             Goto Ready3;
 
         HL2Fire:
 			TNT1 A 0 PB_jumpIfNoAmmo(min:2);
-            S12G B 1 Bright {
-                SPAS_Fire(1);
-                PB_WeaponRecoil(-1.50, +1.0);
-                PB_FireBullets("PB_DragonsBreathTracer", 9, 1.5, 0, 0, 1.5);
-				A_FireProjectile("ShotgunWad", random(-2,2), 0, random(-2,2), -3, FPF_NOAUTOAIM, random(-2,2));
-				PB_TakeAmmo(invoker.ammo2.getClassName(),1,0);
-                A_StartSound("weapons/sg", CHAN_WEAPON, CHANF_OVERLAP, 1.0, pitch: 1.2);
-            }
-            S12G C 1 SPAS_Fire(2);
-            S12G D 1 SPAS_Fire(3);
-            S12G E 1 SPAS_Fire(4);
+            SPAA A 1 Bright     SP12_HLFire();
+            "####" B 1 Bright   SPAS_Fire(2);
+            "####" C 1          SPAS_Fire(3);
+            "####" D 1          SPAS_Fire(4);
+            "####" EW 1;
         PumpSlow:
-            S12P ABCDEFGH 1;
-            TNT1 A 0 A_PlaySound("weapons/spas12/pumpback", CHAN_AUTO); 
-            S12P IJKLM 1;
-            S12P N 1 A_ZoomFactor(0.98);
-            S12P O 16 {
-                SPAS_Fire(5);
-				PB_SpawnCasing("ShotgunCasing",15,-5,26,0,3,3);
-            }
-            TNT1 A 0 A_PlaySound("weapons/spas12/pumpforward", CHAN_AUTO); 
-            S12P NMLKJI 1;
-            S12P HGFEDCBA 1;
+            SPAN BCDEFG 1 SP12_SetSprite('SPAN','SPBN','SPA5','SPB5');
+            "####" H 1;
+            "####" A 0 A_StartSound("weapons/spas12/pumpback", CHAN_AUTO); 
+            "####" IJ 1;
+            "####" K 1;
+            "####" L 10;
+            "####" MN 1;
+            "####" A 0 A_StartSound("weapons/spas12/pumpforward", CHAN_AUTO); 
+            "####" OPQR 1;
+            "####" A 0 SPAS_Fire(5);
+            Goto PumpEnd;
+
+        FireSemi:
+            SPAA W 5 SP12_SetSprite('SPAA','SPBA','SPAA','SPBA');
+            "####" WWW 1 PB_ReadyFire(ads:false);
             Goto Ready3;
 
         Fire:
@@ -240,26 +562,47 @@ class PBX_SPAS12 : PBX_WeaponBase
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"Fire2");
 		Fire1Actual:
 			TNT1 A 0 		PB_jumpIfNoAmmo();
-            S12G B 1 Bright SPAS_Fire(1);
-            S12G C 1        SPAS_Fire(2);
-            S12G D 1        SPAS_Fire(3);
-            S12G E 1        SPAS_Fire(4);
+            SPAA A 1 Bright     SPAS_Fire(1);
+            "####" B 1 Bright   SPAS_Fire(2);
+            "####" C 1          SPAS_Fire(3);
+            "####" D 1          SPAS_Fire(4);
+            "####" EW 1 {
+                if(SP12_IsSemiAuto())
+                {
+				    A_SetInventory("CantDoAction",0);
+                    return ResolveState("FireSemi");
+                }
+                return ResolveState(null);
+            }
+		    "####" A 0 A_JumpIf(SP12_IsSemiAuto(),"FireSemi");
         Pump:
-            S12P ABCDEFGH 1;
+            SPAN BCDEFG 1 SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
 		PumpBegin:
-            S12P IJKLM 1 PB_SetReloading(true); 
-            S12P N 1 A_ZoomFactor(0.98);
-            TNT1 A 0 A_PlaySound("weapons/spas12/pump", CHAN_AUTO);
-            S12P O 1        SPAS_Fire(5);
-            S12P NMLKJI 1;
+            SPAN H 1 {
+                SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
+                PB_SetReloading(true); 
+            }
+            "####" A 0 A_StartSound("weapons/spas12/pumpback", CHAN_AUTO); 
+            "####" IJ 1;
+            "####" KLMN 1;
+            "####" A 0 A_StartSound("weapons/spas12/pumpforward", CHAN_AUTO); 
+            "####" OPQR 1;
+            "####" A 0 SPAS_Fire(5);
 		PumpEnd:
-            S12P HGFEDCBA 1;
-            TNT1 A 0 {
+            SPAN GFEDCB 1 SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
+            SPAA FGHI 1 {
+                SP12_SetSprite('SPAA','SPBA','SPAA','SPBA');
 				A_SetInventory("CantDoAction",0);
 				PB_SetReloading(false);
 				PB_Refire();
 			}
             Goto Ready3;
+
+        Fire2Semi:
+            SPA8 KFF 1 SP12_SetSprite('SPA8','SPB8','SPA8','SPB8');
+		    "####" FGCCCC 1;
+		    "####" CCC 1 PB_ReadyFire(ads:true);
+            Goto Ready2;
 
         Fire2:
             TNT1 A 0 {
@@ -267,15 +610,16 @@ class PBX_SPAS12 : PBX_WeaponBase
 				A_SetCrosshair(-1);
 			}
 		Fire2Actual:
-			TNT1 A 0 		PB_jumpIfNoAmmo();
-            S12Z B 1 Bright SPAS_Fire(1);
-            S12Z CDEF 1;
+			TNT1 A 0 PB_jumpIfNoAmmo();
+            SPA8 D 1 Bright SPAS_Fire(1);
+            "####" E 1;
+		    "####" A 0 A_JumpIf(SP12_IsSemiAuto(),"Fire2Semi");
+            "####" FGC 1;
 		Pump2:
-            S1PZ ABCDEF 1;
-            S1PZ G 2;
-            TNT1 A 0 A_PlaySound("weapons/spas12/pump", CHAN_AUTO);
-            S1PZ H 1        SPAS_Fire(5);
-            S1PZ HHHHGFEDCBA 1 {
+            SPA8 GHIIJJ 1 SP12_SetSprite('SPA8','SPB8','SPA8','SPB8');
+            "####" A 0 A_StartSound("weapons/spas12/pump", CHAN_AUTO);
+		    "####" IH 1 SPAS_Fire(5);
+            "####" HGG 1 {
 				if(JustPressed(BT_ATTACK) && invoker.ammo2.amount > 0) return ResolveState("Fire2");
                 return ResolveState(null);
 			}
@@ -288,107 +632,136 @@ class PBX_SPAS12 : PBX_WeaponBase
 
         ReloadFromADS:
             TNT1 A 0 {	
-				PB_HandleCrosshair(46);
-                PB_SetZoom(false);
+				SP12_HandleCrosshair();
+                A_startsound("IronSights",29);
+                A_ZoomFactor(1.5);
             }
-            S12X FEDCBA 1;
+            SPA8 CB 1 SP12_SetSprite('SPA8','SPB8','SPA8','SPB8');
+			"####" A 0 PB_SetZoom(false);
+			"####" A 1;
         Reload:
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");
-            TNT1 A 0 {
-                A_ZoomFactor(1.0);
-			}
             TNT1 A 0 PB_CheckReload(null,null,"Pump","Ready3","Ready3",MAGAZINE_SIZE);
-			TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
+			TNT1 A 0 A_StartSound("Ironsights",CHAN_AUTO);
             // Raise Weapon
-            S12P ABCDEFGH 1;
-            S12R AB 1;
+            SPAN BCDEFG 1 SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
+		    "####" ST 1 ;
         ShellChecker:
             // Main reload loop
-			TNT1 A 0 A_JumpIf(invoker.ammo1.amount < 1 || invoker.ammo2.amount >= MAGAZINE_SIZE,"FinishReload");
-            TNT1 A 0 A_PlaySound("weapons/spas12/insert", CHAN_AUTO);
-            S12R CD 2 A_DoPBWeaponAction(WRF_NOBOB);
-            S12R E 2 {
-				A_Giveinventory(invoker.ammo2.getClassName(),1);
-				A_Takeinventory(invoker.ammo1.getClassName(),1,TIF_NOTAKEINFINITE);
-                PB_WeaponRecoil(-0.2,+0.2);
-				PB_SetRoll(roll-0.4);
+			"####" A 0 A_JumpIf(invoker.ammo1.amount < 1 || invoker.ammo2.amount >= MAGAZINE_SIZE,"FinishReload");
+			"####" A 0 PB_SetReloading(true);
+            SPAN UUU 1 {
+                SP12_SetSprite('SPAN','SPBN','SPA5','SPB5');
                 return A_DoPBWeaponAction(WRF_NOBOB);
             }
-            S12R FGH 1 A_DoPBWeaponAction(WRF_NOBOB);
-            TNT1 A 0 A_JumpIf(PB_GetChamberEmpty(), "PumpReload");
-            S12R A 1 A_DoPBWeaponAction(WRF_NOBOB);
+            "####" VW 1 {
+                SP12_SetDuration();
+                return A_DoPBWeaponAction(WRF_NOBOB);
+            }
+            "####" A 0 A_StartSound("weapons/spas12/insert", CHAN_AUTO);
+            "####" X 1 {
+                SP12_SetDuration();
+                return A_DoPBWeaponAction(WRF_NOBOB);
+            }
+            SPAN YZ 1 {
+                SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
+                SP12_SetDuration();
+                return A_DoPBWeaponAction(WRF_NOBOB);
+            }
+            "####" A 0 {
+				A_Giveinventory(invoker.ammo2.getClassName(),1);
+				A_Takeinventory(invoker.ammo1.getClassName(),1,TIF_NOTAKEINFINITE);
+                PB_RotateCamera(0.2,-0.2,-0.4);
+            }
+            "####" "[]" 1 {
+                SP12_SetDuration();
+                return A_DoPBWeaponAction(WRF_NOBOB);
+            }
+            "####" A 0 A_JumpIf(PB_GetChamberEmpty(), "PumpReload");
 			Loop;
 
         PumpReload:
-            S12P IJKLM 1 A_DoPBWeaponAction(WRF_NOBOB);
-            S12P N 1 A_ZoomFactor(0.98);
-            S12P O 1 {
-                A_PlaySound("weapons/spas12/pump", CHAN_AUTO);
+            SPAN UTS 1 SP12_SetSprite('SPAN','SPBN','SPA5','SPB5');
+            "####" H 1; 
+            "####" A 0 A_StartSound("weapons/spas12/pumpback", CHAN_AUTO); 
+            "####" IJ 1;
+            "####" A 0 {
+                A_StartSound("weapons/spas12/pump", CHAN_AUTO);
                 A_ZoomFactor(1.0);
                 PB_SetChamberEmpty(false);
 				PB_SetMagEmpty(false);
-				return A_DoPBWeaponAction(WRF_NOBOB|WRF_NOFIRE);
             }
-            S12P NMLKJI 1 A_DoPBWeaponAction(WRF_NOBOB);
+            "####" KLMN 1;
+            "####" A 0 A_StartSound("weapons/spas12/pumpforward", CHAN_AUTO); 
+            "####" PQR 1;
+		    "####" ST 1 ;
             goto ShellChecker;
 
         FinishReload:
-            TNT1 A 0 {
-				A_PlaysoundEx("Ironsights", "Auto");
-			}
-            S12P HGFEDCBA 1;
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_AUTO);
+            SPAN TS 1 SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
+		    "####" FEDCB 1;
 			TNT1 A 0 PB_SetReloading(false);
             Goto Ready3;
 
         Unload:
 			TNT1 A 0 {
 				A_WeaponOffset(0,32);
-				A_PlaysoundEx("Ironsights", "Auto");
+				A_StartSound("Ironsights",CHAN_AUTO);
 			}
+            TNT1 A 0 A_JumpIf(PB_GetMagEmpty() && getTokens() == TOGGLE_TYPE, "SwitchFireModeStart");
             TNT1 A 0 A_JumpIf(PB_GetMagEmpty(),"Ready3");
-			S12P ABCDEFGH 1 A_DoPBWeaponAction();
+			// Raise Weapon
+            SPAN BCDEFG 1 SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
 		RemoveBullets:
             TNT1 A 0 A_JumpIf(invoker.ammo2.amount <= 0,"FinishUnload");
-			TNT1 A 0 {
-				A_Takeinventory(invoker.ammo2.getclassname(),1);
-				A_Giveinventory(invoker.ammo1.getclassname(),1);
-                A_PlaySound("weapons/spas12/pump", CHAN_AUTO);
-			}
-			S12P IJKLLL 1 A_DoPBWeaponAction();
-			S12P MNO 1 A_DoPBWeaponAction();
+            SPAN G 1 SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
+            "####" A 0 A_StartSound("weapons/spas12/pumpback", CHAN_AUTO); 
+            "####" H 1 A_DoPBWeaponAction();
+            "####" IJ 1 A_DoPBWeaponAction();
+            "####" KLKJ 1 A_DoPBWeaponAction();
+            "####" A 0 SP12_UnloadShells();
+            "####" A 0 A_StartSound("weapons/spas12/pumpforward", CHAN_AUTO); 
+            "####" IH 1 A_DoPBWeaponAction();
+            "####" GF 1 A_DoPBWeaponAction();
 			loop;
 
 		FinishUnload:
-            S12P ONMKJIH 1 A_DoPBWeaponAction();
-			S12P GFEDCBA 1 A_DoPBWeaponAction();
-			TNT1 A 0 {
+            TNT1 A 0 {
                 PB_SetMagEmpty(true);
                 PB_SetChamberEmpty(true);
 				PB_SetReloading(false);
+                return SP12_ModeChange();
             }
+            SPAN EDCBA 1 SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
 			Goto Ready3;
 
         FlashKicking:
-            S12P ABCDEFGHGFEDCBA 1;
+            SPAA RSTU 1 SP12_SetSprite('SPAA','SPBA','SPAA','SPBA');
+            "####" V 6;
+            "####" UTSR 1;
             Goto Ready3;
 
         FlashAirKicking:
-            S12P ABCDEFGHHGFEDCBA 1;
+            SPAA RSTU 1 SP12_SetSprite('SPAA','SPBA','SPAA','SPBA');
+            "####" V 7;
+            "####" UTSR 1;
             Goto Ready3;
 
         FlashPunching:
-            S12P ABCDEFG 1;
-            S12P GFEDCBA 1;
+            SPAA RSTU 1 SP12_SetSprite('SPAA','SPBA','SPAA','SPBA');
+            "####" V 8;
+            "####" UTSR 1;
             Goto Ready3;
 
         FlashSlideKicking:
-            S12P ABCDEFG 1;
-            S12P H 12;
-            S12P GFEDCBA 1;
+            SPAA RSTU 1 SP12_SetSprite('SPAA','SPBA','SPAA','SPBA');
+            "####" V 19;
+            "####" UTSR 1;
             Goto Ready3;
 
         FlashSlideKickingStop:
-            S12P GFEDCBA 1;
+            SPAA VVVUTSR 1 SP12_SetSprite('SPAA','SPBA','SPAA','SPBA');
             Goto Ready3;
 
 	}

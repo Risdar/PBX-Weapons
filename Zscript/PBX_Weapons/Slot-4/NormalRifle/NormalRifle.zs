@@ -40,11 +40,12 @@ Class PBX_NormalRifle : PBX_WeaponBase
     }
 
     bool doBurst;
-    bool waitReleaseRight;
-    bool waitReleaseLeft;
     int burstcount;
     int burstcountLeft;
+
     const MAGAZINE_SIZE = 31;
+    const RIGHT_MUZZLE_LAYER = -6;
+    const LEFT_MUZZLE_LAYER = -7;
 
     States
     {
@@ -62,6 +63,16 @@ Class PBX_NormalRifle : PBX_WeaponBase
             RIFR STUVWXYZ 1 A_DoPBWeaponAction();
             RIFR "[]" 1 A_DoPBWeaponAction();
             RIR2 AB 1 A_DoPBWeaponAction();
+            Goto Ready3;
+
+        WeaponInspect:
+            RIFL HIJKLMNOP 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_StartSound("Sniper/BoltBack",CHAN_AUTO);
+        HoldInspect:
+            RIFL P 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_JumpIf(PressingReload(),"HoldInspect");
+            TNT1 A 0 A_StartSound("Sniper/BoltForward",CHAN_AUTO);
+            RIFL PONMLKJIH 1 A_DoPBWeaponAction();
             Goto Ready3;
 
         Deselect:
@@ -105,9 +116,10 @@ Class PBX_NormalRifle : PBX_WeaponBase
 		    TNT1 A 0 A_JumpIf(A_CheckAkimbo(), "SelectAnimationDualWield");
             RIFS EDCBA 1;
         Ready3:
-			TNT1 A 0 A_JumpIf(A_CheckAkimbo(), "ReadyDualWield");
+			TNT1 A 0 A_JumpIf(A_CheckAkimbo(), "SwitchToDualWield");
 			TNT1 A 0 A_JumpIf(PB_GetZoom(), "Ready2");
         ReadyToFire:
+            TNT1 A 0 PBX_CheckInspect();
             RIFL C 1 {
                 PB_CooldownBarrel();
 			    PB_HandleCrosshair(55);
@@ -131,15 +143,15 @@ Class PBX_NormalRifle : PBX_WeaponBase
 
         IdleLeft_Overlay:
             DURI O 1 {
-                PB_CoolDownBarrel(14, 0, 3.2);
-                return ReadyOverlay(true);
+                PB_CoolDownBarrel(8, -14, 3.2);
+                return A_DoPBLeftAction();
             }
             Loop;
 
 		IdleRight_Overlay:
             DURI S 1 {
-                PB_CoolDownBarrel(-14, 0, 3.2);
-                return ReadyOverlay(false);
+                PB_CoolDownBarrel(-8, -14, 3.2);
+                return A_DoPBRightAction();
             }
             Loop;
 
@@ -201,6 +213,20 @@ Class PBX_NormalRifle : PBX_WeaponBase
             DURI R 1        NormalRifle_FireOverlay(3);
 			TNT1 A 0 A_JumpIf(getBurstCount() < 3 && getBurst() && !PB_GetChamberEmpty(), "BurstRight_Overlay");
             DURI S 1        NormalRifle_FireOverlay(4);
+            DURI SSSS 1 {
+                if(!getBurst())
+                {
+                    return A_DoPBRightAction();
+                }
+                return ResolveState(null);
+            }
+            DURI SSS 1 {
+                if(!getBurst())
+                {
+                    return A_RefireRight();
+                }
+                return ResolveState(null);
+            }
             Goto IdleRight_Overlay;
 
         FireLeft_Overlay:
@@ -211,6 +237,20 @@ Class PBX_NormalRifle : PBX_WeaponBase
             DURI N 1        NormalRifle_FireOverlay(3,true);
 		    TNT1 A 0 A_JumpIf(getBurstCount(true) < 3 && getBurst() && !PB_GetChamberEmpty(true), "BurstLeft_Overlay");
 		    DURI O 1        NormalRifle_FireOverlay(4,true); 
+            DURI OOOO 1 {
+                if(!getBurst())
+                {
+                    return A_DoPBLeftAction();
+                }
+                return ResolveState(null);
+            }
+            DURI OOO 1 {
+                if(!getBurst())
+                {
+                    return A_RefireLeft();
+                }
+                return ResolveState(null);
+            }
             Goto IdleLeft_Overlay;
 
         AltFire:
@@ -224,7 +264,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
         ZoomIn:
             TNT1 A 0 {
                 PB_SetZoom(true);
-                A_startsound("IronSights",29);
+                A_startsound("IronSights",CHAN_AUTO);
                 A_SetCrosshair(-1);
             }
             RIFZ ABC 1;
@@ -235,7 +275,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
         Zoomout:
             TNT1 A 0 {
                 PB_SetZoom(false);
-                A_startsound("IronSights",29);
+                A_startsound("IronSights",CHAN_AUTO);
 			    PB_HandleCrosshair(55);
             }
             RIFZ BA 1 A_ZoomFactor(1.0);
@@ -244,6 +284,14 @@ Class PBX_NormalRifle : PBX_WeaponBase
         Weaponspecial:
 			TNT1 A 0 checkSpecial();
         SwitchAnimation:
+			TNT1 A 0 {
+                if(A_CheckAkimbo())
+                {
+                    A_startsound("MS/Button",CHAN_AUTO);
+                    return ResolveState("ReadyDualWield");
+                }
+                return ResolveState(null);
+            }
 	        RIFL RSTUVV 1;
             TNT1 A 0 A_StartSound("MS/Button", CHAN_AUTO, CHANF_OVERLAP);
             RIFL VVUTSR 1;
@@ -251,7 +299,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
 
         SwitchToDualWield:
             DURI TUVWX 1;
-		    DURI A 0 A_PlaySound("CLIPIN");
+		    TNT1 A 0 A_StartSound("CLIPIN",CHAN_AUTO);
             DURI YZ 1;
 		    DURI "[]" 1;
             TNT1 A 0 A_SetAkimbo(true);
@@ -260,7 +308,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
         StopDualWield:
 		    DURI "][" 1;
             DURI ZY 1;
-		    DURI A 0 A_PlaySound("CLIPIN");
+		    TNT1 A 0 A_StartSound("CLIPIN",CHAN_AUTO);
             DURI XWVUT 1;
             TNT1 A 0 A_SetAkimbo(false);
             Goto Ready3;
@@ -273,7 +321,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
         ReloadFromADS:
             TNT1 A 0 {
                 PB_SetZoom(false);
-                A_startsound("IronSights",29);
+                A_startsound("IronSights",CHAN_AUTO);
 			    PB_HandleCrosshair(55);
             }
             RIFZ BA 1;
@@ -323,11 +371,10 @@ Class PBX_NormalRifle : PBX_WeaponBase
             goto Ready3;
 
         ChamberFromReload:
+            TNT1 A 0 A_StartSound("Sniper/BoltBack",CHAN_AUTO);
             RIFL HIJKLMNOP 1;
-            TNT1 A 0 {
-                PB_SetChamberEmpty(false);
-                A_StartSound("RIFCL_CK",CHAN_WEAPON,CHANF_OVERLAP);
-            }
+            TNT1 A 0 PB_SetChamberEmpty(false);
+            TNT1 A 0 A_StartSound("Sniper/BoltForward",CHAN_AUTO);
             RIFL PONMLKJIH 1;   
             goto Ready3;
 
@@ -336,19 +383,15 @@ Class PBX_NormalRifle : PBX_WeaponBase
             RIFR W 1;
             RIR2 CDEFGHII 1;
             RIR2 J 3;
-            TNT1 A 0 A_StartSound("RIFCL_CK",CHAN_WEAPON,CHANF_OVERLAP);
             RIR2 LM 1;
+            TNT1 A 0 A_StartSound("Sniper/BoltBack",CHAN_AUTO);
             TNT1 A 0 PB_SetChamberEmpty(false);
             RIR2 N 4;
             RIR2 OPQ 1;
+            TNT1 A 0 A_StartSound("Sniper/BoltForward",CHAN_AUTO);
             RIR2 R 3;
             RIR2 SSTUV 1;
             goto FinishReload;
-
-        ReloadUnloadRight:
-            TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
-            RIR3 DEFG 1;
-            goto ContinueReloadRight;
 
         ReloadUnloadLeft:
             TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
@@ -357,12 +400,16 @@ Class PBX_NormalRifle : PBX_WeaponBase
 
         ReloadDualWield:
             TNT1 A 0 PB_ClearDualWield();
-            TNT1 A 0 PB_CheckReload("ReloadUnloadRight",null,null,"ReloadLeft","Ready3",MAGAZINE_SIZE);
+            TNT1 A 0 PB_CheckReload("ReloadUnloadRight",null,"StartRechamberRight","CheckLeftRel","ReadyDualWield",MAGAZINE_SIZE);
+            // Deselect Dual Wield
             TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
-            // Raise
-            // RIR2 BA 1;
-            // RIFR "][" 1;
-		    // RIFR ZYXWVVV 1;
+            DURI "][" 1;
+            DURI ZY 1;
+		    TNT1 A 0 A_StartSound("CLIPIN",CHAN_AUTO);
+            DURI XWVUT 1;
+            RIFL C 2;
+            // Raise Right
+            RIR3 ABC 1;
             RIR3 VUTS 1;
             // Remove Right Mag
             RIR3 RQP 1;
@@ -372,11 +419,13 @@ Class PBX_NormalRifle : PBX_WeaponBase
                 PB_SetMagUnloaded(true);
             }
             RIR3 ONMLKJIHG 1;
+            RIR3 G 10;
         ContinueReloadRight:
             // Insert Right Mag
+            TNT1 A 0 A_StartSound("weapons/rifle/magchange",CHAN_WEAPON,CHANF_OVERLAP);
             RIR3 GHIJKLMNOPQR 1;
             RIR3 S 1 {
-                A_StartSound("weapons/rifle/magchange",CHAN_WEAPON,CHANF_OVERLAP);
+                A_StartSound("weapons/rifle/magin",CHAN_WEAPON,CHANF_OVERLAP);
 				PB_AmmoIntoMag(
                     invoker.ammo2.getclassname(), 
                     invoker.ammo1.getclassname(), 
@@ -384,21 +433,76 @@ Class PBX_NormalRifle : PBX_WeaponBase
                 );
                 PB_SetMagEmpty(false);
                 PB_SetMagUnloaded(false);
-                PB_SetChamberEmpty(false);
             }
-            RIR3 TUVW 1;
-        // FinishReloadRight:
-        //     RIR3 XYZ 1;
-        //     RIR3 "[]" 1;
-        ReloadLeft:
-            // TNT1 A 3;
-            TNT1 A 0 PB_CheckReload("ReloadUnloadLeft",null,null,"Ready3","Ready3",MAGAZINE_SIZE,invoker.reservetomagammofactor,true);
+            TNT1 A 0 A_JumpIf(PB_GetChamberEmpty(), "RechamberRight");
+            RIR3 TU 1;
+            RIR3 VW 1;
+        FinishReloadRight:
+            RIR3 XYZ 1;
+            // Lower Right
+            RIR3 "[]" 1;
+            RIR4 A 1;
+            RIR4 B 5;
+			goto CheckLeftRel;
+
+        ReloadUnloadRight:
+            // Deselect Dual Wield
             TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
-            // RIR6 BA
-            // RIR5 "]["
-            // RIR5 ZYXWVUTS
+            DURI "][" 1;
+            DURI ZY 1;
+		    TNT1 A 0 A_StartSound("CLIPIN",CHAN_AUTO);
+            DURI XWVUT 1;
+            RIFL C 2;
+            // Raise
+            RIR3 DEFG 1;
+            goto ContinueReloadRight;
+
+        StartRechamberRight:
+            // Deselect Dual Wield
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
+            DURI "][" 1;
+            DURI ZY 1;
+		    TNT1 A 0 A_StartSound("CLIPIN",CHAN_AUTO);
+            DURI XWVUT 1;
+            RIFL C 2;
+            // Raise Right
+            RIR3 ABC 1;
+            RIR3 VU 1;
+        RechamberRight:
+            // Rechamber Right
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
+            RIFR W 1;
+            RIR2 CDEFGHII 1;
+            RIR2 J 3;
+            RIR2 LM 1;
+            TNT1 A 0 A_StartSound("Sniper/BoltBack",CHAN_AUTO);
+            TNT1 A 0 PB_SetChamberEmpty(false);
+            RIR2 N 4;
+            RIR2 OPQ 1;
+            TNT1 A 0 A_StartSound("Sniper/BoltForward",CHAN_AUTO);
+            RIR2 R 3;
+            RIR2 SSTUV 1;
+			goto CheckLeftRel;
+
+        CheckLeftRel:
+            TNT1 A 0 {
+				if(invoker.ammoleft.amount == MAGAZINE_SIZE)
+                {
+                    PB_SetReloading(false);
+                    return resolvestate("SwitchToDualWield");
+                }
+				return resolvestate(null);
+			}
+			goto ReloadLeft;
+
+        ReloadLeft:
+            TNT1 A 0 PB_CheckReload("ReloadUnloadLeft",null,"StartRechamberLeft","ReadyDualWield","ReadyDualWield",MAGAZINE_SIZE,invoker.reservetomagammofactor,true);
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
+            // Raise Left
+            RIR5 ABC 1;
+			RIR5 ZYX 1;
             RIR5 WVUTS 1;
-            // Put Away Left Mag
+            // Remove Left Mag
             RIR5 RQP 1;
             TNT1 A 0 {
                 A_StartSound("weapons/rifle/magout",CHAN_WEAPON,CHANF_OVERLAP);
@@ -406,11 +510,13 @@ Class PBX_NormalRifle : PBX_WeaponBase
                 PB_SetMagUnloaded(true,true);
             }
             RIR5 ONMLKJIHG 1;
+            RIR5 G 10;
         ContinueReloadLeft:
+            TNT1 A 0 A_StartSound("weapons/rifle/magchange",CHAN_WEAPON,CHANF_OVERLAP);
             // Insert Left Mag
             RIR5 GHIJKLMNOPQR 1;
             RIR5 S 1 {
-                A_StartSound("weapons/rifle/magchange",CHAN_WEAPON,CHANF_OVERLAP);
+                A_StartSound("weapons/rifle/magin",CHAN_WEAPON,CHANF_OVERLAP);
 				PB_AmmoIntoMag(
                     invoker.ammoleft.getclassname(), 
                     invoker.ammo1.getclassname(), 
@@ -418,10 +524,42 @@ Class PBX_NormalRifle : PBX_WeaponBase
                 );
                 PB_SetMagEmpty(false,true);
                 PB_SetMagUnloaded(false,true);
-                PB_SetChamberEmpty(false,true);
             }
             RIR5 TUVW 1;
+            RIR5 XYZ 1;
+        FinishReloadLeft:
+            // Lower Left
+            RIR5 "[]" 1;
+            RIR6 A 1;
+            RIR6 B 5;
+            TNT1 A 0 A_JumpIf(PB_GetChamberEmpty(true), "StartRechamberLeft");
+            TNT1 A 0 PB_SetReloading(false);
             goto Ready3;
+
+        StartRechamberLeft:
+            // Raise Left
+            RIR3 ABC 1;
+            RIR3 VU 1;
+        RechamberLeft:
+            // Rechamber Left
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
+            RIFR W 1;
+            RIR2 CDEFGHII 1;
+            RIR2 J 3;
+            RIR2 LM 1;
+            TNT1 A 0 A_StartSound("Sniper/BoltBack",CHAN_AUTO);
+            TNT1 A 0 PB_SetChamberEmpty(false,true);
+            RIR2 N 4;
+            RIR2 OPQ 1;
+            TNT1 A 0 A_StartSound("Sniper/BoltForward",CHAN_AUTO);
+            RIR2 R 3;
+            RIR2 SSTUV 1;
+            // Lower Left
+            RIR3 "[]" 1;
+            RIR4 A 1;
+            RIR4 B 5;
+            TNT1 A 0 PB_SetReloading(false);
+            goto Ready3; // So it jumps to select dual wield animation
 
         Unload:
             TNT1 A 0 {
@@ -429,11 +567,10 @@ Class PBX_NormalRifle : PBX_WeaponBase
                 A_ZoomFactor(1.0);
                 PB_SetZoom(false);
                 PB_SetRoll(0);
-				// PB_HandleCrosshair(55);
             }
             TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
-            TNT1 A 0 A_JumpIf(PB_GetMagUnloaded() && !PB_GetChamberEmpty(), "UnloadChamber");
             TNT1 A 0 A_JumpIf(A_CheckAkimbo(), "UnloadDualWield");
+            TNT1 A 0 A_JumpIf(PB_GetMagUnloaded() && !PB_GetChamberEmpty(), "UnloadChamber");
             // Raise
             RIR2 BA 1;
             RIFR "][" 1;
@@ -458,8 +595,10 @@ Class PBX_NormalRifle : PBX_WeaponBase
             RIR2 B 1;
         UnloadChamber:
             TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
+            TNT1 A 0 A_StartSound("Sniper/BoltBack",CHAN_AUTO);
             RIFL HIJKLMNOP 1;
             TNT1 A 0 {
+                A_StartSound("Sniper/BoltForward",CHAN_AUTO);
                 PB_SetChamberEmpty(true);
                 PB_UnloadMag(invoker.ammotype2,invoker.ammotype1,1,1,0,0,"PB_HighCalRound");
             }
@@ -469,7 +608,15 @@ Class PBX_NormalRifle : PBX_WeaponBase
         UnloadDualWield:
             TNT1 A 0 PB_ClearDualWield();
             TNT1 A 0 A_JumpIf(PB_GetMagUnloaded(),"UnloadLeft");
+            // Deselect Dual Wield
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_WEAPON,CHANF_OVERLAP);
+            DURI "][" 1;
+            DURI ZY 1;
+		    TNT1 A 0 A_StartSound("CLIPIN",CHAN_AUTO);
+            DURI XWVUT 1;
+            RIFL C 1;
             // Raise
+            RIR3 ABC 1;
             RIR3 VUTS 1;
             // Remove Right Mag
             RIR3 RQP 1;
@@ -477,17 +624,20 @@ Class PBX_NormalRifle : PBX_WeaponBase
                 A_StartSound("weapons/rifle/magout",CHAN_WEAPON,CHANF_OVERLAP);
                 if(PB_GetMagEmpty()) PB_SpawnCasing("EmptyDMRMag",38,26,7,frandom(0, 3.5),frandom(-7.2, -3.3),frandom(3,7));
                 PB_UnloadMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname());
-                PB_SetMagEmpty(false);
-                PB_SetMagUnloaded(false);
-                PB_SetChamberEmpty(false);
+                PB_SetMagEmpty(true);
+                PB_SetMagUnloaded(true);
+                PB_SetChamberEmpty(true);
             }
+            // Lower Right
             RIR3 ONMLKJIHG 1;
-            RIR3 FED 1;
+            RIR3 FEDCBA 1;
             TNT1 A 0 A_JumpIf(PB_GetMagUnloaded(true),"Ready3");
             Goto UnloadLeft;
 
         UnloadLeft:
-            // TNT1 A 3;
+            // Raise Left
+            RIR5 ABC 1;
+			RIR5 ZYX 1;
             RIR5 WVUTS 1;
             // Put Away Left Mag
             RIR5 RQP 1;
@@ -504,10 +654,36 @@ Class PBX_NormalRifle : PBX_WeaponBase
             TNT1 A 0 PB_SetReloading(false);
             Goto Ready3;
 
+        // Unused
+        // MuzzleFlash:
+        // MuzzleFlash1:
+		//     TNT1 A 0 A_Jump(256, "MuzzleFlash1a", "MuzzleFlash1b");
+        // MuzzleFlash1a:
+        //     MZ01 ABC 1 BRIGHT A_GunFlash();
+        //     Stop;
+        // MuzzleFlash1b:
+        //     MZ01 DEF 1 BRIGHT A_GunFlash();
+        //     Stop;
+
+        LeftMuzzleFlash:
+            MZ42 A 1 BRIGHT A_SetWeaponFrame(random[sfx](0,4));
+            MZ42 F 1 BRIGHT A_SetWeaponFrame(random[sfx](5,9));
+            stop;
+
+        RightMuzzleFlash:
+            MZ43 A 1 BRIGHT A_SetWeaponFrame(random[sfx](0,4));
+            MZ43 F 1 BRIGHT A_SetWeaponFrame(random[sfx](5,9));
+            stop;
+
         FlashPunching:
-            TNT1 A 0 PB_ClearDualWield();
+            TNT1 A 0 A_JumpIf(A_CheckAkimbo(), "FlashPunchingAkimbo");
 	        RIFL RSTUVVVVVVVVUTSR 1;
             goto Ready3;
+
+        FlashPunchingAkimbo:
+            TNT1 A 0 PB_ClearDualWield();
+            TNT1 A 14;
+            goto Ready3; // So it plays the switch to dual animation
 
 		FlashKicking:
             TNT1 A 0 A_JumpIf(A_CheckAkimbo(), "FlashKickingAkimbo");
@@ -517,7 +693,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
         FlashKickingAkimbo:
             TNT1 A 0 PB_ClearDualWield();
             DURI GHIJKKKKKKKKJIHG 1;
-			goto Ready3;
+            goto ReadyDualWield;
 			
 		FlashAirKicking:
             TNT1 A 0 A_JumpIf(A_CheckAkimbo(), "FlashAirKickingAkimbo");
@@ -527,7 +703,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
         FlashAirKickingAkimbo:
             TNT1 A 0 PB_ClearDualWield();
             DURI GHIJKKKKKKKKJIHG 1;
-			goto Ready3;
+            goto ReadyDualWield;
 			
 		FlashSlideKicking:
             TNT1 A 0 A_JumpIf(A_CheckAkimbo(), "FlashSlideKickingAkimbo");
@@ -537,7 +713,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
         FlashSlideKickingAkimbo:
             TNT1 A 0 PB_ClearDualWield();
             DURI GHIJKKKKKKKKKKKKKKKKKKKJIHG 1;
-			goto Ready3;
+            goto ReadyDualWield;
 			
 		FlashSlideKickingStop:
             TNT1 A 0 A_JumpIf(A_CheckAkimbo(), "FlashSlideKickingStopAkimbo");
@@ -547,7 +723,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
         FlashSlideKickingStopAkimbo:
             TNT1 A 0 PB_ClearDualWield();
 	        DURI KKKJIHG 1;
-			goto Ready3;
+            goto ReadyDualWield;
 
     }
 }

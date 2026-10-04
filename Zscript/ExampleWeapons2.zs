@@ -145,6 +145,11 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
             AMGR WXY 1 A_DoPBWeaponAction();
             Goto Ready3;
 
+        WeaponInspect:
+        HoldInspect:
+            TNT1 A 0 A_JumpIf(PressingReload(),"HoldInspect");
+            stop;
+
         Deselect:
             TNT1 A 0 PBX_WeaponLower();
             AMGR ABCDEF 1;
@@ -224,7 +229,6 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
 			BR4Z A 1;
 		Reload:
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");
-			TNT1 A 0 A_ZoomFactor(1.0);
             TNT1 A 0 PB_CheckReload("RaiseFromEmpty", null,null,"Ready3","Ready3",MAXCHARGE);
             TNT1 A 0 A_PlaySound("weapons/smg_magfly1");
             AMGR ABCDEF 1;

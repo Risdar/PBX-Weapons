@@ -1,0 +1,11 @@
+$include "sndinfo/SNDINFO.slot2"
+$include "sndinfo/SNDINFO.slot3"
+$include "sndinfo/SNDINFO.slot4"
+$include "sndinfo/SNDINFO.slot5"
+$include "sndinfo/SNDINFO.slot6"
+$include "sndinfo/SNDINFO.slot7"
+$include "sndinfo/SNDINFO.slot8"
+$include "sndinfo/SNDINFO.slot9"
+
+// General
+meleeweapon/break "SOUNDS/Weapons/General/metalpipe.ogg"

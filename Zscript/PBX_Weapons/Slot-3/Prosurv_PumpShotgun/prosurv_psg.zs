@@ -91,19 +91,19 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 				PB_SetRoll(roll-0.3);
 				return A_DoPBWeaponAction();
 			}
-			TNT1 A 0 A_PlaysoundEx("weapons/autoshotgun/respect1", "Auto");
+			TNT1 A 0 A_StartSound("weapons/autoshotgun/respect1", CHAN_AUTO);
 			XG10 BCDEFGH 1 {
 				PB_SetRoll(roll+0.3);
 				return A_DoPBWeaponAction();
 			}
 			TNT1 A 0 {
-				A_PlaysoundEx("Ironsights", "Auto");
+				A_StartSound("Ironsights",CHAN_AUTO);
 			}
 			XG31 ABCD 1 {
 				PB_SetRoll(roll+1.0);
 				return A_DoPBWeaponAction();
 			}
-			TNT1 A 0 A_PlaySoundEx("weapons/sgmvpump","Auto");
+			TNT1 A 0 A_StartSound("weapons/sgmvpump",CHAN_AUTO);
 			XG31 EF 1 {
 				PB_SetRoll(roll-2.0);
 				return A_DoPBWeaponAction();
@@ -114,22 +114,23 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 			}
 			XG31 M 1 A_DoPBWeaponAction();
 			XG31 N 1 {
-				A_PlaySoundEx("insertshell","Auto");
+				A_StartSound("insertshell",CHAN_AUTO);
 				return A_DoPBWeaponAction();
 			}
 			XG31 OP 1 A_DoPBWeaponAction();
 			XG31 Q 1 {
-				A_PlaySoundEx("weapons/sgpump","Auto");
+				A_StartSound("weapons/sgpump",CHAN_AUTO);
 				return A_DoPBWeaponAction();
 			}
 			XG31 RSTU 1 A_DoPBWeaponAction();
 			XG40 HHHHHHHHH 1 A_DoPBWeaponAction();
-			TNT1 A 0 A_PlaysoundEx("H4SGCOCK", "Auto");
+            TNT1 A 0 A_StartSound("weapons/spas12/pumpback", CHAN_WEAPON);
 			XG40 IJKL 1 {
 				PB_SetRoll(roll-0.3);
 				return A_DoPBWeaponAction();
 			}
 			XG40 LLL 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_StartSound("weapons/spas12/pumpforward", CHAN_WEAPON);
 			XG40 MNH 1 {
 				PB_SetRoll(roll+0.4);
 				return A_DoPBWeaponAction();
@@ -137,6 +138,32 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 			XG40 HG 1 A_DoPBWeaponAction();
 			XG40 FEDCBA 1 {
 				PB_SetRoll(roll+1.0);
+				return A_DoPBWeaponAction();
+			}
+			Goto Ready3;
+
+		WeaponInspect:
+			TNT1 A 0 A_StartSound("Ironsights",CHAN_AUTO);
+			XG40 ABCDEFGH 1 {
+				PB_SetRoll(roll-0.1);
+				return A_DoPBWeaponAction();
+			}
+            TNT1 A 0 A_StartSound("weapons/spas12/pumpback", CHAN_WEAPON);
+			XG40 IMMM 1 {
+				PB_SetRoll(roll-0.3);
+				return A_DoPBWeaponAction();
+			}
+			XG40 MMM 1 A_DoPBWeaponAction();
+        HoldInspect:
+			XG40 M 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_JumpIf(PressingReload(),"HoldInspect");
+            TNT1 A 0 A_StartSound("weapons/spas12/pumpforward", CHAN_WEAPON);
+			XG40 NH 1 {
+				PB_SetRoll(roll+0.4);
+				return A_DoPBWeaponAction();
+			}
+			XG40 HGFEDCBA 1 {
+				PB_SetRoll(roll+0.1);
 				return A_DoPBWeaponAction();
 			}
 			Goto Ready3;
@@ -162,7 +189,7 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 			    return PB_RespectIfNeeded();
 			}
         SelectAnimation:
-            TNT1 A 0 A_PlaySoundEx("weapons/autoshotgun/respect1", "Auto");
+            TNT1 A 0 A_StartSound("weapons/autoshotgun/respect1", CHAN_AUTO);
 			TNT1 A 0 PB_SetZoom(false);
 			XG10 ABCDEFG 1;
 		Ready3:
@@ -174,6 +201,7 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 				A_SetInventory("CantDoAction",0);
 			}
 		ReadytoFire:
+            TNT1 A 0 PBX_CheckInspect();
             XG10 H 1 {
 				PB_CoolDownBarrel(0,0,-4);
                 return PB_ReadyFire();
@@ -259,13 +287,14 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 		Pump:
 			TNT1 A 0 		SG_Fire(4);
 			XG40 ABCDEFGH 1 PB_SetRoll(roll-0.1);
-			TNT1 A 0 		A_PlaysoundEx("H4SGCOCK", "Auto");
 		PumpBegin:
+            TNT1 A 0 		A_StartSound("weapons/spas12/pumpback",CHAN_WEAPON,CHANF_OVERLAP);
 			XG40 IJKL 1 	PB_SetRoll(roll-0.3);
 			TNT1 A 0 		SG_Fire(5);
 			XG40 LLL 1;
 			XG40 MNH 1 		PB_SetRoll(roll+0.4);
 		PumpEnd:
+            TNT1 A 0 		A_StartSound("weapons/spas12/pumpforward", CHAN_WEAPON);
 			XG40 HGFEDCBA 1 PB_SetRoll(roll+0.1);
 			TNT1 A 0 {
 				A_SetInventory("CantDoAction",0);
@@ -288,13 +317,14 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 		Pump2:
             TNT1 A 0 		SG_Fire(4);
             ASS2 A 5;
-            TNT1 A 0 		A_PlaySoundEx("H4SGCOCK", "Auto");
+            TNT1 A 0 		A_StartSound("weapons/spas12/pumpback",CHAN_WEAPON,CHANF_OVERLAP);
             ASS2 BCD 1;
             TNT1 A 0 		SG_Fire(5);
             ASS2 DDDDCBAAA 1 {
 				if(JustPressed(BT_ATTACK) && invoker.ammo2.amount > 0) return ResolveState("Fire2");
                 return ResolveState(null);
 			}
+            TNT1 A 0 		A_StartSound("weapons/spas12/pumpforward",CHAN_WEAPON,CHANF_OVERLAP);
 			TNT1 A 0 {
 				A_SetInventory("CantDoAction",0);
 				return PB_ReadyFire(ads:true);
@@ -338,7 +368,7 @@ class PBX_ProSurvPSG : PBX_WeaponBase
                 A_ZoomFactor(1.0);
 			}
             TNT1 A 0 PB_CheckReload(null,null,"Pump","Ready3","Ready3",MAGAZINE_SIZE);
-			TNT1 A 0 A_PlaySoundEx("Ironsights", "Auto");
+			TNT1 A 0 A_StartSound("Ironsights",CHAN_AUTO);
             TNT1 A 0 A_JumpIf(PB_GetChamberEmpty(), "ChamberInsertShell"); // Go to insert chamber first
             // Raise Weapon
             XG30 ABCD 1 PB_SetRoll(roll+1.0);
@@ -350,7 +380,7 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 			XG30 L 3 A_DoPBWeaponAction(WRF_NOBOB);
 			XG30 MN 1 A_DoPBWeaponAction(WRF_NOBOB);
 			XG30 O 1 { 
-				A_PlaySoundEx("insertshell","Auto");
+				A_StartSound("insertshell",CHAN_AUTO);
 				A_Giveinventory(invoker.ammo2.getClassName(),1);
 				A_Takeinventory(invoker.ammo1.getClassName(),1,TIF_NOTAKEINFINITE);
 				PB_WeaponRecoil(-0.2,+0.2);
@@ -366,7 +396,7 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 
 		ReloadFinished:
 			TNT1 A 0 {
-				A_PlaysoundEx("Ironsights", "Auto");
+				A_StartSound("Ironsights",CHAN_AUTO);
 			}
 			XG30 LKJIHG 1 PB_SetRoll(roll+1.0);
 			XG30 FEDCBA 1; 
@@ -374,14 +404,12 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 			Goto Ready3;
             
 		ChamberInsertShell:
-			TNT1 A 0 {
-				A_PlaysoundEx("Ironsights", "Auto");
-			}
+			TNT1 A 0 A_StartSound("Ironsights",CHAN_AUTO);
 			XG31 ABCD 1 {
 				PB_SetRoll(roll+1.0);
 				return A_DoPBWeaponAction(WRF_NOBOB|WRF_NOFIRE);
 			}
-			TNT1 A 0 A_PlaySoundEx("weapons/sgmvpump","Auto");
+			TNT1 A 0 A_StartSound("weapons/sgmvpump",CHAN_AUTO);
 			XG31 EF 1 {
 				PB_SetRoll(roll-2.0);
 				return A_DoPBWeaponAction(WRF_NOBOB|WRF_NOFIRE);
@@ -392,12 +420,12 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 			}
 			XG31 M 1 A_DoPBWeaponAction(WRF_NOBOB|WRF_NOFIRE);
 			XG31 N 1 {
-				A_PlaySoundEx("insertshell","Auto");
+				A_StartSound("insertshell",CHAN_AUTO);
 				return A_DoPBWeaponAction(WRF_NOBOB|WRF_NOFIRE);
 			}
 			XG31 OP 1 A_DoPBWeaponAction(WRF_NOBOB|WRF_NOFIRE);
 			XG31 Q 1 {
-				A_PlaySoundEx("weapons/sgpump","Auto");
+				A_StartSound("weapons/sgpump",CHAN_AUTO);
 				A_Giveinventory(invoker.ammo2.getClassName(),1);
 				A_Takeinventory(invoker.ammo1.getClassName(),1,TIF_NOTAKEINFINITE);
                 PB_SetChamberEmpty(false);
@@ -410,18 +438,24 @@ class PBX_ProSurvPSG : PBX_WeaponBase
         Unload:
 			TNT1 A 0 {
 				A_WeaponOffset(0,32);
-				A_PlaysoundEx("Ironsights", "Auto");
+				A_StartSound("Ironsights",CHAN_AUTO);
 			}
             TNT1 A 0 A_JumpIf(PB_GetMagEmpty(),"Ready3");
 			XG40 ABCDEFGH 1 A_DoPBWeaponAction();
 		RemoveBullets:
             TNT1 A 0 A_JumpIf(invoker.ammo2.amount <= 0,"FinishUnload");
 			TNT1 A 0 {
-				A_Takeinventory(invoker.ammo2.getclassname(),1);
-				A_Giveinventory(invoker.ammo1.getclassname(),1);
-				A_PlaysoundEx("H4SGCOCK", "Weapon");
+				PB_UnloadMag(
+					invoker.ammo2.getClassName(),
+					invoker.ammo1.getClassName(),
+					1,1,1,
+					invoker.ammo2.amount - 1,
+					"PB_SingleShell"
+				);
+         		A_StartSound("weapons/spas12/pumpback", CHAN_WEAPON);
 			}
 			XG40 IJKLLLL 1 A_DoPBWeaponAction();
+            TNT1 A 0 A_StartSound("weapons/spas12/pumpforward", CHAN_WEAPON);
 			XG40 MN 1 A_DoPBWeaponAction();
 			loop;
 

@@ -105,6 +105,15 @@ class PBXWeapons_ScopeHandler : EventHandler
         }
     }
 
+	override void UITick()
+	{
+        let plr = players[consoleplayer].mo;
+		if(!plr || !plr.FindInventory("Zoomed"))
+		{
+			mCanDraw = false;
+		}
+	}
+
 	override void RenderUnderlay(RenderEvent e)
 	{	
 		let phud = PB_Hud_ZS(StatusBar);

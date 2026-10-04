@@ -1,7 +1,7 @@
 [enu default]
 //////////////////////////// GENERAL ///////////////////////////////////////////////////////////////////////////////
 PBXWeapons_Settings                 = "\cg⟁\c- PBX - Weapons Settings";
-PBXWeapons_Version                  = "\cgPBX - Weapons Version: 3.2.0 - Energy Update";
+PBXWeapons_Version                  = "\cgPBX - Weapons Version: 3.3.0 - Energy Update";
 
 PBXWeapons_SmartScope_MaxHP         = "Max. HP: %u";
 PBXWeapons_SmartScope_CurrHP        = "HP: %u";
@@ -19,8 +19,8 @@ PBX_PlasmaBlaster_Pickup           = "Plasma Blaster (Slot-2)";
 PBX_PlasmaBlaster_Tag              = "UAC-UM-03∅ HP Plasma Blaster";
 PBX_PlasmaBlaster_Semi             = "\ckPrimary: \caSemi-Auto";
 PBX_PlasmaBlaster_Auto             = "\ckPrimary: \cxFull-Auto";
-PBX_PlasmaBlaster_Burst            = "\cgSecondary: \ctBurst-Fire";
-PBX_PlasmaBlaster_Charge           = "\cgSecondary: \cvCharge-Fire";
+PBX_PlasmaBlaster_Burst            = "\cjSecondary: \ctBurst-Fire";
+PBX_PlasmaBlaster_Charge           = "\cjSecondary: \cvCharge-Fire";
 
 // Prosurv Blaster
 PBX_ProsurvBlaster_Pickup          = "Blaster Pistol (Slot 2)";
@@ -60,8 +60,8 @@ PBX_PSG_Tip3 = "Recover any thrown \cfcharges\c- by pressing %s near them.";
 PBX_CSSG_PICKUP                     = "Commander Super Shotgun (Slot 3)";
 PBX_CSSG_TAG                        = "Commander Super Shotgun";
 
-PBX_CSSG_SINGLE                     = "Secondary: \cgSingle Barrel";
-PBX_CSSG_HOOK                       = "Secondary: \cuMeat Hook";
+PBX_CSSG_SINGLE                     = "\cjSecondary: \cgSingle Barrel";
+PBX_CSSG_HOOK                       = "\cjSecondary: \cuMeat Hook";
 
 PBX_CSSG_PAGE1_WW                   = "Go To CSSG Customization Wheel";
 PBX_CSSG_PAGE2_WW                   = "Go To Shell Type Wheel";
@@ -114,11 +114,22 @@ PBX_CSSGUpgrade_Tip1 = "You just picked up one of the many CSSG Upgrades.";
 PBX_CSSGUpgrade_Tip2 = "Gotta catch 'em all.";
 
 // SPAS 12
-PBX_SPAS12_PICKUP                   = "SPAS-12 (Slot 3)";
+PBX_SPAS12_PICKUP                   = "You got the \caSPAS-12! \c-(slot 3). Perfect for raptor hunting.";
 PBX_SPAS12_TAG                      = "Franchi SPAS-12 Combat Shotgun";
 
-PBX_SPAS12_ADS                      = "Secondary: \chZoom";
-PBX_SPAS12_DUALFIRE                 = "Secondary: \cgDouble Barrel";
+PBX_SPAS12_ADS                      = "\cjSecondary: \chZoom";
+PBX_SPAS12_DUALFIRE                 = "\cjSecondary: \cgDual Blast";
+
+PBX_SPAS12_MANUAL                   = "Switching to \cdSlug\c- shells\n(\cdManual\c- Pump)";
+PBX_SPAS12_SEMI                     = "Switching to \caBuckshot\c- shells\n(\caSemi-auto\c- Mode)";
+
+PBX_SPAS12_STOCK_FOLDED             = "Stock folded\n\carecoil, \c- \cdfaster reload\c-";
+PBX_SPAS12_STOCK_UNFOLDED           = "Stock unfolded";
+
+PBX_SPAS12_FOLD_STOCK_WW            = "Fold Stock";
+PBX_SPAS12_UNFOLD_STOCK_WW          = "Unfold Stock";
+PBX_SPAS12_MANUAL_WW                = "Switch to \cdSlug\c- (\cdManual\c- Pump)";
+PBX_SPAS12_SEMI_WW                  = "Switch to \caBuckshot\c- (\caSemi-auto\c- Mode)";
 
 // CryoSG
 PBX_CryoSG_Pickup                   = "Plasma Shotgun (Slot 3)";
@@ -136,9 +147,9 @@ PBX_CryoASG_PlasmaBlast             = "\ckPrimary: \cvPlasma Blast";
 PBX_CryoASG_FreezeBlast             = "\ckPrimary: \cyFreeze Blast";
 PBX_CryoASG_LightningArc            = "\ckPrimary: \cnLightning Arc";
 
-PBX_CryoASG_PlasmaBreath            = "\cgSecondary: \cvPlasma Breath";
-PBX_CryoASG_IceSpear                = "\cgSecondary: \cyIce Spear";
-PBX_CryoASG_StunBomb                = "\cgSecondary: \cnStun Bomb";
+PBX_CryoASG_PlasmaBreath            = "\cjSecondary: \cvPlasma Breath";
+PBX_CryoASG_IceSpear                = "\cjSecondary: \cyIce Spear";
+PBX_CryoASG_StunBomb                = "\cjSecondary: \cnStun Bomb";
 
 //////////////////////////// SLOT 4 ///////////////////////////////////////////////////////////////////////////////
 // BattleRifle 
@@ -160,8 +171,8 @@ PBX_NormalRifle_Akimbo              = "Akimbo Assault Rifle";
 // Metal Sniper
 PBX_MetalSniper_Pickup              = "Metal Sniper (Slot 4)";
 PBX_MetalSniper_Tag                 = "UAC-45 Heavy 'Metal' Sniper";
-PBX_MetalSniper_AimMode             = "Secondary: \cdZoom";
-PBX_MetalSniper_GrenMode            = "Secondary: \ciGrenade Launcher";
+PBX_MetalSniper_AimMode             = "\cjSecondary: \cdZoom";
+PBX_MetalSniper_GrenMode            = "\cjSecondary: \ciGrenade Launcher";
 
 PBX_MetalSniper_Resonance           = "\cjResonance Ammo \c-Mode";
 PBX_MetalSniper_Standard            = "\cd7.62x51mm Armor Piercing \c-Mode";
@@ -193,6 +204,8 @@ PBX_XM21_Tag                        = "UAC XM-21 'Ghost' Sniper Rifle";
 
 PBX_XM21_CloakOn                    = "\czCloak\c- Enabled";
 PBX_XM21_CloakOff                   = "\czCloak\c- Disabled ";
+
+PBX_XM21_CloakNoEnergy              = "Insufficient Energy";
 
 
 //////////////////////////// SLOT 5 ///////////////////////////////////////////////////////////////////////////////
@@ -248,8 +261,8 @@ PBX_ExcavatorUpgrade_Tip3 = "\ckThe Razorblade\c- mode launches a Razorblade tha
 PBX_CyberdemonRL_Pickup             = "You got the Cyberdemon's missile launcher! This thing's heavy... (Slot 6)";
 PBX_CyberdemonRL_Tag                = "Cyberdemon's Missile Launcher";
 
-PBX_CyberdemonRL_Triple             = "\cgSecondary: \cdTriple Burst";
-PBX_CyberdemonRL_Laser              = "\cgSecondary: \caLaser";
+PBX_CyberdemonRL_Triple             = "\cjSecondary: \cdTriple Burst";
+PBX_CyberdemonRL_Laser              = "\cjSecondary: \caLaser";
 
 // Mastermind CG
 PBX_MastermindCG_Pickup             = "You got the Mastermind's Chaingun! (Slot 6)";

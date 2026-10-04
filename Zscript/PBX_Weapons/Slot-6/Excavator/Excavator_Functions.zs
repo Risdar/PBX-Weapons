@@ -26,11 +26,15 @@ extend class PBX_Excavator
 
 	action void changeModeSprite(name bolamode, name sawmode)
     {
-        int mode = getExcavatorMode();
+        ExcMode mode = getExcavatorMode();
         if(mode == eSawMode)
-            A_SetWeaponSpriteEx(sawmode);
+		{
+			A_SetWeaponSpriteEx(sawmode);
+		}
         else
-            A_SetWeaponSpriteEx(bolamode);
+		{
+			A_SetWeaponSpriteEx(bolamode);
+		}
     }
 
 	action void checkUnloadedSprites(name unloadedBola,name unloadedSaw,name modeBola,name modeSaw)
@@ -43,7 +47,7 @@ extend class PBX_Excavator
 
 	action void EX_HandleCrosshair()
 	{
-		int mode = getExcavatorMode();
+		ExcMode mode = getExcavatorMode();
 		int crosshair = 75;
 		switch(mode)
 		{
@@ -62,7 +66,7 @@ extend class PBX_Excavator
 		return hasUpgraded || isDisabled || invoker.isUpgraded;
 	}
 
-	action int getTokens() 
+	action ExcMode getTokens() 
 	{
 		if(FindInventory("EX_Select_DrillMode")) 
 			return eDrillChargeMode;
@@ -78,7 +82,7 @@ extend class PBX_Excavator
 			return eCloseWheel;
 	}
 
-    action int getExcavatorMode()
+    action ExcMode getExcavatorMode()
 	{
 		return invoker.excavatorMode;
 	}
@@ -98,9 +102,11 @@ extend class PBX_Excavator
 		A_takeinventory("EX_Select_No",1);
 	}
 
+	// Tokens is cleared here
 	action void actualModeChange()
 	{
-		int tokens = getTokens();
+		ExcMode tokens = getTokens();
+		cleanmodetokens(); // Clear tokens
 
 		if(tokens != eSawMode)
 		{
@@ -113,19 +119,29 @@ extend class PBX_Excavator
 			invoker.ammo1 = Ammo(FindInventory("PB_Fuel"));
 		}
 		setExcavatorMode(tokens);
-		cleanmodetokens(); // Clear tokens
 	}
 
-	// This is called in Unload
+	// This is called in Unload, note that at this point the weapon special token
+	// still exists in the player's inventory
 	action state handleModeChange()
 	{
-		int tokens	= getTokens();
+		ExcMode tokens	= getTokens();
+
+		if(tokens <= 0)
+		{
+			cleanmodetokens();
+			return resolvestate(null);
+		}
 
 		if(PB_GetMagUnloaded() && (tokens != eSawMode))
+		{
 			return resolvestate("SwitchToBola");
+		}
 
 		else if(PB_GetMagUnloaded())
+		{
 			return resolvestate("SwitchToSaw");
+		}
 
 		return resolvestate(null);
 	}
@@ -136,8 +152,8 @@ extend class PBX_Excavator
 		A_ZoomFactor(1.0);
 
 		// Setup Variables
-		int mode	= getExcavatorMode();
-		int tokens	= getTokens();
+		ExcMode mode	= getExcavatorMode();
+		ExcMode tokens	= getTokens();
 
 		// Handlle Close Wheel
 		if(tokens == eCloseWheel)
@@ -172,7 +188,7 @@ extend class PBX_Excavator
 			setExcavatorMode(tokens);
 			A_Print("$PBX_Excavator_BolaMode");
 			cleanmodetokens();
-			return resolvestate("SwitchAnimation_Upgraded");
+			return resolvestate("SwitchAnimation.Upgraded");
 		}
 
 		// If it goes to Bola or Saw mode, go to unload
@@ -180,14 +196,14 @@ extend class PBX_Excavator
 		if(tokens == eBolaMode || tokens == eSawMode)
 		{
 			A_Print(tokens == eBolaMode ? "$PBX_Excavator_BolaMode" : "$PBX_Excavator_SawMode");
-			return resolvestate("Unload_Upgraded");
+			return resolvestate("Unload.Upgraded");
 		}
 		
 		// If its in saw mode and going to drop/drill
 		// go to unload so it plays the saw to bola animation
 		if(mode == eSawMode && (tokens == eDropShotMode || tokens == eDrillChargeMode))
 		{
-			return resolvestate("Unload_Upgraded");
+			return resolvestate("Unload.Upgraded");
 		}
 
 		// Handle drop/drill mode
@@ -200,7 +216,7 @@ extend class PBX_Excavator
 			// Play a sound and early return to the upgraded switch animation if its upgraded
 			if(isExcavatorUpgraded())
 			{
-				return resolvestate("SwitchAnimation_Upgraded");
+				return resolvestate("SwitchAnimation.Upgraded");
 			}
 			return resolvestate(null);
 		}
@@ -212,7 +228,7 @@ extend class PBX_Excavator
 
 	action state checkAltfire()
 	{
-		int mode = getExcavatorMode();
+		ExcMode mode = getExcavatorMode();
 
 		if(!isExcavatorUpgraded())
 			return resolvestate("ready3");
@@ -249,7 +265,7 @@ extend class PBX_Excavator
 
 	action void EX_FireWeapon(bool altfire = false)
 	{
-		int mode = getExcavatorMode();
+		ExcMode mode = getExcavatorMode();
 		string snd = "excavator/firedigger";
         string projectile = "ExcavatorDrill";
 

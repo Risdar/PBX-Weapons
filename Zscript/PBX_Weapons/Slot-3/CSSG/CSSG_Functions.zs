@@ -489,8 +489,9 @@ extend class PBX_CSSG
 			case Shell_WPSP: 	tounload = 'PBX_CSSG_WPShell';				break;
 			case Shell_Doom:	tounload = 'PBX_CSSG_TDoomShell';			break;
 			case Shell_Damn:	tounload = 'PBX_CSSG_DanmakuShell';			break;
-			case Shell_SubZ:	tounload = 'PBX_CSSG_HellFireShell';		break;
-			case Shell_SubZ:	tounload = 'PBX_CSSG_AcidShell';			break;
+			case Shell_SubZ:	tounload = 'PBX_CSSG_SubZeroShell';			break;
+			case Shell_HellF:	tounload = 'PBX_CSSG_HellFireShell';		break;
+			case Shell_Acid:	tounload = 'PBX_CSSG_AcidShell';			break;
 		}
 
 		PB_UnloadMag(
