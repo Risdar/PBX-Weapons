@@ -42,6 +42,7 @@ class PBX_XM21 : PBX_WeaponBase
         +WEAPON.NOAUTOAIM;
         +WEAPON.NOAUTOFIRE;
         +WEAPON.NO_AUTO_SWITCH;
+		+WEAPON.CHEATNOTWEAPON;
     }
 
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////

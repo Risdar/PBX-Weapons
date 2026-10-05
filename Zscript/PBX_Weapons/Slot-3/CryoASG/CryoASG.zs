@@ -46,6 +46,7 @@ class PBX_CryoASG : PBX_WeaponBase
         +WEAPON.NOAUTOAIM;
         +WEAPON.NOAUTOFIRE;
         +WEAPON.NO_AUTO_SWITCH;
+		+WEAPON.CHEATNOTWEAPON;
     }
 
 //////////////////////////// VARIABLES ////////////////////////////////////////////////////////////////////////////////////
