@@ -62,7 +62,7 @@ class PBX_XM21 : PBX_WeaponBase
 
     // Change these if you want to edit how strong the zoom modes are
 	const MAXZOOM = 12.0;
-	const MINZOOM  = 1.5;
+	const MINZOOM  = 1.25;
 
     enum SniperWheel
     {
@@ -357,12 +357,13 @@ class PBX_XM21 : PBX_WeaponBase
 
 //////////////////////////// FIRE ////////////////////////////////////////////////////////////////////////////////////
         BurstFireRecoil:
-            X21F C 3;
+            X21F C 1;
+            X21G A 2;
         Fire:
             TNT1 A 0 {
 				A_WeaponOffset(0, 32);
 				PB_SetRoll(0);
-				PB_HandleCrosshair(42);
+				PB_HandleCrosshair(39);
 				A_ZoomFactor(1.0);
 			}
 			TNT1 A 0 A_JumpIf(PB_GetZoom(), "FireADS");
@@ -376,8 +377,9 @@ class PBX_XM21 : PBX_WeaponBase
 			TNT1 A 0 A_JumpIf(invoker.mBurstCount < 3, "BurstFireRecoil");
 		BurstDone:
 			TNT1 A 0 { invoker.mBurstCount = 0; }
-            X21F C 3;
-            X21F CCCCCCC 1 {
+            X21F C 1;
+            X21G A 2;
+            X21G AAAAAAA 1 {
 				// Track button release
 				if (!(player.cmd.buttons & BT_ATTACK))
 					invoker.mSemiClear = true;
@@ -420,28 +422,31 @@ class PBX_XM21 : PBX_WeaponBase
 			TNT1 A 0 A_Jumpif(PB_GetZoom(),"ZoomOut");
 		ZoomIn:
             TNT1 A 0 {
-				PB_SetZoom(true);
+				A_ZoomFactor(1.25);
 				A_startsound("IronSights",CHAN_AUTO);
+				A_SetCrosshair(-1);
 			}
-            TNT1 A 0 A_ZoomFactor(1.5);
             X21A AB 1;
             TNT1 A 0 A_ZoomFactor(PBX_GetZoomLevel());
 			X21A C 1;
+			TNT1 A 0 PB_SetZoom(true);
             goto Ready2;
 
         ZoomOut:
-			TNT1 A 0 A_startsound("IronSights",CHAN_AUTO);
-            TNT1 A 0 A_ZoomFactor(1.5);
+			TNT1 A 0 {
+				A_startsound("IronSights",CHAN_AUTO);
+				A_ZoomFactor(1.0);
+				PB_SetZoom(false);
+			}
 		    X21A CB 1;
-			TNT1 A 0 PB_SetZoom(false);
 			X21A A 1;
 			goto Ready3;
 
 //////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////
         ReloadFromADS:
-			TNT1 A 0 PB_HandleCrosshair(42);
+			TNT1 A 0 PB_HandleCrosshair(39);
 			TNT1 A 0 A_startsound("IronSights",29);
-            TNT1 A 0 A_ZoomFactor(1.5);
+            TNT1 A 0 A_ZoomFactor(1.25);
 			X21A CB 1;
 			TNT1 A 0 PB_SetZoom(false);
 			X21A A 1;
