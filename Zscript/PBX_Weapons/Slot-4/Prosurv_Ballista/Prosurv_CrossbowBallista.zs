@@ -349,23 +349,17 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
 			TNT1 A 0 PB_HandleCrosshair(29);
             TNT1 A 0 A_JumpIf(getCrossbowMode() == DEMONIC_BOLT,"FireDemonic");
             TNT1 A 0 A_StartSound("weapons/ballista/firebolt",CHAN_AUTO);
-            CB_B A 1 ;
-            TNT1 A 0 FireWeapon();
-            CB_B B 1 ;
+            CB_B A 1 FireWeapon();
+            CB_B B 1 PB_WeaponRecoil(-1.5, 0);
         ContinueFire:
-            CB_B C 0 A_SetPitch(getCrossbowMode() == DEMONIC_BOLT ? -3.5 : -1.5 + pitch);
-            CB_B C 0 A_ZoomFactor(1.00);
-            CB_B C 1 A_SetPitch(+1.0 + pitch);
-            CB_B CC 1 A_SetPitch(+1.0 + pitch);
-            CB_B C 1 A_SetPitch(+0.5 + pitch);
+            CB_B C 4 A_ZoomFactor(1.00);
             CB_B C 2 A_DoPBWeaponAction(WRF_NOFIRE|WRF_NOBOB);
             goto Reload;
 
         FireDemonic:
             TNT1 A 0 A_StartSound("weapons/ballista/firedemonic",CHAN_AUTO);
-            CB_B D 1 BRIGHT;
-            TNT1 A 0 FireWeapon();
-            CB_B B 1 BRIGHT;
+            CB_B D 1 BRIGHT FireWeapon();
+            CB_B B 1 BRIGHT PB_WeaponRecoil(-3.5, 0);
             goto ContinueFire;
 
         Fire2:
@@ -373,23 +367,17 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
 			TNT1 A 0 A_SetCrosshair(-1);
             TNT1 A 0 A_JumpIf(getCrossbowMode() == DEMONIC_BOLT,"Fire2Demonic");
             TNT1 A 0 A_StartSound("weapons/ballista/firebolt",CHAN_AUTO);
-            CB_M A 1;
-            TNT1 A 0 FireWeapon();
-            CB_M B 1;
+            CB_M A 1 FireWeapon();
+            CB_M B 1 PB_WeaponRecoil(-1.5, 0);
         ContinueFire2:
-            CB_M C 0 A_SetPitch(-1.2 + pitch);
-            CB_M C 0 A_ZoomFactor(1.5);
-            CB_M C 1 A_SetPitch(+0.7 + pitch);
-            CB_M CC 1 A_SetPitch(+0.7 + pitch);
-            CB_M C 1 A_SetPitch(+0.2 + pitch);
+            CB_M C 4 A_ZoomFactor(1.25);
             CB_M C 2 A_DoPBWeaponAction(WRF_NOFIRE|WRF_NOBOB);
             goto Reload;
 
         Fire2Demonic:
             TNT1 A 0 A_StartSound("weapons/ballista/firedemonic",CHAN_AUTO);
-            CB_M D 1 BRIGHT;
-            TNT1 A 0 FireWeapon();
-            CB_M B 1 BRIGHT;
+            CB_M D 1 BRIGHT FireWeapon();
+            CB_M B 1 BRIGHT PB_WeaponRecoil(-3.5, 0);
             goto ContinueFire2;
             
         AltFire:
@@ -400,18 +388,20 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
             TNT1 A 0 A_StartSound("IronSights", 0);
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"ZoomOut");
         ZoomIn:
-            TNT1 A 0 A_ZoomFactor(1.5);
-            CB1T ABCD 1 setCrossbowSprite("CB0T","CB1T","CB2T","CB3T","CB4T");
             TNT1 A 0 {
                 PB_SetZoom(true);
+				A_ZoomFactor(1.25);
                 A_SetCrosshair(-1);
             }
+            CB1T ABCD 1 setCrossbowSprite("CB0T","CB1T","CB2T","CB3T","CB4T");
             Goto Ready2;
 
         ZoomOut:
-            TNT1 A 0 PB_HandleCrosshair(29);
+            TNT1 A 0 {
+				A_ZoomFactor(1.0);
+				PB_SetZoom(false);
+			}
             CB1T DCBA 1 setCrossbowSprite("CB0T","CB1T","CB2T","CB3T","CB4T");
-            TNT1 A 0 PB_SetZoom(false);
             TNT1 A 0 {
                 // Check if the player still has tokens, if yes then this means ZoomOut is called from the WeaponSpecial
                 if(checkTokens())
