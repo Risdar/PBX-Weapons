@@ -210,7 +210,7 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 
         Ready2:
 			TNT1 A 0 {
-				A_ZoomFactor(1.5);
+				A_ZoomFactor(1.25);
 				A_SetCrosshair(-1);
 				A_SetInventory("CantDoAction",0);
 			}
@@ -341,26 +341,27 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 			TNT1 A 0 A_StartSound("IronSights", 0);
 			TNT1 A 0 A_JumpIf(PB_GetZoom(),"Zoomout");
 		ZoomIn:
-			TNT1 A 0 A_ZoomFactor(1.5);
-			ASS1 ABC 1;
 			TNT1 A 0 {
-                PB_SetZoom(true);
+				A_ZoomFactor(1.25);
                 A_SetCrosshair(-1);
+				PB_SetZoom(true);
 			}
+			ASS1 ABC 1;
 			Goto Ready2;
 			
 		ZoomOut:
 			TNT1 A 0 {	
-				PB_HandleCrosshair(46);
+				PB_SetZoom(false);
 				A_ZoomFactor(1.0);
             }
 			ASS1 CBA 1;
-			TNT1 A 0 PB_SetZoom(false);
 			Goto Ready3;
         
         ReloadFromADS:
-            TNT1 A 0 PB_HandleCrosshair(46);
-			TNT1 A 0 PB_SetZoom(false);
+			TNT1 A 0 {
+				PB_SetZoom(false);
+				A_ZoomFactor(1.0);
+			}
 			ASS1 CBA 1;
         Reload:
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");

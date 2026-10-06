@@ -159,9 +159,9 @@ extend class PBX_ProSurvPSG
 		// Shared variables
 		double recoilX      = ads ? -0.62 : -1.64;
 		double recoilY      = ads ? +0.24 : +0.88;
-		double zoomA        = ads ?  1.4  :  0.98;
-		double zoomB        = ads ?  1.49 :  0.99;
-		double zoomC        = ads ?  1.50 :  1.0 ;
+		double zoomA        = ads ?  1.2  :  0.98;
+		double zoomB        = ads ?  1.24 :  0.99;
+		double zoomC        = ads ?  1.25 :  1.0 ;
 		int    wadOfsY      = ads ?    -3 :    -4;
 
 		switch(tic)
