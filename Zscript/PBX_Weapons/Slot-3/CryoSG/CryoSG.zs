@@ -285,9 +285,8 @@ class PBX_CryoSG : PBX_WeaponBase
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"Fire2");
 		Fire1Actual:
             TNT1 A 0 PB_JumpIfNoAmmo();
-			FZGF A 1 BRIGHT;
+			FZGF A 1 BRIGHT FireWeapon(1);
 			FZGF B 1 BRIGHT PB_WeaponRecoil(-1.65,0);
-            TNT1 A 0 FireWeapon(1);
 			FZGF CDEF 1 PB_WeaponRecoil(-1.65,0);
             TNT1 A 0 PB_SetReloading(true);
 		Pump:
@@ -320,10 +319,9 @@ class PBX_CryoSG : PBX_WeaponBase
 			}
 		Fire2Actual:
             TNT1 A 0 PB_JumpIfNoAmmo();
-            FZGA F 1 BRIGHT;
-            TNT1 A 0 FireWeapon(1);
+            FZGA F 1 BRIGHT FireWeapon(1);
 			FZGA G 1 BRIGHT PB_WeaponRecoil(-1.5,0);
-			TNT1 A 0 A_ZoomFactor(1.5);
+			TNT1 A 0 A_ZoomFactor(1.25);
 			FZGA HIJ 1;
             TNT1 A 0 PB_SetReloading(true);
 			FZGA E 4;
@@ -355,7 +353,7 @@ class PBX_CryoSG : PBX_WeaponBase
 			TNT1 A 0 A_StartSound("IronSights", CHAN_WEAPON);
 			TNT1 A 0 A_JumpIf(PB_GetZoom(),"Zoomout");
 		ZoomIn:
-			TNT1 A 0 A_ZoomFactor(1.5);
+			TNT1 A 0 A_ZoomFactor(1.25);
 			FZGA ABCDE 1;
 			TNT1 A 0 {
                 PB_SetZoom(true);
@@ -376,7 +374,7 @@ class PBX_CryoSG : PBX_WeaponBase
         ReloadFromADS:
 			TNT1 A 0 PB_HandleCrosshair(42);
 			TNT1 A 0 A_startsound("IronSights",29);
-            TNT1 A 0 A_ZoomFactor(1.5);
+            TNT1 A 0 A_ZoomFactor(1.25);
 			FZGA DCB 1;
 			TNT1 A 0 PB_SetZoom(false);
 			FZGA A 1;

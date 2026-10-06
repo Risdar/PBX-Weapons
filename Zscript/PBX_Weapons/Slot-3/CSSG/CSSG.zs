@@ -79,7 +79,7 @@ Class PBX_CSSG : PBX_WeaponBase
 			TNT1 A 0 PB_RespectIfNeeded();
 		SelectAnimation:
 			TNT1 A 0 A_startsound("CLIPINSS",8);
-			C0SU ABCD 1;
+			C0SU ABEF 1;
 			goto Ready3;
 		
 		Deselect:
@@ -87,7 +87,7 @@ Class PBX_CSSG : PBX_WeaponBase
 				A_startsound("weapons/changing",60);
 				CSSG_CutMeathook();
 			}
-			C0SU DCBA 1;
+			C0SU FEBA 1;
 			TNT1 A 0 A_Lower(120);
 			wait;
 			
@@ -209,16 +209,15 @@ Class PBX_CSSG : PBX_WeaponBase
 				PB_GunSmoke(-2,0,-1);
 				A_FireProjectile("ShotgunWad",random(-2,2),0,3,-4,FPF_NOAUTOAIM,random(-2,2));
 			}
-			C0FH C 1 PB_GunSmoke(-2,0,-1);
+			C0FH G 1 PB_GunSmoke(-2,0,-1);
 			TNT1 A 0 A_ZoomFactor(0.975);
-			C0FH D 1;
+			C0FH F 1;
 			TNT1 A 0 A_ZoomFactor(0.985);
 			C0FH E 1;
 			TNT1 A 0 A_ZoomFactor(0.995);
-			C0FH F 1;
+			C0FH D 1;
 			TNT1 A 0 A_ZoomFactor(1.0);
-			C0FH G 1;
-			C0FH FEDC 1;
+			C0FH C 1;
 			C0ID AA 1;
 			goto ready;
 		LeftFire:
@@ -234,16 +233,15 @@ Class PBX_CSSG : PBX_WeaponBase
 				PB_GunSmoke(2,0,-1);
 				A_FireProjectile("ShotgunWad",random(-2,2),0,-3,-4,FPF_NOAUTOAIM,random(-2,2));
 			}
-			C0FH J 1 PB_GunSmoke(2,0,-1);
+			C0FH N 1 PB_GunSmoke(2,0,-1);
 			TNT1 A 0 A_ZoomFactor(0.975);
-			C0FH K 1;
+			C0FH M 1;
 			TNT1 A 0 A_ZoomFactor(0.985);
 			C0FH L 1;
 			TNT1 A 0 A_ZoomFactor(0.995);
-			C0FH M 1;
+			C0FH K 1;
 			TNT1 A 0 A_ZoomFactor(1.0);
-			C0FH N 1;
-			C0FH MLKJ 1;
+			C0FH J 1;
 			C0ID AA 1;
 			goto reload;
 		

@@ -190,17 +190,16 @@ class PBX_SPAS12 : PBX_WeaponBase
         bool isZoom         = PB_GetZoom();
         bool isSemi         = SP12_IsSemiAuto();
         bool isStockFolded  =     SP12_IsStockFolded();
-        name casing         = isSemi ? "ShotgunCasingRedLive" : "ShotgunCasingGreenLive";
+        name casing         = isSemi ? "ShotgunCasing" : "ShotgunCasing2";
 
         switch(tic)
         {
             case 1:
                 A_AlertMonsters();
 				A_FireProjectile("ShotgunWad", random(-2,2), 0, random(-2,2), -3, FPF_NOAUTOAIM, random(-2,2));
-                SP12_HandleCrosshair();
 
-                // If stock is folded, increase accuracy by 1.0, if zoomed increase even further
-                if(isStockFolded)
+                // If stock is unfolded, increase accuracy by 1.0, if zoomed increase even further
+                if(!isStockFolded)
                 {
                     ofs -= 1.0;
                 }
@@ -211,6 +210,7 @@ class PBX_SPAS12 : PBX_WeaponBase
                 }
                 else
                 {
+					SP12_HandleCrosshair();
 				    PB_FireOffset();
                     SP12_SetSprite('SPAA','SPBA','SPAA','SPBA');
                 }
@@ -253,7 +253,7 @@ class PBX_SPAS12 : PBX_WeaponBase
             case 5:
                 PB_SpawnCasing(casing,15,-5,26,0,3,3);
 				if(!PB_GetMagEmpty()) PB_SetChamberEmpty(false);
-                A_ZoomFactor(PB_GetZoom() ? 1.48 : 1.0);
+                A_ZoomFactor(PB_GetZoom() ? 1.25 : 1.0);
                 break;
 
         }
@@ -264,12 +264,12 @@ class PBX_SPAS12 : PBX_WeaponBase
         double ofs          = 4.0; //Standard offset for firing
         bool isSemi         = SP12_IsSemiAuto();
         bool isStockFolded  = SP12_IsStockFolded();
-        name casing         = isSemi ? "ShotgunCasingRedLive" : "ShotgunCasingGreenLive";
+        name casing         = isSemi ? "ShotgunCasing" : "ShotgunCasing2";
 
         SPAS_Fire(1);
 
-        // If stock is folded, increase accuracy by 1.0
-        if(isStockFolded)
+        // If stock is unfolded, increase accuracy by 1.0
+        if(!isStockFolded)
         {
             ofs -= 1.0;
         }
@@ -459,7 +459,7 @@ class PBX_SPAS12 : PBX_WeaponBase
         Ready2:
             TNT1 A 0 {
 				PB_SetRoll(0);
-                A_ZoomFactor(1.5);
+                A_ZoomFactor(1.25);
                 A_SetCrosshair(-1);
 				A_SetInventory("CantDoAction",0);
             }
@@ -512,17 +512,17 @@ class PBX_SPAS12 : PBX_WeaponBase
         AltFire:
 			TNT1 A 0 SPAS_HandleAlt();
         ZoomIn:
-            SPA8 ABC 1 SP12_SetSprite('SPA8','SPB8','SPA8','SPB8');
             TNT1 A 0 {
-                A_ZoomFactor(1.5);
-                PB_SetZoom(true);
+                A_ZoomFactor(1.25);
                 A_SetCrosshair(-1);
+				PB_SetZoom(true);
 			}
+            SPA8 ABC 1 SP12_SetSprite('SPA8','SPB8','SPA8','SPB8');
             Goto Ready2;
 
         Zoomout:
             TNT1 A 0 {	
-				SP12_HandleCrosshair();
+				A_ZoomFactor(1.0);
                 PB_SetZoom(false);
             }
             SPA8 CBA 1 SP12_SetSprite('SPA8','SPB8','SPA8','SPB8');
@@ -542,16 +542,18 @@ class PBX_SPAS12 : PBX_WeaponBase
             "####" A 0 A_StartSound("weapons/spas12/pumpback", CHAN_AUTO); 
             "####" IJ 1;
             "####" K 1;
+            "####" A 0 SPAS_Fire(5);
             "####" L 10;
             "####" MN 1;
             "####" A 0 A_StartSound("weapons/spas12/pumpforward", CHAN_AUTO); 
             "####" OPQR 1;
-            "####" A 0 SPAS_Fire(5);
             Goto PumpEnd;
 
         FireSemi:
-            SPAA W 5 SP12_SetSprite('SPAA','SPBA','SPAA','SPBA');
-            "####" WWW 1 PB_ReadyFire(ads:false);
+            "####" A 0 SPAS_Fire(5);
+            SPAA W 1 SP12_SetSprite('SPAA','SPBA','SPAA','SPBA');
+            SPAN A 4 SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
+            "####" AAA 1 PB_ReadyFire(ads:false);
             Goto Ready3;
 
         Fire:
@@ -584,10 +586,10 @@ class PBX_SPAS12 : PBX_WeaponBase
             }
             "####" A 0 A_StartSound("weapons/spas12/pumpback", CHAN_AUTO); 
             "####" IJ 1;
+            "####" A 0 SPAS_Fire(5);
             "####" KLMN 1;
             "####" A 0 A_StartSound("weapons/spas12/pumpforward", CHAN_AUTO); 
             "####" OPQR 1;
-            "####" A 0 SPAS_Fire(5);
 		PumpEnd:
             SPAN GFEDCB 1 SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
             SPAA FGHI 1 {
@@ -613,18 +615,18 @@ class PBX_SPAS12 : PBX_WeaponBase
 			TNT1 A 0 PB_jumpIfNoAmmo();
             SPA8 D 1 Bright SPAS_Fire(1);
             "####" E 1;
+			"####" A 0 A_ZoomFactor(1.25);
 		    "####" A 0 A_JumpIf(SP12_IsSemiAuto(),"Fire2Semi");
             "####" FGC 1;
 		Pump2:
-            SPA8 GHIIJJ 1 SP12_SetSprite('SPA8','SPB8','SPA8','SPB8');
             "####" A 0 A_StartSound("weapons/spas12/pump", CHAN_AUTO);
+            SPA8 GHIIJJJJJ 1 SP12_SetSprite('SPA8','SPB8','SPA8','SPB8');
 		    "####" IH 1 SPAS_Fire(5);
             "####" HGG 1 {
 				if(JustPressed(BT_ATTACK) && invoker.ammo2.amount > 0) return ResolveState("Fire2");
                 return ResolveState(null);
 			}
             TNT1 A 0 {
-                A_ZoomFactor(1.5);
 				A_SetInventory("CantDoAction",0);
 				return PB_ReadyFire(ads:true);
 			}
@@ -634,7 +636,7 @@ class PBX_SPAS12 : PBX_WeaponBase
             TNT1 A 0 {	
 				SP12_HandleCrosshair();
                 A_startsound("IronSights",29);
-                A_ZoomFactor(1.5);
+                A_ZoomFactor(1.25);
             }
             SPA8 CB 1 SP12_SetSprite('SPA8','SPB8','SPA8','SPB8');
 			"####" A 0 PB_SetZoom(false);

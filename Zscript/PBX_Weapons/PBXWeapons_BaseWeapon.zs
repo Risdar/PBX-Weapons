@@ -65,7 +65,6 @@ class PBX_WeaponBase : PB_WeaponBase abstract
         A_SetInventory("PBX_Infrared", 0);
         A_WeaponOffset(0,32);
         PB_SetRoll(0);
-        A_SetCrosshair(-1);
         A_StopSound(CHAN_WEAPON);
         PB_ClearDualWield();
     }

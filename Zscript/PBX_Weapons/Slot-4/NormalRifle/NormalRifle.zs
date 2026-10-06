@@ -171,11 +171,11 @@ Class PBX_NormalRifle : PBX_WeaponBase
         FireLoop:
             TNT1 A 0 PB_JumpIfNoAmmo();
             RIFL D 1 BRIGHT fireweapon(1);
-            RIFL G 1        fireweapon(2);
-            RIFL E 1        fireweapon(3);
+            RIFL E 1        fireweapon(2);
+            RIFL F 1        fireweapon(3);
 			TNT1 A 0 A_JumpIf(getBurstCount() < 3 && getBurst(), "FireLoop");
         FireEnd:
-            RIFL F 1        fireweapon(4); 
+            RIFL G 1        fireweapon(4); 
 			TNT1 A 0 setBurstCount(0);
             TNT1 A 0 {
                 if(!getBurst()) PB_Refire();
@@ -266,9 +266,9 @@ Class PBX_NormalRifle : PBX_WeaponBase
                 PB_SetZoom(true);
                 A_startsound("IronSights",CHAN_AUTO);
                 A_SetCrosshair(-1);
+				A_ZoomFactor(1.25);
             }
             RIFZ ABC 1;
-            TNT1 A 0 A_ZoomFactor(2.0);
             RIFZ D 2;
             Goto Ready2;
             
@@ -276,9 +276,9 @@ Class PBX_NormalRifle : PBX_WeaponBase
             TNT1 A 0 {
                 PB_SetZoom(false);
                 A_startsound("IronSights",CHAN_AUTO);
-			    PB_HandleCrosshair(55);
             }
-            RIFZ BA 1 A_ZoomFactor(1.0);
+            RIFZ CBA 1 A_ZoomFactor(1.0);
+			TNT1 A 0 PB_HandleCrosshair(55);
             Goto Ready3;
 
         Weaponspecial:

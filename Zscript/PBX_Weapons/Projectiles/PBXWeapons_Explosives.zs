@@ -629,7 +629,6 @@ class CRL_Rocket : PB_ProjectileAlt
         Scale 1.0;
         DamageType "Explosive";
         Decal "Scorch";
-        RenderStyle "Add";
         Radius 10;
         Height 8;
         Speed 90;

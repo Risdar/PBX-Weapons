@@ -52,7 +52,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 	// Change these if you want to edit how strong the zoom modes are
 	const MAGAZINE_SIZE = 15;
 	const MAXZOOM = 9.0;
-	const MINZOOM  = 1.5;
+	const MINZOOM  = 1.25;
 	
 //////////////////////////// OVERRIDES ////////////////////////////////////////////////////////////////////////////////////
 	override void postbeginplay()
@@ -244,7 +244,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 		BurstDone:
 			TNT1 A 0 { invoker.mBurstCount = 0; }
 			BR45 DEF 1;
-			BR45 FGH 1 {
+			BR45 GHB 1 {
 				// Track button release
 				if (!(player.cmd.buttons & BT_ATTACK))
 					invoker.mSemiClear = true;
@@ -296,17 +296,19 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
             TNT1 A 0 {
 				PB_SetZoom(true);
 				A_startsound("IronSights",CHAN_AUTO);
+				A_ZoomFactor(1.25);
 			}
-            TNT1 A 0 A_ZoomFactor(1.5);
             BR4Z AB 1;
             TNT1 A 0 A_ZoomFactor(PBX_GetZoomLevel());
 			BR4Z C 1;
             goto Ready2;
         ZoomOut:
-			TNT1 A 0 A_startsound("IronSights",CHAN_AUTO);
-            TNT1 A 0 A_ZoomFactor(1.5);
+			TNT1 A 0 {
+				A_startsound("IronSights",CHAN_AUTO);
+				A_ZoomFactor(1.0);
+				PB_SetZoom(false);
+			}
 			BR4Z CB 1;
-			TNT1 A 0 PB_SetZoom(false);
 			BR4Z A 1;
 			goto Ready3;
 
@@ -314,9 +316,9 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 		ReloadFromADS:
 			TNT1 A 0 PB_HandleCrosshair(42);
 			TNT1 A 0 A_startsound("IronSights",CHAN_AUTO);
-            TNT1 A 0 A_ZoomFactor(1.5);
-			BR4Z CB 1;
+            TNT1 A 0 A_ZoomFactor(1.0);
 			TNT1 A 0 PB_SetZoom(false);
+			BR4Z CB 1;
 			BR4Z A 1;
 		Reload:
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");

@@ -120,8 +120,8 @@ extend class PBX_NormalRifle
     action void fireweapon(int tic)
     {
         bool ads     = PB_GetZoom();
-        double zoomA = ads ? 1.9 : 0.98;
-        double zoomB = ads ? 2.0 : 1.0;
+        double zoomA = ads ? 1.24 : 0.98;
+        double zoomB = ads ? 1.25 : 1.0;
 
         switch(tic)
         {
@@ -156,7 +156,7 @@ extend class PBX_NormalRifle
 
             // Everything below here is not called by ADS
             case 3:
-                PB_WeaponRecoil(+1.0,0);
+                PB_WeaponRecoil(-0.5,0);
                 break;
 
             case 4:

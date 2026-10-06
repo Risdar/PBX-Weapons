@@ -90,7 +90,7 @@ class PBX_CyberdemonRL : PBX_WeaponBase
 			//Tic 2
 			case 2:
 				A_ZoomFactor(1.0);
-				PB_WeaponRecoil(-2,frandom[sfx](-2,2));
+				PB_WeaponRecoil(-4,frandom[sfx](-4,4));
 				break;
 		}
 	}
@@ -212,11 +212,8 @@ class PBX_CyberdemonRL : PBX_WeaponBase
             TNT1 AAAA 0;
 			CYBF A 1 BRIGHT CyberRl_FireWeapon(1);
 			CYBF B 1 BRIGHT CyberRl_FireWeapon(2);
-			CYBF C 1 PB_WeaponRecoil(0,-1);
-			CYBF D 1 BRIGHT;
-			CYBF D 1 BRIGHT PB_WeaponRecoil(0,+0.6);
+			CYBF CDD 1 BRIGHT;
 			CYBF EFG 1 BRIGHT {
-				PB_WeaponRecoil(0,+0.8);
 				if(JustPressed(BT_ATTACK)) return ResolveState("Fire");
                 return A_DoPBWeaponAction(WRF_ALLOWRELOAD | WRF_NOPRIMARY);
 			}
@@ -245,17 +242,14 @@ class PBX_CyberdemonRL : PBX_WeaponBase
             TNT1 A 0 PBX_HandleDurability(DURABILITY_NAME,AMMO_PER_DURABILITY);
 			CYBF A 1 Bright CyberRl_FireWeapon(1);
 			CYBF B 1 Bright CyberRl_FireWeapon(2);
-			TNT1 A 0 A_JumpIf(invoker.shotCount == 4, "FinishLoop");
-			CYBF C 1 PB_WeaponRecoil(0,-1);
-			CYBF D 1 Bright PB_WeaponRecoil(0,+0.6);
-			CYBF EFG 1 Bright PB_WeaponRecoil(0,+0.8);
 			TNT1 A 0 { invoker.shotCount++; }
+			TNT1 A 0 A_JumpIf(invoker.shotCount == 4, "FinishLoop");
+			CYBF CDEFG 1 Bright;
 			TNT1 A 0 A_JumpIf(invoker.shotCount < 4, "AltFireLoop");
 		FinishLoop:
-			CYBF C 1 PB_WeaponRecoil(0,-1);
+			CYBF C 1 Bright;
 			CYBF D 3 Bright;
-			CYBF D 1 Bright PB_WeaponRecoil(0,+0.6);
-			CYBF EEFFGG 1 Bright PB_WeaponRecoil(0,+0.4);
+			CYBF DEEFFGG 1 Bright;
 			CYBF HHJ 1 Bright;
 			CYBF IJIJIJ 1 Bright;
 			TNT1 A 0 PB_ReFire();

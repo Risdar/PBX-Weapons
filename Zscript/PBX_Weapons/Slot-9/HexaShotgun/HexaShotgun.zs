@@ -96,10 +96,10 @@ class PBX_HexaShotgun : PBX_WeaponBase
             HSR3 G 14 A_DoPBWeaponAction();
         ContinueRespect:
             HSR3 HIJ 1 A_DoPBWeaponAction();
-            HSR2 OPQRSTUVWX 1 A_DoPBWeaponAction();
-            HSR2 YYYZ 1 A_DoPBWeaponAction();
-            HSR3 A 1 A_DoPBWeaponAction();
+            HSR2 OPQRSTUV 1 A_DoPBWeaponAction();
             TNT1 A 0 A_StartSound("QSGCLSE",CHAN_WEAPON,CHANF_OVERLAP);
+            HSR2 WXYYYZ 1 A_DoPBWeaponAction();
+            HSR3 A 1 A_DoPBWeaponAction();
             // Blink
             TNT1 A 0 A_StartSound("QSGCHRG",CHAN_WEAPON,CHANF_OVERLAP);
             HSGF U 10 A_DoPBWeaponAction();
@@ -153,12 +153,7 @@ class PBX_HexaShotgun : PBX_WeaponBase
 //////////////////////////// FIRE ////////////////////////////////////////////////////////////////////////////////////
         Fire:
             TNT1 A 0 PB_JumpIfNoAmmo(min:BARREL_CAPACITY);
-            TNT1 A 0 A_ZoomFactor(1.5);
-            TNT1 A 0 A_Recoil3D(20);
-            HSGF A 1 BRIGHT; 
-            TNT1 A 0 A_ZoomFactor(1.4);
-            HSGF B 1 BRIGHT;
-            TNT1 A 0 {
+            HSGF A 1 BRIGHT {
                 A_StartSound("QSGFIRE1", CHAN_WEAPON, CHANF_DEFAULT, 1.0);
                 A_TakeInventory(invoker.ammo2.getclassname(),BARREL_CAPACITY);
                 A_FireCustomMissile("YellowFlareSpawn", 15, 0, 0, 0);
@@ -167,19 +162,24 @@ class PBX_HexaShotgun : PBX_WeaponBase
                 PB_FireBullets("PB_8GAPellet", 72,7, 0, 0, 5);
                 A_FlashOverlay();
                 PB_IncrementHeat(20);
+				A_ZoomFactor(0.7);
+				A_Recoil3D(20);
             }
-            TNT1 A 0 PB_WeaponRecoil(0,-10);
+            HSGF B 1 BRIGHT {
+				A_ZoomFactor(0.8);
+				PB_WeaponRecoil(-10,-5);
+			}
             TNT1 A 0 A_ZoomFactor(1.3);
-            HSGF C 1 BRIGHT;
-            TNT1 A 0 A_ZoomFactor(1.2);
-            TNT1 A 0 PB_WeaponRecoil(0,-8);
-            TNT1 A 0 A_ZoomFactor(1.00);
-            HSGF DE 1 PB_WeaponRecoil(0,-4);
-            HSGF EEEFGH 1 PB_WeaponRecoil(0,+1);
-            HSGF IJKLMNOPQR 1 PB_WeaponRecoil(0,+2);
+            HSGF C 1 BRIGHT {
+				A_ZoomFactor(0.9);
+				PB_WeaponRecoil(-8,-4);
+			}
+            TNT1 A 0 A_ZoomFactor(1.0);
+            HSGF DE 1 PB_WeaponRecoil(-4,-2);
+            HSGF EEEFGH 1;
+            HSGF IJKLMNOPQR 1;
             HSGF S 1;
             HSGF T 1 A_WeaponOffset(0,34);
-            QSGF AAA 0 PB_WeaponRecoil(0,+0.5);
             HSGF TT 1 A_WeaponOffset(0,33);
             HSGF T 1 A_WeaponOffset(0,32);
             HSGF T 5 A_DoPBWeaponAction(WRF_NOFIRE|WRF_NOBOB);
@@ -222,25 +222,25 @@ class PBX_HexaShotgun : PBX_WeaponBase
             TNT1 A 0 {
                 if(!PB_GetMagUnloaded())
                 {
-                    PB_SpawnCasing("ShotgunCasing",14,-3,28,-1,4,4);
-                    PB_SpawnCasing("ShotgunCasing",14,-3,32,-1,4,4);
-                    PB_SpawnCasing("ShotgunCasing",15,3,28,-1,4,4);
-                    PB_SpawnCasing("ShotgunCasing",15,3,32,-1,4,4);
-                    PB_SpawnCasing("ShotgunCasing",16,3,28,-1,4,4);
-                    PB_SpawnCasing("ShotgunCasing",16,3,32,-1,4,4);
+                    PB_SpawnCasing("ShotgunCasing",14,-3,28,-1,-4,4);
+                    PB_SpawnCasing("ShotgunCasing",14,-3,32,-1,-4,4);
+                    PB_SpawnCasing("ShotgunCasing",15,3,28,-1,-4,4);
+                    PB_SpawnCasing("ShotgunCasing",15,3,32,-1,-4,4);
+                    PB_SpawnCasing("ShotgunCasing",16,3,28,-1,-4,4);
+                    PB_SpawnCasing("ShotgunCasing",16,3,32,-1,-4,4);
                 }
             }
             HSGR S 2 A_WeaponOffset(9,38);
             HSGR S 1 A_WeaponOffset(5,35);
             HSGR S 1 A_WeaponOffset(2,33);
             HSGR S 2 A_WeaponOffset(0,32);
-            HSGR TUVWWXX 1;
+            HSGR TUVWW 1;
             TNT1 A 0 {
                 A_StartSound("QSGIN",CHAN_WEAPON,CHANF_OVERLAP);
                 A_TakeInventory(invoker.ammo1.getclassname(),2);
                 A_GiveInventory(invoker.ammo2.getclassname(),2);
             }
-            HSGR YZ 1;
+            HSGR XXYZ 1;
         Insert4:
             HSR2 A 1;
             HSR2 A 1 A_WeaponOffset(-2,31);
@@ -248,30 +248,31 @@ class PBX_HexaShotgun : PBX_WeaponBase
             HSR2 A 2 A_WeaponOffset(-4,33);
             HSR2 A 1 A_WeaponOffset(-2,33);
             HSR2 A 2 A_WeaponOffset(0,32);
-            HSR2 BCDEEFF 1;
+            HSR2 BCDEE 1;
             TNT1 A 0 {
                 A_StartSound("QSGIN",CHAN_WEAPON,CHANF_OVERLAP);
                 A_TakeInventory(invoker.ammo1.getclassname(),2);
                 A_GiveInventory(invoker.ammo2.getclassname(),2);
             }
-            HSR2 GH 1;
+            HSR2 FFGH 1;
             HSR2 I 1 A_WeaponOffset(-1,30);
             HSR2 I 1 A_WeaponOffset(-2,29);
             HSR2 I 3 A_WeaponOffset(-4,27);
             HSR2 I 1 A_WeaponOffset(-3,28);
             HSR2 I 2 A_WeaponOffset(-1,31);
         Insert6:
-            HSR2 JKLMMNN 1 A_WeaponOffset(0,32);
+            HSR2 JKLMM 1 A_WeaponOffset(0,32);
             TNT1 A 0 {
                 A_StartSound("QSGIN",CHAN_WEAPON,CHANF_OVERLAP);
                 A_TakeInventory(invoker.ammo1.getclassname(),2);
                 A_GiveInventory(invoker.ammo2.getclassname(),2);
             }
+            HSR2 NN 1;
         FinishReload:
-            HSR2 OPQRSTUVWX 1;
-            HSR2 YYYZ 1;
-            HSR3 A 1;
+            HSR2 OPQRSTUV 1;
             TNT1 A 0 A_StartSound("QSGCLSE",CHAN_WEAPON,CHANF_OVERLAP);
+            HSR2 WXYYYZ 1;
+            HSR3 A 1;
             Goto Ready3;
         
 //////////////////////////// UNLOAD ////////////////////////////////////////////////////////////////////////////////////
@@ -284,10 +285,10 @@ class PBX_HexaShotgun : PBX_WeaponBase
             TNT1 A 0 PB_UnloadMag(invoker.ammo2.getclassname(),invoker.ammo1.getclassname(),1,1,1,0,"PB_SingleShell");
         FinishUnload:
             TNT1 A 19;
-            HSR2 QRSTUVWX 1;
-            HSR2 YYYZ 1;
-            HSR3 A 1;
+            HSR2 QRSTUV 1;
             TNT1 A 0 A_StartSound("QSGCLSE",CHAN_WEAPON,CHANF_OVERLAP);
+            HSR2 WXYYYZ 1;
+            HSR3 A 1;
             goto Ready3;
 
 //////////////////////////// FLASH STATES ////////////////////////////////////////////////////////////////////////////////////

@@ -31,6 +31,7 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
         +WEAPON.NOAUTOAIM;
         +WEAPON.NOAUTOFIRE;
         +WEAPON.NO_AUTO_SWITCH;
+		+WEAPON.CHEATNOTWEAPON;
     }
 
     bool blasterPrimary;

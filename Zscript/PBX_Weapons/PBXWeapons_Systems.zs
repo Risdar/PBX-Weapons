@@ -212,6 +212,7 @@ Class PBXWeapons_CheatsHandler : Eventhandler
 			pm.giveinventory("DragonBreathUpgrade",1);
 			pm.giveinventory("DanmakuUpgrade",1);
 			pm.giveinventory("SubZeroUpgrade",1);
+			console.printf("[PBX] Gave all CSSG shells");
 		}
 		if (e.Name ~== "PBX_AllUpgrades")
 		{
@@ -236,7 +237,12 @@ Class PBXWeapons_CheatsHandler : Eventhandler
 
 			// Excavator Upgrade
 			pm.giveinventory("PBX_ExcavatorUpgrade",1);
+			
+			// Extermination Unmaker
+			pm.giveinventory("ArtifactIncinerator",1);
+			pm.giveinventory("ArtifactLightning",1);
 
+			console.printf("[PBX] Gave all weapon upgrades");
 		}
 		
 	}

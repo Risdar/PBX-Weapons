@@ -200,18 +200,21 @@ Class PBX_MetalSniper : PBX_WeaponBase
                 invoker.wheelinfo = "MS_Zoomed_Wheel";
                 PB_SetZoom(true);
                 A_StartSound("IronSights",CHAN_AUTO);
+				A_SetCrosshair(-1);
+				A_ZoomFactor(1.25);
             }
-            TNT1 A 0 A_ZoomFactor(1.5);
             MSNA ABC 1;
             TNT1 A 0 A_ZoomFactor(PBX_GetZoomLevel());
             MSNA DEF 1;
             goto Ready2;
 
         ZoomOut:
-            TNT1 A 0 A_StartSound("IronSights",CHAN_AUTO);
-            TNT1 A 0 A_ZoomFactor(1.5);
+            TNT1 A 0 {
+				A_StartSound("IronSights",CHAN_AUTO);
+				A_ZoomFactor(1.0);
+				PB_SetZoom(false);
+			}
             MSNA FED 1;
-            TNT1 A 0 PB_SetZoom(false);
             MSNA CBA 1;
             goto Ready3;
 

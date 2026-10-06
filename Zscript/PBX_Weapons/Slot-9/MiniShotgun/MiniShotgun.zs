@@ -72,7 +72,7 @@ class PBX_MiniShotgun : PBX_WeaponBase
         A_GunFlash();
         PB_IncrementHeat();
         PB_FireOffset();
-        A_StartSound("SSHFIRE",CHAN_5,CHANF_OVERLAP);
+        A_StartSound("SSHFIRE",CHAN_WEAPON);
     }
 
     action void fireShells()
@@ -213,7 +213,7 @@ class PBX_MiniShotgun : PBX_WeaponBase
             }
         ReadyToFire2:
             MSGI ABCD 1 {
-                A_StartSound("weapons/SpinSpin/MINISHOTSPI", CHAN_WEAPON, CHANF_LOOP);
+                A_StartSound("weapons/SpinSpin/MINISHOTSPI", CHAN_6, CHANF_LOOPING, 0.3);
                 A_AlertMonsters();
                 PB_CoolDownBarrel();
                 PB_HandleCrosshair(39);
@@ -224,36 +224,29 @@ class PBX_MiniShotgun : PBX_WeaponBase
 //////////////////////////// FIRE ////////////////////////////////////////////////////////////////////////////////////
         Fire:
             TNT1 A 0 PB_jumpIfNoAmmo("StopFiring",AMMO_TAKE,false,false);
-            MSGI A 0 A_StartSound("CHAINSTA",CHAN_5);
             TNT1 A 0 A_JumpIf(getWeaponSpin(),"Hold");
+            MSGI A 0 A_StartSound("weapons/SpinSpin/MINISHOTSTA",CHAN_6);
             MSGI BCDAB 1;
-            MSGI A 0 A_StopSound(CHAN_5);
         Hold:
             TNT1 A 0 PB_jumpIfNoAmmo("StopFiring",AMMO_TAKE,false,false);
-            MSGI A 0 A_StartSound("FARMGN",CHAN_5);
-            MSGI A 0 A_ZoomFactor(0.97);
+            MSGI A 0 {
+				A_ZoomFactor(0.97);
+                A_StartSound("weapons/SpinSpin/MINISHOTSPI", CHAN_6, CHANF_LOOPING, 0.3);
+			}
             MSGF A 1 Bright fireWeapon();
             MSGF B 1 A_ZoomFactor(0.98);
             MSGF C 1 A_ZoomFactor(1);
             MSGF D 1;
             TNT1 A 0 PB_ReFire("Hold");
-            TNT1 A 0 A_StartSound("MINIGEN",CHAN_5);
-            TNT1 A 0 A_JumpIf(getWeaponSpin(),"Ready2");
-            MSGI A 0 A_StartSound("weapons/SpinSpin/MINISHOTSTO",CHAN_5);
-            MSGI AB 1 A_DoPBWeaponAction();
-            TNT1 A 0 PB_ReFire("Hold");
-            MSGI CDABCD 1 A_DoPBWeaponAction();
             TNT1 A 0 A_JumpIf(getWeaponSpin(),"Ready2");
         StopFiring:
             TNT1 A 0 {
                 setWeaponSpin(false);
+				A_StartSound("weapons/SpinSpin/MINISHOTSTO",CHAN_6);
                 A_ClearRefire();
-                A_StopSound(CHAN_5);
-                A_StopSound(CHAN_6);
-                A_StopSound(CHAN_WEAPON);
             }
-            MSGI ABCD 2 A_DoPBWeaponAction();
-            MSGI ABCD 3 A_DoPBWeaponAction();
+            MSGI ABCD 1 A_DoPBWeaponAction();
+            MSGI AABBCCDD 1 A_DoPBWeaponAction();
             Goto Ready3;
   
 //////////////////////////// ALT FIRE ////////////////////////////////////////////////////////////////////////////////////
@@ -271,22 +264,18 @@ class PBX_MiniShotgun : PBX_WeaponBase
                 PB_SetRoll(0);
                 PB_HandleCrosshair(39);
                 A_AlertMonsters();
+				A_StartSound("weapons/SpinSpin/MINISHOTSTA",CHAN_6);
                 setWeaponSpin(true);
             }
-            MSGI ABCD 1 A_DoPBWeaponAction();
-            MSGI A 0 A_StartSound("weapons/SpinSpin/MINISHOTSTA",CHAN_6);
+            MSGI BCDABCD 1 A_DoPBWeaponAction();
             TNT1 A 0 PB_ReFire("Ready2");
             Goto Ready3;
 
         StopSpin:
             MSGI A 0 setWeaponSpin(false);
             MSGI A 0 A_StartSound("weapons/SpinSpin/MINISHOTSTO",CHAN_6);
-            MSGI A 0 A_StopSound(CHAN_5);
-            MSGI A 0 A_StopSound(CHAN_WEAPON);
-            MSGI ABCD 1;
-            MSGI ABCDABCD 1 A_DoPBWeaponAction();
             MSGI ABCD 1 A_DoPBWeaponAction();
-            MSGI A 1;
+            MSGI AABBCCDD 1 A_DoPBWeaponAction();
             Goto Ready3;
 
 //////////////////////////// RELOAD ////////////////////////////////////////////////////////////////////////////////////

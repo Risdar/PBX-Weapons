@@ -123,8 +123,8 @@ PBX_SPAS12_DUALFIRE                 = "\cjSecondary: \cgDual Blast";
 PBX_SPAS12_MANUAL                   = "Switching to \cdSlug\c- shells\n(\cdManual\c- Pump)";
 PBX_SPAS12_SEMI                     = "Switching to \caBuckshot\c- shells\n(\caSemi-auto\c- Mode)";
 
-PBX_SPAS12_STOCK_FOLDED             = "Stock folded\n\carecoil, \c- \cdfaster reload\c-";
-PBX_SPAS12_STOCK_UNFOLDED           = "Stock unfolded";
+PBX_SPAS12_STOCK_FOLDED             = "Stock Folded\n\n\caHigher Recoil\c-, \cdFaster Reload\c-";
+PBX_SPAS12_STOCK_UNFOLDED           = "Stock Unfolded\n\n\caLower Recoil\c-, \cdSlower Reload\c-";
 
 PBX_SPAS12_FOLD_STOCK_WW            = "Fold Stock";
 PBX_SPAS12_UNFOLD_STOCK_WW          = "Unfold Stock";

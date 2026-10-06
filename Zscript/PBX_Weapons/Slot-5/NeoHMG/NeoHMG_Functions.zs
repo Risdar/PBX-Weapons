@@ -270,7 +270,7 @@ extend class PBX_NeoHMG
 				PB_LowAmmoSoundWarning("hdmr");
 				PB_FireOffset();
 				A_QuakeEx(0,1,0,12,0,10,"",QF_WAVE|QF_RELATIVE|QF_SCALEDOWN,0.6,0,0.2,0,0,0.3,0.40);
-				A_Zoomfactor(0.95);
+				A_Zoomfactor(0.98);
 				// TAKE AMMO
 				PB_LowAmmoSoundWarning();
 				pb_takeammo(invoker.ammotype2,1,0);
