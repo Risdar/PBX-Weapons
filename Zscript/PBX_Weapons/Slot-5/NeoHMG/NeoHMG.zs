@@ -177,10 +177,7 @@ class PBX_NeoHMG : PBX_WeaponBase
 			TNT1 A 0 PB_HandleCrosshair(52);
             TNT1 A 0 PB_jumpIfNoAmmo("Reload",1,false);
 			TNT1 A 0 A_StartSound("weapons/chagan/start", CHAN_WEAPON, CHANF_OVERLAP, 1.0);
-			HG0F A 3 A_ZoomFactor(0.98);
-			HG0F A 2 A_ZoomFactor(0.97);
-			HG0F A 2 A_ZoomFactor(0.96);
-			HG0F A 2 A_ZoomFactor(0.95);
+			HG0F A 9;
 		Hold:
 			TNT1 A 0 A_JumpIf(PB_GetOverheat() >= MAX_OVERHEAT-5,"overheat");
             TNT1 A 0 PB_jumpIfNoAmmo("Reload",1,false);
@@ -189,16 +186,13 @@ class PBX_NeoHMG : PBX_WeaponBase
 				fireHMG(1);
 			}
 			"####" C 1 bright fireHMG(2);
-			"####" D 2;
+			"####" D 2 A_ZoomFactor(1.0);
 			HG0F E 1 setMagSprite("HG0F","XH04","XH03","XH02","XH01");
 			"####" A 0 A_Weaponoffset(0,32);
 			"####" F 1 PB_Refire();
 			TNT1 A 0 A_StartSound("weapons/HMG/Stop", CHAN_WEAPON, CHANF_OVERLAP, 1.0);
 			TNT1 A 0 A_StartSound("weapons/chagan/stop", CHAN_WEAPON, CHANF_OVERLAP, 1.0);
-			HG0F A 1 A_ZoomFactor(0.95);
-			HG0F A 2 A_ZoomFactor(0.96);
-			HG0F A 2 A_ZoomFactor(0.97);
-			HG0F A 2 A_ZoomFactor(0.98);
+			HG0F A 7;
 			goto Ready3;
 
 		// AltFire:
