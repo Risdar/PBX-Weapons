@@ -295,7 +295,7 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
             TNT1 A 0 A_StartSound("IronSights");
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"Zoomout");
         ZoomIn:
-            TNT1 A 0 A_ZoomFactor(1.2);
+            TNT1 A 0 A_ZoomFactor(1.25);
             BRGG BC 1 ;
             BRGG DEF 1;
             TNT1 A 0 {
