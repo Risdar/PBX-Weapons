@@ -76,8 +76,6 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
             Stop;
         Deselect:
             TNT1 A 0 PBX_WeaponLower();
-		    LVRA AA 1; 
-			LVR4 A 1;
 			LVRA BCDE 1;
 			TNT1 AAA 0 A_lower();
 			Wait;
@@ -120,7 +118,15 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 				PB_SetRoll(roll-0.3);
                 return A_DoPBWeaponAction();
 			}
+			LVR2 MNOP 1 {
+				PB_SetRoll(roll+1.0);
+                return A_DoPBWeaponAction();
+			}
 			TNT1 A 0 A_StartSound("weapons/leveraction/openchamber");
+			LVR2 QQ 1 {
+				PB_SetRoll(roll-2.0);
+                return A_DoPBWeaponAction();
+			}
 			LVR2 RSTUVVVV 1 {
 				PB_SetRoll(roll+1.0);
                 return A_DoPBWeaponAction();
@@ -140,11 +146,11 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 			}
 			LVR3 EFG 1 A_DoPBWeaponAction();
 			LVR2 V 5 A_DoPBWeaponAction();
-			TNT1 A 0 A_StartSound("weapons/leveraction/openchamber");
 			LVR2 VUTSRQ 1 {
 				PB_SetRoll(roll-1.0);
                 return A_DoPBWeaponAction();
 			}
+			TNT1 A 0 A_StartSound("weapons/leveraction/closechamber");
 			LVR2 PONM 1 {
 				PB_SetRoll(roll+1.0);
                 return A_DoPBWeaponAction();
@@ -205,9 +211,7 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 			TNT1 A 0;
 		SelectAnimation:
 			TNT1 A 0 A_JumpIf(pb_getmagunloaded(), "NoAmmo");
-            LVRA EDCB 1;  
-			LVR4 A 1;
-			LVRA AA 1;
+            LVRA EDCB 1;
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
 		Ready3:
 			TNT1 A 0 {
@@ -262,7 +266,6 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 		PumpBegin:
 			LVRA FGHIJKLM 1 PB_SetRoll(roll+0.3);
 			TNT1 A 0 {
-				A_StartSound("weapons/leveraction/rechamber",CHAN_WEAPON,CHANF_OVERLAP);
 				if(!PB_GetMagEmpty()) PB_SetChamberEmpty(false);
 			}
 			LVRA NNNNNOPQR 1 ;
@@ -292,7 +295,7 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 			LVR3 VWX 1; 
 		Pump2:
 			TNT1 A 0 {
-				A_ZoomFactor(1.5);
+				A_ZoomFactor(1.25);
 			}
 			TNT1 A 0 {
 				A_StartSound("weapons/leveraction/rechamber");
@@ -301,7 +304,11 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 			LVR4 ABCD 1;
 			TNT1 A 0 PB_SpawnCasing("EmptyBrassPistol");
 			LVR4 DDDDC 1;
-			LVR4 BAAA 1 {
+			LVR4 BA 1 {
+				if(JustPressed(BT_ATTACK) && invoker.ammo2.amount > 0) return ResolveState("Fire2");
+                return ResolveState(null);
+			}
+			LVR3 QQ 1 {
 				if(JustPressed(BT_ATTACK) && invoker.ammo2.amount > 0) return ResolveState("Fire2");
                 return ResolveState(null);
 			}
@@ -315,9 +322,12 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 		AltFire:
 			TNT1 A 0 A_Jumpif(PB_GetZoom(),"ZoomOut");
 		ZoomIn:
-			TNT1 A 0 PB_SetZoom(true);
-			TNT1 A 0 A_StartSound("IronSights");
-			TNT1 A 0 A_ZoomFactor(1.5);
+			TNT1 A 0 {
+				A_StartSound("IronSights");
+				A_ZoomFactor(1.25);
+				A_SetCrosshair(-1);
+				PB_SetZoom(true);
+			}
 			LVR3 MNOP 1;
 			Goto Ready2;
 		Zoomout:
@@ -369,11 +379,9 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 			loop;
 
 		ReloadFinished:
-			TNT1 A 0 {
-				A_StartSound("weapons/leveraction/openchamber");
-			}
 			LVR2 VVVV 1 ;
 			LVR2 VUTSRQ 1 PB_SetRoll(roll+0.6);
+			TNT1 A 0 A_StartSound("weapons/leveraction/closechamber");
 			LVR2 PONM 1 ;
 			TNT1 A 0 PB_SetReloading(false);
 			Goto Ready3;

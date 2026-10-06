@@ -45,8 +45,8 @@ extend class PBX_Prosurv_LeverAction
 	{
 		bool ads = PB_GetZoom();
 		bool mode = getLAMode();
-		double zoomA = ads ? 1.48 : 0.98;
-		double zoomB = ads ? 1.49 : 0.99;
+		double zoomA = ads ? 1.23 : 0.98;
+		double zoomB = ads ? 1.24 : 0.99;
 		double recoilX = ads ? -1.75 : -1.83;
 		double recoilY = ads ? +0.50 : +0.75;
 		string projectile = mode == LA_444Marlin ? "PB_444Marlin" : "PB_357Magnum";
@@ -65,7 +65,10 @@ extend class PBX_Prosurv_LeverAction
 					PB_DynamicTail("sniper", "sniper");
 					PB_LowAmmoSoundWarning("revolver");
 				}
-				else PB_LowAmmoSoundWarning();
+				else {
+					PB_DynamicTail("pistol", "pistol");
+					PB_LowAmmoSoundWarning();
+				}
 				// Effects
 				PB_GunSmoke(0,0,0);
 				A_FireCustomMissile("YellowFlareSpawn",0,0,0,0);
