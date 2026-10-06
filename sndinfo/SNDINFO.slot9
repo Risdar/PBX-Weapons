@@ -29,6 +29,6 @@ weapons/solexp					dssolexp
 HEXAFIR1 HEXAFIR1
 
 // Mini Shotgun
-weapons/SpinSpin/MINISHOTSPI    "Sounds/Weapons/Slot-9/MiniShotgun/MINISHOTSPI"
-weapons/SpinSpin/MINISHOTSTO    "Sounds/Weapons/Slot-9/MiniShotgun/MINISHOTSTO"
-weapons/SpinSpin/MINISHOTSTA    "Sounds/Weapons/Slot-9/MiniShotgun/MINISHOTSTA"
+weapons/SpinSpin/MINISHOTSPI    "Sounds/Weapons/Slot-9/MiniShotgun/MINISHOTSPI.ogg"
+weapons/SpinSpin/MINISHOTSTO    "Sounds/Weapons/Slot-9/MiniShotgun/MINISHOTSTO.mp3"
+weapons/SpinSpin/MINISHOTSTA    "Sounds/Weapons/Slot-9/MiniShotgun/MINISHOTSTA.mp3"
