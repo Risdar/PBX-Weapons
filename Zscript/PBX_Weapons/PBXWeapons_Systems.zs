@@ -237,6 +237,10 @@ Class PBXWeapons_CheatsHandler : Eventhandler
 
 			// Excavator Upgrade
 			pm.giveinventory("PBX_ExcavatorUpgrade",1);
+			
+			// Extermination Unmaker
+			pm.giveinventory("ArtifactIncinerator",1);
+			pm.giveinventory("ArtifactLightning",1);
 
 			console.printf("[PBX] Gave all weapon upgrades");
 		}
