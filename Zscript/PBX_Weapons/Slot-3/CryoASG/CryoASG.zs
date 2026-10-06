@@ -125,7 +125,6 @@ class PBX_CryoASG : PBX_WeaponBase
     action void FireWeapon(CryoASGMode mode)
     {
         A_AlertMonsters();
-        PB_WeaponRecoil(random[sfx](-2,2),-1.6);
         A_StartSound("weapons/sg",CHAN_WEAPON,CHANF_OVERLAP);
         A_StartSound("weapons/CryoRifle/missile1",CHAN_AUTO,CHANF_OVERLAP);
 
@@ -193,6 +192,7 @@ class PBX_CryoASG : PBX_WeaponBase
         A_FlashOverlay();
         A_ZoomFactor(0.95);
         PB_DynamicTail("shotgun", "shotgun");
+        PB_WeaponRecoil(-2.8,frandom[sfx](-1.6, 1.6));
     }
 
     action state handleWheel()
@@ -370,13 +370,13 @@ class PBX_CryoASG : PBX_WeaponBase
             }
             TNT1 A 0 PB_JumpIfNoAmmo();
             TNT1 A 0 A_JumpIf(PB_GetChamberEmpty() && !PB_GetMagUnloaded(), "Pump");
-		    A12F AB 1 BRIGHT;
-            TNT1 A 0 FireWeapon(PRIMARY_MODE);
+            A12F A 1 BRIGHT FireWeapon(PRIMARY_MODE);
+		    A12F B 1 BRIGHT;
             A12F C 1;
             A12F C 2;
             TNT1 A 0 A_ZoomFactor(1.0);
-            A12F D 2 PB_WeaponRecoil(-0.4,0);
-            A12F EFG 1 PB_WeaponRecoil(-0.4,0);
+            A12F D 2;
+            A12F EFG 1;
             TNT1 A 0 A_WeaponOffset(0,32);
             A12G A 1;
             TNT1 A 0 PB_Refire();
@@ -390,13 +390,13 @@ class PBX_CryoASG : PBX_WeaponBase
                 PB_HandleCrosshair(39);
             }
             TNT1 A 0 PB_JumpIfNoAmmo(min:SECONDARY_AMMOTAKE);
-            A12F AB 1 BRIGHT;
             TNT1 A 0 FireWeapon(SECONDARY_MODE);
+            A12F AB 1 BRIGHT;
             A12F C 1;
             A12F C 2;
             TNT1 A 0 A_ZoomFactor(1.0);
-            A12F D 2 PB_WeaponRecoil(-0.4,0);
-            A12F EFG 1 PB_WeaponRecoil(-0.4,0);
+            A12F D 2;
+            A12F EFG 1;
             TNT1 A 0 A_WeaponOffset(0,32);
             A12G A 1;
             TNT1 A 0 {invoker.mPumpAnimation = 0;}
