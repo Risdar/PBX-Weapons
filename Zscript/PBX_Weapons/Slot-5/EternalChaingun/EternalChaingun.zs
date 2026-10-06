@@ -82,7 +82,7 @@ class PBX_EternalMinigun : PBX_WeaponBase
         WeaponRespect:
             CHGS ABCD 1 A_DoPBWeaponAction();
             TNT1 A 0 A_StartSound("DTHDLRST",CHAN_6);
-            CHAN AABBCCDDEEFFGG 1;
+            CHAN AABBCCDDEEFFGG 1 A_DoPBWeaponAction();
             TNT1 A 0 A_StartSound("8HAINSW2", CHAN_AUTO);
             CHAN H 10 A_DoPBWeaponAction();
             TNT1 A 0 A_StartSound("8HAINSW3", CHAN_AUTO);
