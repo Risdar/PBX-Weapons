@@ -1,5 +1,22 @@
 I'll still post all of bdp's credits lol
 
+A lot of assets are from Brutal Doom Platinum:
+/*=============================================================================
+//
+//	Brutal Doom Platinum - Battle Rifle
+//
+//  Credits
+//  EmeraldCoasttt (Original Author)
+//	Tesefy (Sprites)
+//  BeefRice (Code)
+//
+//  Special Thanks
+//  Nemesis_Vampy
+//  Popguy12
+//  Jaih1ro
+//
+==============================================================================*/
+
 Random Deaths & Decoration mod credits:
 
 id Software: Inverted normal monster death and hanging body sprites

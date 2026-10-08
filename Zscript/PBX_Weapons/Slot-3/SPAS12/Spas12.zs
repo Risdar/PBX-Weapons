@@ -52,7 +52,8 @@ class PBX_SPAS12 : PBX_WeaponBase
     bool mStockIsFolded;
     bool mSemiAuto;
     bool mDualBlast;
-    const MAGAZINE_SIZE = 12;
+    bool mJustFiredDualBlast;
+    const MAGAZINE_SIZE = 9;
     const TIME_DELAY_UNFOLDED = 2; // How many tics should the duration be longer if the stock is unfolded
 
     enum SPAS12_WheelMode
@@ -184,12 +185,21 @@ class PBX_SPAS12 : PBX_WeaponBase
         PB_HandleCrosshair(crs);
     }
 
+    action void SP12_SetDuration()
+    {
+        // Slower animation if stock is unfolded
+        if(!SP12_IsStockFolded())
+        {
+            A_SetTics(TIME_DELAY_UNFOLDED);
+        }
+    }
+
     action void SPAS_Fire(int tic)
     {
-        double ofs          = 3.0; //Standard offset for firing
+        double ofs          = 4.0; //Standard offset for firing
         bool isZoom         = PB_GetZoom();
         bool isSemi         = SP12_IsSemiAuto();
-        bool isStockFolded  =     SP12_IsStockFolded();
+        bool isStockFolded  = SP12_IsStockFolded();
         name casing         = isSemi ? "ShotgunCasing" : "ShotgunCasing2";
 
         switch(tic)
@@ -217,7 +227,7 @@ class PBX_SPAS12 : PBX_WeaponBase
 
                 if(isSemi)
                 {
-                    PB_FireBullets("PB_12GAPellet",12,ofs,0,0,ofs);
+                    PB_FireBullets("PB_12GAPellet",9,ofs,0,0,ofs);
                     A_StartSound("weapons/sg", CHAN_WEAPON, pitch:frandom(0.95, 1.05));
                 }
                 else
@@ -226,7 +236,6 @@ class PBX_SPAS12 : PBX_WeaponBase
                     A_StartSound("SlugShot", CHAN_WEAPON, pitch:frandom(0.95, 1.05));
                     PBX_FireBullets("PB_12GASlug", 1, ofs, 0, 0, ofs);
                 }
-
 
 				PB_LowAmmoSoundWarning("shotgun");
 				PB_TakeAmmo(invoker.ammo2.getClassName(),1,0);
@@ -268,12 +277,6 @@ class PBX_SPAS12 : PBX_WeaponBase
 
         SPAS_Fire(1);
 
-        // If stock is unfolded, increase accuracy by 1.0
-        if(!isStockFolded)
-        {
-            ofs -= 1.0;
-        }
-        
         if(isSemi)
         {
             PB_FireBullets("PB_12GAPellet",12,ofs,0,0,ofs);
@@ -293,15 +296,19 @@ class PBX_SPAS12 : PBX_WeaponBase
         A_FireProjectile("ShotgunWad", random(-2,2), 0, random(-2,2), -3, FPF_NOAUTOAIM, random(-2,2));
         PB_TakeAmmo(invoker.ammo2.getClassName(),1,0);
         PB_FireOffset();
+        invoker.mJustFiredDualBlast = true;
+        PB_SetReloading(true);
     }
 
-    action void SP12_SetDuration()
+    // Called in PB_CheckReload()
+    action StateLabel SPAS_CheckPump()
     {
-        // Slower animation if stock is unfolded
-        if(!SP12_IsStockFolded())
+        StateLabel result = "Pump";
+        if(invoker.mJustFiredDualBlast)
         {
-            A_SetTics(TIME_DELAY_UNFOLDED);
+            result = "PumpSlow";
         }
+        return result;
     }
 
     action state SPAS_HandleAlt()
@@ -358,7 +365,16 @@ class PBX_SPAS12 : PBX_WeaponBase
             Stop;
             
         Spawn:
-            SPAC A -1 SP12_SetSprite('SPAC','SPBC','SPAC','SPBC');
+            SPAC A -1 {
+                if(SP12_IsStockFolded())
+                {
+                    sprite = GetSpriteIndex("SPAC");
+                }
+                else
+                {
+                    sprite = GetSpriteIndex("SPBC");
+                }
+            } 
             Stop;
 
         // Unfolded
@@ -377,8 +393,30 @@ class PBX_SPAS12 : PBX_WeaponBase
                 SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
                 return A_DoPBWeaponAction();
             }
+            "####" BCDEFG 1 A_DoPBWeaponAction();
+		    "####" STUUU 1  A_DoPBWeaponAction();
+            // Press Button
+            SPA9 ABCD 1 {
+                SP12_SetSprite('SPA9','SPB9','SPA9','SPB9');
+                return A_DoPBWeaponAction();
+            }
+		    "####" A 0 A_StartSound("MS/Button",CHAN_AUTO,CHANF_OVERLAP);
+		    "####" DCBA 1 A_DoPBWeaponAction();
+            // Insert Shell
+            SPAN UUUUUU 1 {
+                SP12_SetSprite('SPAN','SPBN','SPA5','SPB5');
+                return A_DoPBWeaponAction();
+            }
+            "####" VW 1 A_DoPBWeaponAction();
+            "####" A 0 A_StartSound("weapons/spas12/insert", CHAN_AUTO);
+            "####" X 1 A_DoPBWeaponAction();
+            SPAN YZ 1 {
+                SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
+                return A_DoPBWeaponAction();
+            }
+            "####" "[]" 1 A_DoPBWeaponAction();
             // Rechamber
-		    SPA5 ABCDEFG 1 {
+            SPAN UTS 1 {
                 SP12_SetSprite('SPAN','SPBN','SPA5','SPB5');
                 return A_DoPBWeaponAction();
             }
@@ -491,7 +529,7 @@ class PBX_SPAS12 : PBX_WeaponBase
                 A_StartSound("MS/Button",CHAN_AUTO,CHANF_OVERLAP);
             }
 		    "####" DCBA 1;
-		    "####" UUU 1 SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
+		    "####" UUU 1 SP12_SetSprite('SPAN','SPBN','SPA5','SPB5');
             Goto ShellChecker;
 
         FoldSwitchAnimation:
@@ -547,6 +585,7 @@ class PBX_SPAS12 : PBX_WeaponBase
             "####" MN 1;
             "####" A 0 A_StartSound("weapons/spas12/pumpforward", CHAN_AUTO); 
             "####" OPQR 1;
+            "####" A 0 {invoker.mJustFiredDualBlast = false;}
             Goto PumpEnd;
 
         FireSemi:
@@ -643,7 +682,7 @@ class PBX_SPAS12 : PBX_WeaponBase
 			"####" A 1;
         Reload:
             TNT1 A 0 A_JumpIf(PB_GetZoom(),"ReloadFromADS");
-            TNT1 A 0 PB_CheckReload(null,null,"Pump","Ready3","Ready3",MAGAZINE_SIZE);
+            TNT1 A 0 PB_CheckReload(null,null,SPAS_CheckPump(),"Ready3","Ready3",MAGAZINE_SIZE);
 			TNT1 A 0 A_StartSound("Ironsights",CHAN_AUTO);
             // Raise Weapon
             SPAN BCDEFG 1 SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
@@ -665,20 +704,18 @@ class PBX_SPAS12 : PBX_WeaponBase
                 SP12_SetDuration();
                 return A_DoPBWeaponAction(WRF_NOBOB);
             }
-            SPAN YZ 1 {
-                SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
+            SPAN Y 1 {
                 SP12_SetDuration();
+                SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
                 return A_DoPBWeaponAction(WRF_NOBOB);
             }
+            "####" Z 1 A_DoPBWeaponAction(WRF_NOBOB);
             "####" A 0 {
 				A_Giveinventory(invoker.ammo2.getClassName(),1);
 				A_Takeinventory(invoker.ammo1.getClassName(),1,TIF_NOTAKEINFINITE);
-                PB_RotateCamera(0.2,-0.2,-0.4);
+                // PB_RotateCamera(0.2,-0.2,-0.4);
             }
-            "####" "[]" 1 {
-                SP12_SetDuration();
-                return A_DoPBWeaponAction(WRF_NOBOB);
-            }
+            "####" "[]" 1 A_DoPBWeaponAction(WRF_NOBOB);
             "####" A 0 A_JumpIf(PB_GetChamberEmpty(), "PumpReload");
 			Loop;
 
@@ -717,7 +754,7 @@ class PBX_SPAS12 : PBX_WeaponBase
             SPAN BCDEFG 1 SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
 		RemoveBullets:
             TNT1 A 0 A_JumpIf(invoker.ammo2.amount <= 0,"FinishUnload");
-            SPAN G 1 SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
+            SPAN G 1 SP12_SetSprite('SPAN','SPBN','SPA5','SPB5');
             "####" A 0 A_StartSound("weapons/spas12/pumpback", CHAN_AUTO); 
             "####" H 1 A_DoPBWeaponAction();
             "####" IJ 1 A_DoPBWeaponAction();

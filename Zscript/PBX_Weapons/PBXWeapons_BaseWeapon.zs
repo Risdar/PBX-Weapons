@@ -41,21 +41,9 @@ class PBX_WeaponBase : PB_WeaponBase abstract
     // A wrapper for PB_WeaponRaise so we can do some default behaviours
     action void PBX_WeaponRaise(string upSnd = "")
     {
-        PBXCore_Debug.Print("WeaponRaise Called");
         PB_WeaponRaise(upSnd);
         if(pbxweapons_sendTip) PBX_WeaponHelpText(); // This function is in PBXWeapons_Tips.zs
         PBX_UpgradeWeapon();
-    }
-
-    name mUpgradeWeapon, mDowngradeWeapon;
-    property SelectWeaponUpgrade: mUpgradeWeapon;
-    property TakeWeaponDowngrade: mDowngradeWeapon;
-    action void PBX_UpgradeWeapon()
-    {
-        if(pbxweapons_keepweapons) return;
-
-        if(invoker.mUpgradeWeapon != "") PB_SelectIfUpgrade(invoker.mUpgradeWeapon);
-        if(invoker.mDowngradeWeapon != "") PB_TakeIfUpgrade(invoker.mDowngradeWeapon);
     }
 
     // Same as above
@@ -67,6 +55,17 @@ class PBX_WeaponBase : PB_WeaponBase abstract
         PB_SetRoll(0);
         A_StopSound(CHAN_WEAPON);
         PB_ClearDualWield();
+    }
+
+    name mUpgradeWeapon, mDowngradeWeapon;
+    property SelectWeaponUpgrade: mUpgradeWeapon;
+    property TakeWeaponDowngrade: mDowngradeWeapon;
+    action void PBX_UpgradeWeapon()
+    {
+        if(pbxweapons_keepweapons) return;
+
+        if(invoker.mUpgradeWeapon != "") PB_SelectIfUpgrade(invoker.mUpgradeWeapon);
+        if(invoker.mDowngradeWeapon != "") PB_TakeIfUpgrade(invoker.mDowngradeWeapon);
     }
 
     action state PBX_SetupDualWield(string noAkimboMsg)
