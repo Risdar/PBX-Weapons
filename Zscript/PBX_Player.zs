@@ -5,36 +5,36 @@ class PBXCore_Player : PB_PlayerPrawn
 {
 	Default
 	{
+		// Add/Change Weapon Slots here
+		// Last on the list is first selected
+
 		Player.WeaponSlot 1
 		,"PB_Axe"
 		,"PB_Chainsaw"
 		,"PB_Fists"
-		// PBX Weapons
 		;
 		
 		Player.WeaponSlot 2
 		,"PB_Pistol"
+		,"PBX_ProsurvBlaster"
 		,"PB_MP40"
 		,"PB_SMG"
 		,"PB_Revolver"
 		,"PB_Deagle"
-		// PBX Weapons
-		,"PBX_ProsurvBlaster"
 		,"PBX_PlasmaBlaster"
 		,"PBX_Prosurv_LeverAction"
 		;
 		
 		Player.WeaponSlot 3
+		,"PBX_ProSurvPSG"
 		,"PB_Shotgun"
 		,"PB_AutoShotgun"
 		,"PB_SSG"
-		,"PB_QuadSG"
-		// PBX Weapons
-		,"PBX_ProSurvPSG"
-		,"PBX_CSSG"
-		,"PBX_SPAS12"
 		,"PBX_CryoSG"
 		,"PBX_CryoASG"
+		,"PBX_SPAS12"
+		,"PB_QuadSG"
+		,"PBX_CSSG"
 		;
 		
 		Player.WeaponSlot 4
@@ -42,9 +42,9 @@ class PBXCore_Player : PB_PlayerPrawn
 		,"PB_DMR"
 		,"PB_Carbine"
 		,"PB_LMG"
-		// PBX Weapons
 		,"PBX_NormalRifle"
 		,"PBX_BDPBattleRifle"
+		,"PBX_XM21"
 		,"PBX_MetalSniper"
 		,"PBX_Prosurv_Ballista"
 		;
@@ -53,7 +53,6 @@ class PBXCore_Player : PB_PlayerPrawn
 		,"PB_MG42"
 		,"PB_Minigun"
 		,"PB_Nailgun"
-		// PBX Weapons
 		,"PBX_NeoHMG"
 		,"PBX_SuperNailgun"
 		;
@@ -61,7 +60,6 @@ class PBXCore_Player : PB_PlayerPrawn
 		Player.WeaponSlot 6
 		,"PB_RocketLauncher"
 		,"PB_SuperGL"
-		// PBX Weapons
 		,"PBX_Excavator"
 		,"PBX_CyberdemonRL"
 		,"PBX_MastermindChaingun"
@@ -71,14 +69,12 @@ class PBXCore_Player : PB_PlayerPrawn
 		,"PB_M1Plasma"
 		,"PB_M2Plasma"
 		,"PB_DTechRifle"
-		// PBX Weapons
 		,"PBX_BDPRailgun"
 		;
 		
 		Player.WeaponSlot 8
 		,"PB_CryoRifle"
 		,"PB_Flamethrower"
-		// PBX Weapons
 		,"PBX_TeslaGun"
 		,"PBX_FreezeRifle"
 		;
@@ -87,11 +83,13 @@ class PBXCore_Player : PB_PlayerPrawn
 		,"PB_Unmaker"
 		,"PB_BFG9000"
 		,"PB_Railgun"
-		// PBX Weapons
 		,"PBX_DemonExt"
 		,"PBX_HexaShotgun"
 		;
 
+		//Others
+		Player.StartItem "PBX_ProsurvBlaster";
+		Player.StartItem "PBXWeapons_TipsManager";
 		// SLOT 2
 		Player.StartItem "HellPistolerAmmo", PBX_PlasmaBlaster.CELL_SIZE;
 		Player.StartItem "LeverActionAmmo", PBX_Prosurv_LeverAction.MAGAZINE_SIZE;
@@ -106,6 +104,7 @@ class PBXCore_Player : PB_PlayerPrawn
 		Player.StartItem "BR_Ammo", PBX_BDPBattleRifle.MAGAZINE_SIZE;
 		Player.StartItem "MetalSniperAmmo", PBX_MetalSniper.MAGAZINE_SIZE;
 		Player.StartItem "CrossbowBallistaAmmo", PBX_Prosurv_Ballista.ARROW_AMOUNT;
+		Player.StartItem "XM21Ammo", PBX_XM21.MAGAZINE_SIZE;
 		// SLOT 5
 		Player.StartItem "HMGChamberAmmo", PBX_NeoHMG.MAGAZINE_SIZE;
 		Player.StartItem "SuperNailgunAmmo", PBX_SuperNailgun.MAGAZINE_SIZE;
@@ -121,11 +120,9 @@ class PBXCore_Player : PB_PlayerPrawn
         // SLOT 9
 		Player.StartItem "SoulCharge", PBX_DemonExt.SOUL_CAPACITY;
 		Player.StartItem "HexaShotgunAmmo", PBX_HexaShotgun.BARREL_CAPACITY;
-		//Others
-		Player.StartItem "PBX_ProsurvBlaster";
-		Player.StartItem "PBXWeapons_TipsManager";
+		
 
-		// STUFF FROM PB
+		// STUFF FROM PB, IGNORE
 		Mass 500;
 		GibHealth 20;
 		Species "Marines";

@@ -145,13 +145,9 @@ class PBX_SPAS12 : PBX_WeaponBase
 
     action void SP12_UnloadShells()
     {
-        PB_UnloadMag(
-            invoker.ammo2.getClassName(),
-            invoker.ammo1.getClassName(),
-            1,1,1,
-            invoker.ammo2.amount - 1,
-            SP12_IsSemiAuto() ? "PB_SingleShell" : "PB_SingleShellSlug"
-        );
+        name casing = SP12_IsSemiAuto() ? "ShotgunCasingRedLive" : "ShotgunCasingGreenLive";
+        PB_SpawnCasing(casing,15,-5,26,0,3,3);
+        A_Takeinventory(invoker.ammo2.getClassName(),1);
     }
 
     action SPAS12_WheelMode getTokens()
@@ -227,12 +223,12 @@ class PBX_SPAS12 : PBX_WeaponBase
                 if(isSemi)
                 {
                     PB_FireBullets("PB_12GAPellet",9,ofs,0,0,ofs);
-                    A_StartSound("weapons/sg", CHAN_WEAPON, pitch:frandom(0.95, 1.05));
+                    A_StartSound("weapons/sg", CHAN_WEAPON,CHANF_OVERLAP,pitch:frandom(0.95, 1.05));
                 }
                 else
                 {
 				    PB_SetChamberEmpty(true);
-                    A_StartSound("SlugShot", CHAN_WEAPON, pitch:frandom(0.95, 1.05));
+                    A_StartSound("SlugShot", CHAN_WEAPON,CHANF_OVERLAP,pitch:frandom(0.95, 1.05));
                     PBX_FireBullets("PB_12GASlug", 1, ofs, 0, 0, ofs);
                 }
 
@@ -259,7 +255,19 @@ class PBX_SPAS12 : PBX_WeaponBase
                 break;
 
             case 5:
-                PB_SpawnCasing(casing,15,-5,26,0,3,3);
+                if(isZoom)
+                {
+                    PB_SpawnCasing(casing,18,3,30,0,3,3);
+                }
+                else if(SP12_IsSemiAuto())
+                {
+                    PB_SpawnCasing(casing,25,-5,19,0,3,3);
+                }
+                else
+                {
+                    PB_SpawnCasing(casing,15,-5,26,0,3,3);
+                }
+
 				if(!PB_GetMagEmpty()) PB_SetChamberEmpty(false);
                 A_ZoomFactor(PB_GetZoom() ? 1.25 : 1.0);
                 break;
@@ -272,7 +280,6 @@ class PBX_SPAS12 : PBX_WeaponBase
         double ofs          = 4.0; //Standard offset for firing
         bool isSemi         = SP12_IsSemiAuto();
         bool isStockFolded  = SP12_IsStockFolded();
-        name casing         = isSemi ? "ShotgunCasing" : "ShotgunCasing2";
 
         SPAS_Fire(1);
 
@@ -290,7 +297,6 @@ class PBX_SPAS12 : PBX_WeaponBase
         A_Recoil3D(3);
         PB_WeaponRecoil(-ofs,1.0);
         PB_QuakeCamera(3,3);
-        PB_SpawnCasing(casing,15,-5,26,0,3,3);
         PB_SetChamberEmpty(true);
         A_FireProjectile("ShotgunWad", random(-2,2), 0, random(-2,2), -3, FPF_NOAUTOAIM, random(-2,2));
         PB_TakeAmmo(invoker.ammo2.getClassName(),1,0);
@@ -456,7 +462,7 @@ class PBX_SPAS12 : PBX_WeaponBase
                 return A_DoPBWeaponAction(); // Goto Inspect2+12
             }
             "####" CBA 1 A_DoPBWeaponAction();
-            Goto Ready3;
+            Goto ReadyToFireAnimation;
             
 
         Deselect:
@@ -499,6 +505,13 @@ class PBX_SPAS12 : PBX_WeaponBase
                 return PB_ReadyFire();
             }
             Loop;
+
+        ReadyToFireAnimation:
+            SPAA FGHI 1 {
+                SP12_SetSprite('SPAA','SPBA','SPAA','SPBA');
+                return PB_ReadyFire();
+            }
+            Goto Ready3;
 
         Ready2:
             TNT1 A 0 {
@@ -583,12 +596,17 @@ class PBX_SPAS12 : PBX_WeaponBase
             "####" D 1          SPAS_Fire(4);
             "####" EW 1;
         PumpSlow:
+            // Raise
             SPAN BCDEFG 1 SP12_SetSprite('SPAN','SPBN','SPA5','SPB5');
+            // Pump
             "####" H 1;
             "####" A 0 A_StartSound("weapons/spas12/pumpback", CHAN_AUTO); 
             "####" IJ 1;
             "####" K 1;
-            "####" A 0 SPAS_Fire(5);
+            "####" A 0 {
+                SPAS_Fire(5);
+                PB_SpawnCasing(SP12_IsSemiAuto() ? "ShotgunCasing" : "ShotgunCasing2",15,-5,26,0,3,3);
+            }
             "####" L 10;
             "####" MN 1;
             "####" A 0 A_StartSound("weapons/spas12/pumpforward", CHAN_AUTO); 
@@ -639,16 +657,16 @@ class PBX_SPAS12 : PBX_WeaponBase
             "####" A 0 A_StartSound("weapons/spas12/pumpforward", CHAN_AUTO); 
             "####" OPQR 1;
 		PumpEnd:
-            SPAN GFEDCB 1 SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
-            SPAA FGHI 1 {
-                SP12_SetSprite('SPAA','SPBA','SPAA','SPBA');
+            SPAN GF 1 SP12_SetSprite('SPAN','SPBN','SPA5','SPB5');
+            "####" EDCB 1 {
 				A_SetInventory("CantDoAction",0);
 				PB_SetReloading(false);
 				PB_Refire();
 			}
-            Goto Ready3;
+            Goto ReadyToFireAnimation;
 
         Fire2Semi:
+            "####" A 0 SPAS_Fire(5); // So it unsets the chamber empty
             SPA8 KFF 1 SP12_SetSprite('SPA8','SPB8','SPA8','SPB8');
 		    "####" FGCCCC 1;
 		    "####" CCC 1 PB_ReadyFire(ads:true);
@@ -668,10 +686,12 @@ class PBX_SPAS12 : PBX_WeaponBase
             "####" FGC 1;
 			"####" A 0 A_JumpIf(invoker.ammo2.amount <= 0,"Ready3");
 		Pump2:
-            "####" A 0 A_StartSound("weapons/spas12/pump", CHAN_AUTO);
-            SPA8 GHIIJJJJJ 1 SP12_SetSprite('SPA8','SPB8','SPA8','SPB8');
-		    "####" IH 1;
+            "####" A 0 A_StartSound("weapons/spas12/pumpback", CHAN_AUTO); 
+            SPA8 GHII 1 SP12_SetSprite('SPA8','SPB8','SPA8','SPB8');
+            "####" JJJJJ 1;
+            "####" A 0 A_StartSound("weapons/spas12/pumpforward", CHAN_AUTO); 
             "####" A 0 SPAS_Fire(5);
+		    "####" IH 1;
             "####" HGG 1 {
 				if(JustPressed(BT_ATTACK) && invoker.ammo2.amount > 0) return ResolveState("Fire2");
                 return ResolveState(null);
@@ -731,7 +751,9 @@ class PBX_SPAS12 : PBX_WeaponBase
 			Loop;
 
         PumpReload:
+            // Flip the weapon
             SPAN UTS 1 SP12_SetSprite('SPAN','SPBN','SPA5','SPB5');
+            // Pump
             "####" H 1; 
             "####" A 0 A_StartSound("weapons/spas12/pumpback", CHAN_AUTO); 
             "####" IJ 1;
@@ -743,16 +765,17 @@ class PBX_SPAS12 : PBX_WeaponBase
             }
             "####" KLMN 1;
             "####" A 0 A_StartSound("weapons/spas12/pumpforward", CHAN_AUTO); 
-            "####" PQR 1;
+            "####" OPQR 1;
+            // Flip the weapon
 		    "####" ST 1 ;
             goto ShellChecker;
 
         FinishReload:
-            TNT1 A 0 A_StartSound("Ironsights",CHAN_AUTO);
+            TNT1 A 0 A_StartSound("Ironsights",CHAN_AUTO,CHANF_OVERLAP);
             SPAN TS 1 SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
-		    "####" FEDCB 1;
+		    "####" GFEDCB 1;
 			TNT1 A 0 PB_SetReloading(false);
-            Goto Ready3;
+            Goto ReadyToFireAnimation;
 
         Unload:
 			TNT1 A 0 {
@@ -784,7 +807,7 @@ class PBX_SPAS12 : PBX_WeaponBase
                 return SP12_ModeChange();
             }
             SPAN EDCBA 1 SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
-			Goto Ready3;
+			Goto ReadyToFireAnimation;
 
         FlashKicking:
             SPAA RSTU 1 SP12_SetSprite('SPAA','SPBA','SPAA','SPBA');

@@ -177,9 +177,10 @@ class PBX_XM21 : PBX_WeaponBase
                 break;
 
             case TOGGLE_CLOAK:
-                if(CountInv(CLOAK_ENERGY) < CLOAK_MIN)
+                cleanTokens();
+                // If cloak is not active and no energy
+                if(!invoker.mCloakEngaged && CountInv(CLOAK_ENERGY) < CLOAK_MIN)
                 {
-                    cleanTokens();
                     A_StartSound("Sniper/CloakLow",CLOAK_CHAN,CHANF_OVERLAP);
                     A_Print("$PBX_XM21_CloakNoEnergy");
                     return ResolveState("Ready3");
@@ -635,7 +636,7 @@ class PBX_SniperTarget : PBX_Hologram
     override void PostBeginPlay()
 	{
 		super.PostBeginPlay();
-		mLifetime = 1;
+		mLifetime = 5;
 	}
 
     States
