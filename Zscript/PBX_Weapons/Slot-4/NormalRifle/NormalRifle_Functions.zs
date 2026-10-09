@@ -158,10 +158,6 @@ extend class PBX_NormalRifle
             case 3:
                 PB_WeaponRecoil(-0.5,0);
                 break;
-
-            case 4:
-                A_WeaponOffset(0,32);
-                break;
         }
     }
 

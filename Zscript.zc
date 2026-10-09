@@ -1,6 +1,12 @@
 Version 5.0
 
 // General
+// Lighttning API by jekyllgrim
+#include "Zscript/PBX_Lightning.zs"
+// BEAMZ by Lewis3k
+#include "Zscript/PBX_BeamZ.zs"
+
+#include "Zscript/PBX_Player.zs"
 #include "Zscript/PBX_Weapons/PBXWeapons_Systems.zs"
 #include "Zscript/PBX_Weapons/PBXWeapons_BaseWeapon.zs"
 #include "Zscript/PBX_Weapons/PBXWeapons_Spawners.zs"

@@ -9,3 +9,7 @@ $include "sndinfo/SNDINFO.slot9"
 
 // General
 meleeweapon/break "SOUNDS/Weapons/General/metalpipe.ogg"
+
+// Lightning
+lightnin/loop	"sounds/Lightning/lightning_loop.ogg"
+lightnin/blast	"sounds/Lightning/lightning_blast.ogg"

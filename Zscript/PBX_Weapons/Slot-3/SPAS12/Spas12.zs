@@ -72,6 +72,12 @@ class PBX_SPAS12 : PBX_WeaponBase
         mSemiAuto = false;
     }
 
+    // override void AttachToOwner(Actor other)
+    // {
+    //     super.AttachToOwner(other);
+    //     other.A_Print(!SP12_IsSemiAuto() ? "$PBX_SPAS12_SEMI" : "$PBX_SPAS12_MANUAL");
+    // }
+
     action void  SP12_SetSprite(
         name foldedManual = '', 
         name unfoldedManual = '', 
@@ -484,6 +490,7 @@ class PBX_SPAS12 : PBX_WeaponBase
                 SP12_HandleCrosshair();
 				A_SetInventory("CantWeaponSpecial",0);
 				A_SetInventory("CantDoAction",0);
+                PB_SetReloading(false);
             }
         ReadyToFire:
 			TNT1 A 0 PBX_CheckInspect();
@@ -500,6 +507,7 @@ class PBX_SPAS12 : PBX_WeaponBase
                 A_ZoomFactor(1.25);
                 A_SetCrosshair(-1);
 				A_SetInventory("CantDoAction",0);
+                PB_SetReloading(false);
             }
         ReadytoFire2:
             SPA8 C 1 {
@@ -536,7 +544,7 @@ class PBX_SPAS12 : PBX_WeaponBase
 		    TNT1 A 0 A_StartSound("Ironsights",CHAN_AUTO);
 		    SPAA NOPQ 1 SP12_SetSprite('SPBA','SPAA','SPBA','SPAA'); // Its reversed so the correct animation plays
 		    TNT1 A 10;
-		    SPAA MLKJ 1 SP12_SetSprite('SPBA','SPAA','SPBA','SPAA');
+		    SPAA MLKJ 1 SP12_SetSprite('SPAA','SPBA','SPAA','SPBA');
             Goto Ready3;
 
         SecondarySwitchAnimation:
@@ -589,7 +597,7 @@ class PBX_SPAS12 : PBX_WeaponBase
             Goto PumpEnd;
 
         FireSemi:
-            "####" A 0 SPAS_Fire(5);
+            "####" A 0 SPAS_Fire(5); // So it unsets the chamber empty
             SPAA W 1 SP12_SetSprite('SPAA','SPBA','SPAA','SPBA');
             SPAN A 4 SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
             "####" AAA 1 PB_ReadyFire(ads:false);
@@ -607,7 +615,8 @@ class PBX_SPAS12 : PBX_WeaponBase
             "####" B 1 Bright   SPAS_Fire(2);
             "####" C 1          SPAS_Fire(3);
             "####" D 1          SPAS_Fire(4);
-            "####" EW 1 {
+            "####" EW 1;
+            "####" A 0 {
                 if(SP12_IsSemiAuto())
                 {
 				    A_SetInventory("CantDoAction",0);
@@ -615,7 +624,7 @@ class PBX_SPAS12 : PBX_WeaponBase
                 }
                 return ResolveState(null);
             }
-		    "####" A 0 A_JumpIf(SP12_IsSemiAuto(),"FireSemi");
+			TNT1 A 0 A_JumpIf(invoker.ammo2.amount <= 0,"Ready3");
         Pump:
             SPAN BCDEFG 1 SP12_SetSprite('SPAN','SPBN','SPAN','SPBN');
 		PumpBegin:
@@ -657,15 +666,17 @@ class PBX_SPAS12 : PBX_WeaponBase
 			"####" A 0 A_ZoomFactor(1.25);
 		    "####" A 0 A_JumpIf(SP12_IsSemiAuto(),"Fire2Semi");
             "####" FGC 1;
+			"####" A 0 A_JumpIf(invoker.ammo2.amount <= 0,"Ready3");
 		Pump2:
             "####" A 0 A_StartSound("weapons/spas12/pump", CHAN_AUTO);
             SPA8 GHIIJJJJJ 1 SP12_SetSprite('SPA8','SPB8','SPA8','SPB8');
-		    "####" IH 1 SPAS_Fire(5);
+		    "####" IH 1;
+            "####" A 0 SPAS_Fire(5);
             "####" HGG 1 {
 				if(JustPressed(BT_ATTACK) && invoker.ammo2.amount > 0) return ResolveState("Fire2");
                 return ResolveState(null);
 			}
-            TNT1 A 0 {
+            "####" A 0 {
 				A_SetInventory("CantDoAction",0);
 				return PB_ReadyFire(ads:true);
 			}

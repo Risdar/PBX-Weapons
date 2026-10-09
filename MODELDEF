@@ -69,3 +69,40 @@ Model PBX_RailGunRail2 // Name of actor in DECORATE
    offset -25 0 0
    FrameIndex MODL A 0 0 // The sprite lump, sprite frame, model index, frame number
 }
+
+// BeamZ
+Model "PBXCore_LaserBeam"
+{
+	Path "models/BeamZ/"
+	Model 0 "beam.md3"
+	Skin 0 "beam.png"
+	USEACTORPITCH
+	DONTCULLBACKFACES
+	
+	FrameIndex MODL A 0 0
+}
+Model "PBXCore_PulseLaser"
+{
+	Path "models/BeamZ/"
+	Model 0 "beam_cyl.md3"
+	Skin 0 "beam_cyl.png"
+	USEACTORPITCH
+	DONTCULLBACKFACES
+	
+	FrameIndex MODL A 0 0
+}
+
+// RTBW
+Model PBX_Tesla_Beam
+{
+	Path "models/Projectiles"    
+	Model 0 "tracer2.md3" 
+	Skin 0 "m2b1.png"     
+	scale 3.0 3.0 1.0
+	rotating
+	Rotation-Vector 0 1 0
+	Rotation-Speed 6
+	Useactorpitch
+	pitchoffset 90
+	FrameIndex T3SL A 0 0
+}

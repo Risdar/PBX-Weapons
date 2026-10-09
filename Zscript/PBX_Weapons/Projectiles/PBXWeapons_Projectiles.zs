@@ -13,7 +13,7 @@ mixin class PBX_LightningProjectile
     double ac_detectRange; // range around the projectile at which it'll look for victims
 	double ac_range; // range at which the lightning can split to further victims (if allowed)
 	int ac_maxvictims; // maximum number of victims this projectile can be hitting at once
-	// the other arguments are the same as the PBXCore_LightningController fields:
+	// the other arguments are the same as the PBX_LightningController fields:
 	int ac_damage;
 	int ac_duration;
 	int ac_delay;
@@ -51,7 +51,7 @@ mixin class PBX_LightningProjectile
 	{
 		return victim &&
 			victim != self &&
-			PBXCore_LightningController.L_IsValidVictim(victim, damageSource) &&
+			PBX_LightningController.L_IsValidVictim(victim, damageSource) &&
 			self.Distance3DSquared(victim) <= distSquared &&
 			self.CheckSight(victim);
 	}
@@ -73,8 +73,8 @@ mixin class PBX_LightningProjectile
 		// is the source of the attack:
 		Actor damageSource = target != null? target : Actor(self);
 		// Update victim arrays:
-		PBXCore_LightningController.L_RemoveInvalidVictimsFromArr(damageSource, self, ac_victims, ac_detectRange);
-		PBXCore_LightningController.L_AddValidVictimsToArr(damageSource, self, ac_victims, ac_detectRange, ac_maxvictims);
+		PBX_LightningController.L_RemoveInvalidVictimsFromArr(damageSource, self, ac_victims, ac_detectRange);
+		PBX_LightningController.L_AddValidVictimsToArr(damageSource, self, ac_victims, ac_detectRange, ac_maxvictims);
 
 		// Make sound if there are any victims:
 		if (ac_victims.Size() > 0)
@@ -89,8 +89,8 @@ mixin class PBX_LightningProjectile
 		// Attack victims and draw lightning towards them:
 		foreach (thing : ac_victims)
 		{
-			PBXCore_LightningController.L_StartChain(damageSource, thing, ac_damage, ac_range, ac_duration, ac_delay, ac_maxChains, ac_maxLinks, damageType:ac_DamageType);
-			PBXCore_LightningController.L_DrawLightning(self.pos.PlusZ(self.height*0.5), thing.pos.PlusZ(thing.height*0.5));
+			PBX_LightningController.L_StartChain(damageSource, thing, ac_damage, ac_range, ac_duration, ac_delay, ac_maxChains, ac_maxLinks, damageType:ac_DamageType);
+			PBX_LightningController.L_DrawLightning(self.pos.PlusZ(self.height*0.5), thing.pos.PlusZ(thing.height*0.5));
 		}
 	}
 

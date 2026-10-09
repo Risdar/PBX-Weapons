@@ -95,7 +95,7 @@ class PBX_CryoASG : PBX_WeaponBase
         name damageType = 'plasma'
     )
     {
-        Vector3 beamstart = PBXCore_LightningController.L_GetBeamAttachPos(self);
+        Vector3 beamstart = PBX_LightningController.L_GetBeamAttachPos(self);
         Array<Actor> hitTargets;
 
         for (int i = 0; i < numrays; i++)
@@ -105,7 +105,7 @@ class PBX_CryoASG : PBX_WeaponBase
             FTranslatedLineTarget t;
             AimLineAttack(an, distance, t, vrange);
 
-            if (t.linetarget && PBXCore_LightningController.L_IsValidVictim(t.linetarget, self)
+            if (t.linetarget && PBX_LightningController.L_IsValidVictim(t.linetarget, self)
                 && hitTargets.Find(t.linetarget) == hitTargets.Size())
             {
                 hitTargets.Push(t.linetarget);
@@ -114,10 +114,10 @@ class PBX_CryoASG : PBX_WeaponBase
 
         for (int i = 0; i < hitTargets.Size(); i++)
         {
-            PBXCore_LightningController.L_StartChain(self, hitTargets[i], damage, distance, duration, delay, maxChains, maxLinks, damageType:damageType);
+            PBX_LightningController.L_StartChain(self, hitTargets[i], damage, distance, duration, delay, maxChains, maxLinks, damageType:damageType);
 
-            Vector3 beamEnd = PBXCore_LightningController.L_GetBeamAttachPos(hitTargets[i]);
-            PBXCore_LightningController.L_DrawLightning(beamstart, beamEnd, spawnSpark: true, playersource: player);
+            Vector3 beamEnd = PBX_LightningController.L_GetBeamAttachPos(hitTargets[i]);
+            PBX_LightningController.L_DrawLightning(beamstart, beamEnd, spawnSpark: true, playersource: player);
         }
 
     }

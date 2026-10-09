@@ -95,16 +95,16 @@ class Tesla_LightningBall : PB_ProjectileAlt
     )
     {
         Actor damageSource = self.target;
-        Vector3 origin = PBXCore_LightningController.L_GetBeamAttachPos(self);
+        Vector3 origin = PBX_LightningController.L_GetBeamAttachPos(self);
 
         Array<Actor> victims;
-        PBXCore_LightningController.L_AddValidVictimsToArr(damageSource, self, victims, radius);
+        PBX_LightningController.L_AddValidVictimsToArr(damageSource, self, victims, radius);
 
         foreach (v : victims)
         {
             pbxcore_debug.print("Lightning Spawned");            
-            PBXCore_LightningController.L_StartChain(damageSource, v, damage, radius, duration, delay, maxChains, maxlinks, damageType:ac_damageType);
-            PBXCore_LightningController.L_DrawLightning(origin, PBXCore_LightningController.L_GetBeamAttachPos(v));
+            PBX_LightningController.L_StartChain(damageSource, v, damage, radius, duration, delay, maxChains, maxlinks, damageType:ac_damageType);
+            PBX_LightningController.L_DrawLightning(origin, PBX_LightningController.L_GetBeamAttachPos(v));
             v.damagemobj(self,self.target,2,'stun');
             Spawn("LightningBolt", v.pos);
         }

@@ -1,5 +1,7 @@
 Gameinfo
 {
+	PlayerClasses = "PBXCore_Player"
+	
 	addeventhandlers = "PBXWeapons_HUDHandler"
 	addeventhandlers = "PBXWeapons_CheatsHandler"
 	addeventhandlers = "PBXWeapons_WeaponSpawner"

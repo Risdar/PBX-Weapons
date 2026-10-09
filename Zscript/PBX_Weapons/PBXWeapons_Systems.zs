@@ -248,155 +248,60 @@ Class PBXWeapons_CheatsHandler : Eventhandler
 	}
 }
 
-// Code that I think could be useful but unused
-// and I dont know where else to put them lol
+class PBXCore_UpgradeBase : PB_UpgradeItem abstract
+{
+    name upgradetoken, upgradetype, s;
+    property UpgradeToken : upgradetoken;
+	property Sprite : upgradetype;
 
-// vector3 targetpos = lasersight.HitLocation;
-// switch (lasersight.HitType)
-// {
-// 	case TRACE_HitWall:
-// 	{
-// 		vector2 wallnormal = (-lasersight.HitLine.delta.y, lasersight.HitLine.delta.x).unit();
-// 		if (!lasersight.LineSide) wallnormal *= -1;
-// 		targetpos += (wallnormal.x, wallnormal.y, 0) * 2;
-// 		break;
-// 	}
-// 	case TRACE_HitFloor:
-// 		targetpos.z += 2;
-// 		break;
-// 	case TRACE_HitCeiling:
-// 		targetpos.z -= 2;
-// 		break;
-// 	case TRACE_HitActor:
-// 		// push back along trace direction so it sits on the actor surface
-// 		vector3 traceDir = (cos(pitch) * cos(angle), cos(pitch) * sin(angle), -sin(pitch));
-// 		targetpos -= traceDir * 2;
-// 		break;
-// }
+	Default
+	{
+        PBXCore_UpgradeBase.upgradetoken '';
+        PBXCore_UpgradeBase.Sprite '';
+		+inventory.alwayspickup;
+	}
 
-// // Replace the DMR if the replace cvar is enabled
-// override void AttachToOwner(Actor other)
-// {
-//     Super.AttachToOwner(other);
-//     if (level.MapName ~== "TITLEMAP") return;       // If its the titlemap, return
-//     if(!pbxweapons_normalriflereplace) return;      // If the CVAR is disabled, return
-//     if(owner.findinventory("DMRUpgraded")) return;  // If the player has the HDMR, return (though this is probably not needed since this function is only called once)
+	override void PlayPickupSound(actor toucher)
+	{
+		let hnd  = PB_EventHandler(EventHandler.Find("PB_EventHandler"));
+		if(hnd)
+		{
+			if(hnd.pickuptic[toucher.PlayerNumber()]==gametic) return;
+			hnd.pickuptic[toucher.PlayerNumber()] = gametic;
+		}
+		double atten;
+		int flags = CHANF_OVERLAP|CHANF_MAYBE_LOCAL;
+		if(bNoAttenPickupSound) atten = ATTN_NONE;
+		else atten = ATTN_NORM;
+		if(toucher && toucher.CheckLocalView()) flags |= CHANF_NOPAUSE;
+		toucher.A_StartSound(PickupSound,1002,flags,1.0,atten);
+	}
 
-//     // Force switch
-//     owner.TakeInventory("PB_DMR",1);
-//     if (Owner.player != null) Owner.player.PendingWeapon = self;
-// }
-// // Give the player ammo instead of picking up the weapon if the replace cvar is enabled
-// override bool HandlePickup(Inventory item)
-// {
-//     bool hasUpgrade = owner.findinventory("DMRUpgraded");
-//     bool isTitlemap = level.MapName ~== "TITLEMAP";
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		PBX_SetUpgradeSprite();
+	}
 
-//     // This is so you dont need to pick up the upgrade twice
-//     if (item is "PB_HDMRUpgrade")
-//     {
-//         console.printf("success");
-//         owner.GiveInventory("PB_DMR",1);
-//         owner.GiveInventory("DMRUpgraded",1);
-//         return super.HandlePickup(item);
-//     }
+	virtual void PBX_SetUpgradeSprite()
+	{
+		switch(upgradetype)
+		{
+            default: s = "TNT1"; break;
+		}
 
-// 	if (item.GetClassName() == "PB_DMR" 
-//         && !isTitlemap                              // If its the titlemap, return
-//         && pbxweapons_normalriflereplace            // If the CVAR is disabled, return
-//         && !hasUpgrade)                             // If the player has the HDMR, return
-// 	{
-// 		item.bPickupgood = true;
-// 		owner.GiveInventory("PB_HighCalMag", 15); // Give the replacement
-// 		return true; // Do not process Fist further
-// 	}
-// 	return super.HandlePickup(item);
-// }
+        if(upgradetype != "TNT1")
+		    sprite = GetSpriteIndex(s);
+	}
 
-//shells:
-	// 0-buckshot 1-slug 2-flechette
-	// 3-flak 4-dragon breath
-	// 5-explosive 6-white phosphorous 7-Doom shells
-	// 8-danmaku 9-subzero
-	
-	//to cycle shells ->
-	// Action Void CycleShellFw()
-	// {
-	// 	//cycle to the right
-	// 	int actmod = invoker.shellsmode;
-	// 	invoker.oldshells = actmod;
-	// 	A_startsound("menu/change",CHAN_AUTO);
-	// 	actmod++;
-		
-	// 	//dont need extra checks there
-	// 	if(actmod < 4)
-	// 	{
-	// 		invoker.shellsmode = actmod;
-	// 		//PrintCurrentShell();
-	// 		return;
-	// 	}
-		
-	// 	//this is kinda weird, the idea is, if you DONT have the upgrade, add another, so it jumps to the next shell type
-	// 	//if you dont have any upgrade, just go back to 0, wich means buckshot
-	// 	//if got dragon breat upgrade
-	// 	if(countinv("DragonBreathUpgrade")<1 && actmod == 4)
-	// 		actmod++;
-	// 	//if got Explosive upgrade
-	// 	if(countinv("ExplosiveUpgrade")<1 && actmod == 5)
-	// 		actmod++;
-	// 	//if got White phosphoruos upgrade (dragon breath 2: this time its personal)
-	// 	if(countinv("WhitePhosphorusUpgrade")<1 && actmod == 6)
-	// 		actmod++;
-	// 	if(countinv("TripleDoomUpgrade")<1 && actmod == 7)
-	// 		actmod++;
-	// 	if(countinv("DanmakuUpgrade")<1 && actmod == 8)
-	// 		actmod++;
-			
-	// 	if(actmod > 8)
-	// 		actmod = 0;
-		
-	// 	//clamps, so it never goes out from the types allowed
-	// 	actmod = clamp(actmod,0,8);
-	// 	invoker.shellsmode = actmod;
-	// 	//PrintCurrentShell();
-	// 	return;
-	// }
-	
-	// //to cycle shells <-
-	// Action Void CycleShellBack()
-	// {
-	// 	//idk why it was harder to do the back cycling than the forward one
-	// 	//console.printf("cicling back.");
-	// 	int actmod = invoker.shellsmode;
-	// 	invoker.oldshells = actmod;
-	// 	A_startsound("menu/change",CHAN_AUTO);
-		
-	// 	actmod--;
-		
-	// 	if(actmod < 0)
-	// 		actmod = 8;
-			
-	// 	if(actmod < 4)
-	// 	{
-	// 		invoker.shellsmode = actmod;
-	// 		//PrintCurrentShell();
-	// 		return;
-	// 	}
-		
-	// 	//the same as the other functions but the other way around, decrements if you dont have that specific upgrade
-	// 	if(countinv("DanmakuUpgrade")<1 && actmod == 8)
-	// 		actmod--;
-	// 	if(countinv("TripleDoomUpgrade")<1 && actmod == 7)
-	// 		actmod--;
-	// 	if(countinv("WhitePhosphorusUpgrade")<1 && actmod == 6)
-	// 		actmod--;
-	// 	if(countinv("ExplosiveUpgrade")<1 && actmod == 5)
-	// 		actmod--;
-	// 	if(countinv("DragonBreathUpgrade")<1 && actmod == 4)
-	// 		actmod--;
-		
-	// 	actmod = clamp(actmod,0,8);
-	// 	invoker.shellsmode = actmod;
-	// 	//PrintCurrentShell();
-		
-	// }
+	States
+	{
+		Spawn:
+			TNT1 A -1 bright light("WeaponUpgradeSpawner");
+			stop;
+
+		LoadSprites:
+			TNT1 A 0;
+	}
+}
+

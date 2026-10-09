@@ -312,23 +312,23 @@ class PBX_WeaponBase : PB_WeaponBase abstract
     )
 	{
 		// beamstart is where the lightning appears from:
-		Vector3 beamstart = PBXCore_LightningController.L_GetBeamAttachPos(self, horOfs, spawnheight);
+		Vector3 beamstart = PBX_LightningController.L_GetBeamAttachPos(self, horOfs, spawnheight);
 		Vector3 beamEnd;
 
 		// hit victim:
 		FLineTraceData tr;
-		LineTrace(angle, range, pitch, offsetz: PBXCore_LightningController.L_GetAttackHeight(PlayerPawn(self)), data: tr);
-		if (tr.HitType == TRACE_HitActor && tr.hitActor && PBXCore_LightningController.L_IsValidVictim(tr.hitActor, self))
+		LineTrace(angle, range, pitch, offsetz: PBX_LightningController.L_GetAttackHeight(PlayerPawn(self)), data: tr);
+		if (tr.HitType == TRACE_HitActor && tr.hitActor && PBX_LightningController.L_IsValidVictim(tr.hitActor, self))
 		{
-			beamEnd = PBXCore_LightningController.L_GetBeamAttachPos(tr.HitActor);
-			PBXCore_LightningController.L_StartChain(self, tr.HitActor, damage, range, duration, delay, maxChains, maxlinks, damageType:damageType);
+			beamEnd = PBX_LightningController.L_GetBeamAttachPos(tr.HitActor);
+			PBX_LightningController.L_StartChain(self, tr.HitActor, damage, range, duration, delay, maxChains, maxlinks, damageType:damageType);
 		}
 		// hit nothing:
 		else
 		{
 			beamEnd = tr.HitLocation;
 		}
-		PBXCore_LightningController.L_DrawLightning(beamstart, beamend, spawnSpark: (tr.HitType != TRACE_HitNone), playersource: player);
+		PBX_LightningController.L_DrawLightning(beamstart, beamend, spawnSpark: (tr.HitType != TRACE_HitNone), playersource: player);
 	}
 
     // Ricochet function from BDP

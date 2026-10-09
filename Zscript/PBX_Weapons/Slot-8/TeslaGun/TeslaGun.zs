@@ -3,6 +3,7 @@
 // Base Sprites is by IAmCarrotMaster
 // Hands is from Brutal Doom by Sergeant_Mark_IV (need to know who actually made the hand sprites)
 // Animations by ikdfa
+// New pickup sprites by agus4578
 
 // Includes
 // #include "./PlasmaBlaster_Functions.zs"
@@ -120,7 +121,7 @@ class PBX_TeslaGun : PBX_WeaponBase
         name damageType = 'plasma'
     )
     {
-        Vector3 beamstart = PBXCore_LightningController.L_GetBeamAttachPos(self);
+        Vector3 beamstart = PBX_LightningController.L_GetBeamAttachPos(self);
         Array<Actor> alreadyChained;
 
         for (int i = 0; i < numrays; i++)
@@ -131,13 +132,13 @@ class PBX_TeslaGun : PBX_WeaponBase
             AimLineAttack(an, distance, t, vrange);
 
             Vector3 beamEnd;
-            if (t.linetarget && PBXCore_LightningController.L_IsValidVictim(t.linetarget, self))
+            if (t.linetarget && PBX_LightningController.L_IsValidVictim(t.linetarget, self))
             {
-                beamEnd = PBXCore_LightningController.L_GetBeamAttachPos(t.linetarget);
+                beamEnd = PBX_LightningController.L_GetBeamAttachPos(t.linetarget);
 
                 if (alreadyChained.Find(t.linetarget) == alreadyChained.Size())
                 {
-                    PBXCore_LightningController.L_StartChain(self, t.linetarget, damage, distance, duration, delay, maxChains, maxlinks, damageType:damageType);
+                    PBX_LightningController.L_StartChain(self, t.linetarget, damage, distance, duration, delay, maxChains, maxlinks, damageType:damageType);
                     Spawn("LightningBolt", t.linetarget.pos);
                     S_StartSound("Thunder",0);
                     alreadyChained.Push(t.linetarget);
@@ -148,7 +149,7 @@ class PBX_TeslaGun : PBX_WeaponBase
                 beamEnd = beamstart + (cos(an), sin(an), 0) * distance;
             }
 
-            PBXCore_LightningController.L_DrawLightning(beamstart, beamEnd, spawnSpark: (t.linetarget != null), playersource: player);
+            PBX_LightningController.L_DrawLightning(beamstart, beamEnd, spawnSpark: (t.linetarget != null), playersource: player);
         }
         A_TakeInventory(LIGHTNING_SPECIAL_NAME,LIGHTNING_SPECIAL_MINIMUM);
         // Effects

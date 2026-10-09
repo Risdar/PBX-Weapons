@@ -123,7 +123,7 @@ Class PBX_NormalRifle : PBX_WeaponBase
             RIFL C 1 {
                 PB_CooldownBarrel();
 			    PB_HandleCrosshair(55);
-                return A_DoPBWeaponAction();
+                return PB_ReadyFire(ads:false);
             }
             loop;
 
@@ -163,10 +163,6 @@ Class PBX_NormalRifle : PBX_WeaponBase
 				PB_SetRoll(0);
 				A_ZoomFactor(1.0);
             }
-            RIFL J 0 A_Jump(128,3);
-            RIFL I 0 A_Jump(128,2);
-            RIFL A 0;
-            RIFL "#" 0;
 			TNT1 A 0 setBurstCount(0);
         FireLoop:
             TNT1 A 0 PB_JumpIfNoAmmo();
@@ -175,11 +171,11 @@ Class PBX_NormalRifle : PBX_WeaponBase
             RIFL F 1        fireweapon(3);
 			TNT1 A 0 A_JumpIf(getBurstCount() < 3 && getBurst(), "FireLoop");
         FireEnd:
-            RIFL G 1        fireweapon(4); 
 			TNT1 A 0 setBurstCount(0);
-            TNT1 A 0 {
-                if(!getBurst()) PB_Refire();
-                // return ResolveState(null);
+            RIFL G 1;
+            RIFL CCC 1 {
+                if(!getBurst()) return PB_ReadyFire(ads:false);
+                return ResolveState(null);
             }
             Goto Ready3;
 
@@ -194,12 +190,12 @@ Class PBX_NormalRifle : PBX_WeaponBase
             TNT1 A 0 PB_JumpIfNoAmmo();
             RIFZ E 1 BRIGHT fireweapon(1);
             RIFZ F 1        fireweapon(2);
+            RIFZ G 1;
 			TNT1 A 0 A_JumpIf(getBurstCount() < 3 && getBurst(), "Fire2Loop");
         Fire2End:
 			TNT1 A 0 setBurstCount(0);
-            RIFZ G 1;
             RIFZ H 1;
-            RIFZ D 1 {
+            RIFZ DDD 1 {
                 if(!getBurst()) return PB_ReadyFire(ads:true);
                 return ResolveState(null);
             }

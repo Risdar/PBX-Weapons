@@ -199,6 +199,7 @@ class PBX_ProSurvPSG : PBX_WeaponBase
                 PB_HandleCrosshair(46);
 				A_SetInventory("CantWeaponSpecial",0);
 				A_SetInventory("CantDoAction",0);
+                PB_SetReloading(false);
 			}
 		ReadytoFire:
             TNT1 A 0 PBX_CheckInspect();
@@ -213,6 +214,7 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 				A_ZoomFactor(1.25);
 				A_SetCrosshair(-1);
 				A_SetInventory("CantDoAction",0);
+                PB_SetReloading(false);
 			}
 		ReadytoFire2:
             ASS1 E 1 {
@@ -284,6 +286,7 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 			XG20 C 1 		SG_Fire(3);
 			XG20 DEFGHHH 1; 
 			XG20 I 1;
+			TNT1 A 0 A_JumpIf(invoker.ammo2.amount <= 0,"Ready3");
 		Pump:
 			TNT1 A 0 		SG_Fire(4);
 			XG40 ABCDEFGH 1 PB_SetRoll(roll-0.1);
@@ -314,6 +317,7 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 			ASX1 B 1 BRIGHT SG_Fire(2);
 			ASX1 C 2;
 			ASX1 D 2;
+			TNT1 A 0 A_JumpIf(invoker.ammo2.amount <= 0,"Ready3");
 		Pump2:
             TNT1 A 0 		SG_Fire(4);
             ASS2 A 5;

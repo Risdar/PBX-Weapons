@@ -252,6 +252,7 @@ class PBX_CryoSG : PBX_WeaponBase
                 PB_HandleCrosshair(46);
 				A_SetInventory("CantWeaponSpecial",0);
 				A_SetInventory("CantDoAction",0);
+                PB_SetReloading(false);
             }
         ReadyToFire:
             TNT1 A 0 PBX_CheckInspect();
@@ -267,6 +268,7 @@ class PBX_CryoSG : PBX_WeaponBase
                 PB_SetRoll(0);
                 A_SetCrosshair(-1);
 				A_SetInventory("CantDoAction",0);
+                PB_SetReloading(false);
             }
         ReadyToFire2:
 			FZGA E 1 {
@@ -289,6 +291,7 @@ class PBX_CryoSG : PBX_WeaponBase
 			FZGF B 1 BRIGHT PB_WeaponRecoil(-1.65,0);
 			FZGF CDEF 1 PB_WeaponRecoil(-1.65,0);
             TNT1 A 0 PB_SetReloading(true);
+			TNT1 A 0 A_JumpIf(invoker.ammo2.amount <= 0,"Ready3");
 		Pump:
 			FZGA A 4;
 			FZGP AB 1;
@@ -325,6 +328,7 @@ class PBX_CryoSG : PBX_WeaponBase
 			FZGA HIJ 1;
             TNT1 A 0 PB_SetReloading(true);
 			FZGA E 4;
+			TNT1 A 0 A_JumpIf(invoker.ammo2.amount <= 0,"Ready3");
         Pump2:
 			FZGA K 2;
 			FZGA K 1;

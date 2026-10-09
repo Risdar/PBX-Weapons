@@ -1,0 +1,254 @@
+// BEAMZ by Lewis3k
+class PBXCore_PulseLaser : PBXCore_LaserBeam
+ {
+	Default
+	{
+		PBXCore_LaserBeam.LaserColor "Red";
+	}
+	
+	override void BeamTick()
+	{
+		alpha = sin(GetAge() * 60) + 0.5;
+		aimAtCrosshair();
+	}
+ }
+ 
+ 
+ class TestBeam : Inventory
+ {
+	PBXCore_LaserBeam beam;
+	
+	override void DoEffect()
+	{
+		uint btns = Owner.player.cmd.buttons;
+		uint obtns = Owner.player.oldbuttons;
+	
+		// Create Laser
+		if(!beam) 
+		{
+			beam = beam.Create(Owner, 5, 0, -2, 0, 2, type:"PBXCore_PulseLaser");
+			beam.SetEnabled(true);
+		}
+		
+		// Toggle laser
+		if( btns & BT_RELOAD && !(obtns & BT_RELOAD) ) 
+			beam.SetEnabled(!beam.enabled);
+		
+		// Update laser if tracking target
+		if(beam.isTracking())
+		{
+			Actor aim = Owner.AimTarget();
+			if(aim) beam.targetPos = (aim.pos.xy, aim.pos.z + aim.height * 0.5);
+		}
+		
+		// Toggle tracking
+		if( btns & BT_ALTATTACK && !(obtns & BT_ALTATTACK) )
+			beam.trackingPos = !beam.trackingPos;
+	}
+ }
+ 
+ class PBXCore_LaserBeam : Actor
+{
+	Color shade;
+
+	double maxDist;
+	int ontics;
+	bool enabled;
+	Actor source;
+	vector3 curPos;
+	vector3 offsets;
+	vector2 angleOffsets;
+	vector3 curOffs;
+	transient FLineTraceData hitData;
+	
+	bool trackingPos;
+	vector3 targetPos;
+	
+	bool aimWithWeapon;
+	bool trackPSprite;
+	uint trackPSLayer;
+	
+	bool followAngles, continuousHit;
+	Property TrackAngles : followAngles;
+	Property TrackWeapon : trackPSprite, trackPSLayer;
+	Property AimFromWeapon : aimWithWeapon; 
+	Property LaserColor : shade;
+	Property ContinuousImpact : continuousHit;
+	
+	Default
+	{
+		Scale 1.0;
+		+NOINTERACTION;
+		+INTERPOLATEANGLES;
+		RenderStyle "AddShaded";
+		
+		PBXCore_LaserBeam.LaserColor "Blue";
+		PBXCore_LaserBeam.TrackAngles true;				// Update with player's view.
+		PBXCore_LaserBeam.TrackWeapon true, PSP_WEAPON; // Offset by PSprite offsets.
+		PBXCore_LaserBeam.AimFromWeapon true;			// Fire from weapon "muzzle", only used if TrackWeapon is enabled.
+		PBXCore_LaserBeam.ContinuousImpact false; 		// If true, calls the OnImpact function every tick the laser is enabled, instead of just once after the laser is fired.
+	}
+	
+	static PBXCore_LaserBeam Create(Actor source, double fw, double lr, double ud, double angleOffs = 0, double pitchOffs = 0, double maxDist = 2048, class<PBXCore_LaserBeam> type = "PBXCore_LaserBeam")
+	{
+		let laser = PBXCore_LaserBeam(Spawn(type, source.pos));
+		if(laser) 
+		{
+			laser.source = source;
+			laser.maxDist = maxDist;
+			laser.offsets = (fw, lr, ud);
+			laser.angleOffsets = (angleOffs, pitchOffs);
+		}
+		
+		return laser;
+	}
+	
+	void setEnabled(bool set)
+	{
+		enabled = set;
+	}
+	
+	void startTracking(vector3 toPos)
+	{
+		trackingPos = true;
+		targetPos = toPos;
+	}
+	
+	void aimAtCrosshair()
+	{
+		double zoffs = source.height*0.5;
+		if(source.player) zoffs = source.player.viewz - source.pos.z;
+	
+		FLineTraceData lt;
+		source.LineTrace(source.angle, maxDist, source.pitch, offsetz:zoffs, offsetforward:source.radius, data:lt);
+		if(lt.HitType != TRACE_HitNone) 
+		{
+			vector3 aimAngles = level.SphericalCoords(curPos, lt.HitLocation, (source.angle,source.pitch));
+			angleOffsets.x = aimAngles.x;
+			angleOffsets.y = aimAngles.y;
+		}
+	}
+	
+	void stopTracking()
+	{
+		if(trackingPos) ontics = 0;
+		trackingPos = false;
+	}
+	
+	bool isTracking()
+	{
+		return trackingPos;
+	}
+	
+	virtual vector3 getSourcePos()
+	{
+		vector3 srcPos = (source.pos.xy, source.pos.z + (source.height * 0.5));
+		if(source.player) srcPos.z = source.player.viewz;
+		
+		return srcPos;
+	}
+	
+	virtual void BeamTick()
+	{
+		// Implement custom laser logic here.
+	}
+	
+	virtual void OnImpact(vector3 hitPos, Actor hitActor)
+	{
+		// On impact with something
+	}
+	
+	override void Tick()
+	{
+		if(isFrozen()) return;
+		if(!enabled || !source) 
+		{
+			ontics = 0;
+			bInvisible = true;
+			return;
+		}
+		ontics++;
+		bInvisible = ontics < 3;
+		if(shade) SetShade(shade);
+		
+		if( ontics == 2 || (ontics >= 2 && continuousHit) )
+		{ 
+			OnImpact(hitData.hitLocation, hitdata.hitActor);
+		}
+				
+		// PSprite tracking?
+		vector2 bob = (0,0);
+		if(trackPSprite && PlayerPawn(source))
+		{
+			let psp = source.player.GetPSprite(trackPSLayer);
+			bob = PlayerPawn(source).BobWeapon(1.0);
+			
+			bob.x += psp.x;
+			bob.y += (psp.y - 32);
+			bob.x *= 0.031;
+			bob.y *= 0.035;
+		}
+		
+		// Update laser and tracking.
+		let aimDir = Quat.FromAngles(source.angle, source.pitch, source.roll);
+		curOffs = aimDir * (
+			offsets.x, 
+		  -(offsets.y + bob.x), 
+			offsets.z - bob.y
+		);
+		
+		vector3 finalPos = level.vec3offset(getSourcePos(), curOffs);
+		SetOrigin(finalPos, true);
+		curPos = finalPos;
+		
+		double toAngle = source.angle + angleOffsets.x;
+		double toPitch = source.pitch + angleOffsets.y;
+		if(aimWithWeapon) 
+		{
+			toAngle -= (bob.x * 10);
+			toPitch += (bob.y * 10);  
+		}	
+		
+		// Track target and source's angles.
+		if(trackingPos)
+		{
+			vector3 diff = level.vec3diff(finalPos, targetPos);
+			vector3 dir = diff.Unit();
+			
+			toAngle = angleOffsets.x + atan2(dir.y, dir.x) + 180; 
+			toPitch = angleOffsets.y + asin(dir.z);
+			A_SetAngle(toAngle, SPF_INTERPOLATE);
+			A_SetPitch(toPitch - 90, SPF_INTERPOLATE);		
+		} 
+		else if(followAngles)
+		{
+			A_SetAngle(toAngle, SPF_INTERPOLATE);
+			A_SetPitch(toPitch+90, SPF_INTERPOLATE);
+		}
+		
+		// View Interpolation.	
+		if(source.player) 
+		{
+			if(source.player.cheats & CF_PREDICTING) return;
+			source.player.cheats |= CF_INTERPVIEW;
+		}
+		
+		// Do linetrace to determine aim distance.
+		double zoffs = source.player ? (source.player.viewz-source.pos.z) : source.height * 0.5;
+		source.LineTrace(angle, maxDist, pitch - 90, 0, zoffs+offsets.z-bob.y, offsets.x, offsets.y-bob.x, data:hitData);
+		
+		// Scale to Distance.
+		double dist = min(hitData.Distance, maxDist);
+		double dirPitch = pitch - 90;
+		scale.y = dist * level.pixelstretch;
+					
+		BeamTick();
+	}
+	
+	States
+	{
+		Spawn:
+			MODL A -1 Bright;
+		stop;
+	}
+}
