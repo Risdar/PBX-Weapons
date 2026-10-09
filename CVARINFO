@@ -2,7 +2,7 @@
 /* server bool FirstTimeLoadingPBX = true; */
 /* server bool pbxweapons_experimental = false; */
 server bool pbxweapons_sendTip = true;
-server bool pbxweapons_normalriflereplace = false;
+server bool pbxweapons_startwithnormalrifle = false;
 server bool pbxweapons_startwithcrossbow = false;
 server bool pbxweapons_enablesecretweapon = true;
 server bool pbxweapons_cssghooklockswitch = true;

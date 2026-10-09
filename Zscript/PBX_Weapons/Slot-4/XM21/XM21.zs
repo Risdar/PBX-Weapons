@@ -15,9 +15,6 @@ class PBX_XM21 : PBX_WeaponBase
     Default
     {
 //////////////////////////// WEAPON DATA ////////////////////////////////////////////////////////////////////////////////////
-        Weapon.SelectionOrder 1;
-        Weapon.SlotNumber 4;
-        Weapon.SlotPriority 1;
         PB_WeaponBase.UsesWheel true;
         PB_WeaponBase.WheelInfo "XM21Wheel";
         PB_WeaponBase.ReserveToMagAmmoFactor 2;

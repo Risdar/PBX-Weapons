@@ -25,7 +25,7 @@ PBXWEAPONS_MENU_RESET_WEAPON_DURATIONS = "Reset PBX Weapons Values";
 PBXWEAPONS_CSSG_LOCK_SWITCH = "CSSG Meathook Lock Switch";
 
 TIP_pbxweapons_keepweapons          = "Keep unupgraded weapons (PBX Weapons Only)";
-TIP_pbxweapons_normalriflereplace   = "Start the game with the Platinum Rifle";
+TIP_pbxweapons_startwithnormalrifle   = "Start the game with the Platinum Rifle";
 TIP_pbxweapons_startwithcrossbow    = "Start the game with the Crossbow Ballista";
 TIP_pbxweapons_enablesecretweapon   = "Toggle secret weapon spawns";
 TIP_pbxweapons_cssghooklockswitch   = "Disable weapon switching when the CSSG Meathook is attached to a monster";

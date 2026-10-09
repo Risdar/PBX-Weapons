@@ -29,7 +29,7 @@
     {
         Super.AttachToOwner(other);
         if (level.MapName ~== "TITLEMAP") return;       // If its the titlemap, return
-        if(!pbxweapons_normalriflereplace) return;      // If the CVAR is disabled, return
+        if(!pbxweapons_startwithnormalrifle) return;      // If the CVAR is disabled, return
         if(owner.findinventory("DMRUpgraded")) return;  // If the player has the HDMR, return (though this is probably not needed since this function is only called once)
 
         // Force switch
@@ -53,7 +53,7 @@
 
     	if (item.GetClassName() == "PB_DMR" 
             && !isTitlemap                              // If its the titlemap, return
-            && pbxweapons_normalriflereplace            // If the CVAR is disabled, return
+            && pbxweapons_startwithnormalrifle            // If the CVAR is disabled, return
             && !hasUpgrade)                             // If the player has the HDMR, return
     	{
     		item.bPickupgood = true;
@@ -441,7 +441,7 @@
 	action void M2_FireSeekerLight()
 	{
 		blockthingsiterator bti = blockthingsiterator.create(self,500);
-		array<PB_LightningTarget> vic;
+		array<PBX_LightningTarget> vic;
 		int maxbeams = random(2,4);
 		
 		while(bti.next())
@@ -453,7 +453,7 @@
 			&& abs(an) < 45 && distance3d(mo) <= 450 && checksight(mo))
 			{
 				vic.push(
-				PB_LightningTarget.addnew(mo,mo.pos + (0,0,mo.height * 0.5),angleto(mo),pitchto(mo),distance3d(mo))
+				PBX_LightningTarget.addnew(mo,mo.pos + (0,0,mo.height * 0.5),angleto(mo),pitchto(mo),distance3d(mo))
 				);
 				maxbeams--;
 			}

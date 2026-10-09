@@ -14,9 +14,6 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
         Weapon.BobRangeY 0.5;
         Weapon.BobStyle "InverseSmooth";
         Weapon.BobSpeed 2.4;
-		Weapon.SlotNumber 2;
-        Weapon.SlotPriority 0;
-        Weapon.SelectionOrder 1300;
         Weapon.AmmoType1 "BlasterPistolCharge";
         Inventory.MaxAmount 3;
         Inventory.Amount 1;
@@ -121,7 +118,6 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
                     PB_WeaponRecoil(-0.18,-0.08);
                     A_FireCustomMissile("BlueFlareSpawn", 0, 0, 0, 0, 0, 0);
 		            PB_FireBullets("ProsurvBlasterProjectile", 1, 0, 0, 0, frandom(-0.1, 0.1));
-                    // A_FireCustomMissile("ProsurvBlasterProjectile", 0,0,0,1,0,0); // THE BOOLET
                 }
 
                 // Depends on which Tic
@@ -130,8 +126,7 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
                 // Will always be called
                 if(!ads)
                 {
-                    if (invoker.OwnerHasBerserk())  PB_WeaponRecoil(-0.18,+0.8);
-                    else PB_WeaponRecoil(-0.9,+0.4);
+                    PB_WeaponRecoil(-0.18,+0.8);
                 }
                 break;
         }
@@ -166,7 +161,7 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
                 A_SetCrosshair(-1);
             }
             TNT1 A 10 A_DoPBWeaponAction();
-            TNT1 A 0 A_StartSound("weapons/blasterpistol/ready",CHAN_WEAPON,CHANF_OVERLAP);
+            // TNT1 A 0 A_StartSound("weapons/blasterpistol/ready",CHAN_WEAPON);
             BRGT EDCBAAAAA 1 A_DoPBWeaponAction();
             BRGC CDEF 1 {
                 PB_SetRoll(roll+.2);

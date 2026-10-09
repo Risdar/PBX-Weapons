@@ -13,9 +13,6 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 	Default
 	{
 //////////////////////////// WEAPON DATA ////////////////////////////////////////////////////////////////////////////////////
-		Weapon.SlotNumber 4;
-	    Weapon.SlotPriority 2;
-	    Weapon.SelectionOrder 1550;
 	    Inventory.PickupSound "BR45PICK";
 	    Inventory.AltHUDIcon "BR45A0";
 		inventory.maxamount 1;

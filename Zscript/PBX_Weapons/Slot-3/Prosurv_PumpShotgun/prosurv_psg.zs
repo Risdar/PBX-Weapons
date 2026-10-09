@@ -26,8 +26,6 @@ class PBX_ProSurvPSG : PBX_WeaponBase
         Weapon.BobRangeY 0.5;
         Weapon.BobStyle "InverseSmooth";
         Weapon.BobSpeed 2.4;
-        Weapon.SelectionOrder 1300;
-        Weapon.SlotNumber 3;
         Weapon.AmmoGive1 18;
         Weapon.AmmoGive2 9;
         Scale 0.7;

@@ -21,9 +21,6 @@ class PBX_CryoASG : PBX_WeaponBase
     Default
     {
 //////////////////////////// WEAPON DATA ////////////////////////////////////////////////////////////////////////////////////
-        Weapon.SelectionOrder 1;
-        Weapon.SlotNumber 3;
-        Weapon.SlotPriority 1;
         PB_WeaponBase.UsesWheel true;
         PB_WeaponBase.WheelInfo "CryoASGWheel";
         PBX_WeaponBase.TakeWeaponDowngrade "PBX_CryoSG";

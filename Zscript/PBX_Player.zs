@@ -3,6 +3,239 @@
 class meathook : Inventory {Default {Inventory.MaxAmount 1;}}
 class PBXCore_Player : PB_PlayerPrawn
 {
+	Default
+	{
+		Player.WeaponSlot 1
+		,"PB_Axe"
+		,"PB_Chainsaw"
+		,"PB_Fists"
+		// PBX Weapons
+		;
+		
+		Player.WeaponSlot 2
+		,"PB_Pistol"
+		,"PB_MP40"
+		,"PB_SMG"
+		,"PB_Revolver"
+		,"PB_Deagle"
+		// PBX Weapons
+		,"PBX_ProsurvBlaster"
+		,"PBX_PlasmaBlaster"
+		,"PBX_Prosurv_LeverAction"
+		;
+		
+		Player.WeaponSlot 3
+		,"PB_Shotgun"
+		,"PB_AutoShotgun"
+		,"PB_SSG"
+		,"PB_QuadSG"
+		// PBX Weapons
+		,"PBX_ProSurvPSG"
+		,"PBX_CSSG"
+		,"PBX_SPAS12"
+		,"PBX_CryoSG"
+		,"PBX_CryoASG"
+		;
+		
+		Player.WeaponSlot 4
+		,"PB_ChexRifle"
+		,"PB_DMR"
+		,"PB_Carbine"
+		,"PB_LMG"
+		// PBX Weapons
+		,"PBX_NormalRifle"
+		,"PBX_BDPBattleRifle"
+		,"PBX_MetalSniper"
+		,"PBX_Prosurv_Ballista"
+		;
+		
+		Player.WeaponSlot 5
+		,"PB_MG42"
+		,"PB_Minigun"
+		,"PB_Nailgun"
+		// PBX Weapons
+		,"PBX_NeoHMG"
+		,"PBX_SuperNailgun"
+		;
+		
+		Player.WeaponSlot 6
+		,"PB_RocketLauncher"
+		,"PB_SuperGL"
+		// PBX Weapons
+		,"PBX_Excavator"
+		,"PBX_CyberdemonRL"
+		,"PBX_MastermindChaingun"
+		;
+
+		Player.WeaponSlot 7
+		,"PB_M1Plasma"
+		,"PB_M2Plasma"
+		,"PB_DTechRifle"
+		// PBX Weapons
+		,"PBX_BDPRailgun"
+		;
+		
+		Player.WeaponSlot 8
+		,"PB_CryoRifle"
+		,"PB_Flamethrower"
+		// PBX Weapons
+		,"PBX_TeslaGun"
+		,"PBX_FreezeRifle"
+		;
+
+		Player.WeaponSlot 9
+		,"PB_Unmaker"
+		,"PB_BFG9000"
+		,"PB_Railgun"
+		// PBX Weapons
+		,"PBX_DemonExt"
+		,"PBX_HexaShotgun"
+		;
+
+		// SLOT 2
+		Player.StartItem "HellPistolerAmmo", PBX_PlasmaBlaster.CELL_SIZE;
+		Player.StartItem "LeverActionAmmo", PBX_Prosurv_LeverAction.MAGAZINE_SIZE;
+		// SLOT 3
+		Player.StartItem "PumpShotgunAmmo", PBX_ProSurvPSG.MAGAZINE_SIZE;
+		Player.StartItem "CSSGShellsIn", PBX_CSSG.BARREL_CAPACITY;
+		Player.StartItem "PBX_SPAS12Mag", PBX_SPAS12.MAGAZINE_SIZE;
+		Player.StartItem "CryoSGAmmo", PBX_CryoSG.MAGAZINE_SIZE;
+		Player.StartItem "CryoASGAmmo", PBX_CryoASG.DRUM_SIZE;
+		// SLOT 4
+		Player.StartItem "NormalRifleAmmo", PBX_NormalRifle.MAGAZINE_SIZE;
+		Player.StartItem "BR_Ammo", PBX_BDPBattleRifle.MAGAZINE_SIZE;
+		Player.StartItem "MetalSniperAmmo", PBX_MetalSniper.MAGAZINE_SIZE;
+		Player.StartItem "CrossbowBallistaAmmo", PBX_Prosurv_Ballista.ARROW_AMOUNT;
+		// SLOT 5
+		Player.StartItem "HMGChamberAmmo", PBX_NeoHMG.MAGAZINE_SIZE;
+		Player.StartItem "SuperNailgunAmmo", PBX_SuperNailgun.MAGAZINE_SIZE;
+		// SLOT 6
+		Player.StartItem "ExcavatorRounds", PBX_Excavator.MAGAZINE_SIZE;
+		Player.StartItem "CyberRLDurability", PBX_CyberdemonRL.DURABILITY;
+		Player.StartItem "MastermindCGDurability", PBX_MastermindChaingun.DURABILITY;
+		// SLOT 7
+		Player.StartItem "BDPRailgunAmmo", PBX_BDPRailgun.MAGAZINE_SIZE;
+		// SLOT 8
+		Player.StartItem "TeslaAmmo", PBX_TeslaGun.CELL_SIZE;
+		Player.StartItem "FreezeRifleAmmo", PBX_FreezeRifle.CELL_SIZE;
+        // SLOT 9
+		Player.StartItem "SoulCharge", PBX_DemonExt.SOUL_CAPACITY;
+		Player.StartItem "HexaShotgunAmmo", PBX_HexaShotgun.BARREL_CAPACITY;
+		//Others
+		Player.StartItem "PBX_ProsurvBlaster";
+		Player.StartItem "PBXWeapons_TipsManager";
+
+		// STUFF FROM PB
+		Mass 500;
+		GibHealth 20;
+		Species "Marines";
+		BloodType "NashGoreBlood";
+		
+		DamageFactor "Head",1.0;
+		DamageFactor "Leg",1.0;
+		DamageFactor "FriendBullet",0.0;
+		DamageFactor "Taunt",0.0;
+		DamageFactor "KillMe",0.0;
+		DamageFactor "SSG",5.0;
+		DamageFactor "Shrapnel",0.0;
+		DamageFactor "Blood",0.0;
+		DamageFactor "BlueBlood",0.0;
+		DamageFactor "GreenBlood",0.0;
+		DamageFactor "MinorHead",0.0;
+		DamageFactor "Decaptate",0.0;
+		DamageFactor "IceExplosion",0.0;
+		DamageFactor "MonsterKnocked",0.0;
+		DamageFactor "Trample",0.0;
+		DamageFactor "Kick",0.75;
+		DamageFactor "Fatality",5.0;
+		DamageFactor "BHFTOnBarrel",0.0;
+		DamageFactor "GibRemoving",0.0;
+		DamageFactor "SuperPunch",5.0;
+		DamageFactor "HelperMarineFatallity",0.0;
+		DamageFactor "SpawnMarine",0.0;
+		DamageFactor "TeleportRemover",0.0;
+		DamageFactor "CancelTeleportFog",0.0;
+		DamageFactor "CauseObjectsToSplash",0.0;
+		DamageFactor "CauseObjectsToSplashSlime",0.0;
+		DamageFactor "CauseObjectsToSplashNukage",0.0;
+		DamageFactor "CauseObjectsToSplashBlood",0.0;
+		DamageFactor "CauseObjectsToSplashLava",0.0;
+		DamageFactor "SuperKick",0.0 ;
+		DamageFactor "BFGShield",0.0;
+		DamageFactor "KillMeBot",0.0;
+		DamageFactor "Flames",0.875;
+		DamageFactor "Fire",0.875;
+		DamageFactor "Burn",0.875;
+		DamageFactor "Disintegrate",1.0;
+		DamageFactor "Avoid",0;
+		
+		Player.ViewHeight 46;
+		Player.AttackZOffset 19;
+		Player.ColorRange 112,127;
+		Player.JumpZ 7.4;
+		Player.GruntSpeed 24;
+		Player.DisplayName "Project Brutality";
+		Player.CrouchSprite "PLYC";
+		//Player.ViewBob 0.0;
+
+		// Player.StartItem "PB_PDAWeaponContainer",1;
+		Player.StartItem "PB_DMR";
+		Player.StartItem "PB_Pistol";
+		Player.StartItem "PB_Fists";
+		
+		Player.StartItem "CarbineFullAuto";
+		Player.StartItem "HasNotPickedUpSSG",1;
+		Player.StartItem "IsPlayer",1;
+		Player.StartItem "FragGrenadeSelected",1;
+		
+		Player.StartItem "PB_HighCalMag", 90;
+		Player.StartItem "PB_LowCalMag", 60;
+		Player.StartItem "PB_GrenadeAmmo",3;
+		Player.StartItem "PB_QuickLauncherAmmo",4;
+		
+		Player.StartItem "PB_PistolMag", 16;
+		Player.StartItem "PB_PistolLeftMag", 16;
+		Player.StartItem "PB_SMGMag", PB_SMG.MAGAZINE_SIZE;
+		Player.StartItem "PB_SMGLeftMag", PB_SMG.MAGAZINE_SIZE;
+		Player.StartItem "PB_RevolverMag", 6;
+		Player.StartItem "PB_RevolverLeftMag", 6;
+		Player.StartItem "PB_DeagleMag", 12;
+		Player.StartItem "PB_DeagleLeftMag", 12;
+		Player.StartItem "PB_MP40Mag", PB_MP40.MAGAZINE_SIZE;
+		Player.StartItem "PB_MP40LeftMag", PB_MP40.MAGAZINE_SIZE;
+		Player.StartItem "PB_ShotgunMag", 9;
+		Player.StartItem "AutoShotgunAmmo", 12;
+		Player.StartItem "LeftASGAmmo", 12;
+		Player.StartItem "PB_SSGMag", PB_SSG.MAGAZINE_SIZE;
+		Player.StartItem "PB_SSGLeftMag", PB_SSG.MAGAZINE_SIZE;
+		Player.StartItem "QSSGAmmoCounter", 4;
+		Player.StartItem "LeftQSSGAmmoCounter", 4;
+		Player.StartItem "DMRAmmo", 31;
+		Player.StartItem "LeftDMRAmmo", 31;
+		Player.StartItem "XRifleAmmo", 41;
+		Player.StartItem "LeftXRifleAmmo", 41;
+		Player.StartItem "LMGAmmo", 100;
+		Player.StartItem "CheXRifleAmmo", 42;
+		Player.StartItem "PB_NailgunAmmo", 120;
+		Player.StartItem "RocketRounds", 10;
+		Player.StartItem "PB_SuperGLMag", 7;
+		Player.StartItem "PB_M1PlasmaMag", 60;
+		Player.StartItem "PB_M1PlasmaLeftMag", 60;
+		//Player.StartItem "PulseCannonAmmo",60;
+		Player.StartItem "M2PlasmaAmmo", 50;
+		Player.StartItem "LeftM2PlasmaAmmo", 50;
+		Player.StartItem "PB_DTechRifleMag", PB_DTechRifle.MAGAZINE_SIZE;
+		Player.StartItem "FlamerAmmo", 90;
+        Player.StartItem "PB_CryoRifleMag", 60;
+		Player.StartItem "RailgunAmmo", 60;
+
+		+ROLLSPRITE
+		+THRUSPECIES
+		+MTHRUSPECIES
+		+THRUGHOST
+		-NOSKIN
+	}
+
 	Actor aimActor;
 	Actor aimActor2;
 	vector3 aimpos;

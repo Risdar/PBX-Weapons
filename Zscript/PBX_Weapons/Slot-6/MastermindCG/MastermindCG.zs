@@ -17,9 +17,6 @@ class PBX_MastermindChaingun : PBX_WeaponBase
         //$Category Weapons
         //$Sprite RMN2A0
 //////////////////////////// WEAPON DATA ////////////////////////////////////////////////////////////////////////////////////
-		Weapon.SlotNumber 6;
-		Weapon.SlotPriority 0;
-	    Weapon.SelectionOrder 3800;
         Inventory.AltHudIcon "RMN2A0";
 		PB_WeaponBase.ReserveToMagAmmoFactor 1;
 		

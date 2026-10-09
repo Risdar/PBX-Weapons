@@ -23,9 +23,6 @@ class PBX_Prosurv_Ballista : PBX_WeaponBase
         //$Category Weapons
         //$Sprite CBOWS0
         ////SpawnID 9530;
-		Weapon.SlotNumber 4;
-		Weapon.SlotPriority 0;
-	    Weapon.SelectionOrder 506;
         PB_WeaponBase.UsesWheel true;
 		PB_WeaponBase.ReserveToMagAmmoFactor 1;
 		PB_WeaponBase.WheelInfo "CrossbowBallistaWheel";

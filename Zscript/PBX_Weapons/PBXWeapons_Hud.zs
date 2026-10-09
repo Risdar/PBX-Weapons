@@ -321,7 +321,12 @@ class PBXHUDService_PBX_AllWeapons : service
         }
 
         case 'PBX_SPAS12':
-            return MakeData(imgOffset1:(-10, 10), imgScale1:0.65);
+        {
+            let spas12 = PBX_SPAS12(weapon); if (!spas12) return null;
+            string shellImg = spas12.mSemiAuto ? "buckhud" : "slughud";
+
+            return MakeData(img2:shellImg,imgOffset1:(-10, 10),imgScale1:0.65);
+        }
 
         case 'PBX_CryoSG':
             return MakeData(imgOffset1:(-15, 15), imgScale1:1.35);

@@ -275,20 +275,29 @@ class PBX_LightningController : Thinker
 		double beamAngle = atan2(diff.y, diff.x);
 		double beamPitch = -asin(dir.z);
 
-		Actor beam = Actor.Spawn("PBX_Tesla_Beam", from);
-		if (beam)
-		{
-			beam.angle = beamAngle;
-			beam.pitch = beamPitch - 90;
-			beam.scale.y = dist;
-			beam.scale.x *= size / 10.0; // default size (10) leaves the actor's width unchanged
+		double pieceLen = max(density * 16, 1); // tune the multiplier to your beam texture
+		Vector3 pos = from;
+		double remaining = dist;
 
-			// Give beam player's velocity if a player is provided.
-			// This makes it appear to match player's movement:
-			if (playerSource && playerSource.mo)
+		while (remaining > 0)
+		{
+			double len = min(pieceLen, remaining);
+
+			Actor beam = Actor.Spawn("PBX_Tesla_Beam", pos);
+			if (beam)
 			{
-				beam.vel = playerSource.mo.vel;
+				beam.angle = beamAngle;
+				beam.pitch = beamPitch - 90;
+				beam.scale.y = len;
+				beam.scale.x *= size / 10.0;
+				if (playerSource && playerSource.mo)
+				{
+					beam.vel = playerSource.mo.vel;
+				}
 			}
+
+			pos = Level.Vec3Offset(pos, dir * len);
+			remaining -= len;
 		}
 
 		// If spawnspark is true, spawn some sparks at the end position:

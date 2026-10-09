@@ -12,9 +12,6 @@ class PBX_FreezeRifle : PBX_WeaponBase
     Default
     {
 //////////////////////////// WEAPON DATA ////////////////////////////////////////////////////////////////////////////////////
-        Weapon.SelectionOrder 1;
-        Weapon.SlotNumber 8;
-        Weapon.SlotPriority 1;
         Weapon.BobRangeX 0.3;
         Weapon.BobRangeY 0.5;
         Weapon.BobStyle "InverseSmooth";

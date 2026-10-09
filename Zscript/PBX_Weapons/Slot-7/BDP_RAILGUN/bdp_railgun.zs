@@ -26,9 +26,6 @@ Class PBX_BDPRailgun : PBX_WeaponBase
 		Inventory.PickupSound "PLSDRAW";
 		Inventory.Pickupmessage "$PBX_BDPRailgun_Pickup";
 		DamageType "Railgun";
-		Weapon.SlotNumber 7;
-		Weapon.SlotPriority 2;
-		Weapon.SelectionOrder 1550;
 		Inventory.AltHUDIcon "XBDRA0";
 		Tag "$PBX_BDPRailgun_Tag";
         scale 1.0;

@@ -20,7 +20,6 @@ Class PBX_DemonExt : PBX_WeaponBase
 {
 	default
 	{
-		weapon.slotnumber 9;
 		//Demonic_Exterminator
 		Tag "$PBX_DemonExt_Tag";
 		inventory.pickupsound "UNMPCK";
@@ -30,7 +29,6 @@ Class PBX_DemonExt : PBX_WeaponBase
 		Weapon.AmmoType2 "SoulCharge";
 		Weapon.AmmoUse1 2;
 		Weapon.AmmoGive1 200;
-		Weapon.SelectionOrder 1800;
 		Scale 0.8;
 		Inventory.althudicon "UNMXA0";
 		+weapon.noautofire;

@@ -25,7 +25,6 @@ class PBX_SPAS12 : PBX_WeaponBase
 		Weapon.BobRangeY 0.5;
 		Weapon.BobStyle "InverseSmooth";
 		Weapon.BobSpeed 2.4;
-		Weapon.SelectionOrder 1250;
 		Weapon.AmmoType1 "PB_Shell";
 		weapon.ammogive1 10;
 		Weapon.AmmoType2 "PBX_SPAS12Mag";
@@ -37,8 +36,6 @@ class PBX_SPAS12 : PBX_WeaponBase
 		Inventory.AltHUDIcon "SPACA0";
 		Inventory.Amount 1;
 		Inventory.MaxAmount 1;
-		Weapon.SlotNumber 3;
-		Weapon.SlotPriority 2.4;
 		Obituary "$OB_WEAP_SPAS12";
 		Scale 0.40;
 		Tag "$PBX_SPAS12_TAG";
@@ -52,6 +49,7 @@ class PBX_SPAS12 : PBX_WeaponBase
     bool mStockIsFolded;
     bool mSemiAuto;
     bool mDualBlast;
+    bool mFirstTimePickup; // So it prints the current mode once upon pickup
     bool mJustFiredDualBlast;
     const MAGAZINE_SIZE = 9;
     const TIME_DELAY_UNFOLDED = 2; // How many tics should the duration be longer if the stock is unfolded
@@ -69,14 +67,9 @@ class PBX_SPAS12 : PBX_WeaponBase
     {
         super.PostBeginPlay();
         mStockIsFolded = true;
-        mSemiAuto = false;
+        mSemiAuto = true;
+        mFirstTimePickup = true;
     }
-
-    // override void AttachToOwner(Actor other)
-    // {
-    //     super.AttachToOwner(other);
-    //     other.A_Print(!SP12_IsSemiAuto() ? "$PBX_SPAS12_SEMI" : "$PBX_SPAS12_MANUAL");
-    // }
 
     action void  SP12_SetSprite(
         name foldedManual = '', 
@@ -372,6 +365,7 @@ class PBX_SPAS12 : PBX_WeaponBase
             
         Spawn:
             SPAC A -1 {
+                invoker.mFirstTimePickup = true;
                 if(SP12_IsStockFolded())
                 {
                     sprite = GetSpriteIndex("SPAC");
@@ -478,6 +472,11 @@ class PBX_SPAS12 : PBX_WeaponBase
 			    SP12_HandleCrosshair();
                 PBX_WeaponRaise("weapons/spas12/raise");
                 SP12_SetSprite('SPAN','SPBN','SPA5','SPB5');
+                if(invoker.mFirstTimePickup)
+                {
+                    A_Print(SP12_IsSemiAuto() ? "$PBX_SPAS12_SEMI_PICKUP" : "$PBX_SPAS12_MANUAL_PICKUP");
+                    invoker. mFirstTimePickup = false;
+                }
 			    return PB_RespectIfNeeded();
 			}
         SelectAnimation:
@@ -541,12 +540,13 @@ class PBX_SPAS12 : PBX_WeaponBase
             Goto ShellChecker;
 
         FoldSwitchAnimation:
-		    TNT1 A 0 A_StartSound("Ironsights",CHAN_AUTO);
+		    TNT1 A 0 A_StartSound("Ironsights",CHAN_AUTO,CHANF_OVERLAP);
 		    SPAA NOPQ 1 SP12_SetSprite('SPBA','SPAA','SPBA','SPAA'); // Its reversed so the correct animation plays
 		    TNT1 A 10;
 		    SPAA MLKJ 1 SP12_SetSprite('SPAA','SPBA','SPAA','SPBA');
             Goto Ready3;
 
+        // Dual Blast / Zoom Switch Animation
         SecondarySwitchAnimation:
 		    TNT1 A 0 A_StartSound("Ironsights",CHAN_AUTO);
             SPAA RSTU 1 SP12_SetSprite('SPAA','SPBA','SPAA','SPBA');

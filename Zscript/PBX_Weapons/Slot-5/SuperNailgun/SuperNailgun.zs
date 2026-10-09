@@ -11,9 +11,6 @@ class PBX_SuperNailgun : PBX_WeaponBase
     Default
     {
 //////////////////////////// WEAPON DATA ////////////////////////////////////////////////////////////////////////////////////
-        Weapon.SelectionOrder 2545;
-        Weapon.SlotNumber 5;
-        Weapon.SlotPriority 0.5;
 	    Inventory.AltHUDIcon "SNPIA0";
 		PB_WeaponBase.MaxOverheat MAX_OVERHEAT;
 		PB_WeaponBase.OverheatCoolingRate OVERHEATCOOLING_RATE;

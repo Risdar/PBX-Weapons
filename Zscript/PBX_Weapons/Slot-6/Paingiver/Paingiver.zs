@@ -13,9 +13,6 @@ class PBX_Paingiver : PBX_WeaponBase
         //$Category Weapons
         //$Sprite CYBFA0
 //////////////////////////// WEAPON DATA ////////////////////////////////////////////////////////////////////////////////////
-		Weapon.SlotNumber 6;
-		Weapon.SlotPriority 0;
-	    Weapon.SelectionOrder 3800;
 	    Inventory.Icon "W17PA0";
         Inventory.AltHudIcon "W17PA0";
 		// PB_WeaponBase.ReserveToMagAmmoFactor 2;

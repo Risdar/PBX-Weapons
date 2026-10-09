@@ -23,9 +23,6 @@ class PBX_Excavator : PBX_WeaponBase
         //$Sprite 5DUNA0
         ////SpawnID 9530;
 //////////////////////////// WEAPON DATA ////////////////////////////////////////////////////////////////////////////////////
-		Weapon.SlotNumber 6;
-		Weapon.SlotPriority 0;
-	    Weapon.SelectionOrder 506;
         PB_WeaponBase.UsesWheel true;
 		PB_WeaponBase.WheelInfo "ExcavatorWheel";
 		PB_WeaponBase.ReserveToMagAmmoFactor AMMO_TAKE_NORMAL;

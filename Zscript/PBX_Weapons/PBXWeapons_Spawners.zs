@@ -83,7 +83,6 @@ class PBXShotgun_Injector : PBInjector
 		// Plasma Blaster
 		if(!(pbxweapons_shotgun_filter & DisablePBX_PlasmaBlaster))
 		{
-			handler.InjectSpawn('PB_ShotSpawnerT1', 'PBX_PlasmaBlaster', 255, 1);
 			handler.InjectSpawn('PB_ShotSpawnerT2', 'PBX_PlasmaBlaster', 255, 1);
 		}
 		// Lever Action
@@ -96,7 +95,6 @@ class PBXShotgun_Injector : PBInjector
 		// SPAS12
 		if(!(pbxweapons_shotgun_filter & DisablePBX_SPAS12))
 		{
-			handler.InjectSpawn('PB_ShotSpawnerT1', 'PBX_SPAS12', 255, 1);
 			handler.InjectSpawn('PB_ShotSpawnerT2', 'PBX_SPAS12', 255, 1);
 		}
 		// Crossbow Ballista
@@ -104,7 +102,6 @@ class PBXShotgun_Injector : PBInjector
 		{
 			handler.InjectSpawn('PB_ShotSpawnerT1', 'PBX_Prosurv_Ballista', 255, 1);
 			handler.InjectSpawn('PB_ShotSpawnerT2', 'PBX_Prosurv_Ballista', 255, 1);
-			handler.InjectSpawn('PB_ShotSpawnerT3', 'PBX_Prosurv_Ballista', 255, 1);
 		}
 	}
 }
@@ -391,7 +388,7 @@ class PBX_SpecialWeaponSpawner : PB_WeaponSpawner
 	override void PostBeginPlay()
 	{
 		super.PostBeginPlay();
-		console.printf("$PBX_SecretWeaponSpawned");
+		console.printf(StringTable.Localize("$PBX_SecretWeaponSpawned"));
 	}
 }
 

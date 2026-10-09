@@ -20,7 +20,6 @@ Class PBX_MetalSniper : PBX_WeaponBase
 {
     default
     {
-        weapon.slotnumber 4;
         inventory.pickupsound "CLIPIN";
         inventory.pickupmessage "$PBX_MetalSniper_Pickup";
         Inventory.AltHudIcon "MSNWA0";

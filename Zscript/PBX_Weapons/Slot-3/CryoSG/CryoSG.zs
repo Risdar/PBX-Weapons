@@ -20,9 +20,6 @@ class PBX_CryoSG : PBX_WeaponBase
     Default
     {
 //////////////////////////// WEAPON DATA ////////////////////////////////////////////////////////////////////////////////////
-        Weapon.SelectionOrder 300;
-        Weapon.SlotNumber 3;
-        Weapon.SlotPriority 1;
         PB_WeaponBase.UsesWheel true;
         PB_WeaponBase.WheelInfo "CryoSGWheel";
         PB_WeaponBase.ReserveToMagAmmoFactor 12;

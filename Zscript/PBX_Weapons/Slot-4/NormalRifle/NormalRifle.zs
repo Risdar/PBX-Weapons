@@ -16,7 +16,6 @@ Class PBX_NormalRifle : PBX_WeaponBase
 {
     Default
     {
-        weapon.slotnumber 4;
         inventory.pickupsound "CLIPIN";
         inventory.pickupmessage "$PBX_NormalRifle_Pickup";
         Inventory.AltHudIcon "RIFXA0";

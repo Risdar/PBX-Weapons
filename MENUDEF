@@ -23,7 +23,7 @@ OptionMenu "PBXWeapons_Menu"
 
     StaticText	"--------- General Settings ---------", 1
     Option "$PBXWEAPONS_MENU_ENABLE_TOOLTIPS", "pbxweapons_sendTip", "OnOff","PBXCore_SendTip"
-    Option "$PBXWEAPONS_START_WITH_BDP_RIFLE", "pbxweapons_normalriflereplace", "OnOff"
+    Option "$PBXWEAPONS_START_WITH_BDP_RIFLE", "pbxweapons_startwithnormalrifle", "OnOff"
     Option "$PBXWEAPONS_START_WITH_CROSSBOW", "pbxweapons_startwithcrossbow", "OnOff"
     StaticText " "
     SafeCommand "$PBXWEAPONS_MENU_RESET_SPAWNERS", "set PBXWeapons_chainsaw_filter 0; set PBXWeapons_pistol_filter 0; set PBXWeapons_shotgun_filter 0; set PBXWeapons_ssg_filter 0; set PBXWeapons_chaingun_filter 0; set PBXWeapons_rocketlauncher_filter 0; set PBXWeapons_plasmarifle_filter 0; set PBXWeapons_bfg_filter 0;set pbxweapons_backpack_filter 0;set PBXWeapons_monsterdrop_filter 0;set PBXWeapons_specialdrop_filter 0"
@@ -53,17 +53,17 @@ OptionMenu "PBXWeapons_Menu"
 AddOptionMenu "AddonWeaponSpawns" after "SHOT1"
 {
     // SLOT 2
-    FlagOption    "$PBXWEAPONS_PLASMA_BLASTER",         "PBXWeapons_shotgun_filter",    "OffOn", 1
     FlagOption    "$PBXWEAPONS_LEVER_ACTION_RIFLE",     "PBXWeapons_shotgun_filter",    "OffOn", 0
-    // SLOT 3
-    FlagOption    "$PBXWEAPONS_SPAS12",                "PBXWeapons_shotgun_filter",    "OffOn", 2
     // SLOT 4
     FlagOption    "$PBXWEAPONS_CROSSBOW_BALLISTA",      "PBXWeapons_shotgun_filter",    "OffOn", 3
 }
 // TIER 2
-/* AddOptionMenu "AddonWeaponSpawns" after "SHOT2"
+AddOptionMenu "AddonWeaponSpawns" after "SHOT2"
 {
-} */
+    // SLOT 3
+    FlagOption    "$PBXWEAPONS_PLASMA_BLASTER",         "PBXWeapons_shotgun_filter",    "OffOn", 1
+    FlagOption    "$PBXWEAPONS_SPAS12",                "PBXWeapons_shotgun_filter",    "OffOn", 2
+}
 
 // SSG /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // TIER 2

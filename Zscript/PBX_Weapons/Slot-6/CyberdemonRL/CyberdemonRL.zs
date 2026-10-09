@@ -19,9 +19,6 @@ class PBX_CyberdemonRL : PBX_WeaponBase
         //$Category Weapons
         //$Sprite CYBFA0
 //////////////////////////// WEAPON DATA ////////////////////////////////////////////////////////////////////////////////////
-		Weapon.SlotNumber 6;
-		Weapon.SlotPriority 0;
-	    Weapon.SelectionOrder 3800;
         Inventory.AltHudIcon "CYBFV0";
 		PB_WeaponBase.ReserveToMagAmmoFactor 3;
 		

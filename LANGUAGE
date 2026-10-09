@@ -15,20 +15,24 @@ PBXWeapons_ZoomScroll_Down          = "[\cvScroll Down\c-] or [%s]";
 
 //////////////////////////// SLOT 2 ///////////////////////////////////////////////////////////////////////////////
 // Plasmna Blaster
-PBX_PlasmaBlaster_Pickup           = "Plasma Blaster (Slot-2)";
-PBX_PlasmaBlaster_Tag              = "UAC-UM-03∅ HP Plasma Blaster";
-PBX_PlasmaBlaster_Semi             = "\ckPrimary: \caSemi-Auto";
-PBX_PlasmaBlaster_Auto             = "\ckPrimary: \cxFull-Auto";
-PBX_PlasmaBlaster_Burst            = "\cjSecondary: \ctBurst-Fire";
-PBX_PlasmaBlaster_Charge           = "\cjSecondary: \cvCharge-Fire";
+PBX_PlasmaBlaster_Pickup            = "Plasma Blaster (Slot-2)";
+PBX_PlasmaBlaster_Tag               = "UAC-UM-03∅ HP Plasma Blaster";
+OB_WEAP_PLASMABLASTER               = "%o was decapitated by %k's Assasin.";
+
+PBX_PlasmaBlaster_Semi              = "\ckPrimary: \caSemi-Auto";
+PBX_PlasmaBlaster_Auto              = "\ckPrimary: \cxFull-Auto";
+PBX_PlasmaBlaster_Burst             = "\cjSecondary: \ctBurst-Fire";
+PBX_PlasmaBlaster_Charge            = "\cjSecondary: \cvCharge-Fire";
 
 // Prosurv Blaster
-PBX_ProsurvBlaster_Pickup          = "Blaster Pistol (Slot 2)";
-PBX_ProsurvBlaster_Tag             = "UAC MK-I Plasma Pistol";
+PBX_ProsurvBlaster_Pickup           = "Blaster Pistol (Slot 2)";
+PBX_ProsurvBlaster_Tag              = "UAC MK-I Plasma Pistol";
+OB_WEAP_PROSURVBLASTER              = "%k Zapped %o with a Blaster Pistol.";
 
 // Lever Action
 PBX_LeverAction_Pickup              = "Lever Action Rifle (Slot 2)";
 PBX_LeverAction_Tag                 = "UAC M1893 Mod 0 Lever Action";
+OB_WEAP_LEVERACTION                 = "%k Drew a Bead On %o with a Lever Action.";
 
 PBX_LeverAction_Marlin              = "\cd.444 Marlin \c-Loaded";
 PBX_LeverAction_Magnum              = "\cd.357 Magnum \c-Loaded";
@@ -36,13 +40,13 @@ PBX_LeverAction_Magnum              = "\cd.357 Magnum \c-Loaded";
 PBX_LeverAction_UpgradePickup       = "Lever Action Rifle Upgrade (Slot 2)";
 PBX_LeverAction_UpgradeTag          = "Lever Action Rifle Upgrade";
 
-PBX_LeverActionUpgrade_Tip1 = "The \cd.444 Marlin\c- deals increased damage but takes %d low caliber ammo and halves your magazine.";
-
+PBX_LeverActionUpgrade_Tip1         = "The \cd.444 Marlin\c- deals increased damage but takes %d low caliber ammo and halves your magazine.";
 
 //////////////////////////// SLOT 3 ///////////////////////////////////////////////////////////////////////////////
 // PSG
 PBX_PSG_PICKUP                      = "Commander Pump Shotgun (Slot 3)";
 PBX_PSG_TAG                         = "UAC PS-19 Pump Shotgun";
+OB_WEAP_PSG                         = "%k Opened %o with a Pump Shotgun.";
 
 PBX_PSG_NOROCKETS                   = "You Don't Have Enough \cgRocket Ammo";
 PBX_PSG_TRIPMINE                    = "Tripmine";
@@ -51,14 +55,15 @@ PBX_PSG_ACIDCHARGE                  = "Acid Charge";
 PBX_PSG_SWARMACHARGE                = "Swarm Charge";
 PBX_PSG_DETONATOR                   = "Detonator";
 
-PBX_PSG_Tip1 = "Switch \cfcharges\c- using %s and manually detonate them using the Detonator";
-PBX_PSG_Tip2 = "The number below the \cfcharges\c- shows the amount of \cgRocket ammo\c- needed.";
-PBX_PSG_Tip3 = "Recover any thrown \cfcharges\c- by pressing %s near them.";
+PBX_PSG_Tip1                        = "Switch \cfcharges\c- using %s and manually detonate them using the Detonator";
+PBX_PSG_Tip2                        = "The number below the \cfcharges\c- shows the amount of \cgRocket ammo\c- needed.";
+PBX_PSG_Tip3                        = "Recover any thrown \cfcharges\c- by pressing %s near them.";
 
 
 // CSSG 
 PBX_CSSG_PICKUP                     = "Commander Super Shotgun (Slot 3)";
 PBX_CSSG_TAG                        = "Commander Super Shotgun";
+OB_WEAP_CSSG                        = "%o was devastated by %k.";
 
 PBX_CSSG_SINGLE                     = "\cjSecondary: \cgSingle Barrel";
 PBX_CSSG_HOOK                       = "\cjSecondary: \cuMeat Hook";
@@ -108,20 +113,24 @@ PBX_PICKUP_SUBZ                     = "Got the Sub-Zero Shell Upgrade";
 PBX_PICKUP_HELF                     = "Got the Hell Fire Shell Upgrade";
 PBX_PICKUP_ACDS                     = "Got the Acid Shell Upgrade";
 
-PBX_CSSG_Tip1 = "You can switch between the \cuMeat Hook\c- Secondary or \cgSingle Fire\c- Secondary using %s.";
+PBX_CSSG_Tip1                       = "You can switch between the \cuMeat Hook\c- Secondary or \cgSingle Fire\c- Secondary using %s.";
 
-PBX_CSSGUpgrade_Tip1 = "You just picked up one of the many CSSG Upgrades.";
-PBX_CSSGUpgrade_Tip2 = "Gotta catch 'em all.";
+PBX_CSSGUpgrade_Tip1                = "You just picked up one of the many CSSG Upgrades.";
+PBX_CSSGUpgrade_Tip2                = "Gotta catch 'em all.";
 
 // SPAS 12
 PBX_SPAS12_PICKUP                   = "You got the \caSPAS-12! \c-(slot 3). Perfect for raptor hunting.";
 PBX_SPAS12_TAG                      = "Franchi SPAS-12 Combat Shotgun";
+OB_WEAP_SPAS12                      = "\cr%o\c- was terminated by \cr%k's \c-SPAS-12.";
 
 PBX_SPAS12_ADS                      = "\cjSecondary: \chZoom";
 PBX_SPAS12_DUALFIRE                 = "\cjSecondary: \cgDual Blast";
 
-PBX_SPAS12_MANUAL                   = "Switching to \cdSlug\c- shells\n(\cdManual\c- Pump)";
-PBX_SPAS12_SEMI                     = "Switching to \caBuckshot\c- shells\n(\caSemi-auto\c- Mode)";
+PBX_SPAS12_MANUAL                   = "Switching to\n\n\cdSlug\c- shells\n(\cdManual\c- Pump)";
+PBX_SPAS12_SEMI                     = "Switching to\n\n\caBuckshot\c- shells\n(\caSemi-auto\c- Mode)";
+
+PBX_SPAS12_MANUAL_PICKUP            = "Current Mode:\n\n\cdSlug\c- shells\n(\cdManual\c- Pump)";
+PBX_SPAS12_SEMI_PICKUP              = "Current Mode:\n\n\caBuckshot\c- shells\n(\caSemi-auto\c- Mode)";
 
 PBX_SPAS12_STOCK_FOLDED             = "Stock Folded\n\n\caHigher Recoil\c-, \cdFaster Reload\c-";
 PBX_SPAS12_STOCK_UNFOLDED           = "Stock Unfolded\n\n\caLower Recoil\c-, \cdSlower Reload\c-";
@@ -134,6 +143,7 @@ PBX_SPAS12_SEMI_WW                  = "Switch to \caBuckshot\c- (\caSemi-auto\c-
 // CryoSG
 PBX_CryoSG_Pickup                   = "Plasma Shotgun (Slot 3)";
 PBX_CryoSG_Tag                      = "UAC M-19 GSC-21 Plasma Shotgun";
+OB_WEAP_CRYOSG                      = "%o got frozen to death by %k's Cryo Shotgun.";
 
 PBX_CryoSG_PlasmaBlast              = "\cvPlasma Blast \c-Mode";
 PBX_CryoSG_PlasmaBreath             = "\cnPlasma Breath \c-Mode";
@@ -142,6 +152,7 @@ PBX_CryoSG_Freeze                   = "\cyFreeze \c-Mode";
 // CryoASG
 PBX_CryoASG_Pickup                  = "Plasma Auto Shotgun (Slot 3)";
 PBX_CryoASG_Tag                     = "UAC M-20 GSC-22 Automatic Plasma Shotgun";
+OB_WEAP_CRYOASG                     = "%o was shot down by %k's CryoASG.";
 
 PBX_CryoASG_PlasmaBlast             = "\ckPrimary: \cvPlasma Blast";
 PBX_CryoASG_FreezeBlast             = "\ckPrimary: \cyFreeze Blast";
@@ -155,6 +166,7 @@ PBX_CryoASG_StunBomb                = "\cjSecondary: \cnStun Bomb";
 // BattleRifle 
 PBX_BattleRifle_Pickup              = "Battle Rifle (Slot 4)";
 PBX_BattleRifle_Tag                 = "UAC M1 'BDP' Battle Rifle";
+OB_WEAP_BATTLERIFLE                 = "%o was pierced by %k's Battle Rifle.";
 
 PBX_BattleRifle_SemiAuto            = "\cdSemi-Auto \c-Mode";
 PBX_BattleRifle_Burst               = "\ciBurst Fire \c-Mode";
@@ -162,6 +174,7 @@ PBX_BattleRifle_Burst               = "\ciBurst Fire \c-Mode";
 // Normal RIfle
 PBX_NormalRifle_Pickup              = "Assault Rifle (Slot 4)";
 PBX_NormalRifle_Tag                 = "UAC M4 Assault Rifle";
+OB_WEAP_ASSAULTRIFLE                = "%o was killed by %k's Assault Rifle.";
 
 PBX_NormalRifle_NoAkimbo            = "Need another Assault Rifle for akimbo";
 
@@ -171,6 +184,8 @@ PBX_NormalRifle_Akimbo              = "Akimbo Assault Rifle";
 // Metal Sniper
 PBX_MetalSniper_Pickup              = "Metal Sniper (Slot 4)";
 PBX_MetalSniper_Tag                 = "UAC-45 Heavy 'Metal' Sniper";
+OB_WEAP_METALSNIPER                 = "%o was killed by %k's Metal Sniper.";
+
 PBX_MetalSniper_AimMode             = "\cjSecondary: \cdZoom";
 PBX_MetalSniper_GrenMode            = "\cjSecondary: \ciGrenade Launcher";
 
@@ -180,15 +195,16 @@ PBX_MetalSniper_Standard            = "\cd7.62x51mm Armor Piercing \c-Mode";
 PBX_MetalSniper_UpgradePickup       = "Metal Sniper Resonance Ammo Type Upgrade (Slot 4)";
 PBX_MetalSniper_UpgradeTag          = "Metal Sniper Upgrade";
 
-PBX_MetalSniper_Tip1 = "You can switch Secondary modes using %s.";
-PBX_MetalSniper_Tip2 = "\ciGrenade Launcher\c- Secondary needs to be primed first by pressing %s and then %s.";
-PBX_MetalSniper_Tip3 = "Opening the \chWeapon Special\c- Wheel when \cdzoomed \c-in will let you select the Advanced Targeting Scope Modes.";
+PBX_MetalSniper_Tip1                = "You can switch Secondary modes using %s.";
+PBX_MetalSniper_Tip2                = "\ciGrenade Launcher\c- Secondary needs to be primed first by pressing %s and then %s.";
+PBX_MetalSniper_Tip3                = "Opening the \chWeapon Special\c- Wheel when \cdzoomed \c-in will let you select the Advanced Targeting Scope Modes.";
 
-PBX_MetalSniperUpgrade_Tip1 = "Firing the Resonance Ammo at an Arachnotron shield will detonate it and \cnstun\c- nearby enemies.";
+PBX_MetalSniperUpgrade_Tip1         = "Firing the Resonance Ammo at an Arachnotron shield will detonate it and \cnstun\c- nearby enemies.";
 
 // Crossbow Ballista
 PBX_CrossbowBallista_Pickup         = "Crossbow (Slot 4)";
 PBX_CrossbowBallista_Tag            = "Composite Crossbow";
+OB_WEAP_CROSSBOWBALLISTA            = "%k Speared %o with a Crossbow.";
 
 PBX_Crossbow_Standard               = "\cdNormal Bolt";
 PBX_Crossbow_Explosive              = "\crExplosive Bolt";
@@ -201,6 +217,7 @@ PBX_Prosurv_Ballista_UpgradeTag     = "Ballista Upgrade";
 // XM 21
 PBX_XM21_Pickup                     = "XM-21 (Slot 4)";
 PBX_XM21_Tag                        = "UAC XM-21 'Ghost' Sniper Rifle";
+OB_WEAP_XM21                        = "\cr%o\c- got headshotted by \cr%k's \c-XM21 Sniper Rifle.";
 
 PBX_XM21_CloakOn                    = "\czCloak\c- Enabled";
 PBX_XM21_CloakOff                   = "\czCloak\c- Disabled ";
@@ -212,34 +229,39 @@ PBX_XM21_CloakNoEnergy              = "Insufficient Energy";
 // HMG
 PBX_NeoHMG_Pickup                   = "HMG (Slot 5)";
 PBX_NeoHMG_Tag                      = "UAC PB-3 Heavy Machine Gun";
+OB_WEAP_NEOHMG                      = "%o is riddled with bullets by %k's HMG.";
 
 PBX_NeoHMG_DetonateShield           = "\caDetonate \c-Shield";
 PBX_NeoHMG_PlaceShield              = "\caPlace \c-Shield";
 
-PBX_NeoHMG_Tip1 = "Activate the \cdshield\c- using %s, the \cdshield\c- \cvrecharges\c- only when there's \cgoverheat\-.";
-PBX_NeoHMG_Tip2 = "Pressing %s while the \cdshield\c- is active will \cgdetonate\c- the \cdshield\c- \cnstunning\c- nearby enemies.";
-PBX_NeoHMG_Tip3 = "When \cgoverheat\c- reaches \ca%d° C\c- the weapon will use a stronger projectile and \cvrecharge\c- the \cdshield\c- faster.";
+PBX_NeoHMG_Tip1                     = "Activate the \cdshield\c- using %s, the \cdshield\c- \cvrecharges\c- only when there's \cgoverheat\-.";
+PBX_NeoHMG_Tip2                     = "Pressing %s while the \cdshield\c- is active will \cgdetonate\c- the \cdshield\c- \cnstunning\c- nearby enemies.";
+PBX_NeoHMG_Tip3                     = "When \cgoverheat\c- reaches \ca%d° C\c- the weapon will use a stronger projectile and \cvrecharge\c- the \cdshield\c- faster.";
 
 
 // Eternal Chaingun
 PBX_EternalChaingun_Pickup          = "Eternal Chaingun (Slot 5)";
 PBX_EternalChaingun_Tag             = "UAC BD 'Eternal' Chaingun";
+OB_WEAP_ETERNALCHAINGUN             = "%o is unrecognizable because of %k's Chaingun.";
 
 // Super Nailgun
 PBX_SuperNailgun_Pickup             = "Super Nailgun (Slot 5)";
 PBX_SuperNailgun_Tag                = "UAC Prototype Super Nailgun";
+OB_WEAP_SUPERNAILGUN                = "Became a Leaking Piece Of Meat By The Super Nailgun.";
 
 PBX_SuperNailgun_HeatedNails        = "\caSuper Heated Nails \c-Mode";
 PBX_SuperNailgun_ChargedNails       = "\cnSuper Charged Nails \c-Mode";
 
-PBX_SuperNailgun_Tip1 = "Press %s to passively gain \cgoverheat\c-, when it reaches \ca%d° C\c- the weapon will fire special nails depending on the mode.";
-PBX_SuperNailgun_Tip2 = "\caSuper Heated Nails\c- will bounce and burn while \cnSuper Charged Nails\c- will zap nearby enemies.";
+PBX_SuperNailgun_Tip1               = "Press %s to passively gain \cgoverheat\c-, when it reaches \ca%d° C\c- the weapon will fire special nails depending on the mode.";
+PBX_SuperNailgun_Tip2               = "\caSuper Heated Nails\c- will bounce and burn while \cnSuper Charged Nails\c- will zap nearby enemies.";
 
 
 //////////////////////////// SLOT 6 ///////////////////////////////////////////////////////////////////////////////
 // Excavator
 PBX_Excavator_Pickup                = "Excavator (Slot 6)";
 PBX_Excavator_Tag                   = "UAC-M2 Excavator Launcher";
+OB_WEAP_EXCAVATOR                   = "Shattered Into Pieces By Excavator Launcher. Ouch!.";
+
 PBX_Excavator_DrillMode             = "\cdDrill Charge \c-Mode";
 PBX_Excavator_DropMode              = "\ciDrop Charge \c-Mode";
 PBX_Excavator_BolaMode              = "\crExplosive Bolas \c-Mode";
@@ -249,17 +271,18 @@ PBX_Excavator_TryDrillorDrop        = "\cdDrill\c- and \ciDrop\c- Mode Requires 
 PBX_ExcavatorUpgrade_Pickup         = "Excavator Upgrade (Slot 6)";
 PBX_Excavator_UpgradeTag            = "Excavator Universal Demolition Tool (UDT)";
 
-PBX_Excavator_Tip1 = "The Excavator has two modes and can be \crmanually detonated\c- with %s";
-PBX_Excavator_Tip2 = "\cdDrill\c- mode rocket will burrow into the ground and come to the surface upon detonation.";
-PBX_Excavator_Tip3 = "\ciDrop\c- mode rocket will fly normally and drop into the ground upon detonation.";
+PBX_Excavator_Tip1                  = "The Excavator has two modes and can be \crmanually detonated\c- with %s";
+PBX_Excavator_Tip2                  = "\cdDrill\c- mode rocket will burrow into the ground and come to the surface upon detonation.";
+PBX_Excavator_Tip3                  = "\ciDrop\c- mode rocket will fly normally and drop into the ground upon detonation.";
 
-PBX_ExcavatorUpgrade_Tip1 = "The Excavator Upgrade adds 2 new modes.";
-PBX_ExcavatorUpgrade_Tip2 = "\crThe Explosive Bolas\c- mode launches Sticky Bolas that detonates while the Secondary shoots 6 burst of Sticky Grenades.";
-PBX_ExcavatorUpgrade_Tip3 = "\ckThe Razorblade\c- mode launches a Razorblade that sticks to enemies while the Secondary charges a bouncing Razorblade.";
+PBX_ExcavatorUpgrade_Tip1           = "The Excavator Upgrade adds 2 new modes.";
+PBX_ExcavatorUpgrade_Tip2           = "\crThe Explosive Bolas\c- mode launches Sticky Bolas that detonates while the Secondary shoots 6 burst of Sticky Grenades.";
+PBX_ExcavatorUpgrade_Tip3           = "\ckThe Razorblade\c- mode launches a Razorblade that sticks to enemies while the Secondary charges a bouncing Razorblade.";
 
 // CyberdemonRL
 PBX_CyberdemonRL_Pickup             = "You got the Cyberdemon's missile launcher! This thing's heavy... (Slot 6)";
 PBX_CyberdemonRL_Tag                = "Cyberdemon's Missile Launcher";
+OB_WEAP_CYBERRL                     = "%o was blown up by %k's Cyberdemon missile launcher. Ouch!.";
 
 PBX_CyberdemonRL_Triple             = "\cjSecondary: \cdTriple Burst";
 PBX_CyberdemonRL_Laser              = "\cjSecondary: \caLaser";
@@ -267,6 +290,7 @@ PBX_CyberdemonRL_Laser              = "\cjSecondary: \caLaser";
 // Mastermind CG
 PBX_MastermindCG_Pickup             = "You got the Mastermind's Chaingun! (Slot 6)";
 PBX_MastermindCG_Tag                = "Spider Mastermind's Chaingun";
+OB_WEAP_MASTERMINDCG                = "Mowed down by Mastermind's Chaingun.";
 
 PBX_MastermindCG_SoulSeeker         = "\crSoul Seeker \c-Mode";
 PBX_MastermindCG_Normal             = "\caExplosive Tracers \c-Mode";
@@ -274,47 +298,53 @@ PBX_MastermindCG_Normal             = "\caExplosive Tracers \c-Mode";
 // Paingiver
 PBX_Paingiver_Pickup                = "You got the Paingiver! (Slot 6)";
 PBX_Paingiver_Tag                   = "Paingiver";
+OB_WEAP_PAINGIVER                   = "Death By Paingiver. Ouch!.";
 
 PBX_Paingiver_Enraged               = "\c[PB_DTech]Enraged Paingiver \c-Mode";
 PBX_Paingiver_Desc                  = "\ciForged From The Metal Smelting Pits Of The Golgothan Enclave: \cdThe Paingiver Is A Weapon Of Pure Malice Devised For A Singular Purpose - To Enact Suffering Upon The Weak!";
 
-PBX_Paingiver_Tip1 = "The Primary shoots normal Rockets while its Secondary fires three bursts of seeking rockets.";
-PBX_Paingiver_Tip2 = "Enraged State significantly reduces firing delay, removes ammo take when shooting, and gives 75 Percent damage reduction.";
+PBX_Paingiver_Tip1                  = "The Primary shoots normal Rockets while its Secondary fires three bursts of seeking rockets.";
+PBX_Paingiver_Tip2                  = "Enraged State significantly reduces firing delay, removes ammo take when shooting, and gives 75 Percent damage reduction.";
 
 //////////////////////////// SLOT 7 ///////////////////////////////////////////////////////////////////////////////
 PBX_BDPRailgun_Pickup               = "Platinum Railgun (Slot 7)";
 PBX_BDPRailgun_Tag                  = "UAC MK-III 'Platinum' Railgun";
+OB_WEAP_RAILGUN                     = "%o was pierced by %k's Railgun.";
 
 PBX_BDPRailgun_SpawnHologram        = "Spawn Hologram";
 PBX_BDPRailgun_NoHologram           = "\cnHologram\c- is Charging";
 
-PBX_BDPRailgun_Tip1 = "Press %s to spawn a \cnHologram\c-.";
-PBX_BDPRailgun_Tip2 = "Pressing %s when \cdZoomed \c- will let you select the Scoped Modes.";
+PBX_BDPRailgun_Tip1                 = "Press %s to spawn a \cnHologram\c-.";
+PBX_BDPRailgun_Tip2                 = "Pressing %s when \cdZoomed \c- will let you select the Scoped Modes.";
 
 //////////////////////////// SLOT 8 ///////////////////////////////////////////////////////////////////////////////
 // Tesla Gun
-PBX_TeslaGun_Pickup              = "Tesla Gun (Slot 8)";
-PBX_TeslaGun_Tag                 = "Prototype Tesla-Lightning Accelerator";
+PBX_TeslaGun_Pickup                 = "Tesla Gun (Slot 8)";
+PBX_TeslaGun_Tag                    = "Prototype Tesla-Lightning Accelerator";
+OB_WEAP_TESLAGUN                    = "%o was electrocuted by %k.";
 
-PBX_TeslaGun_Arc                 = "\cnArc \c-Mode";
-PBX_TeslaGun_Pulse               = "\cvPulse \c-Mode";
+PBX_TeslaGun_Arc                    = "\cnArc \c-Mode";
+PBX_TeslaGun_Pulse                  = "\cvPulse \c-Mode";
 
-PBX_TeslaGun_NoLightningCharge   = "You Need Atleast \ci%d \cyLightning Charges \c\nTo Summon A \cyLightning Storm";
+PBX_TeslaGun_NoLightningCharge      = "You Need Atleast \ci%d \cyLightning Charges \c\nTo Summon A \cyLightning Storm";
 
-PBX_Teslagun_Tip1 = "The Secondary fires a \cnlightning ball\c- that bounces on walls and can be \chcharged\c- using the primary fire.";
-PBX_Teslagun_Tip2 = "\chCharged\c- \cnlightning ball\c- zaps nearby enemies and when \chfully charged\c- will summon \cylightning\c- to everything nearby.";
+PBX_Teslagun_Tip1                   = "The Secondary fires a \cnlightning ball\c- that bounces on walls and can be \chcharged\c- using the primary fire.";
+PBX_Teslagun_Tip2                   = "\chCharged\c- \cnlightning ball\c- zaps nearby enemies and when \chfully charged\c- will summon \cylightning\c- to everything nearby.";
 
 // Freeze Rifle
-PBX_FreezeRifle_Pickup            = "Freeze Rifle (Slot 8)";
-PBX_FreezeRifle_Tag               = "UAC M-19 Prototype Freeze Rifle";
+PBX_FreezeRifle_Pickup              = "Freeze Rifle (Slot 8)";
+PBX_FreezeRifle_Tag                 = "UAC M-19 Prototype Freeze Rifle";
+OB_WEAP_FREEZERIFLE                 = "%o was iced by %k";
 
-PBX_FreezeRifle_Attack            = "\cvAttack\c- Mode";
-PBX_FreezeRifle_Defense           = "\cyDefense\c- Mode";
+PBX_FreezeRifle_Attack              = "\cvAttack\c- Mode";
+PBX_FreezeRifle_Defense             = "\cyDefense\c- Mode";
 
 //////////////////////////// SLOT 9 ///////////////////////////////////////////////////////////////////////////////
 // Demonic Exterminator
 PBX_DemonExt_Pickup                 = "You Have Found The UnMaker Extermination Type. (Slot 9)";
 PBX_DemonExt_Tag                    = "UnMaker Extermination Type";
+OB_WEAP_DEMONEXT                    = "%o was Undone by UnMaker Extermination Type.";
+
 PBX_DemonExt_Laser                  = "\caLaser \c-Mode";
 PBX_DemonExt_Incin                  = "\crDark Incinerator \c-Mode";
 PBX_DemonExt_Lightning              = "\cjSoul Lightning \c-Mode";
@@ -325,8 +355,8 @@ PBX_DemonExt_NoLightning            = "You Need the \cjSoul Chalice\c- for this 
 PBX_DemonExt_IncinArtifact          = "Tome of Intimidation";
 PBX_DemonExt_LightningArtifact      = "Soul Chalice.";
 
-PBX_DemonExt_Tip1 = "Killing enemies with the Demonic Exterminator will give souls.";
-PBX_DemonExt_Tip2 = "You can use the souls when in \cjSoul Lightning \c-Mode.";
+PBX_DemonExt_Tip1                   = "Killing enemies with the Demonic Exterminator will give souls.";
+PBX_DemonExt_Tip2                   = "You can use the souls when in \cjSoul Lightning \c-Mode.";
 
 // Nuke Launcher
 PBX_NukeLauncher_Pickup             = "You Have Found The Nuke Launcher! (Slot 9)";
@@ -335,10 +365,31 @@ PBX_NukeLauncher_Tag                = "UAC Nuclear Warhead Launcher";
 // Hexa Shotgun
 PBX_HexaShotgun_Pickup              = "You Have Found The Hexa Shotgun! (Slot 9)";
 PBX_HexaShotgun_Tag                 = "Hexa Shotgun";
+OB_WEAP_HEXASG                      = "%o was eviscerated by %k's Hexa Shotgun.";
 
 // Mini Shotgun
 PBX_MiniShotgun_Pickup              = "You Have Found The Mini Shotgun! (Slot 9)";
 PBX_MiniShotgun_Tag                 = "Rotating Double Barrel Shotgun";
+OB_WEAP_MINISHOTGUN                 = "%o was Mowed down by %k's Rotating Double Barrel Mini-Shotgun.";
+
+//////////////////////////// PROJECTILES ///////////////////////////////////////////////////////////////////////////////
+// Bullets
+OB_PROJ_357MAGNUM       = "%o was shot at somewhere else by %k.";
+OB_PROJ_444MARLIN       = "%o was Hard hit with punch of Marlin by %k.";
+OB_PROJ_RESOROUND       = "%o was shredded by %k.";
+OB_PROJ_792x57MM_HEATED = "%o was melted by %k.";
+
+// Shells
+
+// Explosives
+OB_PROJ_NUKE        = "\cr%o\c- was nuked by \cr%k\c-.";
+OB_PROJ_RAZORBLADE  = "%o's guts were shredded by %k's flying blade.";
+OB_PROJ_CYBERRL     = "%o was blown up by %k's Cyberdemon missile launcher. Ouch!.";
+
+// Demon
+OB_PROJ_DEMONEXT_ENERGYBLAST = "%o was barbequed by %k's Lasergun.";
+OB_PROJ_DEMONEXT_REAPERSHOT  = "%o could not evade %k soul-seekers.";
+OB_GENERIC_REAPED_BY         = "%o was reaped by %k.";
 
 //////////////////////////// OTHERS ///////////////////////////////////////////////////////////////////////////////
 // PBX Command Pack

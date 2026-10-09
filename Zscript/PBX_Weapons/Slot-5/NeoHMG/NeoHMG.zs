@@ -20,9 +20,6 @@ class PBX_NeoHMG : PBX_WeaponBase
         //$Category Weapons
         //$Sprite HG0WA0
 //////////////////////////// WEAPON DATA ////////////////////////////////////////////////////////////////////////////////////
-		Weapon.SlotNumber 5;
-		Weapon.SlotPriority 0;
-	    Weapon.SelectionOrder 506;
         Inventory.AltHudIcon "HG0WA0";
 		PB_WeaponBase.MaxOverheat MAX_OVERHEAT;
 		PB_WeaponBase.OverheatCoolingRate OVERHEATCOOLING_RATE;

@@ -12,12 +12,9 @@ class PBX_PlasmaBlaster : PBX_WeaponBase
 {
     Default
     {
-        Weapon.SelectionOrder 2545;
         Weapon.AmmoType1 "PB_Cell";
         Weapon.AmmoType2 "HellPistolerAmmo";
         Weapon.AmmoGive1 30;
-        Weapon.SlotNumber 2;
-        Weapon.SlotPriority 0.5;
         PB_WeaponBase.UsesWheel true;
         PB_WeaponBase.WheelInfo "PlasmaBlasterWheel";
         PBX_WeaponBase.TakeWeaponDowngrade "PBX_ProsurvBlaster";

@@ -15,12 +15,11 @@ Class PBX_CSSG : PBX_WeaponBase
 {
 	default
 	{
-		weapon.slotnumber 3;
 		Inventory.PickupMessage "$PBX_CSSG_PICKUP";
-		Obituary "$OB_WEAP_CSSG";
 		Inventory.PickupSound "COMSSGUP";
-		Tag "$PBX_CSSG_TAG";
 		Inventory.AltHUDIcon "SG43A0";
+		Obituary "$OB_WEAP_CSSG";
+		Tag "$PBX_CSSG_TAG";
 		PB_WeaponBase.OffsetRecoilX 5;
 		PB_WeaponBase.OffsetRecoilY 4;
 		scale 0.5;

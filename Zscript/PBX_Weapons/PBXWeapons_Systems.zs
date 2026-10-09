@@ -11,47 +11,7 @@ class PBXWeapons_Handler : EventHandler
 		// Dont continue if its the titlemap
         if (level.MapName == "TITLEMAP") return;
 
-        // SLOT 2
-		PBXCore_Handler.TryGiveInventory(pm,'PBX_PlasmaBlaster', 'HellPistolerAmmo', PBX_PlasmaBlaster.CELL_SIZE);
-		PBXCore_Handler.TryGiveInventory(pm,'PBX_Prosurv_LeverAction', 'LeverActionAmmo', PBX_Prosurv_LeverAction.MAGAZINE_SIZE);
-
-		// SLOT 3
-		PBXCore_Handler.TryGiveInventory(pm,'PBX_ProSurvPSG', 'PumpShotgunAmmo', PBX_ProSurvPSG.MAGAZINE_SIZE);
-		PBXCore_Handler.TryGiveInventory(pm,'PBX_CSSG', 'CSSGShellsIn', PBX_CSSG.BARREL_CAPACITY);
-		PBXCore_Handler.TryGiveInventory(pm,'PBX_SPAS12', 'PBX_SPAS12Mag', PBX_SPAS12.MAGAZINE_SIZE);
-		PBXCore_Handler.TryGiveInventory(pm,'PBX_CryoSG', 'CryoSGAmmo', PBX_CryoSG.MAGAZINE_SIZE);
-		PBXCore_Handler.TryGiveInventory(pm,'PBX_CryoASG', 'CryoASGAmmo', PBX_CryoASG.DRUM_SIZE);
-
-		// SLOT 4
-		PBXCore_Handler.TryGiveInventory(pm,'PBX_NormalRifle', 'NormalRifleAmmo', PBX_NormalRifle.MAGAZINE_SIZE);
-		PBXCore_Handler.TryGiveInventory(pm,'PBX_BDPBattleRifle', 'BR_Ammo', PBX_BDPBattleRifle.MAGAZINE_SIZE);
-		PBXCore_Handler.TryGiveInventory(pm,'PBX_MetalSniper', 'MetalSniperAmmo', PBX_MetalSniper.MAGAZINE_SIZE);
-		PBXCore_Handler.TryGiveInventory(pm,'PBX_Prosurv_Ballista', 'CrossbowBallistaAmmo', PBX_Prosurv_Ballista.ARROW_AMOUNT);
-
-		// SLOT 5
-		PBXCore_Handler.TryGiveInventory(pm,'PBX_NeoHMG', 'HMGChamberAmmo', PBX_NeoHMG.MAGAZINE_SIZE);
-		PBXCore_Handler.TryGiveInventory(pm,'PBX_SuperNailgun', 'SuperNailgunAmmo', PBX_SuperNailgun.MAGAZINE_SIZE);
-
-		// SLOT 6
-		PBXCore_Handler.TryGiveInventory(pm,'PBX_Excavator', 'ExcavatorRounds', PBX_Excavator.MAGAZINE_SIZE);
-		PBXCore_Handler.TryGiveInventory(pm,'PBX_CyberdemonRL', 'CyberRLDurability', PBX_CyberdemonRL.DURABILITY);
-		PBXCore_Handler.TryGiveInventory(pm,'PBX_MastermindChaingun', 'MastermindCGDurability', PBX_MastermindChaingun.DURABILITY);
-
-		// SLOT 7
-		PBXCore_Handler.TryGiveInventory(pm,'PBX_BDPRailgun', 'BDPRailgunAmmo', PBX_BDPRailgun.MAGAZINE_SIZE);
-
-		// SLOT 8
-		PBXCore_Handler.TryGiveInventory(pm,'PBX_TeslaGun', 'TeslaAmmo', PBX_TeslaGun.CELL_SIZE);
-		PBXCore_Handler.TryGiveInventory(pm,'PBX_FreezeRifle', 'FreezeRifleAmmo', PBX_FreezeRifle.CELL_SIZE);
-
-        // SLOT 9
-		PBXCore_Handler.TryGiveInventory(pm,'PBX_DemonExt', 'SoulCharge', PBX_DemonExt.SOUL_CAPACITY);
-		PBXCore_Handler.TryGiveInventory(pm,'PBX_HexaShotgun', 'HexaShotgunAmmo', PBX_HexaShotgun.BARREL_CAPACITY);
-
-        // OTHERS
-		PBXCore_Handler.TryGiveInventory(pm,whatToGive:'PBX_ProsurvBlaster', diffCheck:false); // The player will always start with this weapon
-		PBXCore_Handler.TryGiveInventory(pm,whatToGive:'PBXWeapons_TipsManager', diffCheck:false);
-        if(pbxweapons_normalriflereplace) 
+        if(pbxweapons_startwithnormalrifle) 
 			PBXCore_Handler.TryGiveInventory(pm,whatToGive:'PBX_NormalRifle', diffCheck:false);
 		if(pbxweapons_startwithcrossbow) 
 			PBXCore_Handler.TryGiveInventory(pm,whatToGive:'PBX_Prosurv_Ballista', diffCheck:false);

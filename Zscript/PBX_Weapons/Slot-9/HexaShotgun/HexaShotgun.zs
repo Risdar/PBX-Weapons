@@ -13,9 +13,6 @@ class PBX_HexaShotgun : PBX_WeaponBase
     Default
     {
 //////////////////////////// WEAPON DATA ////////////////////////////////////////////////////////////////////////////////////
-        Weapon.SelectionOrder 1;
-        Weapon.SlotNumber 9;
-        Weapon.SlotPriority 1;
         Weapon.Kickback 76;
 	    Inventory.AltHUDIcon "HSGPA0";
 

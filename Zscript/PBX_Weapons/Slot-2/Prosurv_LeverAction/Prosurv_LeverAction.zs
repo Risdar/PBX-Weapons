@@ -19,9 +19,6 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
         //$Category Weapons
         //$Sprite LVR4E0
 //////////////////////////// WEAPON DATA ////////////////////////////////////////////////////////////////////////////////////
-		Weapon.SlotNumber 2;
-		Weapon.SlotPriority 9999;
-		Weapon.SelectionOrder 1300;
         PB_WeaponBase.UsesWheel true;
 		PB_WeaponBase.ReserveToMagAmmoFactor AMMO_TAKE_MAGNUM;
 		PB_WeaponBase.WheelInfo "LeverActionWheel";
