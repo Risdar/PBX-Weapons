@@ -297,7 +297,7 @@ class PBX_LightningController : Thinker
 			return;
 		}
 		
-		actor spk = actor.spawn("EndFx",to);
+		actor spk = actor.spawn("PBX_EndFx",to);
 		if(spk)
 			spk.A_Startsound("Tesla/Sparks");
 
