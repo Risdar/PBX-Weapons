@@ -1,0 +1,30 @@
+/*=============================================================================
+//
+//	SGL Upgrade
+//
+//  Credits:
+//	iamcarrotmaster (Original Sprites)
+//  NemesisVampy (Edited Sprite)
+//  BeefRice (Code/Sprite Edit)
+//
+==============================================================================*/
+
+*/=============================================================================
+//
+//	LMG Upgrade
+//
+//  Credits
+//	iamcarrotmaster, Metalman (Original Sprites)
+//  IDKFA (Original LMG Code)
+//  KaledTheSlayer (Code/Sprite Edit)
+//
+==============================================================================*/
+
+*/=============================================================================
+//
+//	Chainsaw Edit / Throwable Chainsaw
+//
+//  Credits
+//	EmeraldCoasttt and the BDP Team
+//
+==============================================================================*/

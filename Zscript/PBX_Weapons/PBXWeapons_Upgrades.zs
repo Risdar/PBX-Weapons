@@ -65,7 +65,7 @@ class LeverAction_Upgrade : PB_UpgradeItem
 
 //////////////////////////// SLOT 3 ////////////////////////////////////////////////////////////////////////////////////
 // CSSG
-class CSSGUpgradeBase : PBXCore_UpgradeBase abstract
+class CSSGUpgradeBase : PBX_UpgradeBase abstract
 {
 	Default
 	{
@@ -132,8 +132,8 @@ Class ExplosiveShellsUpgrade : CSSGUpgradeBase
 	default
 	{
 		inventory.pickupmessage "$PBX_PICKUP_EXPL";
-		PBXCore_UpgradeBase.upgradetoken 'ExplosiveUpgrade';
-		PBXCore_UpgradeBase.Sprite 'ExplosiveUpgrade';
+		PBX_UpgradeBase.upgradetoken 'ExplosiveUpgrade';
+		PBX_UpgradeBase.Sprite 'ExplosiveUpgrade';
 		Inventory.althudicon "XHELA0";
 	}
 }
@@ -143,8 +143,8 @@ Class WPShellsUpgrade : CSSGUpgradeBase
 	default
 	{
 		inventory.pickupmessage "$PBX_PICKUP_WPSP";
-		PBXCore_UpgradeBase.upgradetoken 'WhitePhosphorusUpgrade';
-		PBXCore_UpgradeBase.Sprite 'WhitePhosphorusUpgrade';
+		PBX_UpgradeBase.upgradetoken 'WhitePhosphorusUpgrade';
+		PBX_UpgradeBase.Sprite 'WhitePhosphorusUpgrade';
 		Inventory.althudicon "PHELA0";
 	}
 }
@@ -154,8 +154,8 @@ Class DoomShellsUpgrade : CSSGUpgradeBase
 	default
 	{
 		inventory.pickupmessage "$PBX_PICKUP_DOOM";
-		PBXCore_UpgradeBase.upgradetoken 'TripleDoomUpgrade';
-		PBXCore_UpgradeBase.Sprite 'TripleDoomUpgrade';
+		PBX_UpgradeBase.upgradetoken 'TripleDoomUpgrade';
+		PBX_UpgradeBase.Sprite 'TripleDoomUpgrade';
 		Inventory.althudicon "DHELA0";
 	}
 }
@@ -165,8 +165,8 @@ Class DanmakuShellsUpgrade : CSSGUpgradeBase
 	default
 	{
 		Inventory.PickupMessage "$PBX_PICKUP_DNMK";
-		PBXCore_UpgradeBase.upgradetoken 'DanmakuUpgrade';
-		PBXCore_UpgradeBase.Sprite 'DanmakuUpgrade';
+		PBX_UpgradeBase.upgradetoken 'DanmakuUpgrade';
+		PBX_UpgradeBase.Sprite 'DanmakuUpgrade';
 		Inventory.althudicon "THELA0";
 	}
 }
@@ -176,8 +176,8 @@ Class SubZeroShellsUpgrade : CSSGUpgradeBase
 	default
 	{
 		inventory.pickupmessage "$PBX_PICKUP_SUBZ";
-		PBXCore_UpgradeBase.upgradetoken 'SubZeroUpgrade';
-		PBXCore_UpgradeBase.Sprite 'SubZeroUpgrade';
+		PBX_UpgradeBase.upgradetoken 'SubZeroUpgrade';
+		PBX_UpgradeBase.Sprite 'SubZeroUpgrade';
 		Inventory.althudicon "FHELA0";
 	}
 }
@@ -187,8 +187,8 @@ Class HellFireShellsUpgrade : CSSGUpgradeBase
 	default
 	{
 		inventory.pickupmessage "$PBX_PICKUP_HELF";
-		PBXCore_UpgradeBase.upgradetoken 'HellFireUpgrade';
-		PBXCore_UpgradeBase.Sprite 'HellFireUpgrade';
+		PBX_UpgradeBase.upgradetoken 'HellFireUpgrade';
+		PBX_UpgradeBase.Sprite 'HellFireUpgrade';
 		Inventory.althudicon "HHELA0";
 	}
 }
@@ -198,8 +198,8 @@ Class AcidShellsUpgradePickup : CSSGUpgradeBase
 	default
 	{
 		inventory.pickupmessage "$PBX_PICKUP_ACDS";
-		PBXCore_UpgradeBase.upgradetoken 'AcidShellsUpgrade';
-		PBXCore_UpgradeBase.Sprite 'AcidShellsUpgrade';
+		PBX_UpgradeBase.upgradetoken 'AcidShellsUpgrade';
+		PBX_UpgradeBase.Sprite 'AcidShellsUpgrade';
 		Inventory.althudicon "AHELA0";
 	}
 }
@@ -363,5 +363,96 @@ class PBX_ExcavatorUpgrade : PB_UpgradeItem
                 A_SetWeaponTag("PBX_Excavator","$PBX_Excavator_UpgradeTag");
             }
             Stop;
+	}
+}
+
+//////////////////////////// WEAPON EDITS / OTHERS ////////////////////////////////////////////////////////////////////////////////////
+class SGL_Upgrade : PB_UpgradeItem
+{
+	Default
+	{
+		//$Title SGL Upgrade
+		//$Category Project Brutality - Weapon Upgrades
+		//Game Doom;
+		//SpawnID 9410
+		Height 24;
+		//-COUNTITEM
+		-INVENTORY.ALWAYSPICKUP;
+		-COUNTITEM;
+		Inventory.Pickupsound "misc/rockboxa";
+		Inventory.PickupMessage "$PBXWeapons_SGLUpgrade_Pickup";
+		Tag "$PBXWeapons_SGLUpgrade_Tag";
+		Scale 0.52;
+		FloatBobStrength 0.5;
+	}
+
+	override bool TryPickup(in out Actor toucher) 
+	{
+		if(toucher.FindInventory("PBX_SGLEdited") 
+			&& toucher.FindInventory("SGLUpgraded") 
+			&& toucher.CountInv("PB_RocketAmmo") == toucher.GetAmmoCapacity("PB_RocketAmmo")) {
+			return false;
+		}
+		return super.TryPickup(toucher);
+	}
+
+	States
+	{
+		Spawn:
+			BSGL A -1;
+			Stop;
+
+		Pickup:
+			TNT1 A 0 {
+				A_GiveInventory("PBX_SGLEdited", 1);
+				A_SetInventory("SGLUpgraded", 1);
+				A_SetWeaponTag("PBX_SGLEdited","$PBXWeapons_SGLUpgrade_Tag2");
+			}
+			Stop;
+	}
+}
+
+class LMG_Upgrade : PB_UpgradeItem
+{
+	Default
+	{
+		//$Title SGL Upgrade
+		//$Category Project Brutality - Weapon Upgrades
+		//Game Doom;
+		//SpawnID 9410
+		Height 24;
+		//-COUNTITEM
+		-INVENTORY.ALWAYSPICKUP;
+		-COUNTITEM;
+		Inventory.Pickupsound "LLIDOP";
+		Inventory.PickupMessage "$PBXWeapons_LMGUpgrade_Pickup";
+		Tag "$PBXWeapons_LMGUpgrade_Tag";
+		Scale 0.52;
+		FloatBobStrength 0.5;
+	}
+
+	override bool TryPickup(in out Actor toucher) 
+	{
+		if(toucher.FindInventory("PBX_LMGEdited") 
+			&& toucher.FindInventory("LMGUpgraded") 
+			&& toucher.CountInv("PB_HighCalMag") == toucher.GetAmmoCapacity("PB_HighCalMag")) {
+			return false;
+		}
+		return super.TryPickup(toucher);
+	}
+	
+	States
+	{
+		Spawn:
+			LMPU A -1;
+			Stop;
+
+		Pickup:
+			TNT1 A 0 {
+				A_GiveInventory("PBX_LMGEdited", 1);
+				A_SetInventory("LMGUpgraded", 1);
+				A_SetWeaponTag("PBX_LMGEdited","$PBXWeapons_LMGUpgrade_Tag2");
+			}
+			Stop;
 	}
 }

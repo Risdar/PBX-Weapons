@@ -11,6 +11,7 @@ class PBXCore_Player : PB_PlayerPrawn
 		Player.WeaponSlot 1
 		,"PB_Axe"
 		,"PB_Chainsaw"
+		,"PBX_ChainsawEdited"
 		,"PB_Fists"
 		;
 		
@@ -42,6 +43,7 @@ class PBXCore_Player : PB_PlayerPrawn
 		,"PB_DMR"
 		,"PB_Carbine"
 		,"PB_LMG"
+		,"PBX_LMGEdited"
 		,"PBX_NormalRifle"
 		,"PBX_BDPBattleRifle"
 		,"PBX_XM21"
@@ -61,6 +63,7 @@ class PBXCore_Player : PB_PlayerPrawn
 		Player.WeaponSlot 6
 		,"PB_RocketLauncher"
 		,"PB_SuperGL"
+		,"PBX_SGLEdited"
 		,"PBX_Paingiver"
 		,"PBX_Excavator"
 		,"PBX_CyberdemonRL"

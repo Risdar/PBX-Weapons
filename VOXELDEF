@@ -1,0 +1,5 @@
+csawb = "csawb"
+{
+	AngleOffset = 270
+	PitchFromMomentum
+}

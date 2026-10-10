@@ -1,33 +1,37 @@
 enum PBXWeapons_eWeaponSpecialSpawns
 {
 ////// Backpacks / Upgrades /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	DisablePBX_CSSGUpgrades			        = 1 << 0, // Actually spawns on the ShellBox spawner
-	DisablePBX_MetalSniperUpgrade			= 1 << 1,
-	DisablePBX_LeverActionUpgrade			= 1 << 2,
-	DisablePBX_CrossbowBallistaUpgrade		= 1 << 3,
-	DisablePBX_UACBackpack					= 1 << 4,
-	DisablePBX_ExcavatorUpgrade				= 1 << 5,
-	DisablePBX_DemonExtArtifacts			= 1 << 6,
+	DisablePBX_CSSGUpgrades			        = 1 << 0 // Actually spawns on the ShellBox spawner
+	,DisablePBX_MetalSniperUpgrade			= 1 << 1
+	,DisablePBX_LeverActionUpgrade			= 1 << 2
+	,DisablePBX_CrossbowBallistaUpgrade		= 1 << 3
+	,DisablePBX_UACBackpack					= 1 << 4
+	,DisablePBX_ExcavatorUpgrade			= 1 << 5
+	,DisablePBX_DemonExtArtifacts			= 1 << 6
 ////// Monster Drops /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// SLOT 6
-	DisablePBX_CyberdemonRL			        = 1 << 0,
-	DisablePBX_MastermindCG			        = 1 << 1,
+	,DisablePBX_CyberdemonRL			    = 1 << 0
+	,DisablePBX_MastermindCG			    = 1 << 1
 ////// Secret Weapons /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	DisablePBX_EternalChaingun			    = 1 << 0,
-	DisablePBX_NukeLauncher					= 1 << 1, 
-	DisablePBX_HexaShotgun					= 1 << 2,  
-	DisablePBX_MiniShotgun					= 1 << 3  
+	,DisablePBX_EternalChaingun			    = 1 << 0
+	,DisablePBX_NukeLauncher		        = 1 << 1
+	,DisablePBX_HexaShotgun					= 1 << 2 
+	,DisablePBX_MiniShotgun					= 1 << 3  
+////// Weapon Edits /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	,DisablePBX_SGLEdit					    = 1 << 0
+	,DisablePBX_LMGEdit					    = 1 << 1  
+	,DisablePBX_ChainsawEdit				= 1 << 2  
 }
 
 enum PBXWeapons_eShotgunSpawns
 {
 ////// SLOT 2  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	DisablePBX_LeverActionRifle				= 1 << 0,
-	DisablePBX_PlasmaBlaster				= 1 << 1,
+	DisablePBX_LeverActionRifle				= 1 << 0
+	,DisablePBX_PlasmaBlaster				= 1 << 1
 ////// SLOT 3  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	DisablePBX_SPAS12						= 1 << 2,
+	,DisablePBX_SPAS12						= 1 << 2
 ////// SLOT 4  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	DisablePBX_CrossbowBallista				= 1 << 3
+	,DisablePBX_CrossbowBallista			= 1 << 3
 }
 
 enum PBXWeapons_eSSGSpawns
@@ -38,30 +42,30 @@ enum PBXWeapons_eSSGSpawns
 
 enum PBXWeapons_eChaingunSpawns
 {
-	DisablePBX_BattleRifle					= 1 << 0, // Slot 4
-	DisablePBX_MetalSniper			        = 1 << 1, // Slot 4
-	DisablePBX_NeoHMG			        	= 1 << 2, // Slot 5
-	DisablePBX_SuperNailgun			        = 1 << 3, // Slot 5
-	DisablePBX_XM21			        		= 1 << 4  // Slot 4
+	DisablePBX_BattleRifle					= 1 << 0 // Slot 4
+	,DisablePBX_MetalSniper			        = 1 << 1 // Slot 4
+	,DisablePBX_NeoHMG			        	= 1 << 2 // Slot 5
+	,DisablePBX_SuperNailgun			    = 1 << 3 // Slot 5
+	,DisablePBX_XM21			        	= 1 << 4 // Slot 4
 }
 
 enum PBXWeapons_eRocketLauncherSpawns
 {
 ////// SLOT 6 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	DisablePBX_Excavator			        = 1 << 0,
-	DisablePBX_Paingiver			        = 1 << 1
+	DisablePBX_Excavator			        = 1 << 0
+	,DisablePBX_Paingiver			        = 1 << 1
 }
 
 enum PBXWeapons_ePlasmaRifleSpawns
 {
 ////// SLOT 3 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	DisablePBX_CryoSG						= 1 << 2,
-	DisablePBX_CryoASG						= 1 << 3,
+	DisablePBX_CryoSG						= 1 << 2
+	,DisablePBX_CryoASG						= 1 << 3
 ////// SLOT 7 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	DisablePBX_BDPRailgun					= 1 << 0,
+	,DisablePBX_BDPRailgun					= 1 << 0
 ////// SLOT 8 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	DisablePBX_TeslaGun						= 1 << 1,
-	DisablePBX_FreezeRifle					= 1 << 4
+	,DisablePBX_TeslaGun					= 1 << 1
+	,DisablePBX_FreezeRifle					= 1 << 4
 }
 
 enum PBXWeapons_eBFGSpawns
@@ -281,7 +285,7 @@ class PBXUpgrades_Injector : PBInjector
 }
 
 //////////////////////////// OTHER TYPES ////////////////////////////////////////////////////////////////////////////////////
-class PBXWeapons_WeaponSpawner : EventHandler
+class PBXWeapons_SecretWeaponHandler : EventHandler
 {
 	bool mSecretWeaponSpawned;
 
@@ -299,7 +303,7 @@ class PBXWeapons_WeaponSpawner : EventHandler
 		int mSpawnChance = random(1,100);
 		if(mSpawnChance > pbxweapons_secretweapon_spawnchance) //5% chance of spawning by default
 		{
-			PBXCore_Debug.PrintInt("PBX_SpecialWeaponSpawner not Spawned!, got %d",mSpawnChance);
+			PBXCore_Debug.PrintInt("PBXWeapons_SecretWeaponSpawner not Spawned!, got %d",mSpawnChance);
 			return;
 		}
 
@@ -312,8 +316,8 @@ class PBXWeapons_WeaponSpawner : EventHandler
 			
 			if (CurrSec.IsSecret() && !mSecretWeaponSpawned)
 			{
-				Actor.Spawn("PBX_SpecialWeaponSpawner", SpawnPos);
-                PBXCore_Debug.Print("PBX_SpecialWeaponSpawner Spawned!");
+				Actor.Spawn("PBXWeapons_SecretWeaponSpawner", SpawnPos);
+                PBXCore_Debug.Print("PBXWeapons_SecretWeaponSpawner Spawned!");
 				mSecretWeaponSpawned = true;
 			}			
 		}
@@ -349,20 +353,13 @@ class PBXWeapons_WeaponSpawner : EventHandler
                 } 
                 break;
 
-            // case 'PB_FlamethrowerMancubusGas':
-            //     if(MancFLameCNDrop)
-            //     { 
-            //         self.spawnThings("MancubusFlameCannon", monsPos);
-            //         self.destroy(); 
-            //     } 
-            //     break;
         }
     }
 
 	
 }
 
-class PBX_SpecialWeaponSpawner : PB_WeaponSpawner
+class PBXWeapons_SecretWeaponSpawner : PB_WeaponSpawner
 {
 	Default
 	{
@@ -420,4 +417,64 @@ class PBX_CommandPack : CustomInventory
 			}
             Stop;
     }
+}
+
+class PBXWeapons_WeaponEditHandler : EventHandler
+{
+    override void CheckReplacement(ReplaceEvent e) 
+	{
+		// Always replace since the exception code is in the weapon itself
+        switch(e.Replacee.GetClassName())
+        {
+            case 'PB_SuperGL':      
+                e.Replacement  = "PBX_SGLEdited";  
+                break;
+
+            case 'PB_LMG':          
+                e.Replacement  = "PBX_LMGEdited";  
+                break;
+
+			case 'PB_Chainsaw':          
+                e.Replacement  = "PBX_ChainsawEdited";  
+                break;
+        }
+    }
+
+    // Because scientists also drop chainsaws
+    override void WorldThingSpawned (WorldEvent e)
+    {
+        if (!e || !e.thing) return;
+        let act = e.Thing;
+
+        if(act && act.getClassName() == "PB_Chainsaw") 
+        {
+            act.Spawn("PBX_ChainsawEdited",act.pos);
+            act.Destroy();
+        }
+    }
+
+}
+
+class PBXWeapons_WeaponEditSpawner : PBInjector
+{
+	override void Init(PB_EventHandler handler)
+	{
+        if(!PBXWeapons_EnableWeaponEdits)
+        {
+            return;
+        }
+        
+        if(!(PBXWeapons_WeaponEditsFlags & DisablePBX_SGLEdit))
+        {
+            handler.InjectSpawn('PB_UpgradeSpawnerT3', 'SGL_Upgrade', 255, 1);
+            handler.InjectSpawn('PB_RLSpawnerT3', 'SGL_Upgrade', 255, 1);
+        }
+
+        if(!(PBXWeapons_WeaponEditsFlags & DisablePBX_LMGEdit))
+        {
+            handler.InjectSpawn('PB_UpgradeSpawnerT3', 'LMG_Upgrade', 255, 1);
+		    handler.InjectSpawn('PB_MGSpawnerT3', 'LMG_Upgrade', 255, 1);
+        }
+		
+	}
 }

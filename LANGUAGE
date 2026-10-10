@@ -1,7 +1,7 @@
 [enu default]
 //////////////////////////// GENERAL ///////////////////////////////////////////////////////////////////////////////
 PBXWeapons_Settings                 = "\cg⟁\c- PBX - Weapons Settings";
-PBXWeapons_Version                  = "\cgPBX - Weapons Version: 3.3.4 - Energy Update";
+PBXWeapons_Version                  = "\cgPBX - Weapons Version: 3.4.0 - Energy Update";
 
 PBXWeapons_SmartScope_MaxHP         = "Max. HP: %u";
 PBXWeapons_SmartScope_CurrHP        = "HP: %u";
@@ -374,22 +374,34 @@ OB_WEAP_MINISHOTGUN                 = "%o was Mowed down by %k's Rotating Double
 
 //////////////////////////// PROJECTILES ///////////////////////////////////////////////////////////////////////////////
 // Bullets
-OB_PROJ_357MAGNUM       = "%o was shot at somewhere else by %k.";
-OB_PROJ_444MARLIN       = "%o was Hard hit with punch of Marlin by %k.";
-OB_PROJ_RESOROUND       = "%o was shredded by %k.";
-OB_PROJ_792x57MM_HEATED = "%o was melted by %k.";
+OB_PROJ_357MAGNUM                   = "%o was shot at somewhere else by %k.";
+OB_PROJ_444MARLIN                   = "%o was Hard hit with punch of Marlin by %k.";
+OB_PROJ_RESOROUND                   = "%o was shredded by %k.";
+OB_PROJ_792x57MM_HEATED             = "%o was melted by %k.";
 
 // Shells
 
 // Explosives
-OB_PROJ_NUKE        = "\cr%o\c- was nuked by \cr%k\c-.";
-OB_PROJ_RAZORBLADE  = "%o's guts were shredded by %k's flying blade.";
-OB_PROJ_CYBERRL     = "%o was blown up by %k's Cyberdemon missile launcher. Ouch!.";
+OB_PROJ_NUKE                        = "\cr%o\c- was nuked by \cr%k\c-.";
+OB_PROJ_RAZORBLADE                  = "%o's guts were shredded by %k's flying blade.";
+OB_PROJ_CYBERRL                     = "%o was blown up by %k's Cyberdemon missile launcher. Ouch!.";
 
 // Demon
-OB_PROJ_DEMONEXT_ENERGYBLAST = "%o was barbequed by %k's Lasergun.";
-OB_PROJ_DEMONEXT_REAPERSHOT  = "%o could not evade %k soul-seekers.";
-OB_GENERIC_REAPED_BY         = "%o was reaped by %k.";
+OB_PROJ_DEMONEXT_ENERGYBLAST        = "%o was barbequed by %k's Lasergun.";
+OB_PROJ_DEMONEXT_REAPERSHOT         = "%o could not evade %k soul-seekers.";
+OB_GENERIC_REAPED_BY                = "%o was reaped by %k.";
+
+
+//////////////////////////// Weapon Edits ///////////////////////////////////////////////////////////////////////////////
+PBXWeapons_SGLUpgrade_NoUpgrade     = "Need the \cdElemental Grenade Addon";
+PBXWeapons_SGLUpgrade_Pickup        = "UAC-M7 Automatic Grenade Launcher Elemental Grenades Addon (Slot 6, Upgrade)";
+PBXWeapons_SGLUpgrade_Tag           = "SGL Upgrade";
+PBXWeapons_SGLUpgrade_Tag2          = "UAC-M7 Automatic Grenade Launcher w/ Elemental Grenades";
+
+PBXWeapons_LMGUpgrade_NoUpgrade     = "Need the \crMicro Missile Conversion Kit";
+PBXWeapons_LMGUpgrade_Pickup        = "Light Machine Gun Micro Missiles Conversion Kit (Slot 4, Upgrade)";
+PBXWeapons_LMGUpgrade_Tag           = "LMG Upgrade";
+PBXWeapons_LMGUpgrade_Tag2          = "Light Machine Gun w/ Micro Missiles Kit";
 
 //////////////////////////// OTHERS ///////////////////////////////////////////////////////////////////////////////
 // PBX Command Pack
@@ -419,14 +431,14 @@ PBX_nvgOffWW                        = "Disable \cdInfrared";
 PBX_nvgOn                           = "\cdInfrared \c-Enabled";
 PBX_nvgOff                          = "\cdInfrared \c-Disabled";
 
-PBX_DisableUpgrade      = "You can bypass this requirement by disabling the upgrade in the Addon Spawner Settings.";
+PBX_DisableUpgrade                  = "You can bypass this requirement by disabling the upgrade in the Addon Spawner Settings.";
 
-PBX_ScrollZoom_Tip1     = "Every scoped weapon zoom strength can be adjusted using the \cnScroll Wheel\c- when \cdZoomed \c-in";
-PBX_ScrollZoom_Tip2     = "You can also manually adjust the zoom using %s to Zoom In or %s to Zoom Out";
+PBX_ScrollZoom_Tip1                 = "Every scoped weapon zoom strength can be adjusted using the \cnScroll Wheel\c- when \cdZoomed \c-in";
+PBX_ScrollZoom_Tip2                 = "You can also manually adjust the zoom using %s to Zoom In or %s to Zoom Out";
 
-PBX_MonsterWeapon1      = "Every Monster Weapon are very powerful but has durability. Restore its durability by picking up the same weapon again.";
+PBX_MonsterWeapon1                  = "Every Monster Weapon are very powerful but has durability. Restore its durability by picking up the same weapon again.";
 
-PBX_SecretWeaponSpawned = "Secret Weapon Spawned!";
+PBX_SecretWeaponSpawned             = "Secret Weapon Spawned!";
 
 // These are already in PB
 /* PB_FIREMODE_SEMI = "Firemode: \cfSemi-Auto";

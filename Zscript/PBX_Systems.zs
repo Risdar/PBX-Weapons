@@ -5,16 +5,23 @@ class PBXWeapons_Handler : EventHandler
     Override void PlayerEntered(PlayerEvent e)
     {
 		// Get player pointer
-        let pm = players[e.PlayerNumber].mo;
-		if(!pm) return;
+        let pm = players[e.PlayerNumber].mo; if(!pm) return;
 
 		// Dont continue if its the titlemap
-        if (level.MapName == "TITLEMAP") return;
+        if (level.MapName == "TITLEMAP") 
+        {
+            return;
+        }
 
         if(pbxweapons_startwithnormalrifle) 
-			PBXCore_Handler.TryGiveInventory(pm,whatToGive:'PBX_NormalRifle', diffCheck:false);
+        {
+            pm.giveinventory("PBX_NormalRifle",1);
+        }
+
 		if(pbxweapons_startwithcrossbow) 
-			PBXCore_Handler.TryGiveInventory(pm,whatToGive:'PBX_Prosurv_Ballista', diffCheck:false);
+        {
+            pm.giveinventory("PBX_Prosurv_Ballista",1);
+        }
     }
 }
 
@@ -202,13 +209,18 @@ Class PBXWeapons_CheatsHandler : Eventhandler
 			pm.giveinventory("ArtifactIncinerator",1);
 			pm.giveinventory("ArtifactLightning",1);
 
+            // Weapon Edits
+			pm.giveinventory("SGL_Upgrade",1);
+			pm.giveinventory("LMG_Upgrade",1);
+			pm.giveinventory("PBX_ChainsawEdited",1);
+
 			console.printf("[PBX] Gave all weapon upgrades");
 		}
 		
 	}
 }
 
-class PBXCore_UpgradeBase : PB_UpgradeItem abstract
+class PBX_UpgradeBase : PB_UpgradeItem abstract
 {
     name upgradetoken, upgradetype, s;
     property UpgradeToken : upgradetoken;
@@ -216,8 +228,8 @@ class PBXCore_UpgradeBase : PB_UpgradeItem abstract
 
 	Default
 	{
-        PBXCore_UpgradeBase.upgradetoken '';
-        PBXCore_UpgradeBase.Sprite '';
+        PBX_UpgradeBase.upgradetoken '';
+        PBX_UpgradeBase.Sprite '';
 		+inventory.alwayspickup;
 	}
 

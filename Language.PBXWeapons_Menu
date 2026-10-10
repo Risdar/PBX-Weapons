@@ -11,6 +11,7 @@ PBXWEAPONS_START_WITH_PISTOL_BLASTER = "Start with the Pistol Blaster";
 PBXWEAPONS_START_WITH_CROSSBOW = "Start with the Crossbow Ballista";
 PBXWEAPONS_MENU_ENABLE_SECRET_WEAPONS = "Enable Secret Weapons";
 PBXWEAPONS_MENU_SECRETWEAPON_BFGSPAWN = "Secret Weapons spawns in BFG spawners";
+PBXWEAPONS_MENU_ENABLE_WEAPON_EDITS = "Enable Weapon Edits";
 
 TIP_pbxweapons_secretweapon_bfgspawn = "Secret weapons will also spawn in BFG spawners. Disabling the secret spawns will not affect this.";
 
@@ -79,6 +80,10 @@ PBXWEAPONS_EXCAVATOR_UPGRADE = "Enable Excavator Upgrade";
 PBXWEAPONS_CSSG_UPGRADES = "Enable CSSG Upgrades";
 
 PBXWEAPONS_ETERNAL_CHAINGUN = "Enable Eternal Chaingun";
+
+PBXWEAPONS_SGL_EDIT         = "Enable SGL Upgrade";
+PBXWEAPONS_LMG_EDIT         = "Enable LMG Upgrade";
+PBXWEAPONS_CHAINSAW_EDIT    = "Enable Chainsaw Edit";
 
 //////////////////////////// KEYS MENU ///////////////////////////////////////////////////////////////////////////////
 PBXWEAPONS_WHEELZOOM     = "Scroll Wheel Zoom";

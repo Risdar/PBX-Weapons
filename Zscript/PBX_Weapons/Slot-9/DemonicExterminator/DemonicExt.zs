@@ -141,8 +141,10 @@ Class PBX_DemonExt : PBX_WeaponBase
 		Ready.Soul:
 			UNMI IIIIIIJJJJKKKKJJJJIIIIIIIIIIIIJJJJKKKKJJJJIIIIII 1 {
 				if(invoker.ExterminatorMode != LightningMode){return ResolveState("Ready3");}
-				if (PressingReload() || (player.oldbuttons & BT_RELOAD)) 
+				if (PressingReload())
+				{
 					return resolvestate("WeaponInspect");
+				} 
 				return UNM_WeaponReady();
 			}
 			goto Ready3;

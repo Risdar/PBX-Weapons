@@ -1,68 +1,12 @@
 Version 5.0
 
 // General
-// Lighttning API by jekyllgrim
-#include "Zscript/PBX_Lightning.zs"
-// BEAMZ by Lewis3k
-#include "Zscript/PBX_BeamZ.zs"
-
+#include "Zscript/PBX_Systems.zs"
+#include "Zscript/PBX_Spawners.zs"
 #include "Zscript/PBX_Player.zs"
-#include "Zscript/PBX_Weapons/PBXWeapons_Systems.zs"
-#include "Zscript/PBX_Weapons/PBXWeapons_BaseWeapon.zs"
-#include "Zscript/PBX_Weapons/PBXWeapons_Spawners.zs"
-#include "Zscript/PBX_Weapons/PBXWeapons_Upgrades.zs"
-#include "Zscript/PBX_Weapons/PBXWeapons_Hud.zs"
-#include "Zscript/PBX_Weapons/PBXWeapons_Ammo.zs"
-#include "Zscript/PBX_Weapons/PBXWeapons_Tips.zs"
-
-// Projectiles
-#include "Zscript/PBX_Weapons/Projectiles/PBXWeapons_Projectiles.zs"
-
-// Some weapon has their own includes (basically helper files), you cen see these in each weapon files
-// Slot 1
-
-
-// Slot 2
-#include "Zscript/PBX_Weapons/Slot-2/Plasma_Blaster/PlasmaBlaster.zs" // PLasma Blaster 
-#include "Zscript/PBX_Weapons/Slot-2/Prosurv_Blaster/prosurv_blaster.zs" // Prosurv Blaster 
-#include "Zscript/PBX_Weapons/Slot-2/Prosurv_LeverAction/Prosurv_LeverAction.zs" // Lever Action 
-
-// Slot 3
-#include "Zscript/PBX_Weapons/Slot-3/CSSG/CSSG.zs" // CSSG
-#include "Zscript/PBX_Weapons/Slot-3/Prosurv_PumpShotgun/prosurv_psg.zs" // CSSG
-#include "Zscript/PBX_Weapons/Slot-3/SPAS12/Spas12.zs" // SPAS 12 My Beloved
-#include "Zscript/PBX_Weapons/Slot-3/CryoSG/CryoSG.zs" // Cryo Shotgun
-#include "Zscript/PBX_Weapons/Slot-3/CryoASG/CryoASG.zs" // Cryo AutoShotgun
-
-// Slot 4
-#include "Zscript/PBX_Weapons/Slot-4/NormalRifle/NormalRifle.zs" // Normal Rifle
-#include "Zscript/PBX_Weapons/Slot-4/BattleRifle/BattleRifle.zs" // Battle Rifle
-#include "Zscript/PBX_Weapons/Slot-4/MetalSniper/MetalSniper.zs" // Metal Sniper
-#include "Zscript/PBX_Weapons/Slot-4/Prosurv_Ballista/Prosurv_CrossbowBallista.zs" // Crossbow Ballista
-#include "Zscript/PBX_Weapons/Slot-4/XM21/XM21.zs" // XM21 Sniper RIfle
-
-// Slot 5
-#include "Zscript/PBX_Weapons/Slot-5/NeoHMG/NeoHMG.zs" // NeoHMG
-#include "Zscript/PBX_Weapons/Slot-5/EternalChaingun/EternalChaingun.zs" // Eternal Chaingun
-#include "Zscript/PBX_Weapons/Slot-5/SuperNailgun/SuperNailgun.zs" // Super Nailgun
-
-// Slot 6
-#include "Zscript/PBX_Weapons/Slot-6/Excavator/Excavator.zs" // Excavator
-#include "Zscript/PBX_Weapons/Slot-6/CyberdemonRL/CyberdemonRL.zs" // Cyberdemon Rocket launcher
-#include "Zscript/PBX_Weapons/Slot-6/MastermindCG/MastermindCG.zs" // Mastermind Chaingun
-#include "Zscript/PBX_Weapons/Slot-6/Paingiver/Paingiver.zs" // Mastermind Chaingun
-
-// Slot 7
-#include "Zscript/PBX_Weapons/Slot-7/BDP_Railgun/bdp_railgun.zs" // BDP Railgun
-
-// Slot 8
-#include "Zscript/PBX_Weapons/Slot-8/TeslaGun/TeslaGun.zs" // Tesla Gun
-#include "Zscript/PBX_Weapons/Slot-8/FreezeRifle/FreezeRifle.zs" // Freeze Rifle
-
-// Slot 9
-#include "Zscript/PBX_Weapons/Slot-9/DemonicExterminator/DemonicExt.zs" // Demonic Exterminator
-#include "Zscript/PBX_Weapons/Slot-9/NukeLauncher/NukeLauncher.zs" // Nuke Launcher
-#include "Zscript/PBX_Weapons/Slot-9/HexaShotgun/HexaShotgun.zs" // Hexa Shotgun
-#include "Zscript/PBX_Weapons/Slot-9/MiniShotgun/MiniShotgun.zs" // Mini Shotgun
+#include "Zscript/PBX_Lightning.zs" //Lighttning Library by jekyllgrim
+#include "Zscript/PBX_BeamZ.zs" // BEAMZ by Lewis3k
+#include "Zscript/PBX_Weapons/PBXWeapons_Includes.zs"
+#include "Zscript/PBX_WeaponEdits/PBXWeaponEdits_Includes.zs"
 
 

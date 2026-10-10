@@ -132,29 +132,33 @@ class PBXWeapons_HUDHandler : EventHandler
     private
     ui void PBXWeapons_DrawAmmoBar()
     {
-        if(!pbWeap || !phud) return;
+        if(!pbWeap || !phud || !plr || !mo) return;
         switch(pbWeap.GetClassName())
         {
             // Draw bars and effects for specific modes
             case 'PBX_MetalSniper':
+            {
                 let sniper = PBX_MetalSniper(pbWeap);
                 if(!sniper) return;
                 
                 // Show Rocket Ammo if Grenade Secondary Mode is Selected
                 if (sniper.AltMode) 
-                    PBXCore_HUDHandler.PBX_DrawAmmoBar(
-                        phud,
-                        PBXCore_HUDHandler.
-                        DRAW_THIRD_BAR,
-                        "BARBACR3",
-                        "ABAR4",
-                        "PB_RocketAmmo",
-                        Font.CR_RED
-                    );
-                break;
+                PBXCore_HUDHandler.PBX_DrawAmmoBar(
+                    phud,
+                    PBXCore_HUDHandler.
+                    DRAW_THIRD_BAR,
+                    "BARBACR3",
+                    "ABAR4",
+                    "PB_RocketAmmo",
+                    Font.CR_RED
+                );
+            }
+            break;
 
             // Draw bars and effects
             case 'PBX_XM21':
+            {
+
                 let snp = PBX_XM21(pbWeap);
                 if(!snp) return;
                 
@@ -168,11 +172,12 @@ class PBXWeapons_HUDHandler : EventHandler
                     "CloakEnergy",
                     Font.CR_CYAN
                 );
-
-                break;
+            }
+            break;
                 
             // Draw bar for the shield durability
             case 'PBX_NeoHMG':
+            {
                 PBXCore_HUDHandler.PBX_DrawAmmoBar(
                     phud,
                     PBXCore_HUDHandler.DRAW_THIRD_BAR,
@@ -181,10 +186,12 @@ class PBXWeapons_HUDHandler : EventHandler
                     "HMGShield",
                     Font.CR_GREEN
                 );
-                break;
+            }
+            break;
 
             // Draw rocket ammo
             case 'PBX_ProSurvPSG':
+            {
                 PBXCore_HUDHandler.PBX_DrawAmmoBar(
                     phud,
                     PBXCore_HUDHandler.DRAW_THIRD_BAR,
@@ -193,10 +200,12 @@ class PBXWeapons_HUDHandler : EventHandler
                     "PB_RocketAmmo",
                     Font.CR_RED
                 );
-                break;
+            }
+            break;
 
             // Draw the durability bar
             case 'PBX_CyberdemonRL':
+            {
                 PBXCore_HUDHandler.PBX_DrawAmmoBar(
                     phud,
                     PBXCore_HUDHandler.DRAW_SECOND_BAR,
@@ -206,8 +215,10 @@ class PBXWeapons_HUDHandler : EventHandler
                     Font.CR_DARKGRAY
                 );
                 break;
+            }
 
             case 'PBX_MastermindChaingun':
+            {
                 PBXCore_HUDHandler.PBX_DrawAmmoBar(
                     phud,
                     PBXCore_HUDHandler.DRAW_SECOND_BAR,
@@ -217,15 +228,16 @@ class PBXWeapons_HUDHandler : EventHandler
                     Font.CR_DARKGRAY
                 );
                 break;
+            }
 
             // Draw enraged bar
             case 'PBX_Paingiver':
-                let pngv = PBX_Paingiver(pbWeap);
+            {
+                let pngv = PBX_Paingiver(pbWeap); if(!pngv) return;
+                
                 // Show Fuel if Demonic Mode, Show Rocket if Standard Mode
-                if(!pngv) return;
-
                 bool enraged = pngv.enragedState;
-
+                
                 PBXCore_HUDHandler.PBX_DrawAmmoBar(
                     phud,
                     PBXCore_HUDHandler.DRAW_SECOND_BAR,
@@ -234,10 +246,12 @@ class PBXWeapons_HUDHandler : EventHandler
                     "SoulCharge",
                     enraged ? Font.FindFontColor("PB_DTech")  : Font.CR_DARKRED
                 );
-                break;
+            }
+            break;
 
             // Draw lightning charge bar
             case 'PBX_TeslaGun':
+            {
                 PBXCore_HUDHandler.PBX_DrawAmmoBar(
                     phud,
                     PBXCore_HUDHandler.DRAW_THIRD_BAR,
@@ -247,6 +261,16 @@ class PBXWeapons_HUDHandler : EventHandler
                     Font.FindFontColor("HUDBLUEBAR")
                 );
                 break;
+            }
+
+            // Draw the resouce gather icon
+            case 'PBX_ChainsawEdited':
+            {
+                if(mo.FindInventory("ChainsawResourceGather"))
+                {
+                    phud.PBHud_DrawImage("CHAINHL", (-90, -44), BaseStatusBar.DI_SCREEN_RIGHT_BOTTOM, 1, (32, 32));
+                }
+            }
 
             default:
                 break;
@@ -268,10 +292,14 @@ class PBXHUDService_PBX_AllWeapons : service
         {
 //////////////////////////// SLOT 2 ////////////////////////////////////////////////////////////////////////////////////
         case 'PBX_PlasmaBlaster':
+        {
             return MakeData(imgOffset1:(-22, 12), imgScale1:2.0);
+        }
 
         case 'PBX_ProsurvBlaster':
+        {
             return MakeData(imgOffset1:(-30, 30), imgScale1:1.0);
+        }
 
         case 'PBX_Prosurv_LeverAction':
         {
@@ -329,10 +357,14 @@ class PBXHUDService_PBX_AllWeapons : service
         }
 
         case 'PBX_CryoSG':
+        {
             return MakeData(imgOffset1:(-15, 15), imgScale1:1.35);
+        }
 
         case 'PBX_CryoASG':
+        {
             return MakeData(imgOffset1:(-15, 12), imgScale1:1.5);
+        }
 
 //////////////////////////// SLOT 4 ////////////////////////////////////////////////////////////////////////////////////
         case 'PBX_BDPBattleRifle':
@@ -356,8 +388,8 @@ class PBXHUDService_PBX_AllWeapons : service
             Vector2 imgOffset1 = sniper.mLaserSightActivated ? (0, 10) : (0, 14);
             if (sniper.AltMode) imgOffset1.y -= 19;
 
-            String img1 = sniper.mLaserSightActivated ? IMAGE_DIRECTORY.."MetalSniper/LaserOn.png" : IMAGE_DIRECTORY.."MetalSniper/LaserOff.png";
-            String img2 = sniper.resonanceAmmoLoaded ? IMAGE_DIRECTORY.."metalsniper/ResonanceAlt.png" : IMAGE_DIRECTORY.."metalsniper/StandardAlt.png";
+            string img1 = sniper.mLaserSightActivated ? IMAGE_DIRECTORY.."MetalSniper/LaserOn.png" : IMAGE_DIRECTORY.."MetalSniper/LaserOff.png";
+            string img2 = sniper.resonanceAmmoLoaded ? IMAGE_DIRECTORY.."metalsniper/ResonanceAlt.png" : IMAGE_DIRECTORY.."metalsniper/StandardAlt.png";
 
             return MakeData(
                 skipAutoDraw:true, 
@@ -369,7 +401,9 @@ class PBXHUDService_PBX_AllWeapons : service
         }
 
         case 'PBX_Prosurv_Ballista':
+        {
             return MakeData(imgOffset1:(-10, 10), imgScale1:1.0);
+        }
 
         case 'PBX_NormalRifle':
         {
@@ -402,26 +436,40 @@ class PBXHUDService_PBX_AllWeapons : service
 
 //////////////////////////// SLOT 5 ////////////////////////////////////////////////////////////////////////////////////
         case 'PBX_NeoHMG':
+        {
             return MakeData(imgOffset1:(-3, -3), imgScale1:1.6);
+        }
 
         case 'PBX_EternalMinigun':
+        {
             return MakeData(imgOffset1:(-20, 35), imgScale1:1.5);
+        }
 
         case 'PBX_SuperNailgun':
+        {
             return MakeData(imgOffset1:(-2, 16), imgScale1:0.7);
+        }
 
 //////////////////////////// SLOT 6 ////////////////////////////////////////////////////////////////////////////////////
         case 'PBX_CyberdemonRL':
+        {
             return MakeData(imgOffset1:(-12, 12), imgScale1:1.6);
+        }
 
         case 'PBX_MastermindChaingun':
+        {
             return MakeData(skipAutoDraw:true, img1:"RMN1H0", imgOffset1:(-10, 40), imgScale1:1.6);
+        }
 
         case 'PBX_Excavator':
+        {
             return MakeData(imgOffset1:(-10, 15), imgScale1:1.1);
+        }
 
         case 'PBX_Paingiver':
+        {
             return MakeData(imgOffset1:(-10, 15), imgScale1:1.3);
+        }
 
 //////////////////////////// SLOT 7 ////////////////////////////////////////////////////////////////////////////////////
         case 'PBX_BDPRailgun':
@@ -441,22 +489,66 @@ class PBXHUDService_PBX_AllWeapons : service
 
 //////////////////////////// SLOT 8 ////////////////////////////////////////////////////////////////////////////////////
         case 'PBX_TeslaGun':
+        {
             return MakeData(imgOffset1:(-10, -10), imgScale1:1.4);
+        }
         case 'PBX_FreezeRifle':
+        {
             return MakeData(imgOffset1:(-15, 13), imgScale1:1.2);
+        }
 
 //////////////////////////// SLOT 9 ////////////////////////////////////////////////////////////////////////////////////
         case 'PBX_DemonExt':
+        {
             return MakeData(imgOffset1:(-10, 10), imgScale1:1.3);
+        }
 
         case 'PBX_NukeLauncher':
+        {
             return MakeData(imgOffset1:(25, 35), imgScale1:1.5);
+        }
 
         case 'PBX_HexaShotgun':
+        {
             return MakeData(imgOffset1:(-25, 10), imgScale1:1.7);
+        }
 
         case 'PBX_MiniShotgun':
+        {
             return MakeData(imgOffset1:(-25, 30), imgScale1:1.7);
+        }
+
+//////////////////////////// WEAPON EDITS ////////////////////////////////////////////////////////////////////////////////////
+        case 'PBX_SGLEdited':
+        {
+            let sgl = PB_SuperGL(weapon); if(!sgl) return null;
+            bool upgraded = PBXCore_HUDHandler.PBX_PlayerHasInventory("SGLUpgraded");
+
+            static const string sglIcons[] = {
+                "graphics/pywheel/grenade_impact.png", "graphics/pywheel/grenade_sticky.png", 
+                "graphics/pywheel/grenade_acid.png", "graphics/pywheel/grenade_incendiary.png", 
+                "graphics/pywheel/grenade_cryo.png"
+            };
+
+            int sglgren = clamp(sgl.GrenadeMode, 0, sglIcons.Size() - 1);
+            string img1 = upgraded ? "BSGLA0" : "SGL0Z0";
+
+            return MakeData(skipAutoDraw:true,img1:img1,img2:sglIcons[sglgren],imgOffset1:(-5, 13),imgOffset2:(3,-18),imgScale1:0.9,imgScale2:0.3);
+        }
+
+        case 'PBX_LMGEdited':
+        {
+            bool upgraded = PBXCore_HUDHandler.PBX_PlayerHasInventory("LMGUpgraded");
+
+            string img1 = upgraded ? "LMPUA0" : "LMPIA0";
+
+            return MakeData(skipAutoDraw:true,img1:img1,imgOffset1:(3, 23),imgScale1:0.8);
+        }
+
+        case 'PBX_ChainsawEdited':
+        {
+            return MakeData(imgOffset1:(-20, 32),imgScale1:0.8);
+        }
 
         default:
             return null;
