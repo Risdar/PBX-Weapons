@@ -61,6 +61,7 @@ class PBXCore_Player : PB_PlayerPrawn
 		Player.WeaponSlot 6
 		,"PB_RocketLauncher"
 		,"PB_SuperGL"
+		,"PBX_Paingiver"
 		,"PBX_Excavator"
 		,"PBX_CyberdemonRL"
 		,"PBX_MastermindChaingun"
@@ -84,6 +85,8 @@ class PBXCore_Player : PB_PlayerPrawn
 		,"PB_Unmaker"
 		,"PB_BFG9000"
 		,"PB_Railgun"
+		,"PBX_MiniShotgun"
+		,"PBX_NukeLauncher"
 		,"PBX_DemonExt"
 		,"PBX_HexaShotgun"
 		;
