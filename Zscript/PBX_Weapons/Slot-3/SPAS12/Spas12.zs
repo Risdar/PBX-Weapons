@@ -595,7 +595,7 @@ class PBX_SPAS12 : PBX_WeaponBase
             "####" C 1          SPAS_Fire(3);
             "####" D 1          SPAS_Fire(4);
             "####" EW 1;
-			"####" A 0 PB_jumpIfNoAmmo();
+			// "####" A 0 PB_jumpIfNoAmmo();
         PumpSlow:
             // Raise
             SPAN BCDEFG 1 SP12_SetSprite('SPAN','SPBL','SPA5','SPB5');
