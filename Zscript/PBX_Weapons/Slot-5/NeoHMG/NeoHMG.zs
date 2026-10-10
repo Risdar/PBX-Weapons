@@ -199,13 +199,8 @@ class PBX_NeoHMG : PBX_WeaponBase
 		HMGShieldBash:
 			PSHL E 0 A_FireProjectile("KickAttack");
 		HMGShield:
-			TNT1 A 0 
-			{
-				if(random(0,1) == 1)
-					A_OverlayFlags(HMG_SHIELDLAYER,PSPF_FLIP,true);
-				else
-					A_OverlayFlags(HMG_SHIELDLAYER,PSPF_FLIP,false);
-
+			TNT1 A 0 {
+				A_OverlayFlags(HMG_SHIELDLAYER,PSPF_FLIP,random[sfx](0,1));
 				A_OverlayFlags(HMG_SHIELDLAYER,PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
 				A_OverlayRenderStyle(HMG_SHIELDLAYER,STYLE_Add);
 				A_OverlayAlpha(HMG_SHIELDLAYER,0.5);

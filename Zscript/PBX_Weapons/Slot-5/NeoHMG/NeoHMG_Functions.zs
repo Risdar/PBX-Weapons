@@ -51,7 +51,7 @@ extend class PBX_NeoHMG
 		// Things to check
 		bool isWeapon = owner.player.readyweapon is self.getClass();
 		bool isPressingAlt = owner.player.cmd.buttons & BT_ALTATTACK;
-		bool hasShieldCharge = countinv("HMGShield") > 0;
+		bool hasShieldCharge = countinv("HMGShield") != 0;
 		bool isNotOverheating = overheat <= MAX_OVERHEAT-5;
 		bool shouldEnable = isWeapon && isPressingAlt && mShieldIsReady && hasShieldCharge && isNotOverheating;
 
@@ -121,7 +121,9 @@ extend class PBX_NeoHMG
 				
 				// Play a sound if the player is still holding the NeoHMG
 				If(isWeapon)
+				{
 					owner.A_startsound("HMGSHLD",HMG_SHIELDSOUNDLAYER2);
+				}
 				
 			}
 
@@ -131,8 +133,9 @@ extend class PBX_NeoHMG
 				// Counts up to SHIELD_RECHARGE_CYCLE to finish one cycle
 				// If the weapon is overheating then it will recharge faster
 				If(mShieldRechargeTimer < ((overheat >= OVERHEAT_THRESHOLD) ? Int(SHIELD_RECHARGE_CYCLE/2) : SHIELD_RECHARGE_CYCLE))
+				{
 					mShieldRechargeTimer++;
-				
+				}
 				// If the shield charge is less than the maximum amount and the weapon is overheating
 				Else if(countinv("HMGShield") < SHIELD_MAXCHARGE && overheat > 0)
 				{
@@ -140,7 +143,6 @@ extend class PBX_NeoHMG
 					mShieldRechargeTimer = 0;
 					giveinventory("HMGShield",SHIELD_RECHARGE_AMOUNT);
 				}
-
 				// If the shield was broken
 				Else if(mShieldIsBroken)
 				{
@@ -150,7 +152,9 @@ extend class PBX_NeoHMG
 
 					// Play a sound if the player is still holding the NeoHMG
 					If(isWeapon)
+					{
 						owner.A_startsound("HMGSHLD",HMG_SHIELDSOUNDLAYER2);
+					}
 					
 				}
 			}
@@ -228,7 +232,11 @@ extend class PBX_NeoHMG
 		else if(isOverheating) 	spread = 1.0 + (PB_GetOverheat() / 100.0);
 		else					spread = 3;
 		
-		A_Startsound(overThreshold ? "MG42FIR" : "weapon/HMG/Fire",30);
+		A_Startsound("MG42FIR",CHAN_WEAPON,CHANF_OVERLAP);
+		if(overThreshold)
+		{
+			A_Startsound("weapon/HMG/Fire",CHAN_WEAPON,CHANF_OVERLAP);
+		}
 		PB_FireBullets(overThreshold ? "PB_792x57mm_Heated" : "PB_792x57mm", 1, spread, 0, 0, spread);
 	}
 
@@ -277,7 +285,6 @@ extend class PBX_NeoHMG
 				break;
 				
 			case 2:
-				PBXCore_Debug.Print("given overheat");
 				PB_ModifyOverheat(overThreshold ? OVERHEAT_GIVE_OVR : OVERHEAT_GIVE_NORM);
 				break;
 		}

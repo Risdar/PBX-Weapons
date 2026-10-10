@@ -105,7 +105,11 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 		invoker.mBurstCount++;
 		PB_IncrementHeat(4);
 
-		A_FlashOverlay();
+		if(!ads)
+		{
+			A_FlashOverlay();
+		}
+		
 		PB_GunSmoke(0,0,smoke);
 		PB_WeaponRecoil(recoil,frandom[sfx](-0.3,0.3));
 		A_ZoomFactor(zoom, SPF_INTERPOLATE);
