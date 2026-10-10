@@ -172,11 +172,9 @@ class PBX_CyberdemonRL : PBX_WeaponBase
 
         Deselect:
            TNT1 A 0 {
-				A_WeaponOffset(0,32);
-				PB_SetRoll(0);
+                PBX_WeaponLower();
+				A_StopSound(CHAN_6);
 			}
-			TNT1 A 0 A_StopSound(CHAN_6);
-			TNT1 A 0 A_ZoomFactor(1);
 			CYBF LMNO 1 BRIGHT;
 			TNT1 A 0 A_Lower();
 			Wait;
@@ -279,15 +277,15 @@ class PBX_CyberdemonRL : PBX_WeaponBase
 				A_ZoomFactor(0.92);
 			}
 			CYBF A 1;
-			CYBF I 0 PB_WeaponRecoil(0,-2);
+			CYBF I 0 PB_RotateCamera(addAngle:-2);
 			CYBF BC 1 A_ZoomFactor(0.94);
-			TNT1 A 0 PB_WeaponRecoil(0,-1);
+			TNT1 A 0 PB_RotateCamera(addAngle:-1);
 			CYBF DE 1 A_ZoomFactor(0.96);
-			TNT1 A 0 PB_WeaponRecoil(0,+0.6);
+			TNT1 A 0 PB_RotateCamera(addAngle:0.6);
 			CYBF F 1 A_ZoomFactor(0.98);
-			CYBF G 1 PB_WeaponRecoil(0,+0.8);
-			CYBF G 0 PB_WeaponRecoil(0,+0.8);
-			CYBF H 1 PB_WeaponRecoil(0,+0.8);
+			CYBF G 1 PB_RotateCamera(addAngle:0.8);
+			CYBF G 0 PB_RotateCamera(addAngle:0.8);
+			CYBF H 1 PB_RotateCamera(addAngle:0.8);
 			CYBF J 1 A_ZoomFactor(1.0);
 			TNT1 A 0 PB_ReFire();
 			goto Ready3;

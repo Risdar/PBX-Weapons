@@ -322,6 +322,7 @@ class PBX_WeaponBase : PB_WeaponBase abstract
 		{
 			beamEnd = PBX_LightningController.L_GetBeamAttachPos(tr.HitActor);
 			PBX_LightningController.L_StartChain(self, tr.HitActor, damage, range, duration, delay, maxChains, maxlinks, damageType:damageType);
+			tr.hitactor.TriggerPainChance("Stun", true);
 		}
 		// hit nothing:
 		else

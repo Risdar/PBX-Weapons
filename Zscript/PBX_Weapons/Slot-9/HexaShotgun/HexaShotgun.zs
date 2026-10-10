@@ -161,18 +161,19 @@ class PBX_HexaShotgun : PBX_WeaponBase
                 PB_IncrementHeat(20);
 				A_ZoomFactor(0.7);
 				A_Recoil3D(20);
+                PB_FireOffset();
             }
             HSGF B 1 BRIGHT {
 				A_ZoomFactor(0.8);
-				PB_WeaponRecoil(-10,-5);
+                PB_RotateCamera(addAngle:-5,addPitch:-10);
 			}
             TNT1 A 0 A_ZoomFactor(1.3);
             HSGF C 1 BRIGHT {
 				A_ZoomFactor(0.9);
-				PB_WeaponRecoil(-8,-4);
+                PB_RotateCamera(addAngle:-4,addPitch:-8);
 			}
             TNT1 A 0 A_ZoomFactor(1.0);
-            HSGF DE 1 PB_WeaponRecoil(-4,-2);
+            HSGF DE 1 PB_RotateCamera(addAngle:-2,addPitch:-4);
             HSGF EEEFGH 1;
             HSGF IJKLMNOPQR 1;
             HSGF S 1;

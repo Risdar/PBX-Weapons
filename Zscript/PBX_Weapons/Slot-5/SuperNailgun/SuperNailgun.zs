@@ -98,7 +98,8 @@ class PBX_SuperNailgun : PBX_WeaponBase
         SuperNailgun_FireNails();
         PB_TakeAmmo(invoker.ammo2.getClassName(),emptyMag:0,emptyChamber:0);
         A_StartSound("SNFIRE", CHAN_WEAPON, 0, 1.0);
-        PB_WeaponRecoil(-0.6, 0);
+        PB_WeaponRecoil(-0.6,frandom[sfx](-1.0,1.0));
+        PB_FireOffset();
     }
 
     action void SuperNailgun_FireNails()
@@ -168,6 +169,7 @@ class PBX_SuperNailgun : PBX_WeaponBase
 				PB_SetRoll(0);
 				PB_HandleCrosshair(39);
                 A_StopSound(1);
+                PBX_WeaponLower();
 			}
 			SNSE GECA 1 superNailgun_setSprite("SNSU");
 			TNT1 A 0 A_Lower();

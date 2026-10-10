@@ -115,7 +115,7 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
                     PB_TakeAmmo(invoker.ammo1.getClassName(),TAKECHARGE,0);
                     // modifyBlasterCharge(TAKE,5);
                     A_StartSound("weapons/blasterpistol/fire",CHAN_WEAPON,CHANF_OVERLAP);
-                    PB_WeaponRecoil(-0.18,-0.08);
+                    if(!ads) PB_WeaponRecoil(-0.18,frandom[sfx](-0.08,0.08));
                     A_FireCustomMissile("BlueFlareSpawn", 0, 0, 0, 0, 0, 0);
 		            PB_FireBullets("ProsurvBlasterProjectile", 1, 0, 0, 0, frandom(-0.1, 0.1));
                 }
@@ -123,11 +123,6 @@ class PBX_ProsurvBlaster : PBX_WeaponBase
                 // Depends on which Tic
                 A_ZoomFactor(tic == 1 ? zoomA : tic == 2 ? zoomB : zoomC);
                 
-                // Will always be called
-                if(!ads)
-                {
-                    PB_WeaponRecoil(-0.18,+0.8);
-                }
                 break;
         }
     }

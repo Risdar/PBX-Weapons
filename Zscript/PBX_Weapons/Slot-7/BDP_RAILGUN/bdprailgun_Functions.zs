@@ -173,7 +173,7 @@ extend class PBX_BDPRailgun
         A_Fireprojectile ("PlasmaSmoke", 0, 0, 0, 2);
         A_StartSound("RAILF01", 1);
         PB_TakeAmmo(invoker.ammotype2,1,0);
-        PB_WeaponRecoil(isZoom ? -3 : -6,0);
+        PB_WeaponRecoil(isZoom ? -3 : -6, frandom[sfx](-1.0,1.0));
         PB_GunSmoke(0, 0, 0);
         PB_GunSmoke(0, 0, 0);
         PB_GunSmoke(0, 0, 0);

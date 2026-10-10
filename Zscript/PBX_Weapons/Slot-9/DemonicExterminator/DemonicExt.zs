@@ -205,7 +205,7 @@ Class PBX_DemonExt : PBX_WeaponBase
 			UNMF A 1 bright A_FireProjectile("UNMK_AltPj",0,0);
 			TNT1 A 0 A_TakeInventory(invoker.ammotype1,invoker.secammouse,TIF_NOTAKEINFINITE);
 			TNT1 A 0 PB_FireOffset();
-			TNT1 A 0 PB_WeaponRecoil(-4.25,frandom(-1.7,1.7));
+			TNT1 A 0 PB_WeaponRecoil(-4.25,frandom[sfx](-1.7,1.7));
 			UNMF BC 1 bright;
 			TNT1 A 0 A_weaponoffset(0,36);
 			UNMF LMNO 1 bright A_WeaponOffset(0,-1,WOF_ADD);
@@ -227,7 +227,7 @@ Class PBX_DemonExt : PBX_WeaponBase
 			TNT1 A 0 A_TakeInventory(invoker.ammotype1,invoker.primammouse,TIF_NOTAKEINFINITE);
 			UNMF A 1 bright UNM_FireLasers();
 			TNT1 A 0 PB_FireOffset();
-			TNT1 A 0 PB_WeaponRecoil(-0.32,frandom(-0.25,0.25));
+			TNT1 A 0 PB_WeaponRecoil(-0.32,frandom[sfx](-0.25,0.25));
 			UNMF DE 1 bright A_weaponoffset(0,32);
 			TNT1 A 0 A_JumpIf(Player.ReFire%2 == 1, 4);
 			UNMF MO 1 bright;
@@ -281,7 +281,7 @@ Class PBX_DemonExt : PBX_WeaponBase
 			}
 			TNT1 A 0 A_TakeInventory(invoker.ammotype2,invoker.primammo2use3,TIF_NOTAKEINFINITE);
 			TNT1 A 0 PB_FireOffset();
-			TNT1 A 0 PB_WeaponRecoil(-4.25,frandom(-1.7,1.7));
+			TNT1 A 0 PB_WeaponRecoil(-4.25,frandom[sfx](-1.7,1.7));
 			UNMI JI 1 bright A_weaponoffset(0,36);
 			//bright
 			UNMI IIII 1 bright A_WeaponOffset(0,-1,WOF_ADD);
@@ -299,7 +299,7 @@ Class PBX_DemonExt : PBX_WeaponBase
 			}
 			TNT1 A 0 {
 				PB_FireOffset();
-				PB_WeaponRecoil(-0.32,frandom(-0.25,0.25));
+				PB_WeaponRecoil(-0.32,frandom[sfx](-0.25,0.25));
 			}
 			UNMF BC 1 bright A_weaponoffset(0,35);
 			UNMF MNO 1 bright A_WeaponOffset(0,-1,WOF_ADD);
@@ -361,7 +361,7 @@ Class PBX_DemonExt : PBX_WeaponBase
 				A_StopSound(CHAN_ITEM);
 				A_PlaySound("RBLAST",CHAN_WEAPON);
 			}
-			TNT1 A 0 PB_WeaponRecoil(-1.0,frandom(-1,1));
+			TNT1 A 0 PB_WeaponRecoil(-1.0,frandom[sfx](-1,1));
 			UNMF BCLMNO 1 Bright;
 			//UNMF LMNO 1 bright A_ZoomFactor(1.0);
 			//UNMI A 1 ;
@@ -396,7 +396,7 @@ Class PBX_DemonExt : PBX_WeaponBase
 			UNMF A 1 bright A_FireProjectile("UNMK_Grounder",0,0);	//A_Fireprojectile("UNMK_AltPj",0,0);
 			TNT1 A 0 A_TakeInventory(invoker.ammotype1,invoker.secammouse2,TIF_NOTAKEINFINITE);
 			TNT1 A 0 PB_FireOffset();
-			TNT1 A 0 PB_WeaponRecoil(-4.25,frandom(-1.7,1.7));
+			TNT1 A 0 PB_WeaponRecoil(-4.25,frandom[sfx](-1.7,1.7));
 			UNMF BC 1 bright;
 			TNT1 A 0 A_weaponoffset(0,36);
 			UNMF LMNO 1 bright A_WeaponOffset(0,-1,WOF_ADD);
@@ -442,7 +442,7 @@ Class PBX_DemonExt : PBX_WeaponBase
 			}
 			TNT1 A 0 A_TakeInventory(invoker.ammotype2,invoker.secammo2use3,TIF_NOTAKEINFINITE);
 			TNT1 A 0 PB_FireOffset();
-			TNT1 A 0 PB_WeaponRecoil(-4.25,frandom(-1.7,1.7));
+			TNT1 A 0 PB_WeaponRecoil(-4.25,frandom[sfx](-1.7,1.7));
 			UNMI KK 1 bright;
 			TNT1 A 0 A_weaponoffset(0,36);
 			UNMI JJII 1 bright A_WeaponOffset(0,-1,WOF_ADD);

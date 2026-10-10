@@ -339,7 +339,7 @@ extend class PBX_CSSG
 		A_ZoomFactor(0.92);
 		PB_FireOffset();
 		A_takeinventory(invoker.ammotype2,BARREL_CAPACITY);
-		PB_WeaponRecoil(-7,frandom(-1.5,1.5));
+		PB_WeaponRecoil(-7,frandom[sfx](-1.5,1.5));
 		PB_GunSmoke(2,0,-1);
 		PB_GunSmoke(-2,0,-1);
 		A_FireProjectile("ShotgunWad",random(-2,2),0,3,-4,FPF_NOAUTOAIM,random(-2,2));

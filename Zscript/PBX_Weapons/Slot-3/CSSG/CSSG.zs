@@ -204,7 +204,7 @@ Class PBX_CSSG : PBX_WeaponBase
 				FireHalfCSSGRight();
 				PB_TakeAmmo(invoker.ammotype2,1);
 				A_ZoomFactor(0.975);
-				PB_WeaponRecoil(-3,frandom(-0.5,0.5));
+				PB_WeaponRecoil(-3,frandom[sfx](-0.5,0.5));
 				PB_GunSmoke(-2,0,-1);
 				A_FireProjectile("ShotgunWad",random(-2,2),0,3,-4,FPF_NOAUTOAIM,random(-2,2));
 			}
@@ -228,7 +228,7 @@ Class PBX_CSSG : PBX_WeaponBase
 				FireHalfCSSGLeft();
 				PB_TakeAmmo(invoker.ammotype2,1);
 				A_ZoomFactor(0.975);
-				PB_WeaponRecoil(-3,frandom(-0.5,0.5));
+				PB_WeaponRecoil(-3,frandom[sfx](-0.5,0.5));
 				PB_GunSmoke(2,0,-1);
 				A_FireProjectile("ShotgunWad",random(-2,2),0,-3,-4,FPF_NOAUTOAIM,random(-2,2));
 			}

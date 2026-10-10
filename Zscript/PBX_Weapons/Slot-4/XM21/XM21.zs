@@ -130,7 +130,7 @@ class PBX_XM21 : PBX_WeaponBase
     action void fireWeapon()
     {
         bool ads = PB_GetZoom();
-        double recoilX = ads ? -1 : -1.3;
+        double recoilX = ads ? frandom[sfx](-1.0,1.0) : frandom[sfx](-1.3,1.3);
         double recoilY = ads ? -1 : -1.4;
         
         A_AlertMonsters();

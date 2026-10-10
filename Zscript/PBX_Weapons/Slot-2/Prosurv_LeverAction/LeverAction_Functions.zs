@@ -47,7 +47,7 @@ extend class PBX_Prosurv_LeverAction
 		bool mode = getLAMode();
 		double zoomA = ads ? 1.23 : 0.98;
 		double zoomB = ads ? 1.24 : 0.99;
-		double recoilX = ads ? -1.75 : -1.83;
+		double recoilX = ads ? frandom[sfx](-1.75,1.75) : frandom[sfx](-1.83,1.83);
 		double recoilY = ads ? +0.50 : +0.75;
 		string projectile = mode == LA_444Marlin ? "PB_444Marlin" : "PB_357Magnum";
 		string sound = mode == LA_444Marlin ? "weapons/leveraction/magfire" : "weapons/leveraction/fire";

@@ -156,7 +156,7 @@ class PBX_LightningController : Thinker
 		if (c)
 		{
 			c.ac_parentController  = parent;
-			c.ac_stage             = parent? parent.ac_stage + 1 : 1;
+			c.ac_stage             = parent ? parent.ac_stage + 1 : 1;
 			c.ac_damageSource      = damageSource;
 			c.ac_lightningOrigin   = victim;
 			c.ac_maxDistance       = range;

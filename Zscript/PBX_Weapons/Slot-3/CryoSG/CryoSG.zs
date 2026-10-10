@@ -331,7 +331,7 @@ class PBX_CryoSG : PBX_WeaponBase
 			FZGA K 1;
 			FZGA LMN 1;
             TNT1 A 0 {
-                A_StartSound("weapons/spas12/pump", CHAN_WEAPON);
+                A_StartSound("weapons/spas12/pump",CHAN_WEAPON,CHANF_OVERLAP);
                 FireWeapon(2);
             }
 			FZGA MLL 1;

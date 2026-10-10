@@ -386,13 +386,11 @@ class PBX_ProSurvPSG : PBX_WeaponBase
 				A_StartSound("insertshell",CHAN_AUTO);
 				A_Giveinventory(invoker.ammo2.getClassName(),1);
 				A_Takeinventory(invoker.ammo1.getClassName(),1,TIF_NOTAKEINFINITE);
-				PB_WeaponRecoil(-0.2,+0.2);
-				PB_SetRoll(roll-0.4);
+				PB_RotateCamera(addAngle:0.2,addPitch:-0.2,addRoll:-0.4);
 				return A_DoPBWeaponAction(WRF_NOBOB);
 			}
 			XG30 PQ 1 {
-				PB_WeaponRecoil(+0.1,-0.1);
-				PB_SetRoll(roll+0.2);
+				PB_RotateCamera(addAngle:-0.1,addPitch:0.1,addRoll:0.2);
 				return A_DoPBWeaponAction(WRF_NOBOB);
 			}
 			Loop;

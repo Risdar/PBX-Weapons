@@ -42,7 +42,7 @@ class PBX_TeslaGun : PBX_WeaponBase
     int mTeslaAltFireAnimation; // Used for the altfire animation
 
     const CELL_SIZE = 100;
-    const ARCFIRE_DAMAGE = 30;
+    const ARCFIRE_DAMAGE = 15;
 
     const ALTFIRE_AMMOTAKE = 25;
     const DECHARGE_GIVE = 5; // MAKE SURE THIS VALUE CAN CLEANLY DIVIDE ALTFIRE_AMMOTAKE
@@ -50,7 +50,7 @@ class PBX_TeslaGun : PBX_WeaponBase
 
     const LIGHTNING_SPECIAL_NAME = "Tesla_LightningCharge";
     const LIGHTNING_SPECIAL_MAXCHARGE = 100;
-    const LIGHTNING_SPECIAL_MINIMUM = 30; // How many charges it'll take
+    const LIGHTNING_SPECIAL_MINIMUM = 50; // How many charges it'll take
 
     const LIGHTNING_RANGE = 716; // How long is the normal fire length
     const LIGHTBALL_DAMAGE = 200; // How much damage does the lightball do per bounce
@@ -165,7 +165,7 @@ class PBX_TeslaGun : PBX_WeaponBase
         A_FireProjectile("BlueFlareSpawn",0,0,0,0);
         A_FireCustomMissile("PlasmaFlareSpawner", 0, 0, 0,spawnheight:-5);
         A_StartSound("TESLAH2", CHAN_WEAPON, CHANF_LOOPING);
-        PBX_FireLightningGun(ARCFIRE_DAMAGE, spawnheight:-10, range:LIGHTNING_RANGE, duration:1, delay:0, maxChains:1, maxlinks:5, damageType:'Stun');
+        PBX_FireLightningGun(ARCFIRE_DAMAGE, spawnheight:-10, range:LIGHTNING_RANGE, duration:1, delay:0, maxChains:1, maxlinks:5);
         PB_TakeAmmo(invoker.ammotype2,emptyMag:0);
         A_WeaponOffset(frandom[sfx](-0.5, 0.5), WEAPONTOP + frandom(0, 0.75), WOF_INTERPOLATE);
         A_FlashOverlay();

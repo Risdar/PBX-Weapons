@@ -132,13 +132,11 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 			LVR3 AB 1 A_DoPBWeaponAction();
 			LVR3 C 1 { 
 				A_StartSound("insertshell");
-				PB_WeaponRecoil(-0.2,+0.2);
-				PB_SetRoll(roll-0.4);
+				PB_RotateCamera(addAngle:0.2,addPitch:-0.2,addRoll:-0.4);
                 return A_DoPBWeaponAction();
 			}
 			LVR3 D 1 {
-				PB_WeaponRecoil(+0.2,-0.2);
-				PB_SetRoll(roll+0.4);
+				PB_RotateCamera(addAngle:-0.2,addPitch:0.2,addRoll:0.4);
                 return A_DoPBWeaponAction();
 			}
 			LVR3 EFG 1 A_DoPBWeaponAction();
@@ -361,14 +359,12 @@ class PBX_Prosurv_LeverAction : PBX_WeaponBase
 				A_Takeinventory(invoker.ammotype1,invoker.ReserveToMagAmmoFactor,TIF_NOTAKEINFINITE);
 				// PB_SetMagUnloaded(false);
 				PB_SetMagEmpty(false);
-				PB_WeaponRecoil(-0.2,+0.2);
-				PB_SetRoll(roll-0.4);
+				PB_RotateCamera(addAngle:0.2,addPitch:-0.2,addRoll:-0.4);
 				if(pb_getchamberempty()) {PB_Setchamberempty(false);}
 				return A_DoPBWeaponAction(WRF_NOBOB);
 			}
 			LVR3 D 1 {
-				PB_WeaponRecoil(+0.2,-0.2);
-				PB_SetRoll(roll+0.4);
+				PB_RotateCamera(addAngle:-0.2,addPitch:0.2,addRoll:0.4);
 				return A_DoPBWeaponAction(WRF_NOBOB);
 			}
 			LVR3 EFG 1 A_DoPBWeaponAction(WRF_NOBOB);

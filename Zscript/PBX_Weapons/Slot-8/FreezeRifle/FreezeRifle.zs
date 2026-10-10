@@ -183,9 +183,9 @@ class PBX_FreezeRifle : PBX_WeaponBase
         
         A_ZoomFactor(0.98);
         if(isAltfire)
-            PB_WeaponRecoil(-0.72, -0.25);
+            PB_WeaponRecoil(-0.72, frandom[sfx](-0.25,0.25));
         else
-            PB_WeaponRecoil(-0.32, -0.16);
+            PB_WeaponRecoil(-0.32, frandom[sfx](-0.16,0.16));
     }
 
     action void stopSound()
@@ -399,7 +399,7 @@ class PBX_FreezeRifle : PBX_WeaponBase
             FR09 A 1 Bright fireWeapon();
 			FR09 B 1 Bright {
 				A_ZoomFactor(0.99);
-                PB_WeaponRecoil(-0.32, -0.16);
+                PB_WeaponRecoil(-0.32, frandom[sfx](-0.16,0.16));
 			}
 			FR09 C 1 Bright A_ZoomFactor(1.0);
 			FR09 D 1 Bright;
@@ -413,7 +413,7 @@ class PBX_FreezeRifle : PBX_WeaponBase
 			FR09 F 1 Bright {
                 PB_FireCryoRifleBeam();
 				A_ZoomFactor(0.99);
-                PB_WeaponRecoil(-0.32, -0.16);
+                PB_WeaponRecoil(-0.32, frandom[sfx](-0.16,0.16));
 			}
 			FR09 G 1 Bright {
                 PB_FireCryoRifleBeam();
@@ -466,7 +466,7 @@ class PBX_FreezeRifle : PBX_WeaponBase
             FR09 A 1 Bright fireWeapon(isAltfire:true);
 			FR09 B 1 Bright {
 				A_ZoomFactor(0.99);
-                PB_WeaponRecoil(-0.32, -0.16);
+                PB_WeaponRecoil(-0.32, frandom[sfx](-0.16,0.16));
 			}
 			FR09 C 1 Bright A_ZoomFactor(1.0);
 			FR09 D 1 Bright;
@@ -498,7 +498,7 @@ class PBX_FreezeRifle : PBX_WeaponBase
             FR09 E 1 Bright fireWeapon(isAltfire:true);
 			FR09 F 1 Bright {
 				A_ZoomFactor(0.99);
-                PB_WeaponRecoil(-0.72, -0.25);
+                PB_WeaponRecoil(-0.72, frandom[sfx](-0.25,0.25));
 			}
 			FR09 G 1 Bright A_ZoomFactor(1.0);
 			FR09 H 1 Bright;

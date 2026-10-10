@@ -157,7 +157,7 @@ extend class PBX_ProSurvPSG
 		bool ads = PB_GetZoom();
 
 		// Shared variables
-		double recoilX      = ads ? -0.62 : -1.64;
+		double recoilX      = ads ? frandom[sfx](-0.62,0.62) : frandom[sfx](-1.64,1.64);
 		double recoilY      = ads ? +0.24 : +0.88;
 		double zoomA        = ads ?  1.2  :  0.98;
 		double zoomB        = ads ?  1.24 :  0.99;
@@ -197,7 +197,6 @@ extend class PBX_ProSurvPSG
 
 			case 3:
 				A_ZoomFactor(zoomC);
-				// if (!ads) PB_SpawnCasing("ShotgunCasing", 15, -5, 26, 0, 3, 3);
 				break;
 
 			// Pump

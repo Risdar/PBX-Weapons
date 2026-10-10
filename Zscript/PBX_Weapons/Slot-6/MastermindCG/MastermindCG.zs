@@ -111,13 +111,7 @@ class PBX_MastermindChaingun : PBX_WeaponBase
             RMN1 H -1;
             Stop;
         Deselect:
-           TNT1 A 0 {
-				A_WeaponOffset(0,32);
-				PB_SetRoll(0);
-				PB_HandleCrosshair(-1);
-			}
-			TNT1 A 0 A_StopSound(6);
-			TNT1 A 0 A_ZoomFactor(1);
+           TNT1 A 0 PBX_WeaponLower();
 			RMNG JKLMN 1;
 			TNT1 A 0 A_Lower();
 			Wait;

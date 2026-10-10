@@ -271,7 +271,7 @@ Class PBX_MetalSniper : PBX_WeaponBase
             TNT1 A 0 MS_SetGrenadeQ(0);
             TNT1 A 0 PB_FireOffset();
             TNT1 A 0 PB_GunSmoke(0, 0, -2);
-            TNT1 A 0 PB_WeaponRecoil(-3, frandom(-1.5, 1.5));
+            TNT1 A 0 PB_WeaponRecoil(-3, frandom[sfx](-1.5, 1.5));
             MSNG C 1 bright;
             MSNG DEFGA 1;
             TNT1 A 0 A_JumpIf(CountInv("PB_RocketAmmo") > 0, "Reload_Grenade");
@@ -486,20 +486,14 @@ Class PBX_MetalSniper : PBX_WeaponBase
         // ── Muzzle flashes ────────────────────────────────────────────────
         MuzzleFlash:
             TNT1 A 0 A_OverlayFlags(overlayID(), PSPF_MIRROR | PSPF_FLIP, random(0, 1));
-            TNT1 A 0 A_Jump(128, "MF2");
-            MSNM AB 1 bright;
-            stop;
-        MF2:
-            MSNM AC 1 bright;
+            MSNM A 1 bright;
+            MSNM B 1 bright A_SetWeaponFrame(random[sfx](1,2));
             stop;
 
         MuzzleFlash_ADS:
             TNT1 A 0 A_OverlayFlags(overlayID(), PSPF_MIRROR | PSPF_FLIP, random(0, 1));
-            TNT1 A 0 A_Jump(128, "MFADS2");
-            MSNM DE 1 bright;
-            stop;
-        MFADS2:
-            MSNM DF 1 bright;
+            MSNM D 1 bright;
+            MSNM E 1 bright A_SetWeaponFrame(random[sfx](4,5));
             stop;
 
         MuzzleFlash_Gren:

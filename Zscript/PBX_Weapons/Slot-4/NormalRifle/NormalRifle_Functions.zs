@@ -54,7 +54,7 @@ extend class PBX_NormalRifle
     {
         bool burst          = getBurst();
         int heat            = burst ? 3 : 1;
-        double recoilX      = burst ? -0.6  : -0.24;
+        double recoilX      = burst ? frandom[sfx](-0.6,0.6)  : frandom[sfx](-0.24,0.24);
         double recoilY      = isLeft ? (burst ? +0.8 : +0.6) : (burst ? -0.8 : -0.6);
         double smokeOfs     = isLeft ?  6  : -6;
         double vertOfs      = isLeft ? -16 :  9;

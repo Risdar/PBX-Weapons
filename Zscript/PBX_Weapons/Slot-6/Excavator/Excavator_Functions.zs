@@ -256,7 +256,7 @@ extend class PBX_Excavator
 		EX_FireWeapon(altfire);
 		PB_FireOffset();
 		
-		PB_WeaponRecoil(-3.2,+1.61);//same as the SuperGL - sarge945
+		PB_WeaponRecoil(-3.2,frandom[sfx](-1.61,1.61));//same as the SuperGL - sarge945
 		PB_SpawnCasing("EmptyGrenadeBrass", 30, 0, 34, -frandom(1, 3), -frandom(2, 4), 5);
 		// TAKE AMMO
 		PB_LowAmmoSoundWarning();

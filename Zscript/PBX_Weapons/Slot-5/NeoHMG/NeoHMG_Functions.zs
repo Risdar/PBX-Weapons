@@ -264,7 +264,7 @@ extend class PBX_NeoHMG
 				HMG_fireBullet(overThreshold);
 				PB_DynamicTail("lmg", "lmg");
 				A_FlashOverlay();
-				PB_WeaponRecoil(-1.1,frandom(-0.82,0.82));
+				PB_WeaponRecoil(-1.1,frandom[sfx](-0.82,0.82));
 				PB_IncrementHeat(2);
 				PB_GunSmoke(0, 0, 0);
 				PB_LowAmmoSoundWarning("hdmr");

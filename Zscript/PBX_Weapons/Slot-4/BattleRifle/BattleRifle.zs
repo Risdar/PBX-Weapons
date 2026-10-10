@@ -107,7 +107,7 @@ class PBX_BDPBattleRifle : PBX_WeaponBase
 
 		A_FlashOverlay();
 		PB_GunSmoke(0,0,smoke);
-		PB_WeaponRecoil(recoil,frandom(-0.3,0.3));
+		PB_WeaponRecoil(recoil,frandom[sfx](-0.3,0.3));
 		A_ZoomFactor(zoom, SPF_INTERPOLATE);
 	}
 

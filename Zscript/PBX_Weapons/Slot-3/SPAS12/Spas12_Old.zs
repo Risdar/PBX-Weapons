@@ -211,7 +211,7 @@ class PBX_SPAS12 : PBX_WeaponBase
 			TNT1 A 0 PB_jumpIfNoAmmo(min:2);
             S12G B 1 Bright {
                 SPAS_Fire(1);
-                PB_WeaponRecoil(-1.50, +1.0);
+                PB_WeaponRecoil(-1.50, frandom[sfx](-1.0,1.0));
                 PB_FireBullets("PB_DragonsBreathTracer", 9, 1.5, 0, 0, 1.5);
 				A_FireProjectile("ShotgunWad", random(-2,2), 0, random(-2,2), -3, FPF_NOAUTOAIM, random(-2,2));
 				PB_TakeAmmo(invoker.ammo2.getClassName(),1,0);
@@ -312,8 +312,7 @@ class PBX_SPAS12 : PBX_WeaponBase
             S12R E 2 {
 				A_Giveinventory(invoker.ammo2.getClassName(),1);
 				A_Takeinventory(invoker.ammo1.getClassName(),1,TIF_NOTAKEINFINITE);
-                PB_WeaponRecoil(-0.2,+0.2);
-				PB_SetRoll(roll-0.4);
+				PB_RotateCamera(addAngle:0.2,addPitch:-0.2,addRoll:-0.4);
                 return A_DoPBWeaponAction(WRF_NOBOB);
             }
             S12R FGH 1 A_DoPBWeaponAction(WRF_NOBOB);

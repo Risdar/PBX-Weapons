@@ -247,7 +247,7 @@ Class PBX_BDPRailgun : PBX_WeaponBase
             SNIP BB 1 BRIGHT;
             TNT1 A 0 {
                 A_startsound("Railgun/Eject",2); 
-                PB_SpawnCasing("SpentRailgunShell");
+				PB_SpawnCasing("SpentRailgunShell",-15,-5,26,0,3,3);
 				if(!PB_GetMagEmpty()) PB_SetChamberEmpty(false);
             }
             SNIP AAAAAAAAAAAAAAAAAAA 1 BRIGHT PB_GunSmoke(0,0,0);

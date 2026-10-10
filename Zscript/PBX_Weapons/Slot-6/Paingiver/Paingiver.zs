@@ -108,18 +108,11 @@ class PBX_Paingiver : PBX_WeaponBase
 
         Deselect:
            TNT1 A 0 {
-				A_WeaponOffset(0,32);
-				PB_SetRoll(0);
-				PB_HandleCrosshair(-1);
+                PBX_WeaponLower();
+                A_StopSound(CHAN_6);
+                A_PlaySound("KICKSW",CHAN_AUTO,CHANF_OVERLAP);
 			}
-			TNT1 A 0 A_StopSound(CHAN_WEAPON);
-			TNT1 A 0 A_StopSound(6);
-            TNT1 A 0 A_PlaySound("KICKSW", CHAN_AUTO);
-            TNT1 A 0 A_ZoomFactor(1.0);
-            W17S A 1 PB_WeaponRecoilBasic(0.5);
-            W17S B 1 PB_WeaponRecoilBasic(0.8);
-            W17S C 1 PB_WeaponRecoilBasic(0.5);
-            TNT1 A 0 PB_WeaponRecoilBasic(-0.18);
+            W17S ABC 1;
 			TNT1 A 0 A_Lower();
 			Wait;
 
@@ -134,10 +127,7 @@ class PBX_Paingiver : PBX_WeaponBase
 		SelectAnimation:
 			TNT1 A 0 A_PlaySound("rocket", 2);
             TNT1 A 0 A_PlaySound("KICKSW", CHAN_AUTO);
-            TNT1 A 0 PB_WeaponRecoilBasic(-0.2);
-            W17S C 1 PB_WeaponRecoilBasic(-0.5);
-            W17S B 1 PB_WeaponRecoilBasic(0.5);
-            W17S A 1 PB_WeaponRecoilBasic(0.2);
+            W17S CBA 1;
 //////////////////////////// READY ////////////////////////////////////////////////////////////////////////////////////
 		Ready3:
 			W17A A 1 {

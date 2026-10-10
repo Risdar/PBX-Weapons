@@ -134,7 +134,7 @@ class PBX_EternalMinigun : PBX_WeaponBase
         PB_DynamicTail("lmg", "lmg");
         A_AlertMonsters();
         PB_SpawnCasing("PB_EmptyBrass", 19,-13,24,0,-frandom(3,6),frandom(-1,1), false);
-        PB_WeaponRecoil(-0.6,frandom(1.6, -1.6));
+        PB_WeaponRecoil(-0.6,frandom[sfx](1.6, -1.6));
         // A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
         A_FlashOverlay();
     }
