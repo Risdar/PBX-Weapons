@@ -51,6 +51,7 @@ class PBXCore_Player : PB_PlayerPrawn
 		
 		Player.WeaponSlot 5
 		,"PB_MG42"
+		,"PBX_EternalMinigun"
 		,"PB_Minigun"
 		,"PB_Nailgun"
 		,"PBX_NeoHMG"
